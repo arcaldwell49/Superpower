@@ -19,7 +19,7 @@ nsims = 100000
 
 # An Introduction to superpower
 
-The goal of superpower is to easily simulate ANOVA designs and empirically calculate power using a simulation approach. 
+The goal of superpower is to easily simulate factorial designs and empirically calculate power using a simulation approach. 
 This app is intended to be utilized for prospective (a priori) power analysis.
 
 ## Installation
@@ -172,7 +172,7 @@ You can set the standard deviation by setting a value of sd. Currently superpowe
 
 # Simulation-based power calculations
 
-There are two ways to calculate the statistical power of an ANOVA design based on simulations. The first is to repeatedly simulate data for each condition based on the means, sample size, standard deviation, and correlation, under specific statistical assumptions (i.e., normaly distributed data). The `ANOVA_power` function allows you to perform power analyses based on repeatedly simulating normaly distributed data. A second approach is to simulate a dataset that has *exactly* the desired properties - every cell of the design has n datapoints that have the desired mean and standard deviation, and correlation between groups (for a within design). By performing an ANOVA on this dataset, we can calculate the required statistics from the ANOVA result used to calculate the statistical power. The `ANOVA_exact` function allows you to calculate power based on this approach. The `ANOVA_power` function is a bit more flexible (e.g., we can use different ways to correct for multiple comparisons, or in future versions of the package allow you to simulate more realistic datasets that are not normally distributed), but the `ANOVA_exact` function is much faster (and takes seconds, instead of minutes or hours for a large number of simulations). 
+There are two ways to calculate the statistical power of a factorial design based on simulations. The first is to repeatedly simulate data for each condition based on the means, sample size, standard deviation, and correlation, under specific statistical assumptions (i.e., normaly distributed data). The `ANOVA_power` function allows you to perform power analyses based on repeatedly simulating normaly distributed data. A second approach is to simulate a dataset that has *exactly* the desired properties - every cell of the design has n datapoints that have the desired mean and standard deviation, and correlation between groups (for a within design). By performing an ANOVA on this dataset, we can calculate the required statistics from the ANOVA result used to calculate the statistical power. The `ANOVA_exact` function allows you to calculate power based on this approach. The `ANOVA_power` function is a bit more flexible (e.g., we can use different ways to correct for multiple comparisons, or in future versions of the package allow you to simulate more realistic datasets that are not normally distributed), but the `ANOVA_exact` function is much faster (and takes seconds, instead of minutes or hours for a large number of simulations). 
 
 ## The ANOVA_power function
 
@@ -688,7 +688,7 @@ ANOVA_exact(design_result)
 
 ## Two-way ANOVA, between participants Design
 
-The effect size for interactions in ANOVA designs depends on the pattern of means.
+The effect size for interactions in factorial designs depends on the pattern of means.
 Let's assume the researcher plans to perform an experiment where the voice of an artificial assistant sounds cheerful or sad, and as a second factor the voice sound more robotic or more human-like. 
 Different patterns of results could be expected.
 Either the cheerful voices are appreciated more than sad voices for both human and robotic-sounding voice assistants. Or cheerful human voices are preferred above sad human voices, but no difference is expected for robotic voices, or the opposite effect is observed for robotic voices (a 'Marvin-the-Depressed-Robot Effect'). 
@@ -821,7 +821,7 @@ knitr::include_graphics("screenshots/PS2000.gif")
 
 Variances were set to 1 (so all covariance matrices in their simulations were identical). In this specific example, the white fields are related to the correlation for the A main effect (these cells have the same level for B, but different levels of A). The grey cells are related to the main effect of B (the cells have the same level of A, but different levels of B). Finally, the black cells are related to the AxB interaction (they have different levels of A and B). The diagonal (all 1) relate to cells with the same levels of A and B. 
 
-Potvin & Schulz (2000) examine power for 2x2 within ANOVA designs and develop approximations of the error variance. For a design with 2 within factors (A and B) these are: 
+Potvin & Schulz (2000) examine power for 2x2 within factorial designs and develop approximations of the error variance. For a design with 2 within factors (A and B) these are: 
 
 For the main effect of A:
 $\sigma _ { e } ^ { 2 } = \sigma ^ { 2 } ( 1 - \overline { \rho } _ { A } ) + \sigma ^ { 2 } ( q - 1 ) ( \overline { \rho } _ { B } - \overline { \rho } _ { AB } )$

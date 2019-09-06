@@ -1,5 +1,5 @@
 library(testthat)
-library(ANOVApower)
+library(superpower)
 
 
-test_check("ANOVApower")
+test_check("superpower")

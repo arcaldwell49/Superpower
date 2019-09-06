@@ -5,7 +5,7 @@
 ^README\.Rmd$
 ^README.html$
 ^LICENSE\.md$
-^ANOVApower\.Rproj$
+^superpower\.Rproj$
 ^.travis.yml$
 ^\.Rproj\.user$
 ^codecov\.yml$

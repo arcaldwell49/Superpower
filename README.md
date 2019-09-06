@@ -17,19 +17,19 @@
         Design](#two-way-anova-between-participants-design)
       - [2x2 ANOVA, Within Design](#two-by-two-anova-within-design)
 
-# An Introduction to ANOVApower
+# An Introduction to superpower
 
-The goal of ANOVApower is to easily simulate ANOVA designs and
+The goal of `superpower` is to easily simulate ANOVA designs and
 empirically calculate power using a simulation approach. This app is
 intended to be utilized for prospective (a priori) power analysis.
 
 ## Installation
 
-You can install the released version of ANOVApower from
-[GitHub](https://github.com/Lakens/ANOVApower) with:
+You can install the released version of `superpower` from
+[GitHub](https://github.com/arcaldwell49/superpower) with:
 
 ``` r
-devtools::install_github("Lakens/ANOVApower")
+devtools::install_github("arcaldwell49/superpower")
 ```
 
 ## ANOVA\_design function
@@ -257,13 +257,13 @@ automatically created.
 
 You can set the sample size **per condition** by setting a value for
 n. The assumption is that you will collect equal sample sizes in all
-conditions \[expanding ANOVApower to allow different sample sizes in
+conditions \[expanding superpower to allow different sample sizes in
 each group is a planned future option\].
 
 ### Specifying the standard deviation
 
 You can set the standard deviation by setting a value of sd. Currently
-ANOVApower only allows you to perform calculations under the assumption
+superpower only allows you to perform calculations under the assumption
 of homogeneity of variances (the standard deviation is the same across
 conditions). Note that there is always some uncertainty in which values
 you can expect in the study you are planning. It is therefore useful to
@@ -926,7 +926,8 @@ sample size needed in a two-group within-design (NW) relative to the
 sample needed in two-group between-designs (NB), assuming normal
 distributions, and ignoring the difference in degrees of freedom between
 the two types of tests, is (from Maxwell & Delaney, 2004, p. 561,
-formula 45):
+formula
+45):
 
 ![N\_{W}=\\frac{N\_{B}(1-\\rho)}{2}](https://latex.codecogs.com/png.latex?N_%7BW%7D%3D%5Cfrac%7BN_%7BB%7D%281-%5Crho%29%7D%7B2%7D
 "N_{W}=\\frac{N_{B}(1-\\rho)}{2}")
@@ -950,7 +951,8 @@ turn, because the standardized effect size is the mean difference
 divided by the standard deviation of the difference scores, the
 correlation has an effect on the standardized mean difference in a
 within design, Cohen’s ![d\_z](https://latex.codecogs.com/png.latex?d_z
-"d_z"). The relation, as Cohen (1988, formula 2.3.7) explains, is:
+"d_z"). The relation, as Cohen (1988, formula 2.3.7) explains,
+is:
 
 ![\\sigma\_{z}=\\sigma\\sqrt{2(1-\\rho)}](https://latex.codecogs.com/png.latex?%5Csigma_%7Bz%7D%3D%5Csigma%5Csqrt%7B2%281-%5Crho%29%7D
 "\\sigma_{z}=\\sigma\\sqrt{2(1-\\rho)}")
@@ -1142,7 +1144,8 @@ The sample size needed in within-designs (NW) with more than 2
 conditions, relative to the sample needed in between-designs (NB),
 assuming normal distributions and compound symmetry, and ignoring the
 difference in degrees of freedom between the two types of tests, is
-(from Maxwell & Delaney, 2004, p. 562, formula 47):
+(from Maxwell & Delaney, 2004, p. 562, formula
+47):
 
 ![N\_{W}=\\frac{N\_{B}(1-\\rho)}{a}](https://latex.codecogs.com/png.latex?N_%7BW%7D%3D%5Cfrac%7BN_%7BB%7D%281-%5Crho%29%7D%7Ba%7D
 "N_{W}=\\frac{N_{B}(1-\\rho)}{a}")
@@ -1521,7 +1524,8 @@ ANOVA_exact(design_result, alpha_level = 0.05)
     ## p_Factor_A_a3_Factor_B_b1_Factor_A_a3_Factor_B_b3  86.9           1
     ## p_Factor_A_a3_Factor_B_b2_Factor_A_a3_Factor_B_b3  86.9           1
 
-We can check these against the analytic solution.
+We can check these against the analytic
+solution.
 
 ``` r
 power_res <- power_twoway_between(design_result) #using default alpha level of .05
