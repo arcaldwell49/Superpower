@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.com/arcaldwell49/superpower.svg?branch=master)](https://travis-ci.com/arcaldwell49/superpower)
 
 ## Table of Contents
 
