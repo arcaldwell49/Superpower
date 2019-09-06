@@ -1,5 +1,5 @@
 context("Simulated Data")
-library(superpower)
+library(Superpower)
 library(reshape2)
 
 test_that("simulated correlations fit expected values", {
