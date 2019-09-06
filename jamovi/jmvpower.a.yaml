@@ -1,0 +1,103 @@
+---
+name:  jmvpower
+title: ANOVA power
+menuGroup: ANOVApower
+version: '1.0.0'
+jas: '1.2'
+
+options:
+    - name: design
+      title: Design
+      type: String
+      default: 2b*2w
+      description:
+          R: a string describing the design
+
+    - name: labelnames
+      title: Factor labels
+      type: String
+      default: "AGE,old,young,SPEED,fast,slow"
+      description:
+          R: a comma separated string describing the factor and level labels
+
+    - name: n
+      title: Sample size in each condition
+      type: Integer
+      default: 80
+      min: 3
+      description:
+          R: an integer specifying the sample size in each condition
+
+    - name: sd
+      title: Standard deviation
+      type: Number
+      default: 1.03
+      min: .0001
+      description:
+          R: a number specifying the group standard deviations
+
+    - name: r
+      title: Correlation
+      type: Number
+      default: 0.87
+      description:
+          R: a number specifying the correlation between dependent variables
+
+    - name: mu
+      title: Group means
+      type: String
+      default: "1.03, 1.21, 0.98, 1.01"
+      description:
+          R: a comma separated string specifying the group means
+
+    - name: plot
+      title: Plot means
+      type: Bool
+      default: true
+      description:
+          R: >
+            `TRUE` (default) or `FALSE` specifying whether to provide a means plot
+
+    - name: simulate
+      title: Run simulation
+      type: Bool
+      default: false
+      hidden: true
+      description:
+          R: >
+            `TRUE` or `FALSE` (default); perform the simulation
+
+    - name: alpha_level
+      title: Alpha level
+      type: Number
+      min: 0
+      max: 1
+      default: 0.05
+      description:
+          R: a number specifying the alpha level
+
+    - name: nsims
+      title: Number of simulations
+      type: Integer
+      min: 100
+      max: 10000
+      default: 100
+      description:
+          R: an integer specifying the number of simulations to perform
+
+    - name: p_adjust
+      title: Adjustment method for multiple comparisons
+      type: List
+      options:
+        - name: none
+          title: None
+        - name: holm
+          title: Holm-Bonferroni
+        - name: bonferroni
+          title: Bonferroni
+        - name: fdr
+          title: False discovery rate
+      default: holm
+      description:
+          R: the p-adjustment method to use
+...

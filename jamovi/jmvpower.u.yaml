@@ -1,0 +1,64 @@
+title: ANOVA power
+name: jmvpower
+jus: '2.0'
+stage: 0
+compilerMode: tame
+events:
+  loaded: './main::loaded'
+children:
+  - type: Label
+    label: Design
+    margin: large
+    children:
+      - type: TextBox
+        name: design
+        format: string
+        events:
+          change: './main::onChange_option'
+      - type: TextBox
+        name: labelnames
+        format: string
+        width: largest
+        events:
+          change: './main::onChange_option'
+      - type: TextBox
+        name: 'n'
+        format: number
+        events:
+          change: './main::onChange_option'
+      - type: TextBox
+        name: sd
+        format: number
+        events:
+          change: './main::onChange_option'
+      - type: TextBox
+        name: r
+        format: number
+        events:
+          change: './main::onChange_option'
+      - type: TextBox
+        name: mu
+        format: string
+        width: largest
+        events:
+          change: './main::onChange_option'
+      - type: CheckBox
+        name: plot
+  - type: Label
+    label: Simulation
+    margin: large
+    children:
+      - type: TextBox
+        name: alpha_level
+        format: number
+        events:
+          change: './main::onChange_option'
+      - type: TextBox
+        name: nsims
+        format: number
+        events:
+          change: './main::onChange_option'
+      - type: ComboBox
+        name: p_adjust
+        events:
+          change: './main::onChange_option'

@@ -1,0 +1,9 @@
+.Rproj.user
+Meta
+.Rhistory
+doc
+
+build/js
+build/R
+temp
+*.jmo

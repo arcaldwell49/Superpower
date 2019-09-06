@@ -1,0 +1,17 @@
+^Meta$
+^mess$
+^doc$
+^README_files$
+^README\.Rmd$
+^README.html$
+^LICENSE\.md$
+^ANOVApower\.Rproj$
+^.travis.yml$
+^\.Rproj\.user$
+^codecov\.yml$
+^Shiny$
+^jamovi$
+^build/js$
+^build/R$
+^temp$
+^.*\.jmo$

@@ -1,0 +1,36 @@
+Package: superpower
+Title: Simulation-Based Power Analysis for Factorial Designs
+Version: 0.0.3
+Authors@R: 
+    person(given = "Daniel",
+           family = "Lakens",
+           role = c("aut", "cre"),
+           email = "D.Lakens@tue.nl")
+    person(given = "Aaron",
+           family = "Caldwell",
+           role = c("aut", "cre"),
+           email = "arcaldwell49@gmail.com")
+Description: Functions to perform simulations of ANOVA designs of up to three factors. Calculates the observed power and average observed effect size for all main effects and interactions in the ANOVA, and all simple comparisons between conditions. Includes functions for analytic power calculations and additional helper functions that compute effect sizes for ANOVA designs, observed error rates in the simulations, and functions to plot power curves.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.1.1
+Imports: 
+    mvtnorm,
+    MASS,
+    afex,
+    emmeans,
+    ggplot2,
+    gridExtra,
+    reshape2,
+    stats
+Suggests: 
+    knitr,
+    rmarkdown,
+    pwr,
+    testthat,
+    dplyr,
+    covr,
+    jmvcore
+VignetteBuilder:
+    knitr

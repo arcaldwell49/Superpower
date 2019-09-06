@@ -1,0 +1,25 @@
+---
+title: Simulation-Based Power Analysis for ANOVA Designs
+name: ANOVApower
+version: 0.0.3
+jms: '1.0'
+authors:
+  - Aaron Caldwell
+  - Daniel Lakens
+maintainer: Aaron Caldwell
+type: R
+description: >-
+  Functions to perform simulations of ANOVA designs of up to three factors.
+  Calculates the observed power and average observed effect size for all main
+  effects and interactions in the ANOVA, and all simple comparisons between
+  conditions. Includes functions for analytic power calculations and additional
+  helper functions that compute effect sizes for ANOVA designs, observed error
+  rates in the simulations, and functions to plot power curves.
+analyses:
+  - title: ANOVA power
+    name: jmvpower
+    ns: ANOVApower
+    menuGroup: ANOVApower
+    menuTitle: ANOVA power
+
+...

@@ -1,0 +1,110 @@
+---
+name:  jmvpower
+title: ANOVA power
+jrs:   '1.1'
+
+items:
+    - name: design
+      title: Design
+      type: Group
+      items:
+        - name: summary
+          title: Design
+          type: Table
+          rows: 4
+          columns:
+            - name: name
+              title: ''
+              type: text
+            - name: value
+              title: ''
+              type: text
+          clearWith:
+            - design
+            - labelnames
+            - n
+            - sd
+            - r
+            - mu
+
+        - name: matrix
+          title: Correlation matrix
+          type: Table
+          columns: []
+          clearWith:
+            - design
+            - labelnames
+            - n
+            - sd
+            - r
+            - mu
+
+        - name: plot
+          title: Means plot
+          type: Image
+          visible: (plot)
+          renderFun: .plot
+          clearWith:
+            - design
+            - labelnames
+            - n
+            - sd
+            - r
+            - mu
+
+    - name: sims
+      title: Simulation
+      type: Group
+      items:
+        - name: results
+          title: Results
+          type: Table
+          visible: (simulate)
+          columns:
+            - name: name
+              title: ''
+              type: text
+            - name: power
+              title: Power
+            - name: es
+              title: Effect-size
+          clearWith:
+            - design
+            - labelnames
+            - n
+            - sd
+            - r
+            - mu
+            - nsims
+            - alpha_level
+            - p_adjust
+
+        - name: multi
+          title: Multiple comparisons
+          type: Table
+          visible: (simulate)
+          columns:
+            - name: name
+              title: ''
+              type: text
+            - name: power
+              title: Power
+            - name: es
+              title: Effect-size
+          clearWith:
+            - design
+            - labelnames
+            - n
+            - sd
+            - r
+            - mu
+            - nsims
+            - alpha_level
+            - p_adjust
+
+    # - name:  text
+    #   title: debug
+    #   type:  Preformatted
+
+
+...
