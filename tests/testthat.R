@@ -1,5 +1,5 @@
 library(testthat)
-library(superpower)
+library(Superpower)
 
 
-test_check("superpower")
+test_check("Superpower")
