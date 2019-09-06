@@ -1,0 +1,97 @@
+---
+title: "Exact Simulation Results"
+subtitle: "Shiny App developed by Dani&euml;l Lakens and Aaron Caldwell"
+output: pdf_document
+date: '`r format(Sys.time(), "%B %d, %Y")`'
+params:
+  tablePC: NA,
+  tableMain: NA,
+  means_plot: NA,
+  n: NA,
+  model: NA,
+  design: NA,
+  cor_mat: NA,
+  sigmatrix: NA
+  alpha_level: NA
+  power_curve: NA
+  power_curve_df: NA
+---
+
+
+
+
+Below are the results from a power analysis using an exact simulation of a factorial design wherein the data are sampled from an empircal distribution. If you encounter any problems please visit our GitHub page (https://github.com/Lakens/ANOVApower) to the raise the issue.
+
+**Study Design**
+
+`r paste(params$design)`
+
+**Model Formula** 
+
+`r paste(params$model)`
+
+The sample size was **`r params$n`** *per cell*.
+
+**Correlation Matrix**
+```{r echo = FALSE}
+knitr::kable(params$cor_mat)
+```
+
+**Variance-Covariance Matrix**
+```{r echo = FALSE}
+knitr::kable(params$sigmatrix)
+```
+
+```{r, results='asis', echo=FALSE}
+cat("\\newpage")
+```
+
+Plot of the individual data points with mean and standard deviation.
+
+```{r echo = FALSE}
+params$means_plot
+```
+
+
+```{r, results='asis', echo=FALSE}
+cat("\\newpage")
+```
+
+Power for this specific design, with an alpha of `r params$alpha_level`, is included below.
+
+**ANOVA Power (%) and Effect Sizes (Partial Eta Squared)**
+
+```{r echo = FALSE}
+knitr::kable(params$tableMain)
+
+```
+
+**Multiple Comparisons Power (%) and Effect Sizes (Cohen's d~z~)**
+
+```{r echo = FALSE}
+knitr::kable(params$tablePC)
+
+```
+
+```{r, results='asis', echo=FALSE}
+cat("\\newpage")
+```
+
+**Plot of Power Across Many Sample Sizes**
+
+```{r echo = FALSE}
+params$power_curve
+```
+
+
+
+```{r, results='asis', echo=FALSE}
+cat("\\newpage")
+```
+
+
+**Table of Power Across Many Sample Sizes**
+
+```{r echo = FALSE}
+knitr::kable(params$power_curve_df)
+```
