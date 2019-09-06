@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/arcaldwell49/superpower.svg?branch=master)](https://travis-ci.com/arcaldwell49/superpower)
+[![Build Status](https://travis-ci.com/arcaldwell49/Superpower.svg?branch=master)](https://travis-ci.com/arcaldwell49/Superpower)
 
 ## Table of Contents
 
@@ -18,19 +18,19 @@
         Design](#two-way-anova-between-participants-design)
       - [2x2 ANOVA, Within Design](#two-by-two-anova-within-design)
 
-# An Introduction to superpower
+# An Introduction to Superpower
 
-The goal of `superpower` is to easily simulate ANOVA designs and
+The goal of `Superpower` is to easily simulate ANOVA designs and
 empirically calculate power using a simulation approach. This app is
 intended to be utilized for prospective (a priori) power analysis.
 
 ## Installation
 
-You can install the released version of `superpower` from
-[GitHub](https://github.com/arcaldwell49/superpower) with:
+You can install the released version of `Superpower` from
+[GitHub](https://github.com/arcaldwell49/Superpower) with:
 
 ``` r
-devtools::install_github("arcaldwell49/superpower")
+devtools::install_github("arcaldwell49/Superpower")
 ```
 
 ## ANOVA\_design function
