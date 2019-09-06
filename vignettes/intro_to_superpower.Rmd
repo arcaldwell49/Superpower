@@ -1,10 +1,10 @@
 ---
-title: "Introduction to superpower"
+title: "Introduction to Superpower"
 author: "Daniel Lakens & Aaron C. Caldwell"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Introduction to superpower}
+  %\VignetteIndexEntry{Introduction to Superpower}
   %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
 editor_options: 
@@ -13,21 +13,21 @@ editor_options:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(superpower)
+library(Superpower)
 nsims = 100000
 ```
 
-# An Introduction to superpower
+# An Introduction to Superpower
 
-The goal of superpower is to easily simulate factorial designs and empirically calculate power using a simulation approach. 
+The goal of Superpower is to easily simulate factorial designs and empirically calculate power using a simulation approach. 
 This app is intended to be utilized for prospective (a priori) power analysis.
 
 ## Installation
 
-You can install the released version of superpower from [GitHub](https://github.com/arcaldwell49/superpower) with:
+You can install the released version of superpower from [GitHub](https://github.com/arcaldwell49/Superpower) with:
 
 ``` r
-devtools::install_github("arcaldwell49/superpower")
+devtools::install_github("arcaldwell49/Superpower")
 ```
 ## ANOVA_design function
 
@@ -164,11 +164,11 @@ Note that we did not specify the labelnames, and thus they are automatically cre
 
 ### Specifying the sample size
 
-You can set the sample size **per condition** by setting a value for n. The assumption is that you will collect equal sample sizes in all conditions [expanding superpower to allow different sample sizes in each group is a planned future option].
+You can set the sample size **per condition** by setting a value for n. The assumption is that you will collect equal sample sizes in all conditions [expanding Supepower to allow different sample sizes in each group is a planned future option].
 
 ### Specifying the standard deviation
 
-You can set the standard deviation by setting a value of sd. Currently superpower only allows you to perform calculations under the assumption of homogeneity of variances (the standard deviation is the same across conditions). Note that there is always some uncertainty in which values you can expect in the study you are planning. It is therefore useful to perform sensitivity analyses (e.g., running the simulation with the expected standard deviation, but also with more conservative or even worst-case-scenario values).
+You can set the standard deviation by setting a value of sd. Currently Superpower only allows you to perform calculations under the assumption of homogeneity of variances (the standard deviation is the same across conditions). Note that there is always some uncertainty in which values you can expect in the study you are planning. It is therefore useful to perform sensitivity analyses (e.g., running the simulation with the expected standard deviation, but also with more conservative or even worst-case-scenario values).
 
 # Simulation-based power calculations
 
