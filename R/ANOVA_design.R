@@ -2,7 +2,7 @@
 #' @param design String specifying the ANOVA design.
 #' @param n Sample size in each condition
 #' @param mu Vector specifying mean for each condition
-#' @param sd standard deviation for all conditions
+#' @param sd standard deviation for all conditions (or a vector specifying the sd for each condition)
 #' @param r Correlation between dependent variables (single value or matrix)
 #' @param labelnames Optional vector to specifying factor and condition names (recommended, if not used factors and levels are indicated by letters and numbers)
 #' @param plot Should means plot be printed (defaults to TRUE)
@@ -15,8 +15,8 @@
 #' ## 'voice', with names for levels of "cheerful", "sad", and "human", "robot"
 #' ANOVA_design(design = "2w*2w", n = 40, mu = c(1, 0, 1, 0), sd = 2, r = 0.8,
 #'       labelnames = c("condition", "cheerful", "sad", "voice", "human", "robot"))
-#' @section References:
-#' too be added
+#' @section Warnings:
+#' Varying the sd or r (e.g., entering multiple values) violates assumptions of homoscedascity and sphericity respectively
 #' @importFrom stats pnorm pt qnorm qt as.formula median
 #' @importFrom utils combn
 #' @importFrom reshape2 melt
