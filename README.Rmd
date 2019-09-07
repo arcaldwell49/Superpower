@@ -11,8 +11,11 @@ suppressWarnings(library("badger"))
 
 ```
 
-[![Build Status](https://travis-ci.com/arcaldwell49/superpower.svg?branch=master)](https://travis-ci.com/arcaldwell49/superpower)
+```{r echo=FALSE}
+knitr::include_graphics("Sticker/Super.png")
+```
 
+[![Build Status](https://travis-ci.com/arcaldwell49/superpower.svg?branch=master)](https://travis-ci.com/arcaldwell49/superpower)
 `r badge_doi("10.31234/osf.io/baxsf", "yellow")`
 
 
@@ -41,9 +44,7 @@ library(Superpower)
 The goal of `Superpower` is to easily simulate factorial designs and empirically calculate power using a simulation approach. 
 This app is intended to be utilized for prospective (a priori) power analysis.
 
-```{r echo=FALSE}
-knitr::include_graphics("Sticker/Super.png")
-```
+
 
 
 ## Installation

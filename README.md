@@ -1,7 +1,8 @@
 
+![](Sticker/Super.png)<!-- -->
+
 [![Build
 Status](https://travis-ci.com/arcaldwell49/superpower.svg?branch=master)](https://travis-ci.com/arcaldwell49/superpower)
-
 [![](https://img.shields.io/badge/doi-10.31234/osf.io/baxsf-yellow.svg)](https://doi.org/10.31234/osf.io/baxsf)
 
 ## Table of Contents
@@ -27,8 +28,6 @@ Status](https://travis-ci.com/arcaldwell49/superpower.svg?branch=master)](https:
 The goal of `Superpower` is to easily simulate factorial designs and
 empirically calculate power using a simulation approach. This app is
 intended to be utilized for prospective (a priori) power analysis.
-
-![](Sticker/Super.png)<!-- -->
 
 ## Installation
 
