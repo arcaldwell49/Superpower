@@ -5,6 +5,17 @@ output:
 editor_options: 
   chunk_output_type: console
 ---
+
+```{r echo=FALSE, results="hide", include=FALSE}
+suppressWarnings(library("badger"))
+
+```
+
+[![Build Status](https://travis-ci.com/arcaldwell49/superpower.svg?branch=master)](https://travis-ci.com/arcaldwell49/superpower)
+
+`r badge_doi("10.31234/osf.io/baxsf", "yellow")`
+
+
 ## Table of Contents
 * [ANOVA_design Function](#anova_design-function)
 * [Simulation-based power calculations](#simulation-based-power-calculations)
@@ -22,12 +33,18 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 nsims = 100000
 library(Superpower)
+
 ```
 
 # An Introduction to Superpower
 
 The goal of `Superpower` is to easily simulate factorial designs and empirically calculate power using a simulation approach. 
 This app is intended to be utilized for prospective (a priori) power analysis.
+
+```{r echo=FALSE}
+knitr::include_graphics("Sticker/Super.png")
+```
+
 
 ## Installation
 

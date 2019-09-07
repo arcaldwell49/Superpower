@@ -10,6 +10,7 @@
 ^\.Rproj\.user$
 ^codecov\.yml$
 ^Shiny$
+^Sticker$
 ^jamovi$
 ^build/js$
 ^build/R$

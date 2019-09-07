@@ -1,4 +1,9 @@
 
+[![Build
+Status](https://travis-ci.com/arcaldwell49/superpower.svg?branch=master)](https://travis-ci.com/arcaldwell49/superpower)
+
+[![](https://img.shields.io/badge/doi-10.31234/osf.io/baxsf-yellow.svg)](https://doi.org/10.31234/osf.io/baxsf)
+
 ## Table of Contents
 
   - [ANOVA\_design Function](#anova_design-function)
@@ -22,6 +27,8 @@
 The goal of `Superpower` is to easily simulate factorial designs and
 empirically calculate power using a simulation approach. This app is
 intended to be utilized for prospective (a priori) power analysis.
+
+![](Sticker/Super.png)<!-- -->
 
 ## Installation
 
@@ -105,7 +112,7 @@ The plot below visualizes means from 1 to 8 being entered in a vector:
 mu = c(1, 2, 3, 4, 5, 6, 7, 8) so you can see how the basic ordering
 works.
 
-![](README_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 ### Specifying label names
 
@@ -235,7 +242,7 @@ design_result <- ANOVA_design(design = "2w*2w",
                               r <- c(0.91, 0.92, 0.93, 0.94, 0.95, 0.96))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 We can check the correlation matrix by asking for it from the
 design\_result object to check if it was entered the way we wanted:
@@ -366,7 +373,7 @@ design_result <- ANOVA_design(design = "2b*2w",
                    labelnames = c("voice", "human", "robot", "emotion", "cheerful", "sad"))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
 ``` r
 # power_result_vig_1 <- ANOVA_power(design_result, 
@@ -417,7 +424,7 @@ distributions for all tests in the ANOVA.
 power_result_vig_1$plot1
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ## Power in a Two Group One-Way ANOVA
 
@@ -451,7 +458,7 @@ design_result <- ANOVA_design(design = design,
                               labelnames = labelnames)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 ``` r
 # power_result_vig_2 <- ANOVA_power(design_result, nsims = nsims, seed = 1234)
@@ -539,7 +546,7 @@ design_result <- ANOVA_design(design = "2b",
                    labelnames = c("condition", "control", "pet"))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 ``` r
 ANOVA_exact(design_result)$main_results$power
@@ -654,7 +661,7 @@ power around 225 participants per condition.
 plot_power(design_result, min_n = 10, max_n = 250)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 Because the true pattern of means is always unknown, it is sensible to
 examine the power across a range of scenarios. For example, is the
@@ -674,7 +681,7 @@ design_result <- ANOVA_design(design = "2b",
 plot_power(design_result, max_n = 250)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 It could be that in ddition to a slightly smaller effect size, the
 standard deviation is slighty larger than we expected as well. This will
@@ -693,7 +700,7 @@ design_result <- ANOVA_design(design = "2b",
 plot_power(design_result, min_n = 10, max_n = 250)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 As these different plots make clear, your study never realy has a known
 statistical power. Because the true effect size (i.e., the pattern of
@@ -740,7 +747,7 @@ design_result <- ANOVA_design(design = design,
                    labelnames = labelnames)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
 ``` r
 ANOVA_exact(design_result)
@@ -807,7 +814,7 @@ sizes to see how much we need to increase the sample size.
 plot_power(design_result, min_n = 10, max_n = 250)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
 
 We see 134 participants give us aroud 90% power for the ANOVA. But we
 should also check the power for the comparison of the control condition
@@ -1064,7 +1071,7 @@ design_result <- ANOVA_design(design = design,
                               labelnames = labelnames)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
 
 ``` r
 ANOVA_exact(design_result)
@@ -1118,7 +1125,7 @@ design_result <- ANOVA_design(design = design,
                               labelnames = labelnames)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-24-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 
 ``` r
 ANOVA_exact(design_result)
@@ -1254,7 +1261,7 @@ design_result <- ANOVA_design(design = design,
                               labelnames = labelnames)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
 
 ``` r
 # power_result_vig_3 <- ANOVA_power(design_result, nsims = nsims)
@@ -1310,7 +1317,7 @@ design_result <- ANOVA_design(design = design,
                               r = r)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-30-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-32-1.png)<!-- -->
 
 ``` r
 ANOVA_exact(design_result)
@@ -1349,7 +1356,7 @@ design_result <- ANOVA_design(design = design,
                               r = r)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-32-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-34-1.png)<!-- -->
 
 ``` r
 ANOVA_exact(design_result)
@@ -1470,7 +1477,7 @@ design_result <- ANOVA_design(design = design,
                    labelnames = labelnames)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-33-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-35-1.png)<!-- -->
 
 ``` r
 ANOVA_exact(design_result, alpha_level = 0.05)
@@ -1550,7 +1557,7 @@ the power increases, as the sample size per condition increases.
 plot_power(design_result, min_n = 20, max_n = 100)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-35-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-37-1.png)<!-- -->
 
 ## Two by two ANOVA, within design
 
@@ -1613,7 +1620,7 @@ design_result <- ANOVA_design(design = design,
                               labelnames = labelnames)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-37-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
 
 ``` r
 # power_result_vig_4 <- ANOVA_power(design_result, nsims = nsims)
