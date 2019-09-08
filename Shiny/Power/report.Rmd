@@ -1,5 +1,5 @@
 ---
-title: "Exact Simulation Results"
+title: "Monte Carlo Simulation Results"
 subtitle: "Shiny App developed by Dani&euml;l Lakens and Aaron Caldwell"
 output: pdf_document
 date: '`r format(Sys.time(), "%B %d, %Y")`'
@@ -13,14 +13,18 @@ params:
   cor_mat: NA,
   sigmatrix: NA
   alpha_level: NA
-  power_curve: NA
-  power_curve_df: NA
+  nsims: NA
+  p_adjust: NA
+  correction: NA
+  manova: NA
+
+
 ---
 
 
 
 
-Below are the results from a power analysis using an exact simulation of a factorial design wherein the data are sampled from an empircal distribution. If you encounter any problems please visit our GitHub page (https://github.com/arcaldwell49/Superpower) to the raise the issue.
+Below are the results from a power analysis using a Monte Carlo simulation of a factorial design wherein the data are sampled from a multivariate normal distribution. If you encounter any problems please visit our GitHub page (https://github.com/arcaldwell49/Superpower) to the raise the issue.
 
 **Study Design**
 
@@ -57,7 +61,7 @@ params$means_plot
 cat("\\newpage")
 ```
 
-Power for this specific design, with an alpha of `r params$alpha_level`, is included below.
+The results of the Monte Carlo simulation are included below. This simulation assumed an alpha of `r params$alpha_level`, a sphericity correction of `r params$correction`, a `r params$p_adjust` adjustment for multiple comparisons. A total of `r params$nsims` iterations were included in this simulation.
 
 **ANOVA Power (%) and Effect Sizes (Partial Eta Squared)**
 

@@ -1,4 +1,4 @@
-#
+# ANOVA_exact
 # Exact function Shiny app
 #
 
@@ -13,7 +13,7 @@ library(knitr)
 # Define UI for application
 ui <- dashboardPage(
 
-  dashboardHeader(title = "ANOVApower Exact"),
+  dashboardHeader(title = "ANOVA_exact"),
   dashboardSidebar(
     sidebarMenu(
       menuItem("Design", tabName = "design_tab", icon = icon("bezier-curve")),
@@ -98,10 +98,6 @@ ui <- dashboardPage(
                   title = "Simulation Parameters", status = "primary", solidHeader = TRUE,
 
                   conditionalPanel("input.designBut >= 1",
-                  selectInput("correction", "Sphericity Correction",
-                              c("None" = "none",
-                                "Greenhous-Geisser" = "GG",
-                                "Huynh-Feldt" = "HF")),
 
                   sliderInput("sig",
                               label = "Alpha Level",
@@ -227,7 +223,7 @@ server <- function(input, output) {
 
   #Runs EXACT simulation and saves result as reactive value
   observeEvent(input$sim, {values$power_result <- ANOVA_exact(values$design_result,
-                                                              correction = input$correction,
+                                                              correction = "none",
                                                               alpha_level = input$sig,
                                                               verbose = FALSE)
 

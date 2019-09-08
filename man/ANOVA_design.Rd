@@ -2,7 +2,7 @@
 % Please edit documentation in R/ANOVA_design.R
 \name{ANOVA_design}
 \alias{ANOVA_design}
-\title{Design function used to specify the parameters used in the simulation}
+\title{Design function used to specify the parameters to be used in simulations}
 \usage{
 ANOVA_design(design, n, mu, sd, r = 0, labelnames = NULL,
   plot = TRUE)
@@ -14,23 +14,42 @@ ANOVA_design(design, n, mu, sd, r = 0, labelnames = NULL,
 
 \item{mu}{Vector specifying mean for each condition}
 
-\item{sd}{standard deviation for all conditions}
+\item{sd}{standard deviation for all conditions (or a vector specifying the sd for each condition)}
 
 \item{r}{Correlation between dependent variables (single value or matrix)}
 
 \item{labelnames}{Optional vector to specifying factor and condition names (recommended, if not used factors and levels are indicated by letters and numbers)}
 
-\item{plot}{Should means plot be printed (defaults to TRUE)}
+\item{plot}{Should means plot be printed (defaults to TRUE)
+\describe{
+  \item{\code{"dataframe"}}{A sample dataframe of what data could look like given the proposed parameters.}
+  \item{\code{"design"}}{\code{aov} The design string, e.g. "2b*2w".}
+  \item{\code{"design_list"}}{The list of variables in the design.}
+  \item{\code{"frml1"}}{The first formula created for this design.}
+  \item{\code{"frml2"}}{The second formula created for this design.}
+  \item{\code{"mu"}}{Vector of means.}
+  \item{\code{"sd"}}{Vector of standard deviations.}
+  \item{\code{"r"}}{Common correlation coefficient.}
+  \item{\code{"n"}}{Sample size per cell.}
+  \item{\code{"cor_mat"}}{The correlation matrix.}
+  \item{\code{"sigmatrix"}}{The variance-covariance matrix.}
+  \item{\code{"design_factors"}}{Total number of within-subjects factors.}
+  \item{\code{"labelnames"}}{List of the label names.}
+  \item{\code{"labelnameslist"}}{Secondary list of labelnames}
+  \item{\code{"factornames"}}{List of the factor titles.}
+  \item{\code{"meansplot"}}{Total number of within-subjects factors.}
+
+}}
 }
 \value{
 Returns Single data-frame with simulated data, design, design list, factor names, formulas for ANOVA, means, sd, correlation, sample size per condition, correlation matrix, covariance matrix, design string, labelnames, labelnameslist, factor names, meansplot
 }
 \description{
-Design function used to specify the parameters used in the simulation
+Design function used to specify the parameters to be used in simulations
 }
-\section{References}{
+\section{Warnings}{
 
-too be added
+Varying the sd or r (e.g., entering multiple values) violates assumptions of homoscedascity and sphericity respectively
 }
 
 \examples{

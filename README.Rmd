@@ -13,6 +13,7 @@ suppressWarnings(library("badger"))
 
 ```{r echo=FALSE}
 knitr::include_graphics("Sticker/Superpower.png")
+knitr::include_graphics("Sticker/authors.png")
 ```
 
 [![Build Status](https://travis-ci.com/arcaldwell49/superpower.svg?branch=master)](https://travis-ci.com/arcaldwell49/superpower)

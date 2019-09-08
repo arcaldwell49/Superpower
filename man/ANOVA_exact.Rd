@@ -2,7 +2,7 @@
 % Please edit documentation in R/ANOVA_exact.R
 \name{ANOVA_exact}
 \alias{ANOVA_exact}
-\title{Simulates on exact empirical data set from the design to calculate power}
+\title{Simulates an exact dataset (mu, sd, and r represent empirical not population mean and covariance matrix) from the design to calculate power}
 \usage{
 ANOVA_exact(design_result, correction = "none", alpha_level,
   verbose = TRUE)
@@ -17,10 +17,21 @@ ANOVA_exact(design_result, correction = "none", alpha_level,
 \item{verbose}{Set to FALSE to not print results (default = TRUE)}
 }
 \value{
-Returns dataframe with simulation data (power and effect sizes), anova results and simple effect results, plot of exact data, and alpha_level.
+Returns dataframe with simulation data (power and effect sizes!), anova results and simple effect results, plot of exact data, and alpha_level.
+
+\describe{
+  \item{\code{"dataframe"}}{A dataframe of the simulation result.}
+  \item{\code{"aov_result"}}{\code{aov} object returned from \code{\link{aov_car}}.}
+  \item{\code{"main_result"}}{The power analysis results of the ANOVA results.}
+  \item{\code{"pc_results"}}{The power analysis results of the pairwise comparison results.}
+  \item{\code{"manova_results"}}{Default is "NULL". If a within-subjects factor is included, then the power of the multivariate (i.e. MANOVA) analyses will be provided.}
+  \item{\code{"alpha_level"}}{The alpha level, significance cut-off, used for the power analysis.}
+  \item{\code{"plot"}}{A plot of the dataframe from the simualtion; should closely match the meansplot in \code{\link{ANOVA_design}}}
+
+}
 }
 \description{
-Simulates on exact empirical data set from the design to calculate power
+Simulates an exact dataset (mu, sd, and r represent empirical not population mean and covariance matrix) from the design to calculate power
 }
 \section{References}{
 

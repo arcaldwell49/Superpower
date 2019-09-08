@@ -1,50 +1,748 @@
-#
-# This is a Shiny web application. You can run the application by clicking
-# the 'Run App' button above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
+# ANOVA_power app
+# simulation function Shiny app
 #
 
 library(shiny)
+library(shinycssloaders)
+library(shinydashboard)
+library(Superpower)
+library(ggplot2)
+library(rmarkdown)
+library(knitr)
+library(afex)
+library(ggplot2)
+library(reshape2)
+library(MASS)
 
-# Define UI for application that draws a histogram
-ui <- fluidPage(
-   
-   # Application title
-   titlePanel("Old Faithful Geyser Data"),
-   
-   # Sidebar with a slider input for number of bins 
-   sidebarLayout(
-      sidebarPanel(
-         sliderInput("bins",
-                     "Number of bins:",
-                     min = 1,
-                     max = 50,
-                     value = 30)
-      ),
-      
-      # Show a plot of the generated distribution
-      mainPanel(
-         plotOutput("distPlot")
+shiny_power <- function(design_result, alpha_level = 0.05, correction = "none",
+                        p_adjust = "none", nsims = 1000, seed = NULL,
+                        verbose = TRUE){
+  
+  if (is.element(p_adjust, c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none")) == FALSE ) {
+    stop("p_adjust must be of an acceptable adjustment method: see ?p.adjust")
+  }
+  
+  if (is.element(correction, c("none", "GG", "HF")) == FALSE ) {
+    stop("Correction for sphericity can only be none, GG, or HF")
+  }
+  
+  if (nsims < 10) {
+    stop("The number of repetitions in simulation must be at least 10; suggested at least 1000 for accurate results")
+  }
+  
+  #Set seed, from sim_design function by Lisa DeBruine
+  if (!is.null(seed)) {
+    # reinstate system seed after simulation
+    sysSeed <- .GlobalEnv$.Random.seed
+    on.exit({
+      if (!is.null(sysSeed)) {
+        .GlobalEnv$.Random.seed <- sysSeed
+      } else {
+        rm(".Random.seed", envir = .GlobalEnv)
+      }
+    })
+    set.seed(seed, kind = "Mersenne-Twister", normal.kind = "Inversion")
+  }
+  
+  effect_size_d <- function(x, y, conf.level = 0.95){
+    sd1 <- sd(x) #standard deviation of measurement 1
+    sd2 <- sd(y) #standard deviation of measurement 2
+    n1 <- length(x) #number of pairs
+    n2 <- length(y) #number of pairs
+    df <- n1 + n2 - 2
+    m_diff <- mean(y - x)
+    sd_pooled <- (sqrt((((n1 - 1) * ((sd1^2))) + (n2 - 1) * ((sd2^2))) / ((n1 + n2 - 2)))) #pooled standard deviation
+    j <- (1 - 3/(4 * (n1 + n2 - 2) - 1)) #Calculate Hedges' correction.
+    t_value <- m_diff / sqrt(sd_pooled^2 / n1 + sd_pooled^2 / n2)
+    p_value = 2*pt(-abs(t_value), df = df)
+    d <- m_diff / sd_pooled #Cohen's d
+    d_unb <- d*j #Hedges g, of unbiased d
+    
+    invisible(list(d = d,
+                   d_unb = d_unb,
+                   p_value = p_value))
+  }
+  
+  effect_size_d_paired <- function(x, y, conf.level = 0.95){
+    sd1 <- sd(x) #standard deviation of measurement 1
+    sd2 <- sd(y) #standard deviation of measurement 2
+    s_diff <- sd(x - y) #standard deviation of the difference scores
+    N <- length(x) #number of pairs
+    df = N - 1
+    s_av <- sqrt((sd1 ^ 2 + sd2 ^ 2) / 2) #averaged standard deviation of both measurements
+    
+    #Cohen's d_av, using s_av as standardizer
+    m_diff <- mean(y - x)
+    d_av <- m_diff / s_av
+    d_av_unb <- (1 - (3 / (4 * (N - 1) - 1))) * d_av
+    
+    #get the t-value for the CI
+    t_value <- m_diff / (s_diff / sqrt(N))
+    p_value = 2 * pt(-abs(t_value), df = df)
+    
+    #Cohen's d_z, using s_diff as standardizer
+    d_z <- t_value / sqrt(N)
+    d_z_unb <- (1 - (3 / (4 * (N - 1) - 1))) * d_z
+    
+    invisible(list(
+      d_z = d_z,
+      d_z_unb = d_z_unb,
+      p_value = p_value
+    ))
+  }
+  
+  #Check to ensure there is a within subject factor -- if none --> no MANOVA
+  run_manova <- grepl("w", design_result$design)
+  
+  Roy <- function(eig, q, df.res) {
+    p <- length(eig)
+    test <- max(eig)
+    tmp1 <- max(p, q)
+    tmp2 <- df.res - tmp1 + q
+    c(test, (tmp2 * test)/tmp1, tmp1, tmp2)
+  }
+  
+  Wilks <- function(eig, q, df.res)
+  {
+    test <- prod(1/(1 + eig))
+    p <- length(eig)
+    tmp1 <- df.res - 0.5 * (p - q + 1)
+    tmp2 <- (p * q - 2)/4
+    tmp3 <- p^2 + q^2 - 5
+    tmp3 <- if (tmp3 > 0)
+      sqrt(((p * q)^2 - 4)/tmp3)
+    else 1
+    c(test, ((test^(-1/tmp3) - 1) * (tmp1 * tmp3 - 2 * tmp2))/p/q,
+      p * q, tmp1 * tmp3 - 2 * tmp2)
+  }
+  
+  HL <- function(eig, q, df.res)
+  {
+    test <- sum(eig)
+    p <- length(eig)
+    m <- 0.5 * (abs(p - q) - 1)
+    n <- 0.5 * (df.res - p - 1)
+    s <- min(p, q)
+    tmp1 <- 2 * m + s + 1
+    tmp2 <- 2 * (s * n + 1)
+    c(test, (tmp2 * test)/s/s/tmp1, s * tmp1, tmp2)
+  }
+  
+  Pillai <- function(eig, q, df.res)
+  {
+    test <- sum(eig/(1 + eig))
+    p <- length(eig)
+    s <- min(p, q)
+    n <- 0.5 * (df.res - p - 1)
+    m <- 0.5 * (abs(p - q) - 1)
+    tmp1 <- 2 * m + s + 1
+    tmp2 <- 2 * n + s + 1
+    c(test, (tmp2/tmp1 * test)/(s - test), s * tmp1, s * tmp2)
+  }
+  
+  
+  #Only utilized if MANOVA output included (see run_manova)
+  Anova.mlm.table <- function(x, ...)
+  {
+    test <- x$test
+    repeated <- x$repeated
+    ntests <- length(x$terms)
+    tests <- matrix(NA, ntests, 4)
+    if (!repeated)
+      SSPE.qr <- qr(x$SSPE)
+    for (term in 1:ntests) {
+      eigs <- Re(eigen(qr.coef(if (repeated)
+        qr(x$SSPE[[term]])
+        else
+          SSPE.qr,
+        x$SSP[[term]]), symmetric = FALSE)$values)
+      tests[term, 1:4] <- switch(
+        test,
+        Pillai = Pillai(eigs,
+                        x$df[term], x$error.df),
+        Wilks = Wilks(eigs,
+                      x$df[term], x$error.df),
+        `Hotelling-Lawley` =
+          HL(eigs,
+             x$df[term], x$error.df),
+        Roy = Roy(eigs,
+                  x$df[term], x$error.df)
       )
-   )
-)
-
-# Define server logic required to draw a histogram
-server <- function(input, output) {
-   
-   output$distPlot <- renderPlot({
-      # generate bins based on input$bins from ui.R
-      x    <- faithful[, 2] 
-      bins <- seq(min(x), max(x), length.out = input$bins + 1)
+    }
+    ok <- tests[, 2] >= 0 & tests[, 3] > 0 & tests[, 4] > 0
+    ok <- !is.na(ok) & ok
+    tests <- cbind(x$df, tests, pf(tests[ok, 2], tests[ok, 3],
+                                   tests[ok, 4], lower.tail = FALSE))
+    rownames(tests) <- x$terms
+    colnames(tests) <- c("df", "test_stat", "approx_F", "num_Df",
+                         "den_Df", "p.value")
+    tests <- structure(as.data.frame(tests), heading = paste("\nType ",
+                                                             x$type, if (repeated)
+                                                               " Repeated Measures", " MANOVA Tests: ", test, " test
+                                                             statistic",
+                                                             sep = ""), class = c("anova", "data.frame"))
+    invisible(tests)
+  }
+  
+  if (missing(alpha_level)) {
+    alpha_level <- 0.05
+  }
+  
+  if (alpha_level >= 1 | alpha_level <= 0  ) {
+    stop("alpha_level must be less than 1 and greater than zero")
+  }
+  
+  ###############
+  # 2. Read in Environment Data ----
+  ###############
+  
+  design <- design_result$design #String used to specify the design
+  factornames <- design_result$factornames #Get factor names
+  n <- design_result$n
+  mu = design_result$mu # population means - should match up with the design
+  sd <- design_result$sd #population standard deviation (currently assumes equal variances)
+  r <- design_result$r # correlation between within factors (currently only 1 value can be entered)
+  factors <- design_result$factors
+  design_factors <- design_result$design_factors
+  sigmatrix <- design_result$sigmatrix
+  dataframe <- design_result$dataframe
+  design_list <- design_result$design_list
+  
+  ###############
+  # 3. Specify factors for formula ----
+  ###############
+  
+  frml1 <- design_result$frml1
+  frml2 <- design_result$frml2
+  
+  aov_result <- suppressMessages({aov_car(frml1, #here we use frml1 to enter formula 1 as designed above on the basis of the design
+                                          data = dataframe, include_aov = FALSE,
+                                          anova_table = list(es = "pes", p_adjust_method = p_adjust)) }) #This reports PES not GES
+  
+  #Run MANOVA if within subject factor is included; otherwise ignored
+  if (run_manova == TRUE) {
+    manova_result <- Anova.mlm.table(aov_result$Anova)
+  }
+  ###############
+  # 5. Set up dataframe for simulation results
+  ###############
+  
+  #How many possible planned comparisons are there (to store p and es)
+  possible_pc <- (((prod(
+    as.numeric(strsplit(design, "\\D+")[[1]])
+  )) ^ 2) - prod(as.numeric(strsplit(design, "\\D+")[[1]])))/2
+  
+  #create empty dataframe to store simulation results
+  #number of columns for ANOVA results and planned comparisons, times 2 (p-values and effect sizes)
+  
+  if (run_manova == TRUE) {
+    #create empty dataframe to store simulation results
+    #number of columns if for ANOVA results and planned comparisons, times 2 (p and es)
+    #more columns added if MANOVA output included 2^factors
+    sim_data <- as.data.frame(matrix(
+      ncol = 2 * (2 ^ factors - 1) + (2 ^ factors) + 2 * possible_pc,
+      nrow = nsims
+    )) } else {
       
-      # draw the histogram with the specified number of bins
-      hist(x, breaks = bins, col = 'darkgray', border = 'white')
-   })
+      sim_data <- as.data.frame(matrix(
+        ncol = 2 * (2 ^ factors - 1) + 2 * possible_pc,
+        nrow = nsims
+      ))
+      
+    }
+  
+  
+  paired_tests <- combn(unique(dataframe$cond),2)
+  paired_p <- numeric(possible_pc)
+  paired_d <- numeric(possible_pc)
+  within_between <- sigmatrix[lower.tri(sigmatrix)] #based on whether correlation is 0 or not, we can determine if we should run a paired or independent t-test
+  
+  #Dynamically create names for the data we will store
+  #Again create rownames based on whether or not a MANOVA should be included
+  if (run_manova == TRUE) {
+    names(sim_data) = c(paste("anova_",
+                              rownames(aov_result$anova_table),
+                              sep = ""),
+                        paste("anova_es_",
+                              rownames(aov_result$anova_table),
+                              sep = ""),
+                        paste("p_",
+                              paste(paired_tests[1,],paired_tests[2,],sep = "_"),
+                              sep = ""),
+                        paste("d_",
+                              paste(paired_tests[1,],paired_tests[2,], sep = "_"),
+                              sep = ""),
+                        paste("manova_",
+                              rownames(manova_result),
+                              sep = ""))
+  } else {
+    names(sim_data) = c(paste("anova_",
+                              rownames(aov_result$anova_table),
+                              sep = ""),
+                        paste("anova_es_",
+                              rownames(aov_result$anova_table),
+                              sep = ""),
+                        paste("p_",
+                              paste(paired_tests[1,],paired_tests[2,],sep = "_"),
+                              sep = ""),
+                        paste("d_",
+                              paste(paired_tests[1,],paired_tests[2,], sep = "_"),
+                              sep = ""))
+  }
+  
+  
+  ###############
+  # 7. Start Simulation ----
+  ###############
+  withProgress(message = 'Running simulations', value = 0, { #block outside of Shiny
+  for (i in 1:nsims) { #for each simulated experiment
+    incProgress(1/nsims, detail = paste("Now running simulation", i, "out of",nsims,"simulations")) #Block outside of Shiny
+    #We simulate a new y variable, melt it in long format, and add it to the dataframe (surpressing messages)
+    dataframe$y <- suppressMessages({
+      melt(as.data.frame(mvrnorm(
+        n = n,
+        mu = mu,
+        Sigma = as.matrix(sigmatrix)
+      )))$value
+    })
+    
+    # We perform the ANOVA using AFEX
+    #Can be set to NICE to speed up, but required data grabbing from output the change.
+    aov_result <- suppressMessages({aov_car(frml1, #here we use frml1 to enter fromula 1 as designed above on the basis of the design
+                                            data = dataframe, include_aov = FALSE, #Need development code to get aov_include function
+                                            anova_table = list(es = "pes",
+                                                               p_adjust_method = p_adjust,
+                                                               correction = correction))}) #This reports PES not GES
+    
+    # Store MANOVA result if there are within subject factors
+    if (run_manova == TRUE) {
+      manova_result <- Anova.mlm.table(aov_result$Anova)
+    }
+    
+    for (j in 1:possible_pc) {
+      x <- dataframe$y[which(dataframe$cond == paired_tests[1,j])]
+      y <- dataframe$y[which(dataframe$cond == paired_tests[2,j])]
+      #this can be sped up by tweaking the functions that are loaded to only give p and dz
+      ifelse(within_between[j] == 0,
+             t_test_res <- effect_size_d(x, y, conf.level = 1 - alpha_level),
+             t_test_res <- effect_size_d_paired(x, y, conf.level = 1 - alpha_level))
+      paired_p[j] <- t_test_res$p_value
+      paired_d[j] <- ifelse(within_between[j] == 0,
+                            t_test_res$d,
+                            t_test_res$d_z)
+    }
+    
+    # store p-values and effect sizes for calculations and plots.
+    #If needed to create different row names if MANOVA is included
+    if (run_manova == TRUE) {
+      sim_data[i,] <- c(aov_result$anova_table[[6]], #p-value for ANOVA
+                        aov_result$anova_table[[5]], #partial eta squared
+                        p.adjust(paired_p, method = p_adjust), #p-values for paired comparisons
+                        paired_d, #effect sizes
+                        manova_result[[6]]) #p-values for MANOVA
+    } else {
+      sim_data[i,] <- c(aov_result$anova_table[[6]], #p-value for ANOVA
+                        aov_result$anova_table[[5]], #partial eta squared
+                        p.adjust(paired_p, method = p_adjust), #p-values for paired comparisons
+                        paired_d) #effect sizes
+    }
+    
+    
+  }
+  }) #close withProgress Block outside of Shiny
+  
+  ############################################
+  #End Simulation              ###############
+  
+  
+  ###############
+  # 8. Plot Results ----
+  ###############
+  
+  # melt the data into a long format for plots in ggplot2
+  
+  plotData <- suppressMessages(melt(sim_data[1:(2 ^ factors - 1)], value.name = 'p'))
+  
+  SalientLineColor <- "#535353"
+  LineColor <- "Black"
+  BackgroundColor <- "White"
+  
+  # plot each of the p-value distributions
+  #create variable p to use in ggplot and prevent package check error.
+  p <- plotData$p
+  # Helper function for string wrapping.
+  swr = function(string, nwrap = 10) {
+    paste(strwrap(string, width = 10), collapse = "\n")
+  }
+  swr = Vectorize(swr)
+  
+  # Create line breaks in variable
+  plotData$variable = swr(chartr("_:", "  ", plotData$variable))
+  
+  plt1 = ggplot(plotData, aes(x = p)) +
+    scale_x_continuous(breaks = seq(0, 1, by = .1),
+                       labels = seq(0, 1, by = .1)) +
+    geom_histogram(colour = "black",
+                   fill = "white",
+                   breaks = seq(0, 1, by = .01)) +
+    geom_vline(xintercept = alpha_level, colour = 'red') +
+    facet_grid(variable ~ .) +
+    labs(x = "p") +
+    theme_bw()
+  #Plot p-value distributions for simple comparisons
+  # melt the data into a ggplot friendly 'long' format
+  p_paired <- sim_data[(2 * (2 ^ factors - 1) + 1):(2 * (2 ^ factors - 1) + possible_pc)]
+  
+  plotData <- suppressMessages(melt(p_paired, value.name = 'p'))
+  #create variable p to use in ggplot and prevent package check error.
+  p <- plotData$p
+  # Create line breaks in variable
+  plotData$variable = swr(chartr("_:", "  ", plotData$variable))
+  
+  # plot each of the p-value distributions
+  plt2 = ggplot(plotData, aes(x = p)) +
+    scale_x_continuous(breaks = seq(0, 1, by = .1),
+                       labels = seq(0, 1, by = .1)) +
+    geom_histogram(colour = "black",
+                   fill = "white",
+                   breaks = seq(0, 1, by = .01)) +
+    geom_vline(xintercept = alpha_level, colour = 'red') +
+    facet_grid(variable ~ .) +
+    labs(x = expression(p)) +
+    theme_bw()
+  ###############
+  # 9. Sumary of power and effect sizes of main effects and contrasts ----
+  ###############
+  
+  #Main effects and interactions from the ANOVA
+  power = as.data.frame(apply(as.matrix(sim_data[(1:(2 ^ factors - 1))]), 2,
+                              function(x) mean(ifelse(x < alpha_level, 1, 0) * 100)))
+  
+  es = as.data.frame(apply(as.matrix(sim_data[((2^factors):(2 * (2 ^ factors - 1)))]), 2,
+                           function(x) mean(x)))
+  
+  main_results <- data.frame(power,es)
+  names(main_results) = c("power","effect_size")
+  
+  #Data summary for pairwise comparisons
+  power_paired = as.data.frame(apply(as.matrix(sim_data[(2 * (2 ^ factors - 1) + 1):(2 * (2 ^ factors - 1) + possible_pc)]), 2,
+                                     function(x) mean(ifelse(x < alpha_level, 1, 0) * 100)))
+  
+  es_paired = as.data.frame(apply(as.matrix(sim_data[(2 * (2 ^ factors - 1) + possible_pc + 1):(2*(2 ^ factors - 1) + 2 * possible_pc)]), 2,
+                                  function(x) mean(x)))
+  
+  pc_results <- data.frame(power_paired, es_paired)
+  names(pc_results) = c("power","effect_size")
+  
+  #Simulation results from MANOVA
+  if (run_manova == TRUE) {
+    power_MANOVA = as.data.frame(apply(as.matrix(sim_data[((2*(2 ^ factors - 1) + 2 * possible_pc + 1):(2 ^ factors + (2*(2 ^ factors - 1) + 2 * possible_pc)))]), 2,
+                                       function(x) mean(ifelse(x < alpha_level, 1, 0) * 100)))
+    
+    manova_result <- data.frame(power_MANOVA)
+    names(manova_result) = c("power")
+  }
+  
+  #######################
+  # Return Results ----
+  #######################
+  if (verbose == TRUE) {
+    # The section below should be blocked out when in Shiny
+    cat("Power and Effect sizes for ANOVA tests")
+    cat("\n")
+    print(main_results, digits = 4)
+    cat("\n")
+    cat("Power and Effect sizes for contrasts")
+    cat("\n")
+    print(pc_results, digits = 4)
+    if (run_manova == TRUE) {
+      cat("\n")
+      cat("Within-Subject Factors Included: Check MANOVA Results")
+    }
+  }
+  
+  #Create empty value if no MANOVA results are included
+  if (run_manova == FALSE) {
+    manova_result = NULL
+  }
+  
+  # Return results in list()
+  invisible(list(sim_data = sim_data,
+                 main_results = main_results,
+                 pc_results = pc_results,
+                 manova_results = manova_result,
+                 correction = correction,
+                 plot1 = plt1,
+                 plot2 = plt2,
+                 p_adjust = p_adjust,
+                 nsims = nsims,
+                 alpha_level = alpha_level))
 }
 
-# Run the application 
+# Define UI for application
+ui <- dashboardPage(
+
+  dashboardHeader(title = "ANOVA_power"),
+  dashboardSidebar(
+    sidebarMenu(
+      menuItem("Design", tabName = "design_tab", icon = icon("bezier-curve")),
+      menuItem("Power Simulation", tabName = "exact_tab", icon = icon("calculator")),
+      conditionalPanel("input.sim >= 1",
+                       downloadButton("report", "Download PDF Report")
+      )
+    )
+  ),
+
+  dashboardBody(
+    tabItems(
+      # Design content
+      tabItem(tabName = "design_tab",
+              fluidRow(
+                box(
+                  title = "Design Output", status = "primary", solidHeader = TRUE,
+                  collapsible = TRUE,
+                  verbatimTextOutput("DESIGN"),
+                  plotOutput('plot'),
+                  tableOutput("corMat")
+                ),
+
+                box(
+                  title = "Inputs", status = "warning", solidHeader = TRUE,
+                  "Specify design for a factorial design below", br(),
+                  "*Must be specficied to continue*",
+
+                  h5("Add numbers for each factor that specify the number of levels in the factors (e.g., 2 for a factor with 2 levels). Add a 'w' after the number for within factors, and a 'b' for between factors. Seperate factors with a * (asterisks). Thus '2b*3w' is a design with two factors, the first of which has 2 between levels, and the second of which has 3 within levels."),
+
+                  textInput(inputId = "design", label = "Design Input",
+                            value = "2b*2w"),
+
+                  h5("Specify one word for each factor (e.g., AGE and SPEED) and the level of each factor (e.g., old and yound for a factor age with 2 levels)."),
+                  
+                  selectInput("labelChoice", "Would you like to enter factor and level names?",
+                              c("Yes" = "yes",
+                                "No" = "no" )),
+
+                  textInput("labelnames", label = "Factor & level labels",
+                            value = "AGE,old,young,SPEED,fast,slow"),
+
+                  uiOutput("sample_size"),
+
+                  textInput(inputId = "sd", label = "Standard Deviation",
+                            value = 1.03),
+
+                  h5("Specify the correlation for within-subjects factors."),
+
+                  sliderInput("r",
+                              label = "Correlation",
+                              min = 0, max = 1, value = 0.87),
+
+                  h5("Note that for each cell in the design, a mean must be provided. Thus, for a '2b*3w' design, 6 means need to be entered. Means need to be entered in the correct order. The app provides a plot so you can check if you entered means correctly. The general principle has designated factors (i.e., AGE and SPEED) and levels (e.g., old, young)."),
+
+                  textInput("mu", label = "Vector of Means",
+                            value = "1.03, 1.21, 0.98, 1.01"),
+
+                  #Button to initiate the design
+                  h5("Click the button below to set up the design - Check the output to see if the design is as you intended, then you can run the simulation."),
+
+                  actionButton("designBut","Set-Up Design",
+                               icon = icon("check-square"))
+
+              )
+      )
+      ),
+
+      # Exact Power content
+      tabItem(tabName = "exact_tab",
+              h2("Exact Power for Design"),
+
+              fluidRow(
+                
+
+                box(
+                  title = "Power Analysis Output", status = "primary", solidHeader = TRUE,
+                  collapsible = TRUE,
+                  tableOutput('tableMain'),
+
+                  tableOutput('tablePC')
+
+                ) ,
+
+                box(
+                  title = "Simulation Parameters", status = "primary", solidHeader = TRUE,
+
+                  conditionalPanel("input.designBut >= 1",
+                  selectInput("correction", "Sphericity Correction",
+                              c("None" = "none",
+                                "Greenhous-Geisser" = "GG",
+                                "Huynh-Feldt" = "HF")),
+                  
+                  selectInput("padjust", "Adjustment for multiple comparisons on pairwise comparisons",
+                              c("None" = "none",
+                                "Bonferroni" = "bonferroni",
+                                "Holm-Bonferroni" = "holm",
+                                "False Discovery Rate" = "fdr")),
+                  
+                  sliderInput("nsims",
+                              label = "Number of Simulations",
+                              min = 1000, max = 20000, value = 2000),
+
+                  sliderInput("sig",
+                              label = "Alpha Level",
+                              min = 0, max = 1, value = 0.05),
+
+                  actionButton("sim", "Print Results of Simulation",
+                               icon = icon("print"))
+
+                  )
+
+                )
+              )
+
+
+      )
+    ) #end tabItems
+  ) ,#end dashboardBody
+skin = "purple")
+
+
+###############################################################################
+###############################################################################
+###############################################################################
+###############################################################################
+###############################################################################
+###############################################################################
+###############################################################################
+###############################################################################
+###############################################################################
+
+# Define server logic
+server <- function(input, output) {
+
+  #Create set of reactive values
+  values <- reactiveValues(design_result = 0,
+                           power_result = 0,
+                           power_curve = 0)
+
+  output$sample_size <- renderUI({sliderInput("sample_size",
+              label = "Sample Size per Cell",
+              min = prod(
+                as.numeric(
+                  unlist(
+                    regmatches
+                    (input$design,
+                      gregexpr("[[:digit:]]+",
+                               input$design))))),
+              max = 1000, value = 80)
+  })
+
+  #Produce ANOVA design
+  observeEvent(input$designBut, {values$design_result <- ANOVA_design(design = as.character(input$design),
+                                                                      n = as.numeric(input$sample_size),
+                                                                      mu = as.numeric(unlist(strsplit(input$mu, ","))),
+                                                                      labelnames = as.vector(unlist(strsplit(gsub("[[:space:]]", "",input$labelnames), ","))),
+                                                                      sd = as.numeric(input$sd),
+                                                                      r = as.numeric(input$r),
+                                                                      plot = FALSE)
+  })
+
+
+  #Output text for ANOVA design
+  output$DESIGN <- renderText({
+    req(input$designBut)
+
+    paste("The design is set as", values$design_result$string,
+          "
+          ",
+          "Model formula: ", deparse(values$design_result$frml1),
+          "
+          ",
+          "Sample size per cell n = ", values$design_result$n)
+  })
+
+  #Output of correlation and standard deviation matrix
+  output$corMat <- renderTable(colnames = FALSE,
+                               caption = "Variance-Covariance Matrix",
+                               caption.placement = getOption("xtable.caption.placement", "top"),
+                               {
+                                 req(input$designBut)
+                                 values$design_result$sigmatrix
+
+                               })
+  #Output plot of the design
+  output$plot <- renderPlot({
+    req(input$designBut)
+    values$design_result$meansplot})
+
+  #Runs EXACT simulation and saves result as reactive value
+  observeEvent(input$sim, {values$power_result <- shiny_power(values$design_result,
+                                                              correction = input$correction,
+                                                              p_adjust = input$padjust,
+                                                              nsims = input$nsims,
+                                                              alpha_level = input$sig,
+                                                              verbose = FALSE)
+
+
+  })
+
+  #Table output of ANOVA level effects; rownames needed
+  output$tableMain <-  renderTable({
+    req(input$sim)
+    values$power_result$main_results},
+    rownames = TRUE)
+
+  #Table output of pairwise comparisons; rownames needed
+  output$tablePC <-  renderTable({
+    req(input$sim)
+    values$power_result$pc_result},
+    rownames = TRUE)
+
+
+
+  #Create downloadable report in markdown TINYTEX NEEDS TO BE INSTALLED
+  output$report <- downloadHandler(
+    # For PDF output, change this to "report.pdf"
+    filename = "report.pdf",
+    content = function(file) {
+      # Copy the report file to a temporary directory before processing it, in
+      # case we don't have write permissions to the current working dir (which
+      # can happen when deployed).
+      tempReport <- file.path(tempdir(), "report.Rmd")
+      file.copy("report.Rmd", tempReport, overwrite = TRUE)
+
+      # Set up parameters to pass to Rmd document
+      params <- list(tablePC = values$power_result$pc_result,
+                     tableMain = values$power_result$main_results,
+                     means_plot = values$design_result$meansplot,
+                     n = values$design_result$n,
+                     model = deparse(values$design_result$frml1),
+                     design = values$design_result$string,
+                     cor_mat = values$design_result$cor_mat,
+                     sigmatrix = values$design_result$sigmatrix,
+                     alpha_level = values$power_result$alpha_level,
+                     nsims = values$power_result$nsims,
+                     p_adjust = values$power_result$p_adjust,
+                     correction = values$power_result$correction,
+                     manova = values$power_result$manova_result)
+
+      # Knit the document, passing in the `params` list, and eval it in a
+      # child of the global environment (this isolates the code in the document
+      # from the code in this app).
+      rmarkdown::render(tempReport, output_file = file,
+                        params = params,
+                        envir = new.env(parent = globalenv())
+      )
+    }
+  )
+
+
+}
+
+###############################################################################
+###############################################################################
+###############################################################################
+###############################################################################
+###############################################################################
+
+# Run the application
 shinyApp(ui = ui, server = server)
 

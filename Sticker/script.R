@@ -53,7 +53,7 @@ power_sticker2 = ggplot(plotData, aes(x = anova_a)) +
   scale_x_continuous("", limits = c(0,.5)) + #expand = c(0, 0),
   scale_y_continuous("") +
   geom_density() +
-  geom_segment(aes(x = .05,xend = .05,y = 0,yend = 15.5), color = "#CC0000") +
+  geom_segment(aes(x = .05,xend = .05,y = 0,yend = 15.5), color = "#FFFF00") +
   #labs(title = "Marvel") +
   theme_void() + 
   theme_transparent() +
@@ -103,7 +103,8 @@ sticker(
   s_y = .80,
   s_width = .9,
   s_height = .9,
-  h_color = "#FF0000"#, #blue4 #chocolate1, #CC0000
+  h_color = "#FF0000",
+  h_fill = "#3366CC"#, #blue4 #chocolate1, #CC0000
   #filename = "baseplot.png"
 )
 

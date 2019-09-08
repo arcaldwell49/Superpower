@@ -1,9 +1,21 @@
-#' Simulates on exact empirical data set from the design to calculate power
+#' Simulates an exact dataset (mu, sd, and r represent empirical not population mean and covariance matrix) from the design to calculate power
 #' @param design_result Output from the ANOVA_design function
 #' @param alpha_level Alpha level used to determine statistical significance
 #' @param correction Set a correction of violations of sphericity. This can be set to "none", "GG" Grennhouse-Geisser, and "HF" Huynh-Feldt
 #' @param verbose Set to FALSE to not print results (default = TRUE)
-#' @return Returns dataframe with simulation data (power and effect sizes), anova results and simple effect results, plot of exact data, and alpha_level.
+#' @return Returns dataframe with simulation data (power and effect sizes!), anova results and simple effect results, plot of exact data, and alpha_level.
+#' 
+#' \describe{
+#'   \item{\code{"dataframe"}}{A dataframe of the simulation result.}
+#'   \item{\code{"aov_result"}}{\code{aov} object returned from \code{\link{aov_car}}.}
+#'   \item{\code{"main_result"}}{The power analysis results of the ANOVA results.}
+#'   \item{\code{"pc_results"}}{The power analysis results of the pairwise comparison results.}
+#'   \item{\code{"manova_results"}}{Default is "NULL". If a within-subjects factor is included, then the power of the multivariate (i.e. MANOVA) analyses will be provided.}
+#'   \item{\code{"alpha_level"}}{The alpha level, significance cut-off, used for the power analysis.}
+#'   \item{\code{"plot"}}{A plot of the dataframe from the simualtion; should closely match the meansplot in \code{\link{ANOVA_design}}}
+#' 
+#' }
+#' 
 #' @examples
 #' ## Set up a within design with 2 factors, each with 2 levels,
 #' ## with correlation between observations of 0.8,

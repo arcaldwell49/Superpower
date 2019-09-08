@@ -2,7 +2,7 @@
 % Please edit documentation in R/ANOVA_power.R
 \name{ANOVA_power}
 \alias{ANOVA_power}
-\title{Simulation function used to perform the simulation}
+\title{Simulation function used to estimate power}
 \usage{
 ANOVA_power(design_result, alpha_level = 0.05, correction = "none",
   p_adjust = "none", nsims = 1000, seed = NULL, verbose = TRUE)
@@ -14,7 +14,7 @@ ANOVA_power(design_result, alpha_level = 0.05, correction = "none",
 
 \item{correction}{Set a correction of violations of sphericity. This can be set to "none", "GG" Grennhouse-Geisser, and "HF" Huynh-Feldt}
 
-\item{p_adjust}{Correction for multiple comparisons}
+\item{p_adjust}{Correction for multiple comparisons; see ?p.adjust for options}
 
 \item{nsims}{number of simulations to perform}
 
@@ -23,10 +23,24 @@ ANOVA_power(design_result, alpha_level = 0.05, correction = "none",
 \item{verbose}{Set to FALSE to not print results (default = TRUE)}
 }
 \value{
-Returns dataframe with simulation data (p-values and effect sizes), anova results and simple effect results, plots of p-value distribution, p_adjust = p_adjust, nsims, and alpha_level.
+Returns dataframe with simulation data (p-values and effect sizes), anova results and simple effect results, and plots of p-value distribution.
+
+\describe{
+  \item{\code{"sim_data"}}{Output from every iteration of the simulation}
+  \item{\code{"main_result"}}{The power analysis results of the ANOVA results.}
+  \item{\code{"pc_results"}}{The power analysis results of the pairwise comparison results.}
+  \item{\code{"manova_results"}}{Default is "NULL". If a within-subjects factor is included, then the power of the multivariate (i.e. MANOVA) analyses will be provided.}
+  \item{\code{"plot1"}}{Distribution of p-values from the ANOVA results.}
+  \item{\code{"plot2"}}{Distribution of p-values from the pairwise comparisons results.}
+  \item{\code{"correction"}}{The correction for sphericity applied to the simulation results.}
+  \item{\code{"p_adjust"}}{The p-value adjustment applied to the simulation results.}
+  \item{\code{"nsims"}}{The number of simulations run.}
+  \item{\code{"alpha_level"}}{The alpha level, significance cut-off, used for the power analysis.}
+
+}
 }
 \description{
-Simulation function used to perform the simulation
+Simulation function used to estimate power
 }
 \section{References}{
 

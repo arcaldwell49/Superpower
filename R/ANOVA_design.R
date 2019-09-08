@@ -1,4 +1,4 @@
-#' Design function used to specify the parameters used in the simulation
+#' Design function used to specify the parameters to be used in simulations
 #' @param design String specifying the ANOVA design.
 #' @param n Sample size in each condition
 #' @param mu Vector specifying mean for each condition
@@ -6,6 +6,25 @@
 #' @param r Correlation between dependent variables (single value or matrix)
 #' @param labelnames Optional vector to specifying factor and condition names (recommended, if not used factors and levels are indicated by letters and numbers)
 #' @param plot Should means plot be printed (defaults to TRUE)
+#' \describe{
+#'   \item{\code{"dataframe"}}{A sample dataframe of what data could look like given the proposed parameters.}
+#'   \item{\code{"design"}}{\code{aov} The design string, e.g. "2b*2w".}
+#'   \item{\code{"design_list"}}{The list of variables in the design.}
+#'   \item{\code{"frml1"}}{The first formula created for this design.}
+#'   \item{\code{"frml2"}}{The second formula created for this design.}
+#'   \item{\code{"mu"}}{Vector of means.}
+#'   \item{\code{"sd"}}{Vector of standard deviations.}
+#'   \item{\code{"r"}}{Common correlation coefficient.}
+#'   \item{\code{"n"}}{Sample size per cell.}
+#'   \item{\code{"cor_mat"}}{The correlation matrix.}
+#'   \item{\code{"sigmatrix"}}{The variance-covariance matrix.}
+#'   \item{\code{"design_factors"}}{Total number of within-subjects factors.}
+#'   \item{\code{"labelnames"}}{List of the label names.}
+#'   \item{\code{"labelnameslist"}}{Secondary list of labelnames}
+#'   \item{\code{"factornames"}}{List of the factor titles.}
+#'   \item{\code{"meansplot"}}{Total number of within-subjects factors.}
+#' 
+#' }
 #' @return Returns Single data-frame with simulated data, design, design list, factor names, formulas for ANOVA, means, sd, correlation, sample size per condition, correlation matrix, covariance matrix, design string, labelnames, labelnameslist, factor names, meansplot
 #' @examples
 #' ## Set up a within design with 2 factors, each with 2 levels,
@@ -54,9 +73,9 @@ ANOVA_design <- function(design, n, mu, sd, r = 0, labelnames = NULL, plot = TRU
   factor_levels <- as.numeric(strsplit(design, "\\D+")[[1]])
 
   if (is.null(labelnames)) {
-    for(i1 in 1:length(factor_levels)){
+    for (i1 in 1:length(factor_levels)){
       labelnames <- append(labelnames,paste(paste(letters[i1]), sep = ""))
-      for(i2 in 1:factor_levels[i1]){
+      for (i2 in 1:factor_levels[i1]){
         labelnames <- append(labelnames,paste(paste(letters[i1]), paste(i2), sep = ""))
       }
     }
@@ -225,16 +244,19 @@ ANOVA_design <- function(design, n, mu, sd, r = 0, labelnames = NULL, plot = TRU
 
   #General approach: For each factor in the list of the design, save the first item (e.g., a1b1)
   #Then for each factor in the design, if 1, set number to wildcard
-  i1<-1
-  i2<-1
-  for(i1 in 1:length(design_list)){
-    design_list_split <- unlist(strsplit(design_list[i1],"_"))
+  i1 <- 1
+  i2 <- 1
+  for (i1 in 1:length(design_list)) {
+    design_list_split <- unlist(strsplit(design_list[i1], "_"))
     #current_factor <- design_list_split[c(2,4,6)[1:length(design)]] #this creates a string of 2, 2,4 or 2,4,6 depending on the length of the design for below
-    for(i2 in 1:length(design_factors)){
+    for (i2 in 1:length(design_factors)) {
       #We set each number that is within to a wildcard, so that all within participant factors are matched
-      if(design_factors[i2]==1){design_list_split[i2] <- "\\w+"}
+      if (design_factors[i2] == 1) {
+        design_list_split[i2] <- "\\w+"
+      }
     }
-    sigmatrix[i1,]<-as.numeric(grepl(paste0(design_list_split, collapse="_"), design_list)) # compare factors that match with current factor, given wildcard, save list to sigmatrix
+    sigmatrix[i1, ] <-
+      as.numeric(grepl(paste0(design_list_split, collapse = "_"), design_list)) # compare factors that match with current factor, given wildcard, save list to sigmatrix
   }
 
   #Now multiply the matrix we just created (that says what is within, and what is between,  with the original covariance matrix)

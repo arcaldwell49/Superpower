@@ -1,12 +1,27 @@
-#' Simulation function used to perform the simulation
+#' Simulation function used to estimate power
 #' @param design_result Output from the ANOVA_design function
 #' @param alpha_level Alpha level used to determine statistical significance
 #' @param correction Set a correction of violations of sphericity. This can be set to "none", "GG" Grennhouse-Geisser, and "HF" Huynh-Feldt
-#' @param p_adjust Correction for multiple comparisons
+#' @param p_adjust Correction for multiple comparisons; see ?p.adjust for options
 #' @param nsims number of simulations to perform
 #' @param seed Set seed for reproducible results
 #' @param verbose Set to FALSE to not print results (default = TRUE)
-#' @return Returns dataframe with simulation data (p-values and effect sizes), anova results and simple effect results, plots of p-value distribution, p_adjust = p_adjust, nsims, and alpha_level.
+#' @return Returns dataframe with simulation data (p-values and effect sizes), anova results and simple effect results, and plots of p-value distribution.
+#' 
+#' \describe{
+#'   \item{\code{"sim_data"}}{Output from every iteration of the simulation}
+#'   \item{\code{"main_result"}}{The power analysis results of the ANOVA results.}
+#'   \item{\code{"pc_results"}}{The power analysis results of the pairwise comparison results.}
+#'   \item{\code{"manova_results"}}{Default is "NULL". If a within-subjects factor is included, then the power of the multivariate (i.e. MANOVA) analyses will be provided.}
+#'   \item{\code{"plot1"}}{Distribution of p-values from the ANOVA results.}
+#'   \item{\code{"plot2"}}{Distribution of p-values from the pairwise comparisons results.}
+#'   \item{\code{"correction"}}{The correction for sphericity applied to the simulation results.}
+#'   \item{\code{"p_adjust"}}{The p-value adjustment applied to the simulation results.}
+#'   \item{\code{"nsims"}}{The number of simulations run.}
+#'   \item{\code{"alpha_level"}}{The alpha level, significance cut-off, used for the power analysis.}
+#' 
+#' }
+#' 
 #' @examples
 #' ## Set up a within design with 2 factors, each with 2 levels,
 #' ## with correlation between observations of 0.8,
@@ -488,6 +503,7 @@ ANOVA_power <- function(design_result, alpha_level = 0.05, correction = "none",
                  manova_results = manova_result,
                  plot1 = plt1,
                  plot2 = plt2,
+                 correction = correction,
                  p_adjust = p_adjust,
                  nsims = nsims,
                  alpha_level = alpha_level))
