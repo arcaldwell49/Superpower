@@ -38,6 +38,7 @@ Suggests:
     testthat,
     dplyr,
     covr,
-    jmvcore
+    jmvcore,
+    pwr2ppl
 VignetteBuilder:
     knitr
