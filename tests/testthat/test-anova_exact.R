@@ -1,5 +1,5 @@
 context("test-anova_exact")
-library(pwr2ppl)
+#library(pwr2ppl)
 
 
 # error messages
