@@ -30,8 +30,7 @@ Imports:
     ggplot2,
     gridExtra,
     reshape2,
-    stats,
-    pwr2ppl
+    stats
 Suggests: 
     knitr,
     rmarkdown,
