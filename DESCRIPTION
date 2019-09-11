@@ -30,7 +30,8 @@ Imports:
     ggplot2,
     gridExtra,
     reshape2,
-    stats
+    stats,
+    pwr2ppl
 Suggests: 
     knitr,
     rmarkdown,
@@ -38,7 +39,6 @@ Suggests:
     testthat,
     dplyr,
     covr,
-    jmvcore,
-    pwr2ppl
+    jmvcore
 VignetteBuilder:
     knitr
