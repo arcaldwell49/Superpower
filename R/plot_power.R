@@ -5,6 +5,18 @@
 #' @param max_n Maximum sample size in power curve.
 #' @param plot Should power plot be printed (defaults to TRUE)
 #' @return Returns plot with power curves for the ANOVA, and a dataframe with the summary data.
+#' 
+
+#' \describe{
+#'   \item{\code{"plot_ANOVA"}}{Plot of power curves from ANOVA results.}
+#'   \item{\code{"plot_MANOVA"}}{Plot of power curves from MANOVA results. Returns NULL if no within-subject factors.}
+#'   \item{\code{"power_df"}}{The tabulated ANOVA power results.}
+#'   \item{\code{"power_df_manova"}}{The tabulated MANOVA power results..}
+#'   \item{\code{"effect_sizes"}}{Effect sizes (partial eta-squared) from ANOVA results.}
+#'   \item{\code{"effect_sizes_manova"}}{Effect sizes (Pillai's Trace) from MANOVA results. Returns NULL if no within-subject factors.}
+#'   
+#' }
+#' 
 #' @examples
 #' design_result <- ANOVA_design(design = "3b",
 #'                              n = 20,
@@ -283,8 +295,8 @@ plot_power <- function(design_result, alpha_level,
 
   effect_sizes_manova <- exact_result$manova_results[,2:3]
 
-  invisible(list(p1 = p1,
-                 p2 = p2,
+  invisible(list(plot_ANOVA = p1,
+                 plot_MANOVA = p2,
                  power_df = power_df,
                  power_df_manova = power_df_manova,
                  effect_sizes = effect_sizes,

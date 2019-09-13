@@ -1,0 +1,32 @@
+---
+title: "Validation against pwr2ppl"
+author: "Aaron R. Caldwell"
+date: "9/11/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(pwr2ppl)
+library(Superpower)
+library(testthat)
+```
+
+
+This is a validation document showing `Superpower`'s performance against Chris Aberson's `pwr2ppl` package (https://github.com/chrisaberson/pwr2ppl).
+
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.

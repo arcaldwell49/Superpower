@@ -20,6 +20,16 @@ plot_power(design_result, alpha_level, min_n = 7, max_n = 100,
 }
 \value{
 Returns plot with power curves for the ANOVA, and a dataframe with the summary data.
+
+\describe{
+  \item{\code{"plot_ANOVA"}}{Plot of power curves from ANOVA results.}
+  \item{\code{"plot_MANOVA"}}{Plot of power curves from MANOVA results. Returns NULL if no within-subject factors.}
+  \item{\code{"power_df"}}{The tabulated ANOVA power results.}
+  \item{\code{"power_df_manova"}}{The tabulated MANOVA power results..}
+  \item{\code{"effect_sizes"}}{Effect sizes (partial eta-squared) from ANOVA results.}
+  \item{\code{"effect_sizes_manova"}}{Effect sizes (Pillai's Trace) from MANOVA results. Returns NULL if no within-subject factors.}
+  
+}
 }
 \description{
 Convenience function to plot power across a range of sample sizes.
