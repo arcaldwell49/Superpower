@@ -5,7 +5,7 @@
 \title{Convenience function to plot power across a range of sample sizes.}
 \usage{
 plot_power(design_result, alpha_level, min_n = 7, max_n = 100,
-  plot = TRUE)
+  plot = FALSE)
 }
 \arguments{
 \item{design_result}{Output from the ANOVA_design function}
@@ -16,7 +16,7 @@ plot_power(design_result, alpha_level, min_n = 7, max_n = 100,
 
 \item{max_n}{Maximum sample size in power curve.}
 
-\item{plot}{Should power plot be printed (defaults to TRUE)}
+\item{plot}{Should power plot be printed automatically (defaults to FALSE)}
 }
 \value{
 Returns plot with power curves for the ANOVA, and a dataframe with the summary data.
