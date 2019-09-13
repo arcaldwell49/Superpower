@@ -3,7 +3,7 @@
 #' @param alpha_level Alpha level used to determine statistical significance
 #' @param min_n Minimum sample size in power curve.
 #' @param max_n Maximum sample size in power curve.
-#' @param plot Should power plot be printed (defaults to TRUE)
+#' @param plot Should power plot be printed automatically (defaults to FALSE)
 #' @return Returns plot with power curves for the ANOVA, and a dataframe with the summary data.
 #' 
 
@@ -37,7 +37,7 @@
 
 plot_power <- function(design_result, alpha_level,
                        min_n = 7, max_n = 100,
-                       plot = TRUE){
+                       plot = FALSE){
   design = design_result$design
   mu = design_result$mu
   sd <- design_result$sd
