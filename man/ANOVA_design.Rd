@@ -5,7 +5,7 @@
 \title{Design function used to specify the parameters to be used in simulations}
 \usage{
 ANOVA_design(design, n, mu, sd, r = 0, labelnames = NULL,
-  plot = TRUE)
+  plot = FALSE)
 }
 \arguments{
 \item{design}{String specifying the ANOVA design.}
@@ -37,7 +37,7 @@ ANOVA_design(design, n, mu, sd, r = 0, labelnames = NULL,
   \item{\code{"labelnames"}}{List of the label names.}
   \item{\code{"labelnameslist"}}{Secondary list of labelnames}
   \item{\code{"factornames"}}{List of the factor titles.}
-  \item{\code{"meansplot"}}{Total number of within-subjects factors.}
+  \item{\code{"meansplot"}}{Plot of the experimental design.}
 
 }}
 }

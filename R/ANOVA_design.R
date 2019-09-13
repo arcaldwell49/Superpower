@@ -22,7 +22,7 @@
 #'   \item{\code{"labelnames"}}{List of the label names.}
 #'   \item{\code{"labelnameslist"}}{Secondary list of labelnames}
 #'   \item{\code{"factornames"}}{List of the factor titles.}
-#'   \item{\code{"meansplot"}}{Total number of within-subjects factors.}
+#'   \item{\code{"meansplot"}}{Plot of the experimental design.}
 #' 
 #' }
 #' @return Returns Single data-frame with simulated data, design, design list, factor names, formulas for ANOVA, means, sd, correlation, sample size per condition, correlation matrix, covariance matrix, design string, labelnames, labelnameslist, factor names, meansplot
@@ -46,7 +46,7 @@
 #' @export
 #'
 
-ANOVA_design <- function(design, n, mu, sd, r = 0, labelnames = NULL, plot = TRUE){
+ANOVA_design <- function(design, n, mu, sd, r = 0, labelnames = NULL, plot = FALSE){
 
 #Check String for an acceptable digits and factor (w or b)
   if (grepl("^(\\d{1,3}(w|b)\\*){0,2}\\d{1,3}(w|b)$", design, ignore.case = FALSE, perl = TRUE) == FALSE) {
