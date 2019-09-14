@@ -40,6 +40,6 @@ test_that("2x2 design", {
 
 
   power <- power_twoway_between(design_result)
-  expect_equal(c(power$power_A, power$power_B, power$power_AB), c(.33,.33,.33), tolerance = .009)
+  expect_equal(c(power$power_A, power$power_B, power$power_AB), c(33,33,33), tolerance = .5)
 
 })

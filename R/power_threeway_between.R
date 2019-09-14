@@ -261,23 +261,35 @@ power_threeway_between <- function(design_result, alpha_level=0.05){
 
   # Calculate Critical F
 
-  F_critical_A <- qf(alpha_level, df_A, df_error, lower.tail=FALSE)
-  F_critical_B <- qf(alpha_level, df_B, df_error, lower.tail=FALSE)
-  F_critical_C <- qf(alpha_level, df_C, df_error, lower.tail=FALSE)
-  F_critical_AB <- qf(alpha_level, df_AB, df_error, lower.tail=FALSE)
-  F_critical_AC <- qf(alpha_level, df_AC, df_error, lower.tail=FALSE)
-  F_critical_BC <- qf(alpha_level, df_BC, df_error, lower.tail=FALSE)
-  F_critical_ABC <- qf(alpha_level, df_ABC, df_error, lower.tail=FALSE)
+  F_critical_A <- qf(alpha_level, df_A, df_error, lower.tail = FALSE)
+  F_critical_B <- qf(alpha_level, df_B, df_error, lower.tail = FALSE)
+  F_critical_C <- qf(alpha_level, df_C, df_error, lower.tail = FALSE)
+  F_critical_AB <-
+    qf(alpha_level, df_AB, df_error, lower.tail = FALSE)
+  F_critical_AC <-
+    qf(alpha_level, df_AC, df_error, lower.tail = FALSE)
+  F_critical_BC <-
+    qf(alpha_level, df_BC, df_error, lower.tail = FALSE)
+  F_critical_ABC <-
+    qf(alpha_level, df_ABC, df_error, lower.tail = FALSE)
 
   #Calculate Power
 
-  power_A <- pf(F_critical_A, df_A, df_error, lambda_A, lower.tail = FALSE)
-  power_B <- pf(F_critical_B, df_B, df_error, lambda_B, lower.tail = FALSE)
-  power_C <- pf(F_critical_C, df_C, df_error, lambda_C, lower.tail = FALSE)
-  power_AB <- pf(F_critical_AB, df_AB, df_error, lambda_AB, lower.tail = FALSE)
-  power_AC <- pf(F_critical_AC, df_AC, df_error, lambda_AC, lower.tail = FALSE)
-  power_BC <- pf(F_critical_BC, df_BC, df_error, lambda_BC, lower.tail = FALSE)
-  power_ABC <- pf(F_critical_ABC, df_ABC, df_error, lambda_ABC, lower.tail = FALSE)
+  power_A <-
+    (pf(F_critical_A, df_A, df_error, lambda_A, lower.tail = FALSE)) * 100
+  power_B <-
+    (pf(F_critical_B, df_B, df_error, lambda_B, lower.tail = FALSE)) * 100
+  power_C <-
+    (pf(F_critical_C, df_C, df_error, lambda_C, lower.tail = FALSE)) * 100
+  power_AB <-
+    (pf(F_critical_AB, df_AB, df_error, lambda_AB, lower.tail = FALSE)) * 100
+  power_AC <-
+    (pf(F_critical_AC, df_AC, df_error, lambda_AC, lower.tail = FALSE)) * 100
+  power_BC <-
+    (pf(F_critical_BC, df_BC, df_error, lambda_BC, lower.tail = FALSE)) * 100
+  power_ABC <-
+    (pf(F_critical_ABC, df_ABC, df_error, lambda_ABC, lower.tail = FALSE)) *
+    100
 
   # F-Value
   # F_A <- MS_A/MS_error

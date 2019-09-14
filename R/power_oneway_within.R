@@ -85,7 +85,7 @@ power_oneway_within <- function(design_result, alpha_level=0.05){
   Cohen_f_SPSS <- sqrt(f_2_SPSS)
 
   F_critical <- qf(alpha_level, df1, df2, lower.tail=FALSE) # Critical F-Value
-  power <- pf(F_critical, df1, df2, lambda, lower.tail = FALSE) # power
+  power <- (pf(F_critical, df1, df2, lambda, lower.tail = FALSE))*100 # power
 
   invisible(list(mu = design_result$n,
                  sigma = design_result$sd,

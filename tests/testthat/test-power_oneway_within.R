@@ -34,7 +34,7 @@ test_that("2w and 3w", {
                                n = 34,
                                sig.level = 0.05,
                                type = "paired",
-                               alternative = "two.sided")$power,
+                               alternative = "two.sided")$power*100,
                tolerance = .001) #example from validation files
 
   K <- 3
@@ -43,7 +43,7 @@ test_that("2w and 3w", {
   r <- 0.8
   f <- 0.25
   f2 <- f^2
-  ES <- f2/(f2+1)
+  ES <- f2 / (f2 + 1)
   mu <- mu_from_ES(K = K, ES = ES)
   design = paste(K,"w",sep = "")
 
@@ -83,6 +83,6 @@ test_that("2w and 3w", {
 
 
   expect_equal(power_oneway_within(design_result2, alpha_level = 0.05)$power,
-               pow,
+               pow*100,
                tolerance = .01) #example from validation files
 })

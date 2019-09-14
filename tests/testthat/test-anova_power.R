@@ -187,14 +187,14 @@ test_that("3 way between long", {
 
 
 
-  expect_equal(p$main_results$power/100,
+  expect_equal(p$main_results$power,
                c(power_analytic$power_A, power_analytic$power_B, power_analytic$power_C,
                  power_analytic$power_AB, power_analytic$power_AC, power_analytic$power_BC,
-                 power_analytic$power_ABC), tolerance = .02)
-  expect_equal(p$main_results$power/100,
-               pe$main_results$power/100, tolerance = .02)
-  expect_equal(p$pc_results$power/100,
-               pe$pc_results$power/100, tolerance = .02)
+                 power_analytic$power_ABC), tolerance = .2)
+  expect_equal(p$main_results$power,
+               pe$main_results$power, tolerance = .2)
+  expect_equal(p$pc_results$power,
+               pe$pc_results$power, tolerance = .2)
 
   expect_equal(rownames(p$pc_results),
                rownames(pe$pc_results))

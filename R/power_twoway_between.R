@@ -115,11 +115,11 @@ power_twoway_between <- function(design_result, alpha_level=0.05){
   lambda_AB <- design_result$n * length(design_result$labelnameslist[[1]]) * length(design_result$labelnameslist[[2]]) * f_2_AB
 
   F_critical_A <- qf(alpha_level, df_A, df_error, lower.tail=FALSE)
-  power_A <- pf(F_critical_A, df_A, df_error, lambda_A, lower.tail = FALSE)
+  power_A <- (pf(F_critical_A, df_A, df_error, lambda_A, lower.tail = FALSE))*100
   F_critical_B <- qf(alpha_level, df_B, df_error, lower.tail=FALSE)
-  power_B <- pf(F_critical_B, df_B, df_error, lambda_B, lower.tail = FALSE)
+  power_B <- (pf(F_critical_B, df_B, df_error, lambda_B, lower.tail = FALSE))*100
   F_critical_AB <- qf(alpha_level, df_AB, df_error, lower.tail=FALSE)
-  power_AB <- pf(F_critical_AB, df_AB, df_error, lambda_AB, lower.tail = FALSE)
+  power_AB <- (pf(F_critical_AB, df_AB, df_error, lambda_AB, lower.tail = FALSE))*100
 
   invisible(list(mu = design_result$n,
                  sigma = design_result$sd,

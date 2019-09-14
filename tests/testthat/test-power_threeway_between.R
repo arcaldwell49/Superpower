@@ -41,6 +41,6 @@ test_that("3-way design", {
 
   power <- power_threeway_between(design_result)
 
-  expect_equal(power$power_ABC, .849, tolerance = .01)
+  expect_equal(power$power_ABC, 84.9, tolerance = .01)
 
 })

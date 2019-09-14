@@ -32,7 +32,7 @@ test_that("2b and 3b", {
                           n = 100,
                           sig.level = 0.05,
                           type="two.sample",
-                          alternative="two.sided")$power,
+                          alternative="two.sided")$power*100,
                tolerance = .001) #example from validation files
 
   design_result2 <- ANOVA_design(design = "3b",
@@ -43,6 +43,6 @@ test_that("2b and 3b", {
                pwr::pwr.anova.test(n = 50,
                               k = 3,
                               f = 0.1786086, #From Gpower
-                              sig.level = .05)$power,
+                              sig.level = .05)$power*100,
                tolerance = .001) #example from validation files
 })

@@ -44,7 +44,7 @@
 power_oneway_between <- function(design_result, alpha_level=0.05){
 
   #Error message if design other than 1-way between is input
-  if(length(design_result$design_factors) != 1 | design_result$design_factors != 0 ){
+  if (length(design_result$factors) != 1 || design_result$design_factors != 0 ) {
     stop("Only one-way between designs allowed for this function")
   }
 
@@ -70,7 +70,7 @@ power_oneway_between <- function(design_result, alpha_level=0.05){
   # We just take the sqrt(f_2) because formula above assumes maximum difference of means.
   Cohen_f <- sqrt(f_2)
   F_critical <- qf(alpha_level, df1, df2, lower.tail=FALSE) # Critical F-Value
-  power <- pf(F_critical, df1, df2, lambda, lower.tail = FALSE) # power
+  power <- (pf(F_critical, df1, df2, lambda, lower.tail = FALSE))*100 # power
 
   invisible(list(mu = design_result$mu,
                  sigma = design_result$sd,
