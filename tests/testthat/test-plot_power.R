@@ -12,7 +12,7 @@ test_that("error messages", {
 
   expect_error(plot_power(), "argument \"design_result\" is missing, with no default")
   expect_error(plot_power(design),
-               "plot_power cannot handle small sample sizes (n < the product of the factors) at this time; please increase the in ANOVA_design function.",
+               "plot_power must have an ANOVA_design object with n > the product of the factors; please increase the n in ANOVA_design function.",
                fixed = TRUE)
 
 })

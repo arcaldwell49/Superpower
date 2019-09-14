@@ -17,7 +17,7 @@ ANOVA_exact(design_result, correction = "none", alpha_level,
 \item{verbose}{Set to FALSE to not print results (default = TRUE)}
 }
 \value{
-Returns dataframe with simulation data (power and effect sizes!), anova results and simple effect results, plot of exact data, and alpha_level.
+Returns dataframe with simulation data (power and effect sizes!), anova results and simple effect results, plot of exact data, and alpha_level. Note: Cohen's f = sqrt(pes/1-pes) and the noncentrality paramter is = f^2*df(error)
 
 \describe{
   \item{\code{"dataframe"}}{A dataframe of the simulation result.}

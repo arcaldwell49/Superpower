@@ -58,7 +58,7 @@ plot_power <- function(design_result, alpha_level,
   if (design_result$n < prod(as.numeric(unlist(regmatches(design_result$design,
                                        gregexpr("[[:digit:]]+", design_result$design)))))
   ) {
-    stop("plot_power cannot handle small sample sizes (n < the product of the factors) at this time; please increase the in ANOVA_design function.")
+    stop("plot_power must have an ANOVA_design object with n > the product of the factors; please increase the n in ANOVA_design function.")
   }
 
   #Check to ensure there is a within subject factor -- if none --> no MANOVA

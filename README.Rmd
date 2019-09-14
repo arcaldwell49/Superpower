@@ -186,17 +186,26 @@ We can check the correlation matrix by asking for it from the design_result obje
 design_result$cor_mat
 ```
 
-Note that we did not specify the labelnames, and thus they are automatically created. 
+We should also check the covariance-variance matrix to ensure the `ANOVA_design` function working properly. 
+The variance should be the diagonal element while the off-diagonal elements should be equal to `covariance = correlation*variance` or $cov_{x,y}=\frac{\sum_{i=1}^{N}(x_{i}-\bar{x})(y_{i}-\bar{y})}{N-1}$. 
+In this case, it is identical to the correlation matrix because the variance is equal to 1.
+
+```{r}
+design_result$sigmatrix
+```
 
 ### Specifying the sample size
 
-You can set the sample size **per condition** by setting a value for n. The assumption is that you will collect equal sample sizes in all conditions [expanding Superpower to allow different sample sizes in each group is a planned future option].
+You can set the sample size **per condition** by setting a value for `n`. The assumption is that you will collect equal sample sizes in all conditions [expanding Superpower to allow different sample sizes in each group is a planned future option].
+
+This means for the `2w*2w` design above there are 80 participants/subjects with a total of 320 observations.
 
 ### Specifying the standard deviation
 
-You can set the standard deviation by setting a value of sd. Currently Superpower only allows you to perform calculations under the assumption of homogeneity of variances (the standard deviation is the same across conditions). Note that there is always some uncertainty in which values you can expect in the study you are planning. It is therefore useful to perform sensitivity analyses (e.g., running the simulation with the expected standard deviation, but also with more conservative or even worst-case-scenario values).
+You can set the standard deviation by setting a value of `sd`. Currently, `Superpower` allows you to **violate the assumption of homogeneity of variance**. This will affect the type I error rate if the differences between conditions are extreme. Note that there is always some uncertainty in which values you can expect in the study you are planning. It is therefore useful to perform sensitivity analyses (e.g., running the simulation with the expected standard deviation, but also with more conservative or even worst-case-scenario values).
 
-# Simulation-based power calculations
+
+# Simulation-Based Power Calculations
 
 There are two ways to calculate the statistical power of a factorial design based on simulations. The first is to repeatedly simulate data for each condition based on the means, sample size, standard deviation, and correlation, under specific statistical assumptions (i.e., normaly distributed data). The `ANOVA_power` function allows you to perform power analyses based on repeatedly simulating normaly distributed data. A second approach is to simulate a dataset that has *exactly* the desired properties - every cell of the design has n datapoints that have the desired mean and standard deviation, and correlation between groups (for a within design). By performing an ANOVA on this dataset, we can calculate the required statistics from the ANOVA result used to calculate the statistical power. The `ANOVA_exact` function allows you to calculate power based on this approach. The `ANOVA_power` function is a bit more flexible (e.g., we can use different ways to correct for multiple comparisons, or in future versions of the package allow you to simulate more realistic datasets that are not normally distributed), but the `ANOVA_exact` function is much faster (and takes seconds, instead of minutes or hours for a large number of simulations). 
 
@@ -238,18 +247,10 @@ design_result <- ANOVA_design(design = "2b*2w",
                    n = 40, 
                    mu = c(1.03, 1.41, 0.98, 1.01), 
                    sd = 1.03, 
-                   r=0.8, 
+                   r = 0.8, 
                    labelnames = c("voice", "human", "robot", "emotion", "cheerful", "sad"))
 
-# power_result_vig_1 <- ANOVA_power(design_result, 
-#                                   alpha = 0.05, 
-#                                   nsims = nsims, 
-#                                   seed = 1234)
-# reduce file size for github - only save what is needed
-# power_result_vig_1$sim_data <- NULL
-# #power_result_vig_1$plot1 <- NULL
-# power_result_vig_1$plot2 <- NULL
-# saveRDS(power_result_vig_1, file = "vignettes/sim_data/power_result_vig_1_test.rds")
+
 power_result_vig_1 <- readRDS(file = "vignettes/sim_data/power_result_vig_1.rds")
 ```
 
@@ -282,13 +283,7 @@ design_result <- ANOVA_design(design = design,
                               sd = sd, 
                               labelnames = labelnames)
 
-# power_result_vig_2 <- ANOVA_power(design_result, nsims = nsims, seed = 1234)
-# 
-# reduce file size for github - only save what is needed
-# power_result_vig_2$sim_data <- NULL
-# power_result_vig_2$plot1 <- NULL
-# power_result_vig_2$plot2 <- NULL
-# saveRDS(power_result_vig_2, file = "vignettes/sim_data/power_result_vig_2.rds")
+
 power_result_vig_2 <- readRDS(file = "vignettes/sim_data/power_result_vig_2.rds")
 
 #Note we do not specify any correlation in the ANOVA_design function (default r = 0), nor do we specify an alpha in the ANOVA_power function (default is 0.05)
@@ -372,7 +367,7 @@ plot_power requires the following input: ANOVA_design, max_n, and plot.
 1. design_result: Output from the ANOVA_design function saved as an object
 2. min_n: The minimum sample size you want to plot in the power curve
 2. max_n: The maximum sample size you want to plot in the power curve
-3. plot: Set to FALSE to not print the plot (default = TRUE)
+3. plot: Set to FALSE to not print the plot (default = FALSE)
 
 The `plot_power` functions simulates power up to a sample size of `max_n` using the `ANOVA_exact` function. ALthough it is relatively fast, with large sample size to can take some time to produce. In the figure below we can easily see that, assuming the true pattern of means and standard deviations represents our expected pattern of means and standard deviations, we have 80% power around 135 participants per condition, 90% power around 180 participants per condition, and 95% power around 225 participants per condition.
 

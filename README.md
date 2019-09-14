@@ -256,28 +256,47 @@ design_result$cor_mat
     ## a2_b1  0.92  0.94  1.00  0.96
     ## a2_b2  0.93  0.95  0.96  1.00
 
-Note that we did not specify the labelnames, and thus they are
-automatically created.
+We should also check the covariance-variance matrix to ensure the
+`ANOVA_design` function working properly. The variance should be the
+diagonal element while the off-diagonal elements should be equal to
+`covariance = correlation*variance` or
+![cov\_{x,y}=\\frac{\\sum\_{i=1}^{N}(x\_{i}-\\bar{x})(y\_{i}-\\bar{y})}{N-1}](https://latex.codecogs.com/png.latex?cov_%7Bx%2Cy%7D%3D%5Cfrac%7B%5Csum_%7Bi%3D1%7D%5E%7BN%7D%28x_%7Bi%7D-%5Cbar%7Bx%7D%29%28y_%7Bi%7D-%5Cbar%7By%7D%29%7D%7BN-1%7D
+"cov_{x,y}=\\frac{\\sum_{i=1}^{N}(x_{i}-\\bar{x})(y_{i}-\\bar{y})}{N-1}").
+In this case, it is identical to the correlation matrix because the
+variance is equal to 1.
+
+``` r
+design_result$sigmatrix
+```
+
+    ##       a1_b1 a1_b2 a2_b1 a2_b2
+    ## a1_b1  4.00  3.64  3.68  3.72
+    ## a1_b2  3.64  4.00  3.76  3.80
+    ## a2_b1  3.68  3.76  4.00  3.84
+    ## a2_b2  3.72  3.80  3.84  4.00
 
 ### Specifying the sample size
 
 You can set the sample size **per condition** by setting a value for
-n. The assumption is that you will collect equal sample sizes in all
+`n`. The assumption is that you will collect equal sample sizes in all
 conditions \[expanding Superpower to allow different sample sizes in
 each group is a planned future option\].
 
+This means for the `2w*2w` design above there are 80
+participants/subjects with a total of 320 observations.
+
 ### Specifying the standard deviation
 
-You can set the standard deviation by setting a value of sd. Currently
-Superpower only allows you to perform calculations under the assumption
-of homogeneity of variances (the standard deviation is the same across
-conditions). Note that there is always some uncertainty in which values
-you can expect in the study you are planning. It is therefore useful to
-perform sensitivity analyses (e.g., running the simulation with the
-expected standard deviation, but also with more conservative or even
-worst-case-scenario values).
+You can set the standard deviation by setting a value of `sd`.
+Currently, `Superpower` allows you to **violate the assumption of
+homogeneity of variance**. This will affect the type I error rate if the
+differences between conditions are extreme. Note that there is always
+some uncertainty in which values you can expect in the study you are
+planning. It is therefore useful to perform sensitivity analyses (e.g.,
+running the simulation with the expected standard deviation, but also
+with more conservative or even worst-case-scenario values).
 
-# Simulation-based power calculations
+# Simulation-Based Power Calculations
 
 There are two ways to calculate the statistical power of a factorial
 design based on simulations. The first is to repeatedly simulate data
@@ -368,24 +387,18 @@ design_result <- ANOVA_design(design = "2b*2w",
                    n = 40, 
                    mu = c(1.03, 1.41, 0.98, 1.01), 
                    sd = 1.03, 
-                   r=0.8, 
+                   r = 0.8, 
                    labelnames = c("voice", "human", "robot", "emotion", "cheerful", "sad"))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ``` r
-# power_result_vig_1 <- ANOVA_power(design_result, 
-#                                   alpha = 0.05, 
-#                                   nsims = nsims, 
-#                                   seed = 1234)
-# reduce file size for github - only save what is needed
-# power_result_vig_1$sim_data <- NULL
-# #power_result_vig_1$plot1 <- NULL
-# power_result_vig_1$plot2 <- NULL
-# saveRDS(power_result_vig_1, file = "vignettes/sim_data/power_result_vig_1_test.rds")
 power_result_vig_1 <- readRDS(file = "vignettes/sim_data/power_result_vig_1.rds")
 ```
+
+    ## Warning: namespace 'ANOVApower' is not available and has been replaced
+    ## by .GlobalEnv when processing object ''
 
 The result for the power simulation is printed, and has two sections
 (which can be surpressed by setting verbose = FALSE). The first table
@@ -423,7 +436,7 @@ distributions for all tests in the ANOVA.
 power_result_vig_1$plot1
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 ## Power in a Two Group One-Way ANOVA
 
@@ -457,16 +470,9 @@ design_result <- ANOVA_design(design = design,
                               labelnames = labelnames)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
 ``` r
-# power_result_vig_2 <- ANOVA_power(design_result, nsims = nsims, seed = 1234)
-# 
-# reduce file size for github - only save what is needed
-# power_result_vig_2$sim_data <- NULL
-# power_result_vig_2$plot1 <- NULL
-# power_result_vig_2$plot2 <- NULL
-# saveRDS(power_result_vig_2, file = "vignettes/sim_data/power_result_vig_2.rds")
 power_result_vig_2 <- readRDS(file = "vignettes/sim_data/power_result_vig_2.rds")
 
 #Note we do not specify any correlation in the ANOVA_design function (default r = 0), nor do we specify an alpha in the ANOVA_power function (default is 0.05)
@@ -545,7 +551,7 @@ design_result <- ANOVA_design(design = "2b",
                    labelnames = c("condition", "control", "pet"))
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 ``` r
 ANOVA_exact(design_result)$main_results$power
@@ -645,7 +651,7 @@ plot.
     object
 2.  min\_n: The minimum sample size you want to plot in the power curve
 3.  max\_n: The maximum sample size you want to plot in the power curve
-4.  plot: Set to FALSE to not print the plot (default = TRUE)
+4.  plot: Set to FALSE to not print the plot (default = FALSE)
 
 The `plot_power` functions simulates power up to a sample size of
 `max_n` using the `ANOVA_exact` function. ALthough it is relatively
@@ -660,7 +666,7 @@ power around 225 participants per condition.
 plot_power(design_result, min_n = 10, max_n = 250)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 Because the true pattern of means is always unknown, it is sensible to
 examine the power across a range of scenarios. For example, is the
@@ -680,7 +686,7 @@ design_result <- ANOVA_design(design = "2b",
 plot_power(design_result, max_n = 250)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 It could be that in ddition to a slightly smaller effect size, the
 standard deviation is slighty larger than we expected as well. This will
@@ -699,7 +705,7 @@ design_result <- ANOVA_design(design = "2b",
 plot_power(design_result, min_n = 10, max_n = 250)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
 As these different plots make clear, your study never realy has a known
 statistical power. Because the true effect size (i.e., the pattern of
@@ -746,7 +752,7 @@ design_result <- ANOVA_design(design = design,
                    labelnames = labelnames)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
 
 ``` r
 ANOVA_exact(design_result)
@@ -813,7 +819,7 @@ sizes to see how much we need to increase the sample size.
 plot_power(design_result, min_n = 10, max_n = 250)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
 
 We see 134 participants give us aroud 90% power for the ANOVA. But we
 should also check the power for the comparison of the control condition
@@ -1070,7 +1076,7 @@ design_result <- ANOVA_design(design = design,
                               labelnames = labelnames)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-25-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
 
 ``` r
 ANOVA_exact(design_result)
@@ -1124,7 +1130,7 @@ design_result <- ANOVA_design(design = design,
                               labelnames = labelnames)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
 
 ``` r
 ANOVA_exact(design_result)
@@ -1260,7 +1266,7 @@ design_result <- ANOVA_design(design = design,
                               labelnames = labelnames)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-28-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
 
 ``` r
 # power_result_vig_3 <- ANOVA_power(design_result, nsims = nsims)
@@ -1316,7 +1322,7 @@ design_result <- ANOVA_design(design = design,
                               r = r)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-32-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-33-1.png)<!-- -->
 
 ``` r
 ANOVA_exact(design_result)
@@ -1355,7 +1361,7 @@ design_result <- ANOVA_design(design = design,
                               r = r)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-34-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-35-1.png)<!-- -->
 
 ``` r
 ANOVA_exact(design_result)
@@ -1476,7 +1482,7 @@ design_result <- ANOVA_design(design = design,
                    labelnames = labelnames)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-35-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-36-1.png)<!-- -->
 
 ``` r
 ANOVA_exact(design_result, alpha_level = 0.05)
@@ -1556,7 +1562,7 @@ the power increases, as the sample size per condition increases.
 plot_power(design_result, min_n = 20, max_n = 100)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-37-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-38-1.png)<!-- -->
 
 ## Two by two ANOVA, within design
 
@@ -1619,7 +1625,7 @@ design_result <- ANOVA_design(design = design,
                               labelnames = labelnames)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-39-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-40-1.png)<!-- -->
 
 ``` r
 # power_result_vig_4 <- ANOVA_power(design_result, nsims = nsims)
