@@ -59,7 +59,7 @@ ANOVA_design <- function(design, n, mu, sd, r = 0, labelnames = NULL, plot = FAL
   }
 
 #Ensure, if single correlation is input, that it is between 0 and 1
-  if (any(r < -1) | any(r >= 1) ) {
+  if (any(r < -1) | any(r > 1.0) ) {
     stop("Correlation must be greater than -1 and less than 1")
   }
 
