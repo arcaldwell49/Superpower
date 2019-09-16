@@ -81,21 +81,12 @@ knitr::kable(params$tablePC)
 cat("\\newpage")
 ```
 
-**Plot of Power Across Many Sample Sizes**
+**Power for MANOVA Results**
+
+Below are the results if analyzed with a MANOVA. Only included if there is a within-subject factor.
 
 ```{r echo = FALSE}
-params$power_curve
+knitr::kable(params$manova)
 ```
 
 
-
-```{r, results='asis', echo=FALSE}
-cat("\\newpage")
-```
-
-
-**Table of Power Across Many Sample Sizes**
-
-```{r echo = FALSE}
-knitr::kable(params$power_curve_df)
-```

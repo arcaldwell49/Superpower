@@ -3,7 +3,7 @@
 #
 
 library(shiny)
-library(shinycssloaders)
+#library(shinycssloaders)
 library(shinydashboard)
 library(Superpower)
 library(ggplot2)
