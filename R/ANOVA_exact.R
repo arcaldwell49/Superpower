@@ -366,7 +366,7 @@ ANOVA_exact <- function(design_result, correction = "none", alpha_level, verbose
   
   rownames(main_results) <- rownames(anova_table)
   colnames(main_results) <- c("power", "partial_eta_squared", "cohen_f", "non_centrality")
-  main_results$power <- round(main_results$power, 2)
+  main_results$power <- main_results$power
   #MANOVA
   if (run_manova == TRUE) {
   manova_results <- data.frame(manova_result$power,
@@ -376,7 +376,7 @@ ANOVA_exact <- function(design_result, correction = "none", alpha_level, verbose
   
   rownames(manova_results) <- rownames(manova_result)
   colnames(manova_results) <- c("power", "pillai_trace", "cohen_f", "non_centrality")
-  manova_results$power <- round(manova_results$power, 2)
+  manova_results$power <- manova_results$power
   }
 
   #Data summary for pairwise comparisons
