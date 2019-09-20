@@ -3,8 +3,10 @@
 #
 
 library(shiny)
+library(shinyjs)
 #library(shinycssloaders)
 library(shinydashboard)
+library(shinyMatrix)
 library(Superpower)
 library(ggplot2)
 library(rmarkdown)
@@ -515,31 +517,35 @@ ui <- dashboardPage(
 
                   textInput(inputId = "design", label = "Design Input",
                             value = "2b*2w"),
-
+                  
                   h5("Specify one word for each factor (e.g., AGE and SPEED) and the level of each factor (e.g., old and yound for a factor age with 2 levels)."),
                   
-                  selectInput("labelChoice", "Would you like to enter factor and level names?",
-                              c("Yes" = "yes",
-                                "No" = "no" )),
-
                   textInput("labelnames", label = "Factor & level labels",
                             value = "AGE,old,young,SPEED,fast,slow"),
 
+                  #h5("Specify one word for each factor (e.g., AGE and SPEED) and the level of each factor (e.g., old and yound for a factor age with 2 levels)."),
+                  
+                  #selectInput("labelChoice", "Would you like to enter factor and level names?",
+                  #            c("Yes" = "yes",
+                  #              "No" = "no" )),
+                  #uiOutput("labelnames"),
+
                   uiOutput("sample_size"),
+                  
+                  strong("Specify the list of standard deviations."),
+                  uiOutput("sdMatrix"),
 
-                  textInput(inputId = "sd", label = "Standard Deviation",
-                            value = 1.03),
+                  
+                  strong("Specify the correlation matrix."),
 
-                  h5("Specify the correlation for within-subjects factors."),
 
-                  sliderInput("r",
-                              label = "Correlation",
-                              min = 0, max = 1, value = 0.87),
+                  uiOutput("rMatrix"),
 
                   h5("Note that for each cell in the design, a mean must be provided. Thus, for a '2b*3w' design, 6 means need to be entered. Means need to be entered in the correct order. The app provides a plot so you can check if you entered means correctly. The general principle has designated factors (i.e., AGE and SPEED) and levels (e.g., old, young)."),
 
-                  textInput("mu", label = "Vector of Means",
-                            value = "1.03, 1.21, 0.98, 1.01"),
+                  strong("Vector of Means"),
+                  
+                  uiOutput("muMatrix"),
 
                   #Button to initiate the design
                   h5("Click the button below to set up the design - Check the output to see if the design is as you intended, then you can run the simulation."),
@@ -588,7 +594,7 @@ ui <- dashboardPage(
 
                   sliderInput("sig",
                               label = "Alpha Level",
-                              min = 0, max = 1, value = 0.05),
+                              min = 0, max = .2, value = 0.05),
 
                   actionButton("sim", "Print Results of Simulation",
                                icon = icon("print"))
@@ -622,6 +628,39 @@ server <- function(input, output) {
   values <- reactiveValues(design_result = 0,
                            power_result = 0,
                            power_curve = 0)
+  
+
+  
+ output$sdMatrix <-  renderUI({matrixInput(
+   "sdMatrix",
+   value = matrix(c(1), 1, prod(as.numeric(strsplit(input$design, "\\D+")[[1]]))),
+   rows = list(names = FALSE),
+   cols = list(names = FALSE),
+   copy = TRUE,
+   paste = TRUE
+ )
+ })
+ 
+ output$muMatrix <-  renderUI({matrixInput(
+   "muMatrix",
+   value = matrix(c(1), 1, prod(as.numeric(strsplit(input$design, "\\D+")[[1]]))),
+   rows = list(names = FALSE),
+   cols = list(names = FALSE),
+   copy = TRUE,
+   paste = TRUE
+ )
+ })
+ 
+ output$rMatrix <-  renderUI({matrixInput(
+   "rMatrix",
+   value = diag(prod(as.numeric(strsplit(input$design, "\\D+")[[1]]))),
+   rows = list(names = FALSE),
+   cols = list(names = FALSE),
+   copy = TRUE,
+   paste = TRUE
+ )
+ })
+
 
   output$sample_size <- renderUI({sliderInput("sample_size",
               label = "Sample Size per Cell",
@@ -638,10 +677,10 @@ server <- function(input, output) {
   #Produce ANOVA design
   observeEvent(input$designBut, {values$design_result <- ANOVA_design(design = as.character(input$design),
                                                                       n = as.numeric(input$sample_size),
-                                                                      mu = as.numeric(unlist(strsplit(input$mu, ","))),
+                                                                      mu = as.numeric(input$muMatrix),
                                                                       labelnames = as.vector(unlist(strsplit(gsub("[[:space:]]", "",input$labelnames), ","))),
-                                                                      sd = as.numeric(input$sd),
-                                                                      r = as.numeric(input$r),
+                                                                      sd = as.numeric(input$sdMatrix),
+                                                                      r = as.numeric(input$rMatrix),
                                                                       plot = FALSE)
   })
 

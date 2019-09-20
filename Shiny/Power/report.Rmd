@@ -61,7 +61,7 @@ params$means_plot
 cat("\\newpage")
 ```
 
-The results of the Monte Carlo simulation are included below. This simulation assumed an alpha of `r params$alpha_level`, a sphericity correction of `r params$correction`, a `r params$p_adjust` adjustment for multiple comparisons. A total of `r params$nsims` iterations were included in this simulation.
+The results of the Monte Carlo simulation are included below. This simulation assumed an alpha of **`r params$alpha_level`**, a sphericity correction of **`r params$correction`**, a **`r params$p_adjust`** adjustment for multiple comparisons. A total of **`r params$nsims`** iterations were included in this simulation.
 
 **ANOVA Power (%) and Effect Sizes (Partial Eta Squared)**
 
