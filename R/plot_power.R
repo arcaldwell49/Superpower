@@ -247,10 +247,10 @@ plot_power <- function(design_result, alpha_level,
       manova_result$f2 <- exact_result$manova_results$pillai_trace / (1 - exact_result$manova_results$pillai_trace)
       manova_result$lambda <-   manova_result$f2 *   manova_result$den_Df
       manova_result$Ft <- qf((1 - alpha_level), manova_result$num_Df,   manova_result$den_Df)
-      manova_result$power <- round(1 - pf(manova_result$Ft,
+      manova_result$power <- (1 - pf(manova_result$Ft,
                                           manova_result$num_Df,
                                           manova_result$den_Df,
-                                          manova_result$lambda), 4) * 100
+                                          manova_result$lambda)) * 100
 
       power_df_manova[i, 2:(1 + length_power_manova)] <- manova_result$power
     }

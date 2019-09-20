@@ -328,10 +328,10 @@ ANOVA_exact <- function(design_result, correction = "none", alpha_level, verbose
   manova_result$f2 <- manova_result$test_stat / (1 - manova_result$test_stat)
   manova_result$lambda <-   manova_result$f2 *   manova_result$den_Df
   manova_result$Ft <- qf((1 - alpha_level), manova_result$num_Df,   manova_result$den_Df)
-  manova_result$power <- round(1 - pf(manova_result$Ft,
+  manova_result$power <- (1 - pf(manova_result$Ft,
                                              manova_result$num_Df,
                                              manova_result$den_Df,
-                                             manova_result$lambda), 4) * 100
+                                             manova_result$lambda)) * 100
 
 }
   ###
@@ -359,24 +359,24 @@ ANOVA_exact <- function(design_result, correction = "none", alpha_level, verbose
   #Sumary of power and effect sizes of main effects and contrasts ----
   ###############
   #ANOVA
-  main_results <- round(data.frame(anova_table$power,
+  main_results <- data.frame(anova_table$power,
                                    anova_table$pes,
                                    sqrt(anova_table$f2),
-                                   anova_table$lambda),
-                        round_dig)
+                                   anova_table$lambda)
+  
   rownames(main_results) <- rownames(anova_table)
   colnames(main_results) <- c("power", "partial_eta_squared", "cohen_f", "non_centrality")
-  main_results$power <- round(main_results$power, 2)
+  main_results$power <- main_results$power
   #MANOVA
   if (run_manova == TRUE) {
-  manova_results <- round(data.frame(manova_result$power,
+  manova_results <- data.frame(manova_result$power,
                                      manova_result$test_stat,
                                      sqrt(manova_result$f2),
-                                     manova_result$lambda),
-                          round_dig)
+                                     manova_result$lambda)
+  
   rownames(manova_results) <- rownames(manova_result)
   colnames(manova_results) <- c("power", "pillai_trace", "cohen_f", "non_centrality")
-  manova_results$power <- round(manova_results$power, 2)
+  manova_results$power <- manova_results$power
   }
 
   #Data summary for pairwise comparisons
@@ -415,11 +415,11 @@ ANOVA_exact <- function(design_result, correction = "none", alpha_level, verbose
     # The section below should be blocked out when in Shiny
     cat("Power and Effect sizes for ANOVA tests")
     cat("\n")
-    print(main_results)
+    print(round(main_results, round_dig))
     cat("\n")
     cat("Power and Effect sizes for contrasts")
     cat("\n")
-    print(pc_results)
+    print(round(pc_results, round_dig))
   }
 
   if (run_manova == FALSE) {

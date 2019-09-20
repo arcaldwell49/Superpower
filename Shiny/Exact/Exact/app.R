@@ -256,7 +256,7 @@ server <- function(input, output) {
   #Output plot of the design
   output$plot_curve <- renderPlot({
     req(input$sim_2)
-    values$power_curve$p1
+    values$power_curve$plot_ANOVA
   })
 
   #Create downloadable report in markdown TINYTEX NEEDS TO BE INSTALLED
@@ -280,7 +280,7 @@ server <- function(input, output) {
                      cor_mat = values$design_result$cor_mat,
                      sigmatrix = values$design_result$sigmatrix,
                      alpha_level = values$power_result$alpha_level,
-                     power_curve = values$power_curve$p1,
+                     power_curve = values$power_curve$plot_ANOVA,
                      power_curve_df = values$power_curve$power_df)
 
       # Knit the document, passing in the `params` list, and eval it in a
