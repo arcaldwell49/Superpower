@@ -31,50 +31,58 @@ ui <- dashboardPage(
       tabItem(tabName = "design_tab",
               fluidRow(
                 box(
-                  title = "Design Output", status = "primary", solidHeader = TRUE,
-                  collapsible = TRUE,
-                  verbatimTextOutput("DESIGN"),
-                  plotOutput('plot'),
-                  tableOutput("corMat")
-                ),
-
-                box(
                   title = "Inputs", status = "warning", solidHeader = TRUE,
-                  "Specify design for a factorial design below", br(),
+                  strong("Specify the factorial design below"), br(),
                   "*Must be specficied to continue*",
 
                   h5("Add numbers for each factor that specify the number of levels in the factors (e.g., 2 for a factor with 2 levels). Add a 'w' after the number for within factors, and a 'b' for between factors. Seperate factors with a * (asterisks). Thus '2b*3w' is a design with two factors, the first of which has 2 between levels, and the second of which has 3 within levels."),
 
                   textInput(inputId = "design", label = "Design Input",
                             value = "2b*2w"),
-
+                  
+                  selectInput("labelChoice", "Would you like to enter factor and level names?",
+                              c("Yes" = "yes",
+                                "No" = "no" )),
+                  conditionalPanel(condition = "input.labelChoice == 'yes'",
                   h5("Specify one word for each factor (e.g., AGE and SPEED) and the level of each factor (e.g., old and yound for a factor age with 2 levels)."),
 
                   textInput("labelnames", label = "Factor & level labels",
-                            value = "AGE,old,young,SPEED,fast,slow"),
+                            value = "AGE,old,young,SPEED,fast,slow")),
 
                   uiOutput("sample_size"),
 
-                  textInput(inputId = "sd", label = "Standard Deviation",
+                  textInput(inputId = "sd", label = "Common Standard Deviation",
                             value = 1.03),
 
                   h5("Specify the correlation for within-subjects factors."),
 
                   sliderInput("r",
-                              label = "Correlation",
+                              label = "Common Correlation among Within-Subjects Factors",
                               min = 0, max = 1, value = 0.87),
 
                   h5("Note that for each cell in the design, a mean must be provided. Thus, for a '2b*3w' design, 6 means need to be entered. Means need to be entered in the correct order. The app provides a plot so you can check if you entered means correctly. The general principle has designated factors (i.e., AGE and SPEED) and levels (e.g., old, young)."),
 
-                  textInput("mu", label = "Vector of Means",
-                            value = "1.03, 1.21, 0.98, 1.01"),
+                  #textInput("mu", label = "Vector of Means",
+                  #          value = "1.03, 1.21, 0.98, 1.01"),
+                  
+                  strong("Vector of Means"),
+                  
+                  uiOutput("muMatrix"),
 
                   #Button to initiate the design
-                  h5("Click the button below to set up the design - Check the output to see if the design is as you intended, then you can run the simulation."),
+                  h5("Click the button below to set up the design - Check the output to see if the design is as you intended, then you can run the simulation in the next tab."),
 
                   actionButton("designBut","Set-Up Design",
                                icon = icon("check-square"))
 
+              ),
+              
+              box(
+                title = "Design Output", status = "primary", solidHeader = TRUE,
+                collapsible = TRUE,
+                verbatimTextOutput("DESIGN"),
+                plotOutput('plot'),
+                tableOutput("corMat")
               )
       )
       ),
@@ -84,18 +92,8 @@ ui <- dashboardPage(
               h2("Exact Power for Design"),
 
               fluidRow(
-
                 box(
-                  title = "Power Analysis Output", status = "primary", solidHeader = TRUE,
-                  collapsible = TRUE,
-                  tableOutput('tableMain'),
-
-                  tableOutput('tablePC')
-
-                ),
-
-                box(
-                  title = "Simulation Parameters", status = "primary", solidHeader = TRUE,
+                  title = "Simulation Parameters", status = "warning", solidHeader = TRUE,
 
                   conditionalPanel("input.designBut >= 1",
 
@@ -105,9 +103,17 @@ ui <- dashboardPage(
 
                   actionButton("sim", "Print Results of Simulation",
                                icon = icon("print"))
-
                   )
 
+                ),
+                
+                box(
+                  title = "Power Analysis Output", status = "primary", solidHeader = TRUE,
+                  collapsible = TRUE,
+                  tableOutput('tableMain'),
+                  
+                  tableOutput('tablePC')
+                  
                 )
               )
 
@@ -115,36 +121,27 @@ ui <- dashboardPage(
       ),
       # Plot Power content
       tabItem(tabName = "plot_tab",
-              h2("Plot Power Across Range of Sample Sizes"),
-
+              h2("Plot Power Across a Range of Sample Sizes"),
               fluidRow(
-
+                box(
+                  title = "Set Min and Max Sample Size",
+                  status = "warning", solidHeader = TRUE,
+                  conditionalPanel("input.sim >=1",
+                                   sliderInput("ss_2",
+                                               label = h3("Range of Sample Sizes"), min = 3,
+                                               max = 500, value = c(3, 100)),
+                                   actionButton("sim_2", "Plot Power",
+                                                icon = icon("chart-line")),
+                                   h3("Note: No sphercity correction")
+                  )
+                ),
+                
                 box(
                   title = "Power Curve across Sample Sizes",
                   status = "primary", solidHeader = TRUE,
                   collapsible = TRUE,
                   plotOutput('plot_curve')
-
-                ),
-
-                box(
-                  title = "Set Min and Max Sample Size",
-                  status = "primary", solidHeader = TRUE,
-
-                  conditionalPanel("input.sim >=1",
-
-                                   sliderInput("ss_2",
-                                               label = h3("Range of Sample Sizes"), min = 3,
-                                               max = 500, value = c(3, 100)),
-
-
-                                   actionButton("sim_2", "Plot Power",
-                                                icon = icon("chart-line")),
-
-                                   h3("Note: No sphercity correction")
-
-                  )
-
+                  
                 )
               )
       )
@@ -182,11 +179,21 @@ server <- function(input, output) {
                                input$design))))),
               max = 1000, value = 80)
   })
+  
+  output$muMatrix <-  renderUI({matrixInput(
+    "muMatrix",
+    value = matrix(c(1), 1, prod(as.numeric(strsplit(input$design, "\\D+")[[1]]))),
+    rows = list(names = FALSE),
+    cols = list(names = FALSE),
+    copy = TRUE,
+    paste = TRUE
+  )
+  })
 
   #Produce ANOVA design
   observeEvent(input$designBut, {values$design_result <- ANOVA_design(design = as.character(input$design),
                                                                       n = as.numeric(input$sample_size),
-                                                                      mu = as.numeric(unlist(strsplit(input$mu, ","))),
+                                                                      mu = as.numeric(input$muMatrix),
                                                                       labelnames = as.vector(unlist(strsplit(gsub("[[:space:]]", "",input$labelnames), ","))),
                                                                       sd = as.numeric(input$sd),
                                                                       r = as.numeric(input$r),

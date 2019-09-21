@@ -482,7 +482,6 @@ shiny_power <- function(design_result, alpha_level = 0.05, correction = "none",
 
 # Define UI for application
 ui <- dashboardPage(
-
   dashboardHeader(title = "ANOVA_power"),
   dashboardSidebar(
     sidebarMenu(
@@ -499,17 +498,10 @@ ui <- dashboardPage(
       # Design content
       tabItem(tabName = "design_tab",
               fluidRow(
-                box(
-                  title = "Design Output", status = "primary", solidHeader = TRUE,
-                  collapsible = TRUE,
-                  verbatimTextOutput("DESIGN"),
-                  plotOutput('plot'),
-                  tableOutput("corMat")
-                ),
 
                 box(
                   title = "Inputs", status = "warning", solidHeader = TRUE,
-                  "Specify design for a factorial design below", br(),
+                  strong("Specify the factorial design below"), br(),
                   "*Must be specficied to continue*",
 
                   h5("Add numbers for each factor that specify the number of levels in the factors (e.g., 2 for a factor with 2 levels). Add a 'w' after the number for within factors, and a 'b' for between factors. Seperate factors with a * (asterisks). Thus '2b*3w' is a design with two factors, the first of which has 2 between levels, and the second of which has 3 within levels."),
@@ -521,14 +513,13 @@ ui <- dashboardPage(
                               c("Yes" = "yes",
                                 "No" = "no" )),
                   
-                  h5("Specify one word for each factor (e.g., AGE and SPEED) and the level of each factor (e.g., old and yound for a factor age with 2 levels)."),
-                  
-                  textInput("labelnames", label = "Factor & level labels",
-                            value = "AGE,old,young,SPEED,fast,slow"),
+                  conditionalPanel(condition = "input.labelChoice == 'yes'",
+                                   h5("Specify one word for each factor (e.g., AGE and SPEED) and the level of each factor (e.g., old and yound for a factor age with 2 levels)."),
+                                   
+                                   textInput("labelnames", label = "Factor & level labels",
+                                             value = "AGE,old,young,SPEED,fast,slow")),
 
                   #h5("Specify one word for each factor (e.g., AGE and SPEED) and the level of each factor (e.g., old and yound for a factor age with 2 levels)."),
-                  
-
                   #uiOutput("labelnames"),
 
                   uiOutput("sample_size"),
@@ -536,10 +527,7 @@ ui <- dashboardPage(
                   strong("Specify the list of standard deviations."),
                   uiOutput("sdMatrix"),
 
-                  
                   strong("Specify the correlation matrix."),
-
-
                   uiOutput("rMatrix"),
 
                   h5("Note that for each cell in the design, a mean must be provided. Thus, for a '2b*3w' design, 6 means need to be entered. Means need to be entered in the correct order. The app provides a plot so you can check if you entered means correctly. The general principle has designated factors (i.e., AGE and SPEED) and levels (e.g., old, young)."),
@@ -549,38 +537,35 @@ ui <- dashboardPage(
                   uiOutput("muMatrix"),
 
                   #Button to initiate the design
-                  h5("Click the button below to set up the design - Check the output to see if the design is as you intended, then you can run the simulation."),
-
+                  h5("Click the button below to set up the design - Check the output to see if the design is as you intended, then you can run the simulation on the next tab."),
                   actionButton("designBut","Set-Up Design",
                                icon = icon("check-square"))
 
+              ),
+              
+              box(
+                title = "Design Output", status = "primary", solidHeader = TRUE,
+                collapsible = TRUE,
+                verbatimTextOutput("DESIGN"),
+                plotOutput('plot'),
+                tableOutput("corMat")
               )
       )
       ),
 
       # Exact Power content
       tabItem(tabName = "exact_tab",
-              h2("Exact Power for Design"),
+              h2("Simulate Power for Design"),
 
               fluidRow(
-                
 
                 box(
-                  title = "Power Analysis Output", status = "primary", solidHeader = TRUE,
-                  collapsible = TRUE,
-                  tableOutput('tableMain'),
-
-                  tableOutput('tablePC')
-
-                ) ,
-
-                box(
-                  title = "Simulation Parameters", status = "primary", solidHeader = TRUE,
+                  title = "Simulation Parameters", status = "warning", solidHeader = TRUE,
 
                   conditionalPanel("input.designBut >= 1",
                   selectInput("correction", "Sphericity Correction",
                               c("None" = "none",
-                                "Greenhous-Geisser" = "GG",
+                                "Greenhouse-Geisser" = "GG",
                                 "Huynh-Feldt" = "HF")),
                   
                   selectInput("padjust", "Adjustment for multiple comparisons on pairwise comparisons",
@@ -602,7 +587,15 @@ ui <- dashboardPage(
 
                   )
 
-                )
+                ),
+                box(
+                  title = "Power Analysis Output", status = "primary", solidHeader = TRUE,
+                  collapsible = TRUE,
+                  tableOutput('tableMain'),
+                  
+                  tableOutput('tablePC')
+                  
+                ) 
               )
 
 
