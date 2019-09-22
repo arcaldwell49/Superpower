@@ -1,0 +1,17 @@
+citHeader("To cite Superpower in publications, please use:")
+
+citEntry(entry = "Unpublished",
+  author = c(person(given = "Aaron",
+           family = "Caldwell",
+           role = c("aut", "cre"),
+           email = "arcaldwell49@gmail.com"),
+           person(given = "Daniel",family = "Lakens",
+           role = c("aut"),
+           email = "D.Lakens@tue.nl")
+           ),
+  title = "Power Analysis with Superpower",
+  year = "2019",
+  note = "Self Published on GitHub",
+  url = "https://arcaldwell49.github.io/SuperpowerBook",
+  textVersion = "A.R. Caldwell, D. Lakens. (2019). Power Analysis with Superpower. https://arcaldwell49.github.io/SuperpowerBook"
+)
