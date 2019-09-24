@@ -86,25 +86,25 @@ test_that("4b", {
 })
 
 #2x4 repeated measures
-test_that("2b*4w", {
-  design <- ANOVA_design(design = "2b*4w", n = 9,
-                         mu = c(0.0, 0.0, 0.0, 0.0,
-                                0.5, 0.5, 0.5, 0.5),
-                         r = 0.71,
-                         sd = 2, plot = FALSE)
-
-
-  set.seed(7224)
-  p <- ANOVA_exact(design, verbose = FALSE)
-  set.seed(354186)
-  p2 <- ANOVA_power(design, nsims = 10000)
-
-  expect_equal(p$main_results$power, c(8.7, 5, 5), tolerance = 0.1)
-  
-  expect_equal(p$main_results$power, p2$main_results$power, tolerance = .5)
-
-
-})
+#test_that("2b*4w", {
+#  design <- ANOVA_design(design = "2b*4w", n = 9,
+#                         mu = c(0.0, 0.0, 0.0, 0.0,
+#                                0.5, 0.5, 0.5, 0.5),
+#                         r = 0.71,
+#                         sd = 2, plot = FALSE)
+#
+#
+#  set.seed(7224)
+#  p <- ANOVA_exact(design, verbose = FALSE)
+#  set.seed(354186)
+#  p2 <- ANOVA_power(design, nsims = 10000)
+#
+#  expect_equal(p$main_results$power, c(8.7, 5, 5), tolerance = 0.1)
+#  
+#  expect_equal(p$main_results$power, p2$main_results$power, tolerance = .5)
+#
+#
+#})
 
 #2x4 repeated measures
 test_that("2b*4w", {
