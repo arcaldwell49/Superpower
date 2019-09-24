@@ -73,29 +73,6 @@ test_that("2w*2w", {
   expect_equal(p$nsims, 50)
 })
 
-#2w long
-#test_that("2w long", {
-#  skip_on_cran()
-#
-#  design <- ANOVA_design(design = "2w", n = 100, mu = c(0, 0.25), sd = 1, r = 0.5, plot = FALSE)
-#
-#  set.seed(86753)
-#
-#  system.time(
-#    p <- ANOVA_power(design, nsims = 1000, verbose = FALSE)
-#  )
-#  pe <- ANOVA_exact(design, verbose = FALSE)
-#
-#  p2 <- pwr::pwr.t.test(n = 100, d = 0.25, type = "paired")
-#
-#  expect_equal(p$main_results$power/100, p2$power, tolerance = .02)
-#  expect_equal(pe$main_results$power/100, p2$power, tolerance = .02)
-#  expect_equal(p$pc_results$power/100, p2$power, tolerance = .02)
-#  expect_equal(pe$pc_results$power/100, p2$power, tolerance = .02)
-#  expect_equal(p$pc_results$effect_size, p2$d, tolerance = .02)
-#  expect_equal(pe$pc_results$effect_size, p2$d, tolerance = .02)
-#})
-
 #2b long simulation
 test_that("2b long", {
   skip_on_cran()
@@ -122,46 +99,6 @@ expect_equal(p$main_results$power/100, p2, tolerance = .02)
 
 expect_equal(pe$main_results$power/100, p2, tolerance = .02)
 })
-
-#3b long simulation
-#test_that("3b long", {
-#  skip_on_cran()
-#  design <- ANOVA_design(design = "3b",
-#                         n = 50,
-#                         mu = c(24, 26.2, 26.6),
-#                         sd = 6.4,
-#                         labelnames = c("condition", "control", "cat", "dog"),
-#                         plot = FALSE)
-#  set.seed(123)
-#  system.time(
-#    p <- ANOVA_power(design, alpha_level = 0.05, nsims = 5000, verbose = FALSE)
-#  )
-#  pe <- ANOVA_exact(design, alpha_level = 0.05, verbose = FALSE)
-#  pc_1 <- pwr::pwr.t.test(d = 2.2/6.4,
-#                          n = 50,
-#                          sig.level = 0.05,
-#                          type = "two.sample",
-#                          alternative = "two.sided")$power
-#
-#  pc_2 <- pwr::pwr.t.test(d = 2.6 / 6.4,
-#                     n = 50,
-#                     sig.level = 0.05,
-#                     type = "two.sample",
-#                     alternative = "two.sided")$power
-#
-#  pc_3 <- pwr::pwr.t.test(d = 0.4/6.4,
-#                     n = 50,
-#                     sig.level = 0.05,
-#                     type = "two.sample",
-#                     alternative = "two.sided")$power
-#
-#  pmain <- pwr::pwr.anova.test(k = 3, n = 50, f = 0.1786086, sig.level = 0.05)$power #f obtained from GPower
-#
-#  expect_equal(p$main_results$power/100, pmain, tolerance = .02)
-#  expect_equal(p$main_results$power/100, pe$main_results$power/100, tolerance = .02)
-#  expect_equal(p$pc_results$power/100, pe$pc_results$power/100, tolerance = .02)
-#  expect_equal(p$pc_results$power/100, c(pc_1, pc_2, pc_3), tolerance = .02)
-#})
 
 #3 way between
 test_that("3 way between long", {

@@ -86,27 +86,6 @@ test_that("4b", {
 })
 
 #2x4 repeated measures
-#test_that("2b*4w", {
-#  design <- ANOVA_design(design = "2b*4w", n = 9,
-#                         mu = c(0.0, 0.0, 0.0, 0.0,
-#                                0.5, 0.5, 0.5, 0.5),
-#                         r = 0.71,
-#                         sd = 2, plot = FALSE)
-#
-#
-#  set.seed(7224)
-#  p <- ANOVA_exact(design, verbose = FALSE)
-#  set.seed(354186)
-#  p2 <- ANOVA_power(design, nsims = 10000)
-#
-#  expect_equal(p$main_results$power, c(8.7, 5, 5), tolerance = 0.1)
-#  
-#  expect_equal(p$main_results$power, p2$main_results$power, tolerance = .5)
-#
-#
-#})
-
-#2x4 repeated measures
 test_that("2b*4w", {
   design <- ANOVA_design(design = "2b*4w", n = 9,
                          mu = c(0.0, 0.0, 0.0, 0.0,
@@ -143,75 +122,140 @@ test_that("3w", {
 
 })
 
-####Match Test results with Aberson pwr2ppl
+####Match Test results with appendices from SuperpowerBook
 
-#2x2
-#test_that("Aberson 2x2", {
+
+test_that("Aberson #1",{
+  design_result <- ANOVA_design(design = "4b",
+                                n = 60,
+                                sd = 10,
+                                mu = c(80, 82, 82, 86),
+                                labelnames = c("DORM",
+                                               "Control",
+                                               "T1",
+                                               "T2",
+                                               "T3"),
+                                plot = FALSE)
   
-#  design <- ANOVA_design(design = "2b*2b", n = 35,
-#                         mu = c(5.5,7.2,
-#                                6.1,3.4),
-#                         sd = 3.7, plot = FALSE)
-#  
-#  
-#  p <- ANOVA_exact(design, verbose = FALSE)
-#  
-#  suppressMessages(
-#    aberson <- anova2x2(
-#      m1.1 = 5.5,
-#      m1.2 = 7.2,
-#      m2.1 = 6.1,
-#      m2.2 = 3.4,
-#      s1.1 = 3.7,
-#      s1.2 = 3.7,
-#      s2.1 = 3.7,
-#      s2.2 = 3.7,
-#      n1.1 = 35,
-#      n1.2 = 35,
-#      n2.1 = 35,
-#      n2.2 = 35,
-#      alpha = .05
-#    )
-#  )
-#  
-#  expect_equal(p$main_results$power[1], aberson$`Power A`*100, tolerance = 0.1)
-#  expect_equal(p$main_results$power[2], aberson$`Power B`*100, tolerance = 0.1)
-#  expect_equal(p$main_results$power[3], (aberson$`Power AxB`) * 100, tolerance = 0.1)
-#  
-#})
-
-
-#test_that("Aberson 2x2 #2", {
+  p <- ANOVA_exact(design_result,
+                   verbose=FALSE)
   
-#  design <- ANOVA_design(design = "2b*2b", n = 55,
-#                         mu = c(1.1,1.1,
-#                                2.5,2.3),
-#                         sd = .95, plot = FALSE)
-#  
-#  
-#  p <- ANOVA_exact(design, verbose = FALSE)
-#  
-#  suppressMessages(
-#    aberson <- anova2x2(
-#      m1.1 = 1.1,
-#      m1.2 = 1.1,
-#      m2.1 = 2.5,
-#      m2.2 = 2.3,
-#      s1.1 = .95,
-#      s1.2 = .95,
-#      s2.1 = .95,
-#      s2.2 = .95,
-#      n1.1 = 55,
-#      n1.2 = 55,
-#      n2.1 = 55,
-#      n2.2 = 55,
-#      alpha = .05
-#    )
-#  )
-#  
-#  expect_equal(p$main_results$power[1], aberson$`Power A`*100, tolerance = 0.1)
-#  expect_equal(p$main_results$power[2], aberson$`Power B`*100, tolerance = 0.1)
-#  expect_equal(p$main_results$power[3], (aberson$`Power AxB`) * 100, tolerance = 0.1)
-#  
-#  
-#})
+  expect_equal(p$main_results$power, 81.2, tolerance = 0.1)
+}
+          )
+
+test_that("Aberson #2",{
+  design_result <- ANOVA_design(design = "2b*2b",
+                                n = 100,
+                                sd = 1.7,
+                                mu = c(.85, .85, 
+                                       0, .6),
+                                plot = FALSE)
+  
+  p <- ANOVA_exact(design_result,
+                   verbose=FALSE)
+  
+  expect_equal(p$main_results$power, c(89.8,42.1,42.1), tolerance = 0.1)
+}
+)
+
+test_that("Aberson #3",{
+  design_result <- ANOVA_design(design = "2b*2b",
+                                n = 250,
+                                sd = 1.7,
+                                mu = c(.85, .85, 
+                                       0, .6),
+                                plot = FALSE)
+  
+  p <- ANOVA_exact(design_result,
+                   verbose=FALSE)
+  
+  expect_equal(p$main_results$power, c(99.9,79.6,79.6), tolerance = 0.1)
+}
+)
+
+test_that("Aberson #4",{
+  design_result <- ANOVA_design(design = "4w",
+                                n = 25,
+                                sd = c(.4,.5,.6,.7),
+                                mu = c(-.25, .00, .10, .15),
+                                r = c(.50, 
+                                      .30,
+                                      .15, 
+                                      .5,
+                                      .30, 
+                                      .50),
+                                plot = FALSE)
+  
+  p <- ANOVA_exact(design_result,
+                   verbose=FALSE)
+  
+  expect_equal(p$main_results$power, c(80.9), tolerance = 0.1)
+}
+)
+
+test_that("Aberson #5",{
+  design_result <- ANOVA_design(design = "4w",
+                                n = 100,
+                                sd = c(.4,.5,2.5,2),
+                                mu = c(-.25, .00, .10, .15),
+                                r = c(.50, 
+                                      .30,
+                                      .1, 
+                                      .5,
+                                      .30, 
+                                      .40),
+                                plot = FALSE)
+  
+  p <- ANOVA_exact(design_result,
+                   verbose=FALSE)
+  
+  expect_equal(p$main_results$power, c(39.7), tolerance = 0.1)
+}
+)
+
+test_that("Aberson #6",{
+  design_result <- ANOVA_design(design = "2w*4w",
+                                n = 80,
+                                sd = c(.4,0.5, 
+                                       2.5,2.0, 
+                                       0.4,0.5, 
+                                       2.5,2.0),
+                                mu = c(-0.25,0.0, 
+                                       0.10,0.15, 
+                                       -0.25,0.10, 
+                                       0.30,0.35),
+                                r = c(.5),
+                                plot = FALSE)
+  
+  p <- ANOVA_exact(design_result,
+                   verbose=FALSE)
+  
+  expect_equal(p$main_results$power, c(27.2,74.8,10.2), tolerance = 0.1)
+}
+)
+
+test_that("Aberson #7",{
+  design_result <- ANOVA_design("2b*4w",
+                                n = 50,
+                                sd = c(.4, .5, 0.6, .7,
+                                       .4, .5, .6, .7),
+                                r = c(1.0,0.5,0.3,0.15,0.0,0.0,0.0,0.0,
+                                      0.5,1.0,0.5,0.3,0.0,0.0,0.0,0.0,
+                                      0.3,0.5,1.0,0.5,0.0,0.0,0.0,0.0,
+                                      0.15,0.3,0.5,1.0,0.0,0.0,0.0,0.0,
+                                      0.0,0.0,0.0,0.0,1.0,0.5,0.3,0.15,
+                                      0.0,0.0,0.0,0.0,0.5,1.0,0.5,0.3,
+                                      0.0,0.0,0.0,0.0,0.3,0.5,1.0,0.5,
+                                      0.0,0.0,0.0,0.0,0.15,0.3,0.5,1.0),
+                                mu = c(-.25, 0.0, 0.10, 0.15,
+                                       -.25,-.25,-.25,-.25),
+                                plot = FALSE)
+  
+  p <- ANOVA_exact(design_result,
+                   verbose=FALSE)
+  
+  expect_equal(p$main_results$power, c(86.4,82.7,82.7), tolerance = 0.1)
+}
+)
+
