@@ -51,7 +51,7 @@ shiny_power <- function(design_result, alpha_level = 0.05, correction = "none",
     n1 <- length(x) #number of pairs
     n2 <- length(y) #number of pairs
     df <- n1 + n2 - 2
-    m_diff <- mean(y - x)
+    m_diff <- mean(y) - mean(x)
     sd_pooled <- (sqrt((((n1 - 1) * ((sd1^2))) + (n2 - 1) * ((sd2^2))) / ((n1 + n2 - 2)))) #pooled standard deviation
     j <- (1 - 3/(4 * (n1 + n2 - 2) - 1)) #Calculate Hedges' correction.
     t_value <- m_diff / sqrt(sd_pooled^2 / n1 + sd_pooled^2 / n2)
