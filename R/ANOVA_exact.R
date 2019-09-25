@@ -199,8 +199,7 @@ ANOVA_exact <- function(design_result, correction = "none", alpha_level, verbose
                          "den_Df", "p.value")
     tests <- structure(as.data.frame(tests), heading = paste("\nType ",
                                                              x$type, if (repeated)
-                                                               " Repeated Measures", " MANOVA Tests: ", test, " test
-                                                             statistic",
+                                                               " Repeated Measures", " MANOVA Tests: ", test, " test statistic",
                                                              sep = ""), class = c("anova", "data.frame"))
     invisible(tests)
   }
@@ -376,7 +375,7 @@ ANOVA_exact <- function(design_result, correction = "none", alpha_level, verbose
   
   rownames(manova_results) <- rownames(manova_result)
   colnames(manova_results) <- c("power", "pillai_trace", "cohen_f", "non_centrality")
-  manova_results$power <- manova_results$power
+  
   }
 
   #Data summary for pairwise comparisons
