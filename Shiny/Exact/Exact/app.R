@@ -16,6 +16,7 @@ ui <- dashboardPage(
   dashboardHeader(title = "ANOVA_exact"),
   dashboardSidebar(
     sidebarMenu(
+      menuItem("Information", tabName = "info_tab", icon = icon("info-circle")),
       menuItem("Design", tabName = "design_tab", icon = icon("bezier-curve")),
       menuItem("Exact Power", tabName = "exact_tab", icon = icon("equals")),
       menuItem("Plot Power", tabName = "plot_tab", icon = icon("infinity")),
@@ -26,8 +27,29 @@ ui <- dashboardPage(
   ),
 
   dashboardBody(
+
     tabItems(
       # Design content
+      tabItem(tabName = "info_tab",
+              box(
+                title = "Using this App",
+                status = "danger",
+                solidHeader = TRUE,
+                collapsible = FALSE,
+                h5("This Shiny app is for performing 'exact' simuations of factorial experimental designs in order to estimate power for an ANOVA and follow-up pairwise comparisons.
+                 This app will not allow you to vary the standard deviations or the correlations in within-subjects designs.
+                 If you do need/want to violate these assumptions please use the ANOVA_power app."),
+                a("Click here for the other app", href = "http://shiny.ieis.tue.nl/anova_power/"),
+                h3("The Design Tab"),
+                h5("You must start with the Design tab in order to perform a power analysis. At this stage you must establish the parameters of the design (sample size, standard deviation, etc).
+                 Once you click Submit Design the design details will be printed and you can continue onto the power analysis."),
+                h3("Exact Power Tab"),
+                h5("In this tab, you will setup the Monte Carlo simulation. All you can do at this stage is set the alpha level (default=.05)"),
+                h3("Plot Power Tab"),
+                h5("In this tab, you can see power across a range of sample sizes. All you need to do is set a minimum and maximum sample size"),
+                h3("Download your Simulation"),
+                h5("Once your simulation is completed a button a button will appear on the sidebar to download a PDF")
+              )),
       tabItem(tabName = "design_tab",
               fluidRow(
                 box(
