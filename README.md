@@ -27,7 +27,10 @@ Status](https://travis-ci.com/arcaldwell49/superpower.svg?branch=master)](https:
 
 The goal of `Superpower` is to easily simulate factorial designs and
 empirically calculate power using a simulation approach. This app is
-intended to be utilized for prospective (a priori) power analysis.
+intended to be utilized for prospective (a priori) power analysis. In
+addition to this README file we have written a short
+[book](arcaldwell49.github.io/SuperpowerBook) documenting the package’s
+capabilities.
 
 ## Installation
 
@@ -110,8 +113,6 @@ level 1 of factor 3.
 The plot below visualizes means from 1 to 8 being entered in a vector:
 mu = c(1, 2, 3, 4, 5, 6, 7, 8) so you can see how the basic ordering
 works.
-
-![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 ### Specifying label names
 
@@ -240,8 +241,6 @@ design_result <- ANOVA_design(design = "2w*2w",
                               sd = 2,
                               r <- c(0.91, 0.92, 0.93, 0.94, 0.95, 0.96))
 ```
-
-![](README_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
 
 We can check the correlation matrix by asking for it from the
 design\_result object to check if it was entered the way we wanted:
@@ -389,11 +388,8 @@ design_result <- ANOVA_design(design = "2b*2w",
                    sd = 1.03, 
                    r = 0.8, 
                    labelnames = c("voice", "human", "robot", "emotion", "cheerful", "sad"))
-```
 
-![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
-``` r
 power_result_vig_1 <- readRDS(file = "vignettes/sim_data/power_result_vig_1.rds")
 ```
 
@@ -468,11 +464,8 @@ design_result <- ANOVA_design(design = design,
                               mu = mu, 
                               sd = sd, 
                               labelnames = labelnames)
-```
 
-![](README_files/figure-gfm/unnamed-chunk-11-1.png)<!-- -->
 
-``` r
 power_result_vig_2 <- readRDS(file = "vignettes/sim_data/power_result_vig_2.rds")
 
 #Note we do not specify any correlation in the ANOVA_design function (default r = 0), nor do we specify an alpha in the ANOVA_power function (default is 0.05)
@@ -549,23 +542,19 @@ design_result <- ANOVA_design(design = "2b",
                    mu = c(24, 26.2), 
                    sd = 6.4, 
                    labelnames = c("condition", "control", "pet"))
-```
 
-![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
-
-``` r
 ANOVA_exact(design_result)$main_results$power
 ```
 
     ## Power and Effect sizes for ANOVA tests
-    ##           power partial_eta_squared cohen_f non_centrality
-    ## condition 67.69               0.029  0.1727         5.9082
+    ##             power partial_eta_squared cohen_f non_centrality
+    ## condition 67.6857               0.029  0.1727         5.9082
     ## 
     ## Power and Effect sizes for contrasts
     ##                                   power effect_size
     ## p_condition_control_condition_pet 67.69      0.3437
 
-    ## [1] 67.69
+    ## [1] 67.68572
 
 ``` r
 # power of 67.7 is a bit low. Let's increase it a bit to n = 150 to see if we are closer to our goal of 90% power.
@@ -581,14 +570,14 @@ ANOVA_exact(design_result)$main_results$power
 ```
 
     ## Power and Effect sizes for ANOVA tests
-    ##           power partial_eta_squared cohen_f non_centrality
-    ## condition 84.31              0.0289  0.1725         8.8623
+    ##             power partial_eta_squared cohen_f non_centrality
+    ## condition 84.3127              0.0289  0.1725         8.8623
     ## 
     ## Power and Effect sizes for contrasts
     ##                                   power effect_size
     ## p_condition_control_condition_pet 84.31      0.3437
 
-    ## [1] 84.31
+    ## [1] 84.3127
 
 ``` r
 # Close, but not there yet. Let's try n = 175 
@@ -604,14 +593,14 @@ ANOVA_exact(design_result)$main_results$power
 ```
 
     ## Power and Effect sizes for ANOVA tests
-    ##           power partial_eta_squared cohen_f non_centrality
-    ## condition 89.37              0.0289  0.1724        10.3394
+    ##             power partial_eta_squared cohen_f non_centrality
+    ## condition 89.3735              0.0289  0.1724        10.3394
     ## 
     ## Power and Effect sizes for contrasts
     ##                                   power effect_size
     ## p_condition_control_condition_pet 89.37      0.3437
 
-    ## [1] 89.37
+    ## [1] 89.37347
 
 ``` r
 #Very close. Let's add a few more and try n = 180
@@ -627,14 +616,14 @@ ANOVA_exact(design_result)$main_results$power
 ```
 
     ## Power and Effect sizes for ANOVA tests
-    ##           power partial_eta_squared cohen_f non_centrality
-    ## condition 90.19              0.0288  0.1724        10.6348
+    ##             power partial_eta_squared cohen_f non_centrality
+    ## condition 90.1886              0.0288  0.1724        10.6348
     ## 
     ## Power and Effect sizes for contrasts
     ##                                   power effect_size
     ## p_condition_control_condition_pet 90.19      0.3437
 
-    ## [1] 90.19
+    ## [1] 90.18863
 
 ## The plot\_power function
 
@@ -666,8 +655,6 @@ power around 225 participants per condition.
 plot_power(design_result, min_n = 10, max_n = 250)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
-
 Because the true pattern of means is always unknown, it is sensible to
 examine the power across a range of scenarios. For example, is the
 difference in means is somewhat smaller,because the means are 24 and 26
@@ -686,8 +673,6 @@ design_result <- ANOVA_design(design = "2b",
 plot_power(design_result, max_n = 250)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
-
 It could be that in ddition to a slightly smaller effect size, the
 standard deviation is slighty larger than we expected as well. This will
 reduce the power even further, and is thus an even less optimistic
@@ -704,8 +689,6 @@ design_result <- ANOVA_design(design = "2b",
 
 plot_power(design_result, min_n = 10, max_n = 250)
 ```
-
-![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
 As these different plots make clear, your study never realy has a known
 statistical power. Because the true effect size (i.e., the pattern of
@@ -750,17 +733,13 @@ design_result <- ANOVA_design(design = design,
                    mu = mu, 
                    sd = sd, 
                    labelnames = labelnames)
-```
 
-![](README_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
-
-``` r
 ANOVA_exact(design_result)
 ```
 
     ## Power and Effect sizes for ANOVA tests
-    ##           power partial_eta_squared cohen_f non_centrality
-    ## condition 47.69              0.0315  0.1804         4.7852
+    ##             power partial_eta_squared cohen_f non_centrality
+    ## condition 47.6947              0.0315  0.1804         4.7852
     ## 
     ## Power and Effect sizes for contrasts
     ##                                   power effect_size
@@ -819,8 +798,6 @@ sizes to see how much we need to increase the sample size.
 plot_power(design_result, min_n = 10, max_n = 250)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-20-1.png)<!-- -->
-
 We see 134 participants give us aroud 90% power for the ANOVA. But we
 should also check the power for the comparison of the control condition
 and the cat condition.
@@ -843,8 +820,8 @@ ANOVA_exact(design_result)
 ```
 
     ## Power and Effect sizes for ANOVA tests
-    ##           power partial_eta_squared cohen_f non_centrality
-    ## condition 90.18              0.0311  0.1793        12.8242
+    ##             power partial_eta_squared cohen_f non_centrality
+    ## condition 90.1767              0.0311  0.1793        12.8242
     ## 
     ## Power and Effect sizes for contrasts
     ##                                   power effect_size
@@ -865,8 +842,8 @@ ANOVA_exact(design_result)
 ```
 
     ## Power and Effect sizes for ANOVA tests
-    ##           power partial_eta_squared cohen_f non_centrality
-    ## condition 96.78              0.0311  0.1791        17.2266
+    ##             power partial_eta_squared cohen_f non_centrality
+    ## condition 96.7794              0.0311  0.1791        17.2266
     ## 
     ## Power and Effect sizes for contrasts
     ##                                   power effect_size
@@ -1074,17 +1051,13 @@ design_result <- ANOVA_design(design = design,
                               sd = sd, 
                               r = r, 
                               labelnames = labelnames)
-```
 
-![](README_files/figure-gfm/unnamed-chunk-26-1.png)<!-- -->
-
-``` r
 ANOVA_exact(design_result)
 ```
 
     ## Power and Effect sizes for ANOVA tests
-    ##       power partial_eta_squared cohen_f non_centrality
-    ## speed 80.78              0.2048  0.5075            8.5
+    ##         power partial_eta_squared cohen_f non_centrality
+    ## speed 80.7778              0.2048  0.5075            8.5
     ## 
     ## Power and Effect sizes for contrasts
     ##                         power effect_size
@@ -1128,17 +1101,13 @@ design_result <- ANOVA_design(design = design,
                               sd = sd, 
                               r = r, 
                               labelnames = labelnames)
-```
 
-![](README_files/figure-gfm/unnamed-chunk-27-1.png)<!-- -->
-
-``` r
 ANOVA_exact(design_result)
 ```
 
     ## Power and Effect sizes for ANOVA tests
-    ##       power partial_eta_squared cohen_f non_centrality
-    ## speed 95.47              0.3004  0.6552        14.1667
+    ##         power partial_eta_squared cohen_f non_centrality
+    ## speed 95.4703              0.3004  0.6552        14.1667
     ## 
     ## Power and Effect sizes for contrasts
     ##                         power effect_size
@@ -1264,11 +1233,7 @@ design_result <- ANOVA_design(design = design,
                               sd = sd, 
                               r = r, 
                               labelnames = labelnames)
-```
 
-![](README_files/figure-gfm/unnamed-chunk-29-1.png)<!-- -->
-
-``` r
 # power_result_vig_3 <- ANOVA_power(design_result, nsims = nsims)
 # reduce file size for github - only save what is needed
 # power_result_vig_3$sim_data <- NULL
@@ -1320,19 +1285,15 @@ design_result <- ANOVA_design(design = design,
                               mu = mu, 
                               sd = sd, 
                               r = r)
-```
 
-![](README_files/figure-gfm/unnamed-chunk-33-1.png)<!-- -->
-
-``` r
 ANOVA_exact(design_result)
 ```
 
     ## Power and Effect sizes for ANOVA tests
-    ##     power partial_eta_squared cohen_f non_centrality
-    ## b    5.00              0.0000  0.0000            0.0
-    ## a    5.00              0.0000  0.0000            0.0
-    ## b:a 91.25              0.2072  0.5112           11.5
+    ##       power partial_eta_squared cohen_f non_centrality
+    ## b    5.0000              0.0000  0.0000            0.0
+    ## a    5.0000              0.0000  0.0000            0.0
+    ## b:a 91.2498              0.2072  0.5112           11.5
     ## 
     ## Power and Effect sizes for contrasts
     ##                       power effect_size
@@ -1359,19 +1320,15 @@ design_result <- ANOVA_design(design = design,
                               mu = mu, 
                               sd = sd, 
                               r = r)
-```
 
-![](README_files/figure-gfm/unnamed-chunk-35-1.png)<!-- -->
-
-``` r
 ANOVA_exact(design_result)
 ```
 
     ## Power and Effect sizes for ANOVA tests
-    ##     power partial_eta_squared cohen_f non_centrality
-    ## b    5.00              0.0000    0.00         0.0000
-    ## a    5.00              0.0000    0.00         0.0000
-    ## b:a 98.98              0.3034    0.66        19.1667
+    ##       power partial_eta_squared cohen_f non_centrality
+    ## b    5.0000              0.0000    0.00         0.0000
+    ## a    5.0000              0.0000    0.00         0.0000
+    ## b:a 98.9847              0.3034    0.66        19.1667
     ## 
     ## Power and Effect sizes for contrasts
     ##                       power effect_size
@@ -1400,9 +1357,6 @@ emotional tone of the voice. We can start by simulating the power for a
 cross-over interaction for a 2x2 between-participant design with 80
 participants in each group (see the figure below for the expected
 pattern of means).
-
-![Vizualization for the expected means and confidence intervals for a
-crossover interaction.](README_files/figure-gfm/mean-plot-1.png)
 
 Mathematically the interaction effect is computed as the cell mean minus
 the sum of the grand mean, the marginal mean in each row minus the grand
@@ -1480,19 +1434,15 @@ design_result <- ANOVA_design(design = design,
                    mu = mu, 
                    sd = sd, 
                    labelnames = labelnames)
-```
 
-![](README_files/figure-gfm/unnamed-chunk-36-1.png)<!-- -->
-
-``` r
 ANOVA_exact(design_result, alpha_level = 0.05)
 ```
 
     ## Power and Effect sizes for ANOVA tests
-    ##                   power partial_eta_squared cohen_f non_centrality
-    ## Factor_A          44.86              0.0253  0.1612         4.4444
-    ## Factor_B          44.86              0.0253  0.1612         4.4444
-    ## Factor_A:Factor_B 64.34              0.0494  0.2280         8.8889
+    ##                     power partial_eta_squared cohen_f non_centrality
+    ## Factor_A          44.8631              0.0253  0.1612         4.4444
+    ## Factor_B          44.8631              0.0253  0.1612         4.4444
+    ## Factor_A:Factor_B 64.3413              0.0494  0.2280         8.8889
     ## 
     ## Power and Effect sizes for contrasts
     ##                                                   power effect_size
@@ -1541,19 +1491,19 @@ power_res <- power_twoway_between(design_result) #using default alpha level of .
 power_res$power_A
 ```
 
-    ## [1] 0.4486306
+    ## [1] 44.86306
 
 ``` r
 power_res$power_B
 ```
 
-    ## [1] 0.4486306
+    ## [1] 44.86306
 
 ``` r
 power_res$power_AB
 ```
 
-    ## [1] 0.6434127
+    ## [1] 64.34127
 
 As we see, power is quite low with n = 20 per cell. Let’s examine how
 the power increases, as the sample size per condition increases.
@@ -1561,8 +1511,6 @@ the power increases, as the sample size per condition increases.
 ``` r
 plot_power(design_result, min_n = 20, max_n = 100)
 ```
-
-![](README_files/figure-gfm/unnamed-chunk-38-1.png)<!-- -->
 
 ## Two by two ANOVA, within design
 
@@ -1623,11 +1571,7 @@ design_result <- ANOVA_design(design = design,
                               sd = sd, 
                               r = r, 
                               labelnames = labelnames)
-```
 
-![](README_files/figure-gfm/unnamed-chunk-40-1.png)<!-- -->
-
-``` r
 # power_result_vig_4 <- ANOVA_power(design_result, nsims = nsims)
 # power_result_vig_4$sim_data <- NULL
 # power_result_vig_4$plot1 <- NULL
@@ -1643,10 +1587,10 @@ ANOVA_exact(design_result = design_result)
 ```
 
     ## Power and Effect sizes for ANOVA tests
-    ##     power partial_eta_squared cohen_f non_centrality
-    ## A   26.92              0.0952  0.3244              2
-    ## B   64.23              0.2400  0.5620              6
-    ## A:B 26.92              0.0952  0.3244              2
+    ##       power partial_eta_squared cohen_f non_centrality
+    ## A   26.9175              0.0952  0.3244              2
+    ## B   64.2259              0.2400  0.5620              6
+    ## A:B 26.9175              0.0952  0.3244              2
     ## 
     ## Power and Effect sizes for contrasts
     ##                       power effect_size
