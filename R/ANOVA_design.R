@@ -397,24 +397,22 @@ ANOVA_design <- function(design, n, mu, sd, r = 0, labelnames = NULL, plot = FAL
   if (factors >= 2 && length(labelnameslist[[2]]) >= 9) {
 
     meansplot2 = meansplot +
-      geom_point(position = position_dodge(width=0.9), shape = 10, size=5, stat="identity") + #Personal preference for sd -- ARC
-      geom_errorbar(aes(ymin = mu-sd, ymax = mu+sd),
-                    position = position_dodge(width=0.9), size=.6, width=.3) +
-      coord_cartesian(ylim=c(min(mu)-sd, max(mu)+sd)) +
-      theme_bw(base_size = 16) + ggtitle("Means for each condition in the design") +
-     scale_colour_brewer(palette = "Dark2")
+      geom_point(position = position_dodge(width = 0.9), shape = 10, size = 5, stat = "identity") + #Personal preference for sd -- ARC
+      geom_errorbar(aes(ymin = mu - sd, ymax = mu + sd),
+                    position = position_dodge(width = 0.9), size = .6, width = .3) +
+      coord_cartesian(ylim = c(min(mu) - sd, max(mu) + sd)) +
+      theme_bw(base_size = 16) + ggtitle("Means for each condition in the design") 
 
   } else {
 
     meansplot2 = meansplot +
-      geom_point(position = position_dodge(width=0.9), shape = 10, size=5, stat="identity") + #Personal preference for sd -- ARC
-      geom_errorbar(aes(ymin = mu-sd, ymax = mu+sd),
-                    position = position_dodge(width=0.9), size=.6, width=.3) +
-      coord_cartesian(ylim=c(min(mu)-sd, max(mu)+sd)) +
-      theme_bw() + ggtitle("Means for each condition in the design") +
-      scale_colour_brewer(palette = "Dark2")
+      geom_point(position = position_dodge(width = 0.9), shape = 10, size = 5, stat = "identity") + #Personal preference for sd -- ARC
+      geom_errorbar(aes(ymin = mu - sd, ymax = mu + sd),
+                    position = position_dodge(width = 0.9), size = .6, width = .3) +
+      coord_cartesian(ylim = c(min(mu) - sd, max(mu) + sd)) +
+      theme_bw() + ggtitle("Means for each condition in the design") 
   }
-  if(plot == TRUE){
+  if (plot == TRUE) {
     print(meansplot2)  #should be blocked in Shiny context
   }
 
