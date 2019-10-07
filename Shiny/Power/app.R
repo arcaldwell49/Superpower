@@ -544,11 +544,32 @@ ui <- dashboardPage(
 
                   uiOutput("sample_size"),
                   
+                  selectInput("sdChoice", "Would you like to enter multiple standard deviations? 
+                              *Warning: Violates homoscedascity assumption*",
+                              c("No" = "no" ,
+                                "Yes" = "yes"
+                                )),
+                  
+                  conditionalPanel(condition = "input.sdChoice == 'yes'",                  
                   strong("Specify the list of standard deviations."),
-                  uiOutput("sdMatrix"),
+                  uiOutput("sdMatrix") ),
 
-                  strong("Specify the correlation matrix."),
-                  uiOutput("rMatrix"),
+                  conditionalPanel(condition = "input.sdChoice == 'no'", 
+                  textInput(inputId = "sd_common", label = "Common Standard Deviation",
+                            value = 1.03)),
+                  
+                  selectInput("rChoice", "Would you like to enter a correlation matrix? 
+                              *Warning: may violate sphericity assumption*",
+                              c("No" = "no" ,
+                                "Yes" = "yes"
+                              )),
+                  conditionalPanel(condition = "input.rChoice == 'no'", 
+                                   textInput(inputId = "r_common", label = "Common correlation among within-subjects factors",
+                                             value = .5)),
+
+                  conditionalPanel(condition = "input.rChoice == 'yes'", 
+                                   strong("Specify the correlation matrix."),
+                                   uiOutput("rMatrix")),
 
                   h5("Note that for each cell in the design, a mean must be provided. Thus, for a '2b*3w' design, 6 means need to be entered. Means need to be entered in the correct order. The app provides a plot so you can check if you entered means correctly. The general principle has designated factors (i.e., AGE and SPEED) and levels (e.g., old, young)."),
 
@@ -568,7 +589,8 @@ ui <- dashboardPage(
                 collapsible = TRUE,
                 verbatimTextOutput("DESIGN"),
                 plotOutput('plot'),
-                tableOutput("corMat")
+                tableOutput("corMat"),
+                tableOutput("covMat")
               )
       )
       ),
@@ -641,7 +663,9 @@ server <- function(input, output) {
   #Create set of reactive values
   values <- reactiveValues(design_result = 0,
                            power_result = 0,
-                           power_curve = 0)
+                           power_curve = 0,
+                           sd_input = 0,
+                           r_input = 0)
   
 
   
@@ -688,15 +712,26 @@ server <- function(input, output) {
               max = 1000, value = 80)
   })
 
-  #Produce ANOVA design
+
+
   observeEvent(input$designBut, {
+
+
     if (input$labelChoice == "no") {
       values$design_result <- ANOVA_design(design = as.character(input$design),
                                            n = as.numeric(input$sample_size),
                                            mu = as.numeric(input$muMatrix),
                                            labelnames = NULL,
-                                           sd = as.numeric(input$sdMatrix),
-                                           r = as.numeric(input$rMatrix),
+                                           sd = if(input$sdChoice == "yes"){
+                                             as.numeric(input$sdMatrix)
+                                           }else{
+                                             as.numeric(input$sd_common)
+                                           },
+                                           r = if(input$rChoice == "yes"){
+                                             as.numeric(input$rMatrix)
+                                           }else{
+                                             as.numeric(input$r_common)
+                                           },
                                            plot = FALSE)
     }
     else {
@@ -704,8 +739,16 @@ server <- function(input, output) {
                                                                       n = as.numeric(input$sample_size),
                                                                       mu = as.numeric(input$muMatrix),
                                                                       labelnames = as.vector(unlist(strsplit(gsub("[[:space:]]", "",input$labelnames), ","))),
-                                                                      sd = as.numeric(input$sdMatrix),
-                                                                      r = as.numeric(input$rMatrix),
+                                                                      sd = if(input$sdChoice == "yes"){
+                                                                        as.numeric(input$sdMatrix)
+                                                                      }else{
+                                                                        as.numeric(input$sd_common)
+                                                                      },
+                                                                      r = if(input$rChoice == "yes"){
+                                                                        as.numeric(input$rMatrix)
+                                                                      }else{
+                                                                        as.numeric(input$r_common)
+                                                                      },
                                                                       plot = FALSE)
     }
   })
@@ -725,13 +768,22 @@ server <- function(input, output) {
   })
 
   #Output of correlation and standard deviation matrix
-  output$corMat <- renderTable(colnames = FALSE,
+  output$covMat <- renderTable(colnames = FALSE,
                                caption = "Variance-Covariance Matrix",
                                caption.placement = getOption("xtable.caption.placement", "top"),
                                {
                                  req(input$designBut)
                                  values$design_result$sigmatrix
 
+                               })
+  
+  output$corMat <- renderTable(colnames = FALSE,
+                               caption = "Correlation Matrix",
+                               caption.placement = getOption("xtable.caption.placement", "top"),
+                               {
+                                 req(input$designBut)
+                                 values$design_result$cor_mat
+                                 
                                })
   #Output plot of the design
   output$plot <- renderPlot({

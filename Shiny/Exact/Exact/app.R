@@ -4,6 +4,7 @@
 
 library(shiny)
 library(shinyjs)
+library(shinyMatrix)
 library(shinydashboard)
 library(Superpower)
 library(ggplot2)
