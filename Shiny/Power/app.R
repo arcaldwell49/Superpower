@@ -15,6 +15,7 @@ library(ggplot2)
 library(reshape2)
 library(MASS)
 
+
 shiny_power <- function(design_result, alpha_level = 0.05, correction = "none",
                         p_adjust = "none", nsims = 1000, seed = NULL,
                         verbose = TRUE){
@@ -480,6 +481,85 @@ shiny_power <- function(design_result, alpha_level = 0.05, correction = "none",
                  alpha_level = alpha_level))
 }
 
+label_function <- function(design, labelnames = NULL) {
+  #If labelnames are not provided, they are generated.
+  #Store factor levels (used many times in the script, calculate once)
+  factor_levels <- as.numeric(strsplit(design, "\\D+")[[1]])
+  
+  if (is.null(labelnames)) {
+    for (i1 in 1:length(factor_levels)){
+      labelnames <- append(labelnames,paste(paste(letters[i1]), sep = ""))
+      for (i2 in 1:factor_levels[i1]){
+        labelnames <- append(labelnames,paste(paste(letters[i1]), paste(i2), sep = ""))
+      }
+    }
+  }
+  
+  if (length(labelnames) != length(factor_levels) + sum(factor_levels)) {
+    stop("Variable 'design' does not match the length of the labelnames")
+  }
+  
+  ###############
+  # 1. Specify Design and Simulation----
+  ###############
+  # String used to specify the design
+  # Add numbers for each factor with 2 levels, e.g., 2 for a factor with 2 levels
+  # Add a 'w' after the number for within factors, and a 'b' for between factors
+  # Separate factors with a * (asterisk)
+  # Thus "2b*3w) is a design with 2 between levels, and 3 within levels
+  
+  #Check if design and means match up - if not, throw an error and stop
+  if(prod(factor_levels) != length(mu)){stop("the length of the vector with means does not match the study design")}
+  
+  #Check if the design and sd match (either 1 or length of design)
+  #if(length(sd) != 1 && prod(factor_levels) != length(sd)){stop("The SD must be a length of 1 or match the length of the study design")}
+  
+  #Check if the factors are of an acceptable number of levels
+  if(any(factor_levels <= 0) == TRUE | any(factor_levels > 99) ) {
+    stop("Each factor can only have between 2 and 99 levels")
+  }
+  
+  ###############
+  # 2. Create Factors and Design ----
+  ###############
+  
+  #Count number of factors in design
+  factors <- length(factor_levels)
+  
+  #Get factor names and labelnameslist
+  labelnames1 <- labelnames[(1 + 1):(1+factor_levels[1])]
+  if(factors > 1){labelnames2 <- labelnames[(factor_levels[1] + 3):((factor_levels[1] + 3) + factor_levels[2] - 1)]}
+  if(factors > 2){labelnames3 <- labelnames[(factor_levels[2] + factor_levels[1] + 4):((factor_levels[2] + factor_levels[1] + 4) + factor_levels[3] - 1)]}
+  
+  factornames1 <- labelnames[1]
+  if(factors > 1){factornames2 <- labelnames[factor_levels[1] + 2]}
+  if(factors > 2){factornames3 <- labelnames[factor_levels[2] + factor_levels[1] + 3]}
+  
+  if(factors == 1){labelnameslist <- list(labelnames1)}
+  if(factors == 2){labelnameslist <- list(labelnames1,labelnames2)}
+  if(factors == 3){labelnameslist <- list(labelnames1,labelnames2,labelnames3)}
+  
+  if(factors == 1){factornames <- c(factornames1)}
+  if(factors == 2){factornames <- c(factornames1,factornames2)}
+  if(factors == 3){factornames <- c(factornames1,factornames2,factornames3)}
+  
+  #Specify within/between factors in design: Factors that are within are 1, between 0
+  design_factors <- strsplit(gsub("[^A-Za-z]","",design),"",fixed = TRUE)[[1]]
+  design_factors <- as.numeric(design_factors == "w") #if within design, set value to 1, otherwise to 0
+  
+  #Specify design list (similar as below)
+  xxx <- data.frame(matrix(NA, nrow = prod(factor_levels), ncol = 0))
+  for(j in 1:factors){
+    xxx <- cbind(xxx, as.factor(unlist(rep(as.list(paste(labelnameslist[[j]],
+                                                         sep="_")),
+                                           each = prod(factor_levels)/prod(factor_levels[1:j]),
+                                           times = prod(factor_levels)/prod(factor_levels[j:factors])
+    ))))
+  }
+  design_list <- as.character(interaction(xxx[, 1:factors], sep = "_"))
+  paste(design_list)
+}
+
 # Define UI for application
 ui <- dashboardPage(
   dashboardHeader(title = "ANOVA_power"),
@@ -568,7 +648,9 @@ ui <- dashboardPage(
                                              value = .5)),
 
                   conditionalPanel(condition = "input.rChoice == 'yes'", 
-                                   strong("Specify the correlation matrix."),
+                                   strong("Specify the correlation matrix. 
+                                          If a correlation is entered across between subjects factor it will be reset to zero.
+                                          Values only need to be entered in the upper triangular part and the app will take it from there."),
                                    uiOutput("rMatrix")),
 
                   h5("Note that for each cell in the design, a mean must be provided. Thus, for a '2b*3w' design, 6 means need to be entered. Means need to be entered in the correct order. The app provides a plot so you can check if you entered means correctly. The general principle has designated factors (i.e., AGE and SPEED) and levels (e.g., old, young)."),
@@ -664,16 +746,37 @@ server <- function(input, output) {
   values <- reactiveValues(design_result = 0,
                            power_result = 0,
                            power_curve = 0,
-                           sd_input = 0,
-                           r_input = 0)
+                           label_list = 0)
+  
+values$label_list <- reactive({  
+  
+  design_labels <- ANOVA_design(design = input$design,
+                                n = prod(
+                                  as.numeric(
+                                    unlist(
+                                      regmatches
+                                      (input$design,
+                                        gregexpr("[[:digit:]]+",
+                                                 input$design))))),
+                                r = .5,
+                                sd = as.numeric(matrix(c(1), 1, 
+                                                       prod(as.numeric(strsplit(input$design, "\\D+")[[1]])))),
+                                mu = as.numeric(matrix(c(1), 1, 
+                                                       prod(as.numeric(strsplit(input$design, "\\D+")[[1]])))))
+  colnames(design_labels$sigmatrix)
+
+})
   
 
   
  output$sdMatrix <-  renderUI({matrixInput(
    "sdMatrix",
-   value = matrix(c(1), 1, prod(as.numeric(strsplit(input$design, "\\D+")[[1]]))),
-   rows = list(names = FALSE),
-   cols = list(names = FALSE),
+   value = matrix(c(1), 1, 
+                  prod(as.numeric(strsplit(input$design, "\\D+")[[1]])),
+                  dimnames = list(c("sd"),
+                                  c(label_function(input$design)))),
+   rows = list(names = TRUE),
+   cols = list(names = TRUE),
    copy = TRUE,
    paste = TRUE
  )
@@ -681,9 +784,12 @@ server <- function(input, output) {
  
  output$muMatrix <-  renderUI({matrixInput(
    "muMatrix",
-   value = matrix(c(1), 1, prod(as.numeric(strsplit(input$design, "\\D+")[[1]]))),
-   rows = list(names = FALSE),
-   cols = list(names = FALSE),
+   value = matrix(c(1), 1, 
+                  prod(as.numeric(strsplit(input$design, "\\D+")[[1]])),
+                  dimnames = list(c("mu"),
+                                  c(label_function(input$design)))),
+   rows = list(names = TRUE),
+   cols = list(names = TRUE),
    copy = TRUE,
    paste = TRUE
  )
@@ -691,9 +797,14 @@ server <- function(input, output) {
  
  output$rMatrix <-  renderUI({matrixInput(
    "rMatrix",
-   value = diag(prod(as.numeric(strsplit(input$design, "\\D+")[[1]]))),
-   rows = list(names = FALSE),
-   cols = list(names = FALSE),
+   value = matrix(diag(prod(as.numeric(strsplit(input$design, "\\D+")[[1]]))), 
+                  prod(as.numeric(strsplit(input$design, "\\D+")[[1]])), 
+                  prod(as.numeric(strsplit(input$design, "\\D+")[[1]])),
+                  dimnames = list(c(label_function(input$design)),
+                                  c(label_function(input$design)))) ,
+   rows = list(names = TRUE),
+   cols = list(names = TRUE),
+   class = "numeric",
    copy = TRUE,
    paste = TRUE
  )
@@ -716,41 +827,26 @@ server <- function(input, output) {
 
   observeEvent(input$designBut, {
 
-
-    if (input$labelChoice == "no") {
-      values$design_result <- ANOVA_design(design = as.character(input$design),
-                                           n = as.numeric(input$sample_size),
-                                           mu = as.numeric(input$muMatrix),
-                                           labelnames = NULL,
-                                           sd = if(input$sdChoice == "yes"){
-                                             as.numeric(input$sdMatrix)
-                                           }else{
-                                             as.numeric(input$sd_common)
-                                           },
-                                           r = if(input$rChoice == "yes"){
-                                             as.numeric(input$rMatrix)
-                                           }else{
-                                             as.numeric(input$r_common)
-                                           },
-                                           plot = FALSE)
-    }
-    else {
     values$design_result <- ANOVA_design(design = as.character(input$design),
                                                                       n = as.numeric(input$sample_size),
                                                                       mu = as.numeric(input$muMatrix),
-                                                                      labelnames = as.vector(unlist(strsplit(gsub("[[:space:]]", "",input$labelnames), ","))),
+                                                                      labelnames = if (input$labelChoice == "yes"){
+                                                                        as.vector(unlist(strsplit(gsub("[[:space:]]", "",input$labelnames), ",")))
+                                                                        }else{
+                                                                          NULL
+                                                                        },
                                                                       sd = if(input$sdChoice == "yes"){
                                                                         as.numeric(input$sdMatrix)
                                                                       }else{
                                                                         as.numeric(input$sd_common)
                                                                       },
                                                                       r = if(input$rChoice == "yes"){
-                                                                        as.numeric(input$rMatrix)
+                                                                        as.numeric(Matrix::forceSymmetric(input$rMatrix, uplo="U"))
                                                                       }else{
                                                                         as.numeric(input$r_common)
                                                                       },
                                                                       plot = FALSE)
-    }
+    
   })
 
 
