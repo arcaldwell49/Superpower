@@ -23,7 +23,7 @@ ANOVA_power(design_result, alpha_level = 0.05, correction = "none",
 \item{verbose}{Set to FALSE to not print results (default = TRUE)}
 }
 \value{
-Returns dataframe with simulation data (p-values and effect sizes), anova results and simple effect results, and plots of p-value distribution.
+Returns dataframe with simulation data (p-values and effect sizes), anova results (type 3 sums of squares) and simple effect results, and plots of p-value distribution.
 
 \describe{
   \item{\code{"sim_data"}}{Output from every iteration of the simulation}

@@ -31,7 +31,8 @@ Imports:
     ggplot2,
     gridExtra,
     reshape2,
-    stats
+    stats,
+    emmeans
 Suggests: 
     knitr,
     rmarkdown,
