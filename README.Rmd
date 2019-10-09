@@ -38,7 +38,7 @@ library(Superpower)
 # An Introduction to Superpower
 
 The goal of `Superpower` is to easily simulate factorial designs and empirically calculate power using a simulation approach. 
-This app is intended to be utilized for prospective (a priori) power analysis. In addition to this README file we have written a short [book](arcaldwell49.github.io/SuperpowerBook) documenting the package's capabilities.
+This app is intended to be utilized for prospective (a priori) power analysis. In addition to this README file we have written a short [book](https://arcaldwell49.github.io/SuperpowerBook) documenting the package's capabilities.
 
 
 
@@ -403,5 +403,5 @@ plot_power(design_result, min_n = 10, max_n = 250,
            plot = TRUE)
 ```
 
-As these different plots make clear, your study never realy has a known statistical power. Because the true effect size (i.e., the pattern of means and standard deviations) is unknown, the true power of your study is unknown. A study has 90% power *assuming a specific effect size*, but if the effect size is different than what you expected, the true power can be either higher or lower. We should therefore always talk about the 'expected' power when we do an a-priori power analysis, and provide a good justification for our expectations (i.e., for the pattern of means, standard deviations, and correlations for within designs).
+As these different plots make clear, your study never really has a known statistical power. Because the true effect size (i.e., the pattern of means and standard deviations) is unknown, the true power of your study is unknown. A study has 90% power *assuming a specific effect size*, but if the effect size is different than what you expected, the true power can be either higher or lower. We should therefore always talk about the 'expected' power when we do an a-priori power analysis, and provide a good justification for our expectations (i.e., for the pattern of means, standard deviations, and correlations for within designs).
 
