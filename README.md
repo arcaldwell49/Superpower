@@ -20,7 +20,7 @@ The goal of `Superpower` is to easily simulate factorial designs and
 empirically calculate power using a simulation approach. This app is
 intended to be utilized for prospective (a priori) power analysis. In
 addition to this README file we have written a short
-[book](arcaldwell49.github.io/SuperpowerBook) documenting the package’s
+[book](https://arcaldwell49.github.io/SuperpowerBook) documenting the package’s
 capabilities.
 
 ## Installation
@@ -699,7 +699,7 @@ plot_power(design_result, min_n = 10, max_n = 250,
 
 ![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
 
-As these different plots make clear, your study never realy has a known
+As these different plots make clear, your study never really has a known
 statistical power. Because the true effect size (i.e., the pattern of
 means and standard deviations) is unknown, the true power of your study
 is unknown. A study has 90% power *assuming a specific effect size*, but
