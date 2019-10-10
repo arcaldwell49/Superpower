@@ -219,8 +219,8 @@ ANOVA_power <- function(design_result, alpha_level = 0.05, correction = "none",
         y <- dataframe$y[which(dataframe$cond == paired_tests[2,j])]
         #this can be sped up by tweaking the functions that are loaded to only give p and dz
         ifelse(within_between[j] == 0,
-               t_test_res <- effect_size_d(x, y, conf.level = 1 - alpha_level),
-               t_test_res <- effect_size_d_paired(x, y, conf.level = 1 - alpha_level))
+               t_test_res <- effect_size_d(x, y, alpha_level = alpha_level),
+               t_test_res <- effect_size_d_paired(x, y, alpha_level = alpha_level))
         paired_p[j] <- t_test_res$p_value
         paired_d[j] <- ifelse(within_between[j] == 0,
                                     t_test_res$d,
