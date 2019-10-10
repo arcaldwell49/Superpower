@@ -1,4 +1,5 @@
 # Effect sizes
+# Changed conf.level to alpha_level
 
 effect_size_d <- function(x, y, alpha_level){
   sd1 <- sd(x) #standard deviation of measurement 1
