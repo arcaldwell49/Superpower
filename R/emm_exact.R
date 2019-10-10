@@ -16,7 +16,16 @@ emm_exact <- function(design_result,
                       verbose = TRUE,
                       specs) {
 
+  if(emm != FALSE || emm != TRUE){
+    stop("emm can only be set to TRUE or FALSE")
+  }
   
+  if(emm == TRUE){
+    if(emm_model != "univariate" || emm_model != "multivariate"){
+      emm_model = "multivariate"
+      warning("emm_model must be set to univariate or multivariate; automatically set to multivariate")
+    }
+  }
   #Errors with very small sample size; issue with mvrnorm function from MASS package
   if (design_result$n < prod(as.numeric(unlist(regmatches(design_result$design,
                                                           gregexpr("[[:digit:]]+", design_result$design)))))

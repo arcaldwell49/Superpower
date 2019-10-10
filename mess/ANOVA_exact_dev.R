@@ -227,38 +227,38 @@ ANOVA_exact <- function(design_result, correction = "none", alpha_level, verbose
                           t_test_res$d_z)
   }
   
-  #if(emm == TRUE){
-  #Call emmeans with specifcations given in the function
-  #Limited to specs and model
-  #  emm_result <- emmeans(aov_result, 
-  #                        specs = specs,
-  #                        model = emm_model)
-  #  plot_emm = plot(emm_result, comparisons = TRUE, adjust = "none")
-  #  #make comparison based on specs; adjust = "none" in exact; No solution for multcomp in exact simulation
-  #  pairs_result <- pairs(emm_result, adjust = "none")
-  #  pairs_result_df <- as.data.frame(pairs_result)
-  #  #Need for exact; not necessary for power function
-  #  #Convert t-ratio to F-stat
-  #  pairs_result_df$F.value <- (pairs_result_df$t.ratio)^2
-  #  #Calculate pes -- The formula for partial eta-squared is equation 13 from Lakens (2013)
-  #  pairs_result_df$pes <- pairs_result_df$F.value/(pairs_result_df$F.value+pairs_result_df$df) 
-  #  #Calculate cohen's f
-  #  pairs_result_df$f2 <- pairs_result_df$pes/(1 - pairs_result_df$pes)
-  #  #Calculate noncentrality
-  #  pairs_result_df$lambda <- pairs_result_df$f2*pairs_result_df$df
-  #  #minusalpha<- 1-alpha_level
-  #  pairs_result_df$Ft <- qf((1 - alpha_level), 1, pairs_result_df$df)
-  #  #Calculate power
-  #  pairs_result_df$power <- (1 - pf(pairs_result_df$Ft, 1, pairs_result_df$df, pairs_result_df$lambda))*100
-  #  
-  #  
-  #  pairs_result_df <- pairs_result_df[ , -which(names(pairs_result_df) %in% c("p.value"))]
-  #}
-  # 
-  #if(emm == FALSE){
-  #  pairs_result_df = NULL
-  #  plot_emm = NULL
-  #}
+  if(emm == TRUE){
+    #Call emmeans with specifcations given in the function
+    #Limited to specs and model
+    emm_result <- emmeans(aov_result, 
+                          specs = specs,
+                          model = emm_model)
+    plot_emm = plot(emm_result, comparisons = TRUE, adjust = "none")
+    #make comparison based on specs; adjust = "none" in exact; No solution for multcomp in exact simulation
+    pairs_result <- pairs(emm_result, adjust = "none")
+    pairs_result_df <- as.data.frame(pairs_result)
+    #Need for exact; not necessary for power function
+    #Convert t-ratio to F-stat
+    pairs_result_df$F.value <- (pairs_result_df$t.ratio)^2
+    #Calculate pes -- The formula for partial eta-squared is equation 13 from Lakens (2013)
+    pairs_result_df$pes <- pairs_result_df$F.value/(pairs_result_df$F.value+pairs_result_df$df) 
+    #Calculate cohen's f
+    pairs_result_df$f2 <- pairs_result_df$pes/(1 - pairs_result_df$pes)
+    #Calculate noncentrality
+    pairs_result_df$lambda <- pairs_result_df$f2*pairs_result_df$df
+    #minusalpha<- 1-alpha_level
+    pairs_result_df$Ft <- qf((1 - alpha_level), 1, pairs_result_df$df)
+    #Calculate power
+    pairs_result_df$power <- (1 - pf(pairs_result_df$Ft, 1, pairs_result_df$df, pairs_result_df$lambda))*100
+    
+    
+    pairs_result_df <- pairs_result_df[ , -which(names(pairs_result_df) %in% c("p.value"))]
+  }
+   
+  if(emm == FALSE){
+    pairs_result_df = NULL
+    plot_emm = NULL
+  }
   
   pairs_result_df = NULL
   plot_emm = NULL

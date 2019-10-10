@@ -34,16 +34,54 @@
 #' @importFrom reshape2 melt
 #' @importFrom MASS mvrnorm
 #' @importFrom afex aov_car
+#' @importFrom magrittr '%>%'
+#' @importFrom dplyr select mutate
 #' @import emmeans
 #' @import ggplot2
 #' @export
 #'
 
-ANOVA_exact <- function(design_result, correction = "none", alpha_level, verbose = TRUE) {
-
+ANOVA_exact <- function(design_result, correction = "none", 
+                        alpha_level, 
+                        verbose = TRUE,
+                        emm = FALSE,
+                        emm_model = "multivariate",
+                        contrast_type = "pairwise",
+                        emm_comp) {
+  if(missing(emm)){
+    emm = FALSE
+  }
+  
+  if(missing(emm_model)){
+    emm_model = "multivariate"
+  }
+  
+  if(emm == TRUE){
+    if(is.element(emm_model, c("univariate", "multivariate")) == FALSE ){
+      stop("emm_model must be set to \"univariate\" or \"multivariate\". ")
+    }
+    if(is.element(contrast_type, 
+                  c("pairwise", 
+                    "revpairwise",
+                    "eff",
+                    "consec",
+                    "poly",
+                    "del.eff",
+                    "trt.vs.ctrl",
+                    "trt.vs.ctrl1",
+                    "trt.vs.ctrlk",
+                    "mean_chg"
+                    )) == FALSE ){
+      stop("contrast_type must be of an accepted format. 
+           The tukey & dunnett options currently not supported in ANOVA_exact. 
+           See help(\"contrast-methods\")")
+    }
+  }
   if (is.element(correction, c("none", "GG", "HF")) == FALSE ) {
     stop("Correction for sphericity can only be none, GG, or HF")
   }
+  
+
 
   #Errors with very small sample size; issue with mvrnorm function from MASS package
   if (design_result$n < prod(as.numeric(unlist(regmatches(design_result$design,
@@ -92,7 +130,11 @@ ANOVA_exact <- function(design_result, correction = "none", alpha_level, verbose
   frml2 <- design_result$frml2
 
   aov_result <- suppressMessages({aov_car(frml1, #here we use frml1 to enter formula 1 as designed above on the basis of the design
-                                          data = dataframe, include_aov = FALSE,
+                                          data = dataframe, include_aov = if(emm_model == "univariate"){
+                                            TRUE
+                                          } else {
+                                            FALSE
+                                          },
                                           anova_table = list(es = "pes")) }) #This reports PES not GES
 
   #Run MANOVA if within subject factor is included; otherwise ignored
@@ -148,9 +190,12 @@ ANOVA_exact <- function(design_result, correction = "none", alpha_level, verbose
   })
 
   # We perform the ANOVA using AFEX
-  #Can be set to NICE to speed up, but required data grabbing from output the change.
   aov_result <- suppressMessages({aov_car(frml1, #here we use frml1 to enter fromula 1 as designed above on the basis of the design
-                                          data = dataframe, include_aov = FALSE, #Need development code to get aov_include function
+                                          data = dataframe, include_aov = if(emm_model == "univariate"){
+                                            TRUE
+                                          } else {
+                                            FALSE
+                                          }, #Need development code to get aov_include function
                                           anova_table = list(es = "pes",
                                                              correction = correction))}) #This reports PES not GES
 
@@ -187,7 +232,53 @@ ANOVA_exact <- function(design_result, correction = "none", alpha_level, verbose
                                              manova_result$den_Df,
                                              manova_result$lambda)) * 100
 
-}
+  }
+  
+  if(emm == TRUE){
+    #Call emmeans with specifcations given in the function
+    #Limited to specs and model
+    if(missing(emm_comp)){
+      emm_comp = as.character(frml2)[2]
+    }
+
+    specs_formula <- as.formula(paste(contrast_type," ~ ",emm_comp))
+    emm_result <- emmeans(aov_result, 
+                          specs = specs_formula,
+                          model = emm_model,
+                          adjust = "none")
+    plot_emm = plot(emm_result, comparisons = TRUE)
+    #make comparison based on specs; adjust = "none" in exact; No solution for multcomp in exact simulation
+    pairs_result <- emm_result$contrasts
+    pairs_result_df <- as.data.frame(pairs_result)
+    #Need for exact; not necessary for power function
+    #Convert t-ratio to F-stat
+    pairs_result_df$F.value <- (pairs_result_df$t.ratio)^2
+    #Calculate pes -- The formula for partial eta-squared is equation 13 from Lakens (2013)
+    pairs_result_df$pes <- pairs_result_df$F.value/(pairs_result_df$F.value+pairs_result_df$df) 
+    #Calculate cohen's f
+    pairs_result_df$f2 <- pairs_result_df$pes/(1 - pairs_result_df$pes)
+    #Calculate noncentrality
+    pairs_result_df$lambda <- pairs_result_df$f2*pairs_result_df$df
+    #minusalpha<- 1-alpha_level
+    pairs_result_df$Ft <- qf((1 - alpha_level), 1, pairs_result_df$df)
+    #Calculate power
+    pairs_result_df$power <- (1 - pf(pairs_result_df$Ft, 1, pairs_result_df$df, pairs_result_df$lambda))*100
+    
+    pairs_result_df <- pairs_result_df %>% mutate(partial_eta_squared = pes,
+                              cohen_f = sqrt(f2),
+                              non_centrality = lambda) %>%
+      select(-p.value,-F.value,-t.ratio,-Ft,-SE,-f2,-lambda,-pes, -estimate, -df) %>%
+      select(-power, -partial_eta_squared, -cohen_f, -non_centrality,
+             power, partial_eta_squared, cohen_f, non_centrality)
+    
+
+      
+    
+  } else{
+    pairs_result_df = NULL
+    plot_emm = NULL
+    emm_result = NULL
+  }
   ###
 
   for (j in 1:possible_pc) {
@@ -235,10 +326,10 @@ ANOVA_exact <- function(design_result, correction = "none", alpha_level, verbose
 
   #Data summary for pairwise comparisons
   power_paired = as.data.frame(apply(as.matrix(sim_data[(2 * (2 ^ factors - 1) + 1):(2 * (2 ^ factors - 1) + possible_pc)]), 2,
-                                     function(x) round(x, 2)))
+                                     function(x) x))
 
   es_paired = as.data.frame(apply(as.matrix(sim_data[(2 * (2 ^ factors - 1) + possible_pc + 1):(2*(2 ^ factors - 1) + 2 * possible_pc)]), 2,
-                                  function(x) round(x,round_dig)))
+                                  function(x) x))
 
   pc_results <- data.frame(power_paired, es_paired)
   names(pc_results) = c("power","effect_size")
@@ -271,9 +362,20 @@ ANOVA_exact <- function(design_result, correction = "none", alpha_level, verbose
     cat("\n")
     print(round(main_results, round_dig))
     cat("\n")
-    cat("Power and Effect sizes for contrasts")
+    cat("Power and Effect sizes for pairwise comparisons")
     cat("\n")
-    print(round(pc_results, round_dig))
+    print(round(pc_results, 2))
+    if(emm == TRUE){
+      cat("\n")
+      cat("Power and Effect sizes for estimated marginal means")
+      cat("\n")
+      print_emm <- pairs_result_df %>%
+        mutate(power = round(power,2),
+               partial_eta_squared = round(partial_eta_squared,round_dig),
+               cohen_f = round(cohen_f,round_dig),
+               non_centrality = round(non_centrality,round_dig))
+      print(print_emm)
+    }
   }
 
   if (run_manova == FALSE) {
@@ -283,9 +385,12 @@ ANOVA_exact <- function(design_result, correction = "none", alpha_level, verbose
   # Return results in list()
   invisible(list(dataframe = dataframe,
                  aov_result = aov_result,
+                 emmeans = as.data.frame(emm_result),
                  main_results = main_results,
                  pc_results = pc_results,
+                 emm_results = pairs_result_df,
                  manova_results = manova_results,
                  alpha_level = alpha_level,
-                 plot = meansplot2))
+                 plot = meansplot2,
+                 plot_emm = plot_emm))
 }

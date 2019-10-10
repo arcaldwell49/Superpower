@@ -19,7 +19,7 @@ nsims = 100000
 
 # An Introduction to Superpower
 
-The goal of Superpower is to easily simulate factorial designs and empirically calculate power using a simulation approach. 
+The goal of Superpower is to easily simulate single factor and factorial designs and empirically calculate power using a simulation approach. Currently, the pacakge can only calculate power for ANOVAs.
 This app is intended to be utilized for prospective (a priori) power analysis.
 
 ## Installation
@@ -296,7 +296,8 @@ design_result <- ANOVA_design(design = "2b",
                    sd = 6.4, 
                    labelnames = c("condition", "control", "pet"))
 
-ANOVA_exact(design_result)$main_results$power
+ANOVA_exact(design_result,
+            verbose = FALSE)$main_results$power
 # power of 67.7 is a bit low. Let's increase it a bit to n = 150 to see if we are closer to our goal of 90% power.
 
 design_result <- ANOVA_design(design = "2b",
@@ -306,7 +307,8 @@ design_result <- ANOVA_design(design = "2b",
                    labelnames = c("condition", "control", "pet"),
                    plot = FALSE)
 
-ANOVA_exact(design_result)$main_results$power
+ANOVA_exact(design_result,
+            verbose = FALSE)$main_results$power
 # Close, but not there yet. Let's try n = 175 
 
 design_result <- ANOVA_design(design = "2b",
@@ -316,7 +318,8 @@ design_result <- ANOVA_design(design = "2b",
                    labelnames = c("condition", "control", "pet"),
                    plot = FALSE)
 
-ANOVA_exact(design_result)$main_results$power
+ANOVA_exact(design_result,
+            verbose = FALSE)$main_results$power
 #Very close. Let's add a few more and try n = 180
 
 design_result <- ANOVA_design(design = "2b",
@@ -326,7 +329,8 @@ design_result <- ANOVA_design(design = "2b",
                    labelnames = c("condition", "control", "pet"),
                    plot = FALSE)
 
-ANOVA_exact(design_result)$main_results$power
+ANOVA_exact(design_result,
+            verbose = FALSE)$main_results$power
 
 ```
 
