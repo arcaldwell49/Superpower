@@ -32,13 +32,13 @@ Imports:
     gridExtra,
     reshape2,
     stats,
-    emmeans
+    dplyr,
+    magrittr
 Suggests: 
     knitr,
     rmarkdown,
     pwr,
     testthat,
-    dplyr,
     covr,
     jmvcore
 VignetteBuilder:

@@ -5,7 +5,8 @@
 \title{Simulates an exact dataset (mu, sd, and r represent empirical not population mean and covariance matrix) from the design to calculate power}
 \usage{
 ANOVA_exact(design_result, correction = "none", alpha_level,
-  verbose = TRUE, emm = FALSE, emm_model = "multivariate", spec)
+  verbose = TRUE, emm = FALSE, emm_model = "multivariate",
+  contrast_type = "pairwise", emm_comp)
 }
 \arguments{
 \item{design_result}{Output from the ANOVA_design function}
@@ -15,6 +16,14 @@ ANOVA_exact(design_result, correction = "none", alpha_level,
 \item{alpha_level}{Alpha level used to determine statistical significance}
 
 \item{verbose}{Set to FALSE to not print results (default = TRUE)}
+
+\item{emm}{Set to FALSE to not perform analysis of estimated marginal means}
+
+\item{emm_model}{Set model type ("multivariate", or "univariate") for estimated marginal means}
+
+\item{contrast_type}{Select the type of comparison for the estimated marginal means}
+
+\item{emm_comp}{Set the comparisons for estimated marginal means comaparisons. This is a factor name (a), combination of factor names (a+b), or for simple effects a | sign is needed (a|b)}
 }
 \value{
 Returns dataframe with simulation data (power and effect sizes!), anova results and simple effect results, plot of exact data, and alpha_level. Note: Cohen's f = sqrt(pes/1-pes) and the noncentrality paramter is = f^2*df(error)

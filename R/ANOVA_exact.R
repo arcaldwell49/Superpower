@@ -3,6 +3,10 @@
 #' @param alpha_level Alpha level used to determine statistical significance
 #' @param correction Set a correction of violations of sphericity. This can be set to "none", "GG" Grennhouse-Geisser, and "HF" Huynh-Feldt
 #' @param verbose Set to FALSE to not print results (default = TRUE)
+#' @param emm Set to FALSE to not perform analysis of estimated marginal means
+#' @param emm_model Set model type ("multivariate", or "univariate") for estimated marginal means
+#' @param contrast_type Select the type of comparison for the estimated marginal means
+#' @param emm_comp Set the comparisons for estimated marginal means comaparisons. This is a factor name (a), combination of factor names (a+b), or for simple effects a | sign is needed (a|b)
 #' @return Returns dataframe with simulation data (power and effect sizes!), anova results and simple effect results, plot of exact data, and alpha_level. Note: Cohen's f = sqrt(pes/1-pes) and the noncentrality paramter is = f^2*df(error)
 #' 
 #' \describe{
@@ -29,11 +33,12 @@
 #' exact_result <- ANOVA_exact(design_result, alpha_level = 0.05)
 #' @section References:
 #' to be added
-#' @importFrom stats pnorm pt qnorm qt as.formula median qf power.t.test pf sd
+#' @importFrom stats pnorm pt qnorm qt as.formula median qf power.t.test pf sd power
 #' @importFrom utils combn
 #' @importFrom reshape2 melt
 #' @importFrom MASS mvrnorm
 #' @importFrom afex aov_car
+#' @importFrom graphics pairs
 #' @importFrom magrittr '%>%'
 #' @importFrom dplyr select mutate
 #' @import emmeans
@@ -48,15 +53,17 @@ ANOVA_exact <- function(design_result, correction = "none",
                         emm_model = "multivariate",
                         contrast_type = "pairwise",
                         emm_comp) {
-  if(missing(emm)){
+  
+  cohen_f <- partial_eta_squared <- non_centrality <- NULL
+  if (missing(emm)){
     emm = FALSE
   }
   
-  if(missing(emm_model)){
+  if (missing(emm_model)){
     emm_model = "multivariate"
   }
   
-  if(emm == TRUE){
+  if (emm == TRUE){
     if(is.element(emm_model, c("univariate", "multivariate")) == FALSE ){
       stop("emm_model must be set to \"univariate\" or \"multivariate\". ")
     }
@@ -246,7 +253,7 @@ ANOVA_exact <- function(design_result, correction = "none",
                           specs = specs_formula,
                           model = emm_model,
                           adjust = "none")
-    plot_emm = plot(emm_result, comparisons = TRUE)
+    #plot_emm = plot(emm_result, comparisons = TRUE)
     #make comparison based on specs; adjust = "none" in exact; No solution for multcomp in exact simulation
     pairs_result <- emm_result$contrasts
     pairs_result_df <- as.data.frame(pairs_result)
@@ -254,7 +261,7 @@ ANOVA_exact <- function(design_result, correction = "none",
     #Convert t-ratio to F-stat
     pairs_result_df$F.value <- (pairs_result_df$t.ratio)^2
     #Calculate pes -- The formula for partial eta-squared is equation 13 from Lakens (2013)
-    pairs_result_df$pes <- pairs_result_df$F.value/(pairs_result_df$F.value+pairs_result_df$df) 
+    pairs_result_df$pes <- pairs_result_df$F.value/(pairs_result_df$F.value + pairs_result_df$df) 
     #Calculate cohen's f
     pairs_result_df$f2 <- pairs_result_df$pes/(1 - pairs_result_df$pes)
     #Calculate noncentrality
@@ -264,19 +271,20 @@ ANOVA_exact <- function(design_result, correction = "none",
     #Calculate power
     pairs_result_df$power <- (1 - pf(pairs_result_df$Ft, 1, pairs_result_df$df, pairs_result_df$lambda))*100
     
-    pairs_result_df <- pairs_result_df %>% mutate(partial_eta_squared = pes,
-                              cohen_f = sqrt(f2),
-                              non_centrality = lambda) %>%
-      select(-p.value,-F.value,-t.ratio,-Ft,-SE,-f2,-lambda,-pes, -estimate, -df) %>%
-      select(-power, -partial_eta_squared, -cohen_f, -non_centrality,
-             power, partial_eta_squared, cohen_f, non_centrality)
+    pairs_result_df <- pairs_result_df %>% mutate(partial_eta_squared = .data$pes,
+                                                  cohen_f = sqrt(.data$f2),
+                                                  non_centrality = .data$lambda) %>%
+      select(-.data$p.value,-.data$F.value,-.data$t.ratio,-.data$Ft,-.data$SE,
+             -.data$f2,-.data$lambda,-.data$pes, -.data$estimate, -.data$df) %>%
+      select(-.data$power, -.data$partial_eta_squared, -.data$cohen_f, -.data$non_centrality,
+             .data$power, .data$partial_eta_squared, .data$cohen_f, .data$non_centrality)
     
 
       
     
   } else{
     pairs_result_df = NULL
-    plot_emm = NULL
+    #plot_emm = NULL
     emm_result = NULL
   }
   ###
@@ -391,6 +399,5 @@ ANOVA_exact <- function(design_result, correction = "none",
                  emm_results = pairs_result_df,
                  manova_results = manova_results,
                  alpha_level = alpha_level,
-                 plot = meansplot2,
-                 plot_emm = plot_emm))
+                 plot = meansplot2))
 }
