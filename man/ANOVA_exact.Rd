@@ -56,6 +56,5 @@ to be added
 design_result <- ANOVA_design(design = "2w*2w", n = 40, mu = c(1, 0, 1, 0),
       sd = 2, r = 0.8, labelnames = c("condition", "cheerful",
       "sad", "voice", "human", "robot"))
- set.seed(252)
 exact_result <- ANOVA_exact(design_result, alpha_level = 0.05)
 }

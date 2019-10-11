@@ -51,22 +51,22 @@ plot_power <- function(design_result, alpha_level,
                        contrast_type = "pairwise",
                        emm_comp){
   #Need this to avoid "undefined" global error or no visible binding from occuring
-  cohen_f <- partial_eta_squared <- non_centrality <- pair_results_df <- NULL
+  cohen_f <- partial_eta_squared <- non_centrality <- pairs_results_df <- NULL
   #New checks for emmeans input
-  if (missing(emm)){
+  if (missing(emm)) {
     emm = FALSE
   }
   
-  if (missing(emm_model)){
+  if (missing(emm_model)) {
     emm_model = "multivariate"
   }
   
   #Follow if statements limit the possible input for emmeans specifications
-  if (emm == TRUE){
-    if(is.element(emm_model, c("univariate", "multivariate")) == FALSE ){
+  if (emm == TRUE) {
+    if (is.element(emm_model, c("univariate", "multivariate")) == FALSE ) {
       stop("emm_model must be set to \"univariate\" or \"multivariate\". ")
     }
-    if(is.element(contrast_type, 
+    if (is.element(contrast_type, 
                   c("pairwise", 
                     "revpairwise",
                     "eff",
@@ -77,7 +77,7 @@ plot_power <- function(design_result, alpha_level,
                     "trt.vs.ctrl1",
                     "trt.vs.ctrlk",
                     "mean_chg"
-                  )) == FALSE ){
+                  )) == FALSE ) {
       stop("contrast_type must be of an accepted format. 
            The tukey & dunnett options currently not supported in ANOVA_exact. 
            See help(\"contrast-methods\") for details on the exact methods")
@@ -117,13 +117,13 @@ plot_power <- function(design_result, alpha_level,
 
 
   #Do one ANOVA to get number of power columns
-  if(emm == FALSE){
+  if (emm == FALSE){
   exact_result <- ANOVA_exact(design_result, alpha_level = alpha_level,
                               verbose = FALSE)
   } else {
     #Call emmeans with specifcations given in the function
     #Limited to specs and model
-    if(missing(emm_comp)){
+    if (missing(emm_comp)){
       emm_comp = as.character(frml2)[2]
     }
     exact_result <- ANOVA_exact(design_result, alpha_level = alpha_level,
@@ -154,7 +154,7 @@ plot_power <- function(design_result, alpha_level,
 
   }
   
-  if(emm == TRUE){
+  if (emm == TRUE) {
 
     length_power_emm <- length(exact_result$emm_results$power)
     
@@ -244,10 +244,10 @@ plot_power <- function(design_result, alpha_level,
       power_df_manova[i, 2:(1 + length_power_manova)] <- manova_result$power
     }
     
-    if(emm == TRUE){
+    if (emm == TRUE) {
       #Call emmeans with specifcations given in the function
       #Limited to specs and model
-      if(missing(emm_comp)){
+      if (missing(emm_comp)) {
         emm_comp = as.character(frml2)[2]
       }
       
@@ -342,7 +342,7 @@ plot_power <- function(design_result, alpha_level,
     effect_sizes_manova = NULL
   }
   
-  if (emm == FALSE){
+  if (emm == FALSE) {
     p3 = NULL
     power_df_emm = NULL
     effect_sizes_emm = NULL
@@ -351,11 +351,11 @@ plot_power <- function(design_result, alpha_level,
   #Save effect sizes
   effect_sizes <- exact_result$main_results[,2:3]
 
-  if (run_manova == TRUE){
+  if (run_manova == TRUE) {
   effect_sizes_manova <- exact_result$manova_results[,2:3]
   }
   
-  if (emm == TRUE){
+  if (emm == TRUE) {
   effect_sizes_emm <- pairs_results_df %>%
     select(everything(),-non_centrality,-power)
 }

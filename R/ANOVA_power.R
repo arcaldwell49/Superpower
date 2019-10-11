@@ -64,20 +64,20 @@ ANOVA_power <- function(design_result, alpha_level = 0.05, correction = "none",
   cohen_f <- partial_eta_squared <- non_centrality <- NULL
   
   #New checks for emmeans input
-  if (missing(emm)){
+  if (missing(emm)) {
     emm = FALSE
   }
   
-  if (missing(emm_model)){
+  if (missing(emm_model)) {
     emm_model = "multivariate"
   }
   
   #Follow if statements limit the possible input for emmeans specifications
-  if (emm == TRUE){
-    if(is.element(emm_model, c("univariate", "multivariate")) == FALSE ){
+  if (emm == TRUE) {
+    if (is.element(emm_model, c("univariate", "multivariate")) == FALSE ) {
       stop("emm_model must be set to \"univariate\" or \"multivariate\". ")
     }
-    if(is.element(contrast_type, 
+    if (is.element(contrast_type, 
                   c("pairwise", 
                     "revpairwise",
                     "eff",
@@ -90,14 +90,14 @@ ANOVA_power <- function(design_result, alpha_level = 0.05, correction = "none",
                     "mean_chg",
                     "dunnett",
                     "tukey"
-                  )) == FALSE ){
+                  )) == FALSE ) {
       stop("contrast_type must be of an accepted format. 
            The tukey & dunnett options are not appropriate for models with within subjects factors. 
            See help(\"contrast-methods\") for details on the exact methods")
     }
-  }
   
-  if(is.element(emm_p_adjust, 
+  
+  if (is.element(emm_p_adjust, 
                 c("dunnett",
                   "tukey",
                   "sidak",
@@ -111,7 +111,7 @@ ANOVA_power <- function(design_result, alpha_level = 0.05, correction = "none",
                   "BH", 
                   "BY", 
                   "fdr",
-                  "none")) == FALSE ){
+                  "none")) == FALSE ) {
     stop("emm_p_adjust must be of an acceptable format.
            See ?summary.emmGrid for details on the exact methods.")
   }
@@ -165,7 +165,7 @@ ANOVA_power <- function(design_result, alpha_level = 0.05, correction = "none",
 
   design <- design_result$design #String used to specify the design
   
-  if(grepl("w",design) && is.element(emm_p_adjust,
+  if (grepl("w",design) && is.element(emm_p_adjust,
                                      c("dunnett",
                                        "tukey",
                                        "sidak",
@@ -198,10 +198,10 @@ ANOVA_power <- function(design_result, alpha_level = 0.05, correction = "none",
   aov_result <- suppressMessages({aov_car(frml1, #here we use frml1 to enter formula 1 as designed above on the basis of the design
                                          data = dataframe, include_aov = FALSE,
                                          anova_table = list(es = "pes", p_adjust_method = p_adjust)) }) #This reports PES not GES
-  if(emm == TRUE){
+  if (emm == TRUE){
     #Call emmeans with specifcations given in the function
     #Limited to specs and model
-    if(missing(emm_comp)){
+    if (missing(emm_comp)){
       emm_comp = as.character(frml2)[2]
     }
     
@@ -349,7 +349,7 @@ ANOVA_power <- function(design_result, alpha_level = 0.05, correction = "none",
                                             anova_table = list(es = "pes",
                                                                p_adjust_method = p_adjust,
                                                                correction = correction))}) #This reports PES not GES
-      if(emm ==TRUE){
+      if (emm == TRUE) {
       emm_result <- emmeans(aov_result, 
                             specs = specs_formula,
                             model = emm_model,
@@ -374,7 +374,7 @@ ANOVA_power <- function(design_result, alpha_level = 0.05, correction = "none",
                .data$p.value, .data$cohen_f)
       
       emm_sim_data[i,] <- c(pairs_result_df[[2]], #p-value for contrast
-                            pairs_result_df[[3]], #cohen f
+                            pairs_result_df[[3]] #cohen f
                             ) #
     }
 
