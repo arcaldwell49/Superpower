@@ -29,7 +29,6 @@
 #' design_result <- ANOVA_design(design = "2w*2w", n = 40, mu = c(1, 0, 1, 0),
 #'       sd = 2, r = 0.8, labelnames = c("condition", "cheerful",
 #'       "sad", "voice", "human", "robot"))
-#'  set.seed(252)
 #' exact_result <- ANOVA_exact(design_result, alpha_level = 0.05)
 #' @section References:
 #' to be added
@@ -40,7 +39,7 @@
 #' @importFrom afex aov_car
 #' @importFrom graphics pairs
 #' @importFrom magrittr '%>%'
-#' @importFrom dplyr select mutate
+#' @importFrom dplyr select mutate everything
 #' @import emmeans
 #' @import ggplot2
 #' @export
@@ -54,7 +53,9 @@ ANOVA_exact <- function(design_result, correction = "none",
                         contrast_type = "pairwise",
                         emm_comp) {
   
+  #Need this to avoid "undefined" global error from occuring
   cohen_f <- partial_eta_squared <- non_centrality <- NULL
+  #New checks for emmeans input
   if (missing(emm)){
     emm = FALSE
   }
@@ -63,6 +64,7 @@ ANOVA_exact <- function(design_result, correction = "none",
     emm_model = "multivariate"
   }
   
+  #Follow if statements limit the possible input for emmeans specifications
   if (emm == TRUE){
     if(is.element(emm_model, c("univariate", "multivariate")) == FALSE ){
       stop("emm_model must be set to \"univariate\" or \"multivariate\". ")
@@ -81,7 +83,7 @@ ANOVA_exact <- function(design_result, correction = "none",
                     )) == FALSE ){
       stop("contrast_type must be of an accepted format. 
            The tukey & dunnett options currently not supported in ANOVA_exact. 
-           See help(\"contrast-methods\")")
+           See help(\"contrast-methods\") for details on the exact methods")
     }
   }
   if (is.element(correction, c("none", "GG", "HF")) == FALSE ) {
@@ -393,7 +395,7 @@ ANOVA_exact <- function(design_result, correction = "none",
   # Return results in list()
   invisible(list(dataframe = dataframe,
                  aov_result = aov_result,
-                 emmeans = as.data.frame(emm_result),
+                 emmeans = emm_result,
                  main_results = main_results,
                  pc_results = pc_results,
                  emm_results = pairs_result_df,

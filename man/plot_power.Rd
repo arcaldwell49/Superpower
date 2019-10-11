@@ -5,7 +5,8 @@
 \title{Convenience function to plot power across a range of sample sizes.}
 \usage{
 plot_power(design_result, alpha_level, min_n = 7, max_n = 100,
-  plot = FALSE)
+  plot = FALSE, emm = TRUE, emm_model = "multivariate",
+  contrast_type = "pairwise", emm_comp)
 }
 \arguments{
 \item{design_result}{Output from the ANOVA_design function}
@@ -17,6 +18,14 @@ plot_power(design_result, alpha_level, min_n = 7, max_n = 100,
 \item{max_n}{Maximum sample size in power curve.}
 
 \item{plot}{Should power plot be printed automatically (defaults to FALSE)}
+
+\item{emm}{Set to FALSE to not perform analysis of estimated marginal means}
+
+\item{emm_model}{Set model type ("multivariate", or "univariate") for estimated marginal means}
+
+\item{contrast_type}{Select the type of comparison for the estimated marginal means}
+
+\item{emm_comp}{Set the comparisons for estimated marginal means comaparisons. This is a factor name (a), combination of factor names (a+b), or for simple effects a | sign is needed (a|b)}
 }
 \value{
 Returns plot with power curves for the ANOVA, and a dataframe with the summary data.
