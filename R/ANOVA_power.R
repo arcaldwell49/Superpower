@@ -497,7 +497,20 @@ ANOVA_power <- function(design_result, alpha_level = 0.05, correction = "none",
 
   pc_results <- data.frame(power_paired, es_paired)
   names(pc_results) = c("power","effect_size")
-
+  
+  #Data summary for emmeans
+  if (emm == TRUE) {
+  emm_power = as.data.frame(apply(as.matrix(emm_sim_data[(1):(nrow(pairs_result_df))]), 2,
+                                  function(x) mean(ifelse(x < alpha_level, 1, 0) * 100)))
+  emm_es = as.data.frame(apply(as.matrix(emm_sim_data[((nrow(pairs_result_df) + 1):(nrow(pairs_result_df)*2))]), 2,
+                               function(x) mean(x)))
+  
+  emm_results <- data.frame(power_paired, cohen_f)
+  names(emm_results) = c("power","cohen_f")
+  } else{
+  emm_results = NULL
+  }
+  
   #Simulation results from MANOVA
   if (run_manova == TRUE) {
     power_MANOVA = as.data.frame(apply(as.matrix(sim_data[((2*(2 ^ factors - 1) + 2 * possible_pc + 1):(2 ^ factors + (2*(2 ^ factors - 1) + 2 * possible_pc)))]), 2,
@@ -519,6 +532,12 @@ ANOVA_power <- function(design_result, alpha_level = 0.05, correction = "none",
     cat("Power and Effect sizes for contrasts")
     cat("\n")
     print(pc_results, digits = 4)
+    cat("\n")
+    if (emm = TRUE) {
+    cat("Power and Cohen's f from estimated marginal means")
+    cat("\n")
+    print(emm_results, digits = 4)
+    }
     if (run_manova == TRUE) {
       cat("\n")
       cat("Within-Subject Factors Included: Check MANOVA Results")
@@ -535,10 +554,12 @@ ANOVA_power <- function(design_result, alpha_level = 0.05, correction = "none",
                  main_results = main_results,
                  pc_results = pc_results,
                  manova_results = manova_result,
+                 emm_results = emm_results,
                  plot1 = plt1,
                  plot2 = plt2,
                  correction = correction,
                  p_adjust = p_adjust,
+                 emm_p_adjust = emm_p_adjust,
                  nsims = nsims,
                  alpha_level = alpha_level))
 }
