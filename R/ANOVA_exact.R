@@ -251,10 +251,10 @@ ANOVA_exact <- function(design_result, correction = "none",
     }
 
     specs_formula <- as.formula(paste(contrast_type," ~ ",emm_comp))
-    emm_result <- emmeans(aov_result, 
+    emm_result <- suppressMessages({emmeans(aov_result, 
                           specs = specs_formula,
                           model = emm_model,
-                          adjust = "none")
+                          adjust = "none")})
     #plot_emm = plot(emm_result, comparisons = TRUE)
     #make comparison based on specs; adjust = "none" in exact; No solution for multcomp in exact simulation
     pairs_result <- emm_result$contrasts

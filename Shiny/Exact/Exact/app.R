@@ -11,6 +11,10 @@ library(ggplot2)
 library(rmarkdown)
 library(knitr)
 
+Superpower_options(emm = TRUE,
+                   verbose = FALSE,
+                   plot = FALSE)
+
 # Define UI for application
 ui <- dashboardPage(
 
@@ -50,11 +54,19 @@ ui <- dashboardPage(
                 h5("In this tab, you can see power across a range of sample sizes. All you need to do is set a minimum and maximum sample size"),
                 h3("Download your Simulation"),
                 h5("Once your simulation is completed a button a button will appear on the sidebar to download a PDF")
+              ),              
+              box(
+                title = "NEWS",
+                status = "danger",
+                solidHeader = TRUE,
+                collapsible = FALSE,
+                strong("Current updates to Superpower's Exact Shiny App"),
+                h5("Option for estimated marginal means added")
               )),
       tabItem(tabName = "design_tab",
               fluidRow(
                 box(
-                  title = "Inputs", status = "warning", solidHeader = TRUE,
+                  title = "Design Input", status = "warning", solidHeader = TRUE,
                   strong("Specify the factorial design below"), br(),
                   "*Must be specficied to continue*",
 
@@ -64,8 +76,9 @@ ui <- dashboardPage(
                             value = "2b*2w"),
                   
                   selectInput("labelChoice", "Would you like to enter factor and level names?",
-                              c("Yes" = "yes",
-                                "No" = "no" )),
+                              c("No" = "no",
+                                "Yes" = "yes"
+                                )),
                   conditionalPanel(condition = "input.labelChoice == 'yes'",
                   h5("Specify one word for each factor (e.g., AGE and SPEED) and the level of each factor (e.g., old and yound for a factor age with 2 levels)."),
 
@@ -119,6 +132,28 @@ ui <- dashboardPage(
                   title = "Simulation Parameters", status = "warning", solidHeader = TRUE,
 
                   conditionalPanel("input.designBut >= 1",
+                                   
+                                   selectInput("emm", "Would you like to compare the estimated marginal means?",
+                                               c("No" = "no",
+                                                 "Yes" = "yes"
+                                                 )),
+                                   conditionalPanel("input.emm == 'yes'",
+                                                    selectInput("emm_model", "What model would you like to use for the estimated marginal means",
+                                                                c("Univariate" = "univariate",
+                                                                  "Multivariate" = "multivariate")),
+                                                    selectInput("contrast_type", "Would you like to compare the estimated marginal means?",
+                                                                c("Pairwise" = "pairwise",
+                                                                  "Polynomial contrast" = "poly",
+                                                                  "Helmert" = "consec",
+                                                                  "Compare each level with the average over all levels" = "eff")),
+                                                    textInput(inputId = "emm_comp", 
+                                                              label = "What comparisons would you like to make with estimated marginal means?",
+                                                              value = "a + b"),
+                                                    textOutput("emm_formula"),
+                                                    h5("The addition sign ('+') will add factors for comparisons while factors after a vertical bar '|'  specifies the names of predictors to condition on"),
+                                                    a("For more information on setting comparisons", href = "https://cran.r-project.org/web/packages/emmeans/vignettes/comparisons.html#formulas")
+                                                    ),
+                                   
 
                   sliderInput("sig",
                               label = "Alpha Level",
@@ -134,8 +169,10 @@ ui <- dashboardPage(
                   title = "Power Analysis Output", status = "primary", solidHeader = TRUE,
                   collapsible = TRUE,
                   tableOutput('tableMain'),
-                  
-                  tableOutput('tablePC')
+                  conditionalPanel("input.emm == 'no'",
+                  tableOutput('tablePC')),
+                  conditionalPanel("input.emm == 'yes'",
+                  tableOutput('tableEMM'))
                   
                 )
               )
@@ -184,7 +221,7 @@ ui <- dashboardPage(
 ###############################################################################
 
 # Define server logic
-server <- function(input, output) {
+server <- function(input, output, session) {
 
   #Create set of reactive values
   values <- reactiveValues(design_result = 0,
@@ -217,12 +254,20 @@ server <- function(input, output) {
   observeEvent(input$designBut, {values$design_result <- ANOVA_design(design = as.character(input$design),
                                                                       n = as.numeric(input$sample_size),
                                                                       mu = as.numeric(input$muMatrix),
-                                                                      labelnames = as.vector(unlist(strsplit(gsub("[[:space:]]", "",input$labelnames), ","))),
+                                                                      labelnames = if (input$labelChoice == "yes"){
+                                                                        as.vector(unlist(strsplit(gsub("[[:space:]]", "",input$labelnames), ",")))
+                                                                      }else{
+                                                                        NULL
+                                                                      },
                                                                       sd = as.numeric(input$sd),
                                                                       r = as.numeric(input$r),
                                                                       plot = FALSE)
   })
 
+
+  
+  output$emm_formula <- renderText({
+    paste("Enter",as.character(values$design_result$frml2[2]), "for all pairwise comparisons")})
 
   #Output text for ANOVA design
   output$DESIGN <- renderText({
@@ -255,11 +300,19 @@ server <- function(input, output) {
   observeEvent(input$sim, {values$power_result <- ANOVA_exact(values$design_result,
                                                               correction = "none",
                                                               alpha_level = input$sig,
-                                                              verbose = FALSE)
+                                                              verbose = FALSE,
+                                                              emm = if(input$emm == "yes"){
+                                                                TRUE
+                                                              } else{FALSE},
+                                                              emm_model = as.character(input$emm_model),
+                                                              contrast_type = as.character(input$contrast_type),
+                                                              emm_comp = as.character(input$emm_comp))
 
 
   })
 
+  formula <- reactive({paste(as.character(values$design_result$frml2[2]))})
+  updateTextInput(session, "emm_comp", value = formula)
   #Table output of ANOVA level effects; rownames needed
   output$tableMain <-  renderTable({
     req(input$sim)
@@ -271,6 +324,11 @@ server <- function(input, output) {
     req(input$sim)
     values$power_result$pc_result},
     rownames = TRUE)
+  
+  output$tableEMM <-  renderTable({
+    req(input$sim)
+    values$power_result$emm_results},
+    rownames = FALSE)
 
   observeEvent(input$sim_2, {
     values$power_curve <- plot_power(
