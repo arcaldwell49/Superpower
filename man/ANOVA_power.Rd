@@ -4,7 +4,8 @@
 \alias{ANOVA_power}
 \title{Simulation function used to estimate power}
 \usage{
-ANOVA_power(design_result, alpha_level = 0.05, correction = "none",
+ANOVA_power(design_result,
+  alpha_level = Superpower_options("alpha_level"), correction = "none",
   p_adjust = "none", nsims = 1000, seed = NULL,
   verbose = Superpower_options("verbose"),
   emm = Superpower_options("emm"),

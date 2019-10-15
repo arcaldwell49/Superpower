@@ -4,9 +4,12 @@
 \alias{plot_power}
 \title{Convenience function to plot power across a range of sample sizes.}
 \usage{
-plot_power(design_result, alpha_level, min_n = 7, max_n = 100,
-  plot = FALSE, emm = TRUE, emm_model = "multivariate",
-  contrast_type = "pairwise", emm_comp)
+plot_power(design_result,
+  alpha_level = Superpower_options("alpha_level"), min_n = 7,
+  max_n = 100, plot = Superpower_options("plot"),
+  emm = Superpower_options("emm"),
+  emm_model = Superpower_options("emm_model"),
+  contrast_type = Superpower_options("contrast_type"), emm_comp)
 }
 \arguments{
 \item{design_result}{Output from the ANOVA_design function}

@@ -10,4 +10,4 @@ Updates from contrast_extension update `r format(Sys.time(), "%a %b %d %Y")`
   
 -Add global options
   -Options that have crossover between functions can now be set globally for the package
-  -Includes: verbose, emm
+  -Includes: verbose, emm, emm_model, contrast_type, alpha_level, and plot
