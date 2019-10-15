@@ -51,12 +51,14 @@
 #' @export
 #'
 
-ANOVA_power <- function(design_result, alpha_level = 0.05, correction = "none",
+ANOVA_power <- function(design_result, 
+                        alpha_level = Superpower_options("alpha_level")
+                        , correction = "none",
                         p_adjust = "none", nsims = 1000, seed = NULL,
-                        verbose = TRUE,
-                        emm = FALSE,
-                        emm_model = "multivariate",
-                        contrast_type = "pairwise",
+                        verbose = Superpower_options("verbose"),
+                        emm = Superpower_options("emm"),
+                        emm_model = Superpower_options("emm_model"),
+                        contrast_type = Superpower_options("contrast_type"),
                         emm_p_adjust = "none",
                         emm_comp){
   
@@ -198,10 +200,10 @@ ANOVA_power <- function(design_result, alpha_level = 0.05, correction = "none",
   aov_result <- suppressMessages({aov_car(frml1, #here we use frml1 to enter formula 1 as designed above on the basis of the design
                                          data = dataframe, include_aov = FALSE,
                                          anova_table = list(es = "pes", p_adjust_method = p_adjust)) }) #This reports PES not GES
-  if (emm == TRUE){
+  if (emm == TRUE) {
     #Call emmeans with specifcations given in the function
     #Limited to specs and model
-    if (missing(emm_comp)){
+    if (missing(emm_comp)) {
       emm_comp = as.character(frml2)[2]
     }
     
@@ -505,8 +507,8 @@ ANOVA_power <- function(design_result, alpha_level = 0.05, correction = "none",
   emm_es = as.data.frame(apply(as.matrix(emm_sim_data[((nrow(pairs_result_df) + 1):(nrow(pairs_result_df)*2))]), 2,
                                function(x) mean(x)))
   
-  emm_results <- data.frame(power_paired, cohen_f)
-  names(emm_results) = c("power","cohen_f")
+  emm_results <- data.frame(pairs_result_df$contrast,emm_power, emm_es)
+  names(emm_results) = c("contrast","power","cohen_f")
   } else{
   emm_results = NULL
   }
@@ -529,11 +531,11 @@ ANOVA_power <- function(design_result, alpha_level = 0.05, correction = "none",
     cat("\n")
     print(main_results, digits = 4)
     cat("\n")
-    cat("Power and Effect sizes for contrasts")
+    cat("Power and Effect sizes for pairwise comparisons (t-tests)")
     cat("\n")
     print(pc_results, digits = 4)
     cat("\n")
-    if (emm = TRUE) {
+    if (emm == TRUE) {
     cat("Power and Cohen's f from estimated marginal means")
     cat("\n")
     print(emm_results, digits = 4)

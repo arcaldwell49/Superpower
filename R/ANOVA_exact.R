@@ -46,30 +46,30 @@
 #'
 
 ANOVA_exact <- function(design_result, correction = "none", 
-                        alpha_level, 
-                        verbose = TRUE,
-                        emm = FALSE,
-                        emm_model = "multivariate",
-                        contrast_type = "pairwise",
+                        alpha_level = Superpower_options("alpha_level"), 
+                        verbose = Superpower_options("verbose"),
+                        emm = Superpower_options("emm"),
+                        emm_model = Superpower_options("emm_model"),
+                        contrast_type = Superpower_options("contrast_type"),
                         emm_comp) {
   
   #Need this to avoid "undefined" global error from occuring
   cohen_f <- partial_eta_squared <- non_centrality <- NULL
   #New checks for emmeans input
-  if (missing(emm)){
+  if (missing(emm)) {
     emm = FALSE
   }
   
-  if (missing(emm_model)){
+  if (missing(emm_model)) {
     emm_model = "multivariate"
   }
   
   #Follow if statements limit the possible input for emmeans specifications
-  if (emm == TRUE){
-    if(is.element(emm_model, c("univariate", "multivariate")) == FALSE ){
+  if (emm == TRUE) {
+    if (is.element(emm_model, c("univariate", "multivariate")) == FALSE ) {
       stop("emm_model must be set to \"univariate\" or \"multivariate\". ")
     }
-    if(is.element(contrast_type, 
+    if (is.element(contrast_type, 
                   c("pairwise", 
                     "revpairwise",
                     "eff",
@@ -80,7 +80,7 @@ ANOVA_exact <- function(design_result, correction = "none",
                     "trt.vs.ctrl1",
                     "trt.vs.ctrlk",
                     "mean_chg"
-                    )) == FALSE ){
+                    )) == FALSE ) {
       stop("contrast_type must be of an accepted format. 
            The tukey & dunnett options currently not supported in ANOVA_exact. 
            See help(\"contrast-methods\") for details on the exact methods")
@@ -139,7 +139,7 @@ ANOVA_exact <- function(design_result, correction = "none",
   frml2 <- design_result$frml2
 
   aov_result <- suppressMessages({aov_car(frml1, #here we use frml1 to enter formula 1 as designed above on the basis of the design
-                                          data = dataframe, include_aov = if(emm_model == "univariate"){
+                                          data = dataframe, include_aov = if (emm_model == "univariate"){
                                             TRUE
                                           } else {
                                             FALSE
@@ -372,10 +372,10 @@ ANOVA_exact <- function(design_result, correction = "none",
     cat("\n")
     print(round(main_results, round_dig))
     cat("\n")
-    cat("Power and Effect sizes for pairwise comparisons")
+    cat("Power and Effect sizes for pairwise comparisons (t-tests)")
     cat("\n")
     print(round(pc_results, 2))
-    if(emm == TRUE){
+    if (emm == TRUE) {
       cat("\n")
       cat("Power and Effect sizes for estimated marginal means")
       cat("\n")

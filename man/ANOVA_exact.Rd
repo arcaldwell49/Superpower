@@ -5,8 +5,10 @@
 \title{Simulates an exact dataset (mu, sd, and r represent empirical not population mean and covariance matrix) from the design to calculate power}
 \usage{
 ANOVA_exact(design_result, correction = "none", alpha_level,
-  verbose = TRUE, emm = FALSE, emm_model = "multivariate",
-  contrast_type = "pairwise", emm_comp)
+  verbose = Superpower_options("verbose"),
+  emm = Superpower_options("emm"),
+  emm_model = Superpower_options("emm_model"),
+  contrast_type = Superpower_options("contrast_type"), emm_comp)
 }
 \arguments{
 \item{design_result}{Output from the ANOVA_design function}

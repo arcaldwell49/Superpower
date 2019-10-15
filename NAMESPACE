@@ -3,6 +3,7 @@
 export(ANOVA_design)
 export(ANOVA_exact)
 export(ANOVA_power)
+export(Superpower_options)
 export(jmvpower)
 export(mu_from_ES)
 export(plot_power)

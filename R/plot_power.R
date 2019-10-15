@@ -43,13 +43,15 @@
 #' @import ggplot2
 #' @export
 
-plot_power <- function(design_result, alpha_level,
+plot_power <- function(design_result, 
+                       alpha_level = Superpower_options("alpha_level"),
                        min_n = 7, max_n = 100,
-                       plot = FALSE,
-                       emm = TRUE,
-                       emm_model = "multivariate",
-                       contrast_type = "pairwise",
+                       plot = Superpower_options("plot"),
+                       emm = Superpower_options("emm"),
+                       emm_model = Superpower_options("emm_model"),
+                       contrast_type = Superpower_options("contrast_type"),
                        emm_comp){
+  
   #Need this to avoid "undefined" global error or no visible binding from occuring
   cohen_f <- partial_eta_squared <- non_centrality <- pairs_results_df <- NULL
   #New checks for emmeans input
