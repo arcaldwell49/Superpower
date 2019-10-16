@@ -52,8 +52,8 @@
 #'
 
 ANOVA_power <- function(design_result, 
-                        alpha_level = Superpower_options("alpha_level")
-                        , correction = "none",
+                        alpha_level = Superpower_options("alpha_level"), 
+                        correction = Superpower_options("correction"),
                         p_adjust = "none", nsims = 1000, seed = NULL,
                         verbose = Superpower_options("verbose"),
                         emm = Superpower_options("emm"),

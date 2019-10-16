@@ -45,7 +45,8 @@
 #' @export
 #'
 
-ANOVA_exact <- function(design_result, correction = "none", 
+ANOVA_exact <- function(design_result, 
+                        correction = Superpower_options("correction"), 
                         alpha_level = Superpower_options("alpha_level"), 
                         verbose = Superpower_options("verbose"),
                         emm = Superpower_options("emm"),

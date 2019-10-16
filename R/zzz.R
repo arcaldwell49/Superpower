@@ -7,7 +7,8 @@
     Superpower.emm_model = "multivariate",
     Superpower.contrast_type = "pairwise",
     Superpower.plot = FALSE,
-    Superpower.alpha_level = .05
+    Superpower.alpha_level = .05,
+    Superpower.correction = "none"
   )
   toset <- !(names(op.Superpower) %in% names(op))
   if (any(toset)) options(op.Superpower[toset])

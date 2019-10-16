@@ -138,6 +138,7 @@ ui <- dashboardPage(
                                                  "Yes" = "yes"
                                                  )),
                                    conditionalPanel("input.emm == 'yes'",
+                                                    h5("Keeping the default settings will result in all pairwise comparisons being performed."),
                                                     selectInput("emm_model", "What model would you like to use for the estimated marginal means",
                                                                 c("Univariate" = "univariate",
                                                                   "Multivariate" = "multivariate")),
@@ -226,7 +227,8 @@ server <- function(input, output, session) {
   #Create set of reactive values
   values <- reactiveValues(design_result = 0,
                            power_result = 0,
-                           power_curve = 0)
+                           power_curve = 0,
+                           emm_output = 0)
 
   output$sample_size <- renderUI({sliderInput("sample_size",
               label = "Sample Size per Cell",
@@ -254,7 +256,7 @@ server <- function(input, output, session) {
   observeEvent(input$designBut, {values$design_result <- ANOVA_design(design = as.character(input$design),
                                                                       n = as.numeric(input$sample_size),
                                                                       mu = as.numeric(input$muMatrix),
-                                                                      labelnames = if (input$labelChoice == "yes"){
+                                                                      labelnames = if (input$labelChoice == "yes") {
                                                                         as.vector(unlist(strsplit(gsub("[[:space:]]", "",input$labelnames), ",")))
                                                                       }else{
                                                                         NULL
@@ -267,7 +269,7 @@ server <- function(input, output, session) {
 
   
   output$emm_formula <- renderText({
-    paste("Enter",as.character(values$design_result$frml2[2]), "for all pairwise comparisons")})
+    paste("Enter",as.character(values$design_result$frml2[2]), " above to receive results for all pairwise comparisons")})
 
   #Output text for ANOVA design
   output$DESIGN <- renderText({
@@ -301,7 +303,7 @@ server <- function(input, output, session) {
                                                               correction = "none",
                                                               alpha_level = input$sig,
                                                               verbose = FALSE,
-                                                              emm = if(input$emm == "yes"){
+                                                              emm = if (input$emm == "yes") {
                                                                 TRUE
                                                               } else{FALSE},
                                                               emm_model = as.character(input$emm_model),
@@ -311,23 +313,32 @@ server <- function(input, output, session) {
 
   })
 
-  formula <- reactive({paste(as.character(values$design_result$frml2[2]))})
-  updateTextInput(session, "emm_comp", value = formula)
+   reactive({
+     values$emm_output <- values$design_result$frml2
+     updateTextInput(session, "emm_comp", value = values$emm_output)
+     })
+  
   #Table output of ANOVA level effects; rownames needed
   output$tableMain <-  renderTable({
     req(input$sim)
     values$power_result$main_results},
+    caption = "Power for ANOVA effects",
+    caption.placement = getOption("xtable.caption.placement", "top"),
     rownames = TRUE)
 
   #Table output of pairwise comparisons; rownames needed
   output$tablePC <-  renderTable({
     req(input$sim)
     values$power_result$pc_result},
+    caption = "Power for Pairwise Comparisons with t-tests",
+    caption.placement = getOption("xtable.caption.placement", "top"),
     rownames = TRUE)
   
   output$tableEMM <-  renderTable({
     req(input$sim)
     values$power_result$emm_results},
+    caption = "Power for Estimated Marginal Means Comparisons",
+    caption.placement = getOption("xtable.caption.placement", "top"),
     rownames = FALSE)
 
   observeEvent(input$sim_2, {
@@ -336,7 +347,12 @@ server <- function(input, output, session) {
       min_n = input$ss_2[1],
       max_n = input$ss_2[2],
       alpha_level = input$sig,
-      plot = FALSE
+      emm = if (input$emm == "yes") {
+        TRUE
+      } else{FALSE},
+      emm_model = as.character(input$emm_model),
+      contrast_type = as.character(input$contrast_type),
+      emm_comp = as.character(input$emm_comp)
     )
   })
 
