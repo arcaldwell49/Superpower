@@ -5,9 +5,9 @@
 \title{Simulation function used to estimate power}
 \usage{
 ANOVA_power(design_result,
-  alpha_level = Superpower_options("alpha_level"), correction = "none",
-  p_adjust = "none", nsims = 1000, seed = NULL,
-  verbose = Superpower_options("verbose"),
+  alpha_level = Superpower_options("alpha_level"),
+  correction = Superpower_options("correction"), p_adjust = "none",
+  nsims = 1000, seed = NULL, verbose = Superpower_options("verbose"),
   emm = Superpower_options("emm"),
   emm_model = Superpower_options("emm_model"),
   contrast_type = Superpower_options("contrast_type"),

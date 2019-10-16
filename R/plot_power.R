@@ -254,10 +254,11 @@ plot_power <- function(design_result,
       }
       
       specs_formula <- as.formula(paste(contrast_type," ~ ",emm_comp))
-      emm_result_loop <- emmeans(aov_result, 
+      emm_result_loop <- suppressMessages({emmeans(aov_result, 
                             specs = specs_formula,
                             model = emm_model,
                             adjust = "none")
+      })
       #plot_emm = plot(emm_result, comparisons = TRUE)
       #make comparison based on specs; adjust = "none" in exact; No solution for multcomp in exact simulation
       pairs_result_loop <- emm_result_loop$contrasts
@@ -358,7 +359,7 @@ plot_power <- function(design_result,
   }
   
   if (emm == TRUE) {
-  effect_sizes_emm <- pairs_results_df %>%
+  effect_sizes_emm <- exact_result$emm_results %>%
     select(everything(),-non_centrality,-power)
 }
   invisible(list(plot_ANOVA = p1,
@@ -366,6 +367,8 @@ plot_power <- function(design_result,
                  plot_emm = p3,
                  power_df = power_df,
                  power_df_manova = power_df_manova,
+                 power_df_emm = power_df_emm,
                  effect_sizes = effect_sizes,
-                 effect_sizes_manova = effect_sizes_manova))
+                 effect_sizes_manova = effect_sizes_manova,
+                 effect_sizes_emm = effect_sizes_emm))
 }

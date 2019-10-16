@@ -2,6 +2,7 @@
 title: "Exact Simulation Results"
 subtitle: "Shiny App developed by Dani&euml;l Lakens and Aaron Caldwell"
 output: pdf_document
+
 date: '`r format(Sys.time(), "%B %d, %Y")`'
 params:
   tablePC: NA,
@@ -13,11 +14,14 @@ params:
   cor_mat: NA,
   sigmatrix: NA
   alpha_level: NA
-  power_curve: NA
-  power_curve_df: NA
+  tableEMM: NA
+  input_emm: NA
 ---
 
 
+```{r setup, warning=FALSE, message=FALSE, echo=FALSE}
+options(knitr.table.format = 'markdown')
+```
 
 
 Below are the results from a power analysis using an exact simulation of a factorial design wherein the data are sampled from an empircal distribution. If you encounter any problems please visit our GitHub page (https://github.com/arcaldwell49/Superpower) to the raise the issue.
@@ -66,32 +70,28 @@ knitr::kable(params$tableMain)
 
 ```
 
-**Multiple Comparisons Power (%) and Effect Sizes (Cohen's d~z~)**
+**Estimated Marginal Means Comparisons Power (%) and Effect Sizes (Cohen's *f*)**
+
+If estimated marginal means were selected, the results are included below. 
+
+```{r echo = FALSE}
+if(params$input_emm == "yes"){
+knitr::kable(params$tableEMM)
+}
+```
+
+```{r, results='asis', echo=FALSE}
+cat("\\newpage")
+```
+
+**Multiple Comparisons,*t*-test, Power (%) and Effect Sizes (Cohen's d~z~)**
+
+Below are the power analysis results if all pairwise comparisons are completed via *t*-tests
 
 ```{r echo = FALSE}
 knitr::kable(params$tablePC)
-
-```
-
-```{r, results='asis', echo=FALSE}
-cat("\\newpage")
-```
-
-**Plot of Power Across Many Sample Sizes**
-
-```{r echo = FALSE}
-params$power_curve
 ```
 
 
 
-```{r, results='asis', echo=FALSE}
-cat("\\newpage")
-```
 
-
-**Table of Power Across Many Sample Sizes**
-
-```{r echo = FALSE}
-knitr::kable(params$power_curve_df)
-```

@@ -10,6 +10,9 @@ library(Superpower)
 library(ggplot2)
 library(rmarkdown)
 library(knitr)
+library(kableExtra)
+
+
 
 Superpower_options(emm = TRUE,
                    verbose = FALSE,
@@ -24,10 +27,10 @@ ui <- dashboardPage(
       menuItem("Information", tabName = "info_tab", icon = icon("info-circle")),
       menuItem("Design", tabName = "design_tab", icon = icon("bezier-curve")),
       menuItem("Exact Power", tabName = "exact_tab", icon = icon("equals")),
-      menuItem("Plot Power", tabName = "plot_tab", icon = icon("infinity")),
-      conditionalPanel("input.sim_2 >= 1",
-                       downloadButton("report", "Download PDF Report")
-      )
+      conditionalPanel("input.sim >=1",
+                       downloadButton("report", "Download PDF Report")),
+      menuItem("Plot Power", tabName = "plot_tab", icon = icon("infinity"))
+      
     )
   ),
 
@@ -49,7 +52,7 @@ ui <- dashboardPage(
                 h5("You must start with the Design tab in order to perform a power analysis. At this stage you must establish the parameters of the design (sample size, standard deviation, etc).
                  Once you click Submit Design the design details will be printed and you can continue onto the power analysis."),
                 h3("Exact Power Tab"),
-                h5("In this tab, you will setup the Monte Carlo simulation. All you can do at this stage is set the alpha level (default=.05)"),
+                h5("In this tab, you will setup an *exact* simulation. All you can do at this stage is set the alpha level (default=.05) and decide the estimated marinal means analysis (optional)"),
                 h3("Plot Power Tab"),
                 h5("In this tab, you can see power across a range of sample sizes. All you need to do is set a minimum and maximum sample size"),
                 h3("Download your Simulation"),
@@ -61,7 +64,8 @@ ui <- dashboardPage(
                 solidHeader = TRUE,
                 collapsible = FALSE,
                 strong("Current updates to Superpower's Exact Shiny App"),
-                h5("Option for estimated marginal means added")
+                h5("Option for estimated marginal means added"),
+                h5("Plot power output has been removed from the dowloadable pdf, but now can be downloaded as individual csv files")
               )),
       tabItem(tabName = "design_tab",
               fluidRow(
@@ -142,7 +146,7 @@ ui <- dashboardPage(
                                                     selectInput("emm_model", "What model would you like to use for the estimated marginal means",
                                                                 c("Univariate" = "univariate",
                                                                   "Multivariate" = "multivariate")),
-                                                    selectInput("contrast_type", "Would you like to compare the estimated marginal means?",
+                                                    selectInput("contrast_type", "What type of comparisons would you like to make?",
                                                                 c("Pairwise" = "pairwise",
                                                                   "Polynomial contrast" = "poly",
                                                                   "Helmert" = "consec",
@@ -193,7 +197,12 @@ ui <- dashboardPage(
                                                max = 500, value = c(3, 100)),
                                    actionButton("sim_2", "Plot Power",
                                                 icon = icon("chart-line")),
-                                   h3("Note: No sphercity correction")
+                                   h3("Note: No sphercity correction"),
+                                   conditionalPanel("input.sim_2 >=1",
+                                                    h5("Download Results for ANOVA and estimated marginal means"),
+                                   downloadButton("dl_data", "Download ANOVA Results"),
+                                   conditionalPanel("input.emm == 'yes' ",
+                                   downloadButton("dl_data2", "Download EMMEANS Results")))
                   )
                 ),
                 
@@ -201,7 +210,8 @@ ui <- dashboardPage(
                   title = "Power Curve across Sample Sizes",
                   status = "primary", solidHeader = TRUE,
                   collapsible = TRUE,
-                  plotOutput('plot_curve')
+                  plotOutput('plot_curve'),
+                  plotOutput('plot_curve_emm')
                   
                 )
               )
@@ -264,9 +274,15 @@ server <- function(input, output, session) {
                                                                       sd = as.numeric(input$sd),
                                                                       r = as.numeric(input$r),
                                                                       plot = FALSE)
+  values$emm_output <- as.character(values$design_result$frml2)[2] 
+  updateTextInput(session, "emm_comp", value = values$emm_output)
+
   })
+  
+  #observeEvent(input$designBut, {})
 
-
+  
+  
   
   output$emm_formula <- renderText({
     paste("Enter",as.character(values$design_result$frml2[2]), " above to receive results for all pairwise comparisons")})
@@ -313,10 +329,7 @@ server <- function(input, output, session) {
 
   })
 
-   reactive({
-     values$emm_output <- values$design_result$frml2
-     updateTextInput(session, "emm_comp", value = values$emm_output)
-     })
+
   
   #Table output of ANOVA level effects; rownames needed
   output$tableMain <-  renderTable({
@@ -362,7 +375,30 @@ server <- function(input, output, session) {
     req(input$sim_2)
     values$power_curve$plot_ANOVA
   })
-
+  
+  output$plot_curve_emm <- renderPlot({
+    req(input$sim_2)
+    values$power_curve$plot_emm
+  })
+  
+  output$dl_data <- downloadHandler(
+    filename = function() {
+      paste("ANOVA_power_df", ".csv", sep = "")
+    },
+    content = function(file2) {
+      write.csv(values$power_curve$power_df, file2, row.names = FALSE)
+    }
+  )
+  
+  output$dl_data2 <- downloadHandler(
+    filename = function() {
+      paste("emm_power_df", ".csv", sep = "")
+    },
+    content = function(file3) {
+      write.csv(values$power_curve$power_df_emm, file3, row.names = FALSE)
+    }
+  )
+  
   #Create downloadable report in markdown TINYTEX NEEDS TO BE INSTALLED
   output$report <- downloadHandler(
     # For PDF output, change this to "report.pdf"
@@ -377,6 +413,7 @@ server <- function(input, output, session) {
       # Set up parameters to pass to Rmd document
       params <- list(tablePC = values$power_result$pc_result,
                      tableMain = values$power_result$main_results,
+                     tableEMM = values$power_result$emm_results,
                      means_plot = values$power_result$plot,
                      n = values$design_result$n,
                      model = deparse(values$design_result$frml1),
@@ -384,8 +421,7 @@ server <- function(input, output, session) {
                      cor_mat = values$design_result$cor_mat,
                      sigmatrix = values$design_result$sigmatrix,
                      alpha_level = values$power_result$alpha_level,
-                     power_curve = values$power_curve$plot_ANOVA,
-                     power_curve_df = values$power_curve$power_df)
+                     input_emm = input$emm)
 
       # Knit the document, passing in the `params` list, and eval it in a
       # child of the global environment (this isolates the code in the document

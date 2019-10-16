@@ -4,7 +4,7 @@
 \alias{ANOVA_exact}
 \title{Simulates an exact dataset (mu, sd, and r represent empirical not population mean and covariance matrix) from the design to calculate power}
 \usage{
-ANOVA_exact(design_result, correction = "none",
+ANOVA_exact(design_result, correction = Superpower_options("correction"),
   alpha_level = Superpower_options("alpha_level"),
   verbose = Superpower_options("verbose"),
   emm = Superpower_options("emm"),
