@@ -15,7 +15,7 @@
 #'   \item{\code{"plot_ANOVA"}}{Plot of power curves from ANOVA results.}
 #'   \item{\code{"plot_MANOVA"}}{Plot of power curves from MANOVA results. Returns NULL if no within-subject factors.}
 #'   \item{\code{"power_df"}}{The tabulated ANOVA power results.}
-#'   \item{\code{"power_df_manova"}}{The tabulated MANOVA power results..}
+#'   \item{\code{"power_df_manova"}}{The tabulated MANOVA power results.}
 #'   \item{\code{"effect_sizes"}}{Effect sizes (partial eta-squared) from ANOVA results.}
 #'   \item{\code{"effect_sizes_manova"}}{Effect sizes (Pillai's Trace) from MANOVA results. Returns NULL if no within-subject factors.}
 #'   
@@ -119,13 +119,13 @@ plot_power <- function(design_result,
 
 
   #Do one ANOVA to get number of power columns
-  if (emm == FALSE){
+  if (emm == FALSE) {
   exact_result <- ANOVA_exact(design_result, alpha_level = alpha_level,
                               verbose = FALSE)
   } else {
     #Call emmeans with specifcations given in the function
     #Limited to specs and model
-    if (missing(emm_comp)){
+    if (missing(emm_comp)) {
       emm_comp = as.character(frml2)[2]
     }
     exact_result <- ANOVA_exact(design_result, alpha_level = alpha_level,
