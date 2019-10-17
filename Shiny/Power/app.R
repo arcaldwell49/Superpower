@@ -14,11 +14,83 @@ library(afex)
 library(ggplot2)
 library(reshape2)
 library(MASS)
+library(magrittr)
+library(dplyr)
 
+Superpower_options(emm = TRUE,
+                   verbose = FALSE,
+                   plot = FALSE)
 
-shiny_power <- function(design_result, alpha_level = 0.05, correction = "none",
-                        p_adjust = "none", nsims = 1000, seed = NULL,
-                        verbose = TRUE){
+shiny_power <-  function(design_result, 
+                         alpha_level = Superpower_options("alpha_level"), 
+                         correction = Superpower_options("correction"),
+                         p_adjust = "none", nsims = 1000, seed = NULL,
+                         verbose = Superpower_options("verbose"),
+                         emm = Superpower_options("emm"),
+                         emm_model = Superpower_options("emm_model"),
+                         contrast_type = Superpower_options("contrast_type"),
+                         emm_p_adjust = "none",
+                         emm_comp){
+  
+  #Need this to avoid "undefined" global error from occuring
+  cohen_f <- partial_eta_squared <- non_centrality <- NULL
+  
+  #New checks for emmeans input
+  if (missing(emm)) {
+    emm = FALSE
+  }
+  
+  if (missing(emm_model)) {
+    emm_model = "multivariate"
+  }
+  
+  #Follow if statements limit the possible input for emmeans specifications
+  if (emm == TRUE) {
+    if (is.element(emm_model, c("univariate", "multivariate")) == FALSE ) {
+      stop("emm_model must be set to \"univariate\" or \"multivariate\". ")
+    }
+    if (is.element(contrast_type, 
+                   c("pairwise", 
+                     "revpairwise",
+                     "eff",
+                     "consec",
+                     "poly",
+                     "del.eff",
+                     "trt.vs.ctrl",
+                     "trt.vs.ctrl1",
+                     "trt.vs.ctrlk",
+                     "mean_chg",
+                     "dunnett",
+                     "tukey"
+                   )) == FALSE ) {
+      stop("contrast_type must be of an accepted format. 
+           The tukey & dunnett options are not appropriate for models with within subjects factors. 
+           See help(\"contrast-methods\") for details on the exact methods")
+    }
+    
+    
+    if (is.element(emm_p_adjust, 
+                   c("dunnett",
+                     "tukey",
+                     "sidak",
+                     "scheffe",
+                     "dunnettx",
+                     "mvt",
+                     "holm", 
+                     "hochberg", 
+                     "hommel", 
+                     "bonferroni", 
+                     "BH", 
+                     "BY", 
+                     "fdr",
+                     "none")) == FALSE ) {
+      stop("emm_p_adjust must be of an acceptable format.
+           See ?summary.emmGrid for details on the exact methods.")
+    }
+  }
+  
+  
+  
   
   if (is.element(p_adjust, c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none")) == FALSE ) {
     stop("p_adjust must be of an acceptable adjustment method: see ?p.adjust")
@@ -46,145 +118,10 @@ shiny_power <- function(design_result, alpha_level = 0.05, correction = "none",
     set.seed(seed, kind = "Mersenne-Twister", normal.kind = "Inversion")
   }
   
-  effect_size_d <- function(x, y, conf.level = 0.95){
-    sd1 <- sd(x) #standard deviation of measurement 1
-    sd2 <- sd(y) #standard deviation of measurement 2
-    n1 <- length(x) #number of pairs
-    n2 <- length(y) #number of pairs
-    df <- n1 + n2 - 2
-    m_diff <- mean(y) - mean(x)
-    sd_pooled <- (sqrt((((n1 - 1) * ((sd1^2))) + (n2 - 1) * ((sd2^2))) / ((n1 + n2 - 2)))) #pooled standard deviation
-    j <- (1 - 3/(4 * (n1 + n2 - 2) - 1)) #Calculate Hedges' correction.
-    t_value <- m_diff / sqrt(sd_pooled^2 / n1 + sd_pooled^2 / n2)
-    p_value = 2*pt(-abs(t_value), df = df)
-    d <- m_diff / sd_pooled #Cohen's d
-    d_unb <- d*j #Hedges g, of unbiased d
-    
-    invisible(list(d = d,
-                   d_unb = d_unb,
-                   p_value = p_value))
-  }
   
-  effect_size_d_paired <- function(x, y, conf.level = 0.95){
-    sd1 <- sd(x) #standard deviation of measurement 1
-    sd2 <- sd(y) #standard deviation of measurement 2
-    s_diff <- sd(x - y) #standard deviation of the difference scores
-    N <- length(x) #number of pairs
-    df = N - 1
-    s_av <- sqrt((sd1 ^ 2 + sd2 ^ 2) / 2) #averaged standard deviation of both measurements
-    
-    #Cohen's d_av, using s_av as standardizer
-    m_diff <- mean(y - x)
-    d_av <- m_diff / s_av
-    d_av_unb <- (1 - (3 / (4 * (N - 1) - 1))) * d_av
-    
-    #get the t-value for the CI
-    t_value <- m_diff / (s_diff / sqrt(N))
-    p_value = 2 * pt(-abs(t_value), df = df)
-    
-    #Cohen's d_z, using s_diff as standardizer
-    d_z <- t_value / sqrt(N)
-    d_z_unb <- (1 - (3 / (4 * (N - 1) - 1))) * d_z
-    
-    invisible(list(
-      d_z = d_z,
-      d_z_unb = d_z_unb,
-      p_value = p_value
-    ))
-  }
   
   #Check to ensure there is a within subject factor -- if none --> no MANOVA
   run_manova <- grepl("w", design_result$design)
-  
-  Roy <- function(eig, q, df.res) {
-    p <- length(eig)
-    test <- max(eig)
-    tmp1 <- max(p, q)
-    tmp2 <- df.res - tmp1 + q
-    c(test, (tmp2 * test)/tmp1, tmp1, tmp2)
-  }
-  
-  Wilks <- function(eig, q, df.res)
-  {
-    test <- prod(1/(1 + eig))
-    p <- length(eig)
-    tmp1 <- df.res - 0.5 * (p - q + 1)
-    tmp2 <- (p * q - 2)/4
-    tmp3 <- p^2 + q^2 - 5
-    tmp3 <- if (tmp3 > 0)
-      sqrt(((p * q)^2 - 4)/tmp3)
-    else 1
-    c(test, ((test^(-1/tmp3) - 1) * (tmp1 * tmp3 - 2 * tmp2))/p/q,
-      p * q, tmp1 * tmp3 - 2 * tmp2)
-  }
-  
-  HL <- function(eig, q, df.res)
-  {
-    test <- sum(eig)
-    p <- length(eig)
-    m <- 0.5 * (abs(p - q) - 1)
-    n <- 0.5 * (df.res - p - 1)
-    s <- min(p, q)
-    tmp1 <- 2 * m + s + 1
-    tmp2 <- 2 * (s * n + 1)
-    c(test, (tmp2 * test)/s/s/tmp1, s * tmp1, tmp2)
-  }
-  
-  Pillai <- function(eig, q, df.res)
-  {
-    test <- sum(eig/(1 + eig))
-    p <- length(eig)
-    s <- min(p, q)
-    n <- 0.5 * (df.res - p - 1)
-    m <- 0.5 * (abs(p - q) - 1)
-    tmp1 <- 2 * m + s + 1
-    tmp2 <- 2 * n + s + 1
-    c(test, (tmp2/tmp1 * test)/(s - test), s * tmp1, s * tmp2)
-  }
-  
-  
-  #Only utilized if MANOVA output included (see run_manova)
-  Anova.mlm.table <- function(x, ...)
-  {
-    test <- x$test
-    repeated <- x$repeated
-    ntests <- length(x$terms)
-    tests <- matrix(NA, ntests, 4)
-    if (!repeated)
-      SSPE.qr <- qr(x$SSPE)
-    for (term in 1:ntests) {
-      eigs <- Re(eigen(qr.coef(if (repeated)
-        qr(x$SSPE[[term]])
-        else
-          SSPE.qr,
-        x$SSP[[term]]), symmetric = FALSE)$values)
-      tests[term, 1:4] <- switch(
-        test,
-        Pillai = Pillai(eigs,
-                        x$df[term], x$error.df),
-        Wilks = Wilks(eigs,
-                      x$df[term], x$error.df),
-        `Hotelling-Lawley` =
-          HL(eigs,
-             x$df[term], x$error.df),
-        Roy = Roy(eigs,
-                  x$df[term], x$error.df)
-      )
-    }
-    ok <- tests[, 2] >= 0 & tests[, 3] > 0 & tests[, 4] > 0
-    ok <- !is.na(ok) & ok
-    tests <- cbind(x$df, tests, pf(tests[ok, 2], tests[ok, 3],
-                                   tests[ok, 4], lower.tail = FALSE))
-    rownames(tests) <- x$terms
-    colnames(tests) <- c("df", "test_stat", "approx_F", "num_Df",
-                         "den_Df", "p.value")
-    tests <- structure(as.data.frame(tests), heading = paste("\nType ",
-                                                             x$type, if (repeated)
-                                                               " Repeated Measures", " MANOVA Tests: ", test, " test
-                                                             statistic",
-                                                             sep = ""), class = c("anova", "data.frame"))
-    invisible(tests)
-  }
   
   if (missing(alpha_level)) {
     alpha_level <- 0.05
@@ -199,6 +136,19 @@ shiny_power <- function(design_result, alpha_level = 0.05, correction = "none",
   ###############
   
   design <- design_result$design #String used to specify the design
+  
+  if (grepl("w",design) && is.element(emm_p_adjust,
+                                      c("dunnett",
+                                        "tukey",
+                                        "sidak",
+                                        "scheffe",
+                                        "dunnettx")) == TRUE ) {
+    warning(
+      "The emm_p_adjust selection is inappropriate for the specified design.
+           Consider fdr or holm corrections. See ?summary.emmGrid"
+    )
+  }
+  
   factornames <- design_result$factornames #Get factor names
   n <- design_result$n
   mu = design_result$mu # population means - should match up with the design
@@ -220,10 +170,66 @@ shiny_power <- function(design_result, alpha_level = 0.05, correction = "none",
   aov_result <- suppressMessages({aov_car(frml1, #here we use frml1 to enter formula 1 as designed above on the basis of the design
                                           data = dataframe, include_aov = FALSE,
                                           anova_table = list(es = "pes", p_adjust_method = p_adjust)) }) #This reports PES not GES
+  if (emm == TRUE) {
+    #Call emmeans with specifcations given in the function
+    #Limited to specs and model
+    if (missing(emm_comp)) {
+      emm_comp = as.character(frml2)[2]
+    }
+    
+    specs_formula <- as.formula(paste(contrast_type," ~ ",emm_comp))
+    emm_result <- suppressMessages({emmeans(aov_result, 
+                          specs = specs_formula,
+                          model = emm_model,
+                          adjust = emm_p_adjust)})
+    #plot_emm = plot(emm_result, comparisons = TRUE)
+    #make comparison based on specs; adjust = "none" in exact; No solution for multcomp in exact simulation
+    pairs_result <- emm_result$contrasts
+    pairs_result_df <- as.data.frame(pairs_result)
+    #Need for exact; not necessary for power function
+    #Convert t-ratio to F-stat
+    pairs_result_df$F.value <- (pairs_result_df$t.ratio)^2
+    #Calculate pes -- The formula for partial eta-squared is equation 13 from Lakens (2013)
+    pairs_result_df$pes <- pairs_result_df$F.value/(pairs_result_df$F.value + pairs_result_df$df) 
+    #Calculate cohen's f
+    pairs_result_df$f2 <- pairs_result_df$pes/(1 - pairs_result_df$pes)
+    #Calculate noncentrality
+    pairs_result_df$lambda <- pairs_result_df$f2*pairs_result_df$df
+    #minusalpha<- 1-alpha_level
+    pairs_result_df$Ft <- qf((1 - alpha_level), 1, pairs_result_df$df)
+    #Calculate power
+    pairs_result_df$power <- (1 - pf(pairs_result_df$Ft, 1, pairs_result_df$df, pairs_result_df$lambda))*100
+    
+    pairs_result_df <- pairs_result_df %>% mutate(partial_eta_squared = .data$pes,
+                                                  cohen_f = sqrt(.data$f2),
+                                                  non_centrality = .data$lambda) %>%
+      select(-.data$p.value,-.data$F.value,-.data$t.ratio,-.data$Ft,-.data$SE,
+             -.data$f2,-.data$lambda,-.data$pes, -.data$estimate, -.data$df) %>%
+      select(-.data$power, -.data$partial_eta_squared, -.data$cohen_f, -.data$non_centrality,
+             .data$power, .data$partial_eta_squared, .data$cohen_f, .data$non_centrality)
+    
+    #rownames from contrasts non readable sticking to row number
+    #rownames(pairs_result_df) <- as.character(pairs_result_df$contrast)
+    #pairs_result_df$contrast <- NULL
+    
+    
+    emm_sim_data <- as.data.frame(matrix(
+      ncol = nrow(pairs_result_df)*2,
+      nrow = nsims))
+    
+    names(emm_sim_data) = c(paste("p_",
+                                  rownames(pairs_result_df),
+                                  sep = ""),
+                            paste("cohen_f_",
+                                  rownames(pairs_result_df),
+                                  sep = ""))
+  } else{
+    pairs_result_df = NULL
+  }
   
   #Run MANOVA if within subject factor is included; otherwise ignored
   if (run_manova == TRUE) {
-    manova_result <- Anova.mlm.table(aov_result$Anova)
+    manova_result <- Superpower:::Anova_mlm_table(aov_result$Anova)
   }
   ###############
   # 5. Set up dataframe for simulation results
@@ -315,10 +321,38 @@ shiny_power <- function(design_result, alpha_level = 0.05, correction = "none",
                                             anova_table = list(es = "pes",
                                                                p_adjust_method = p_adjust,
                                                                correction = correction))}) #This reports PES not GES
+    if (emm == TRUE) {
+      emm_result <- emmeans(aov_result, 
+                            specs = specs_formula,
+                            model = emm_model,
+                            adjust = emm_p_adjust)
+      #plot_emm = plot(emm_result, comparisons = TRUE)
+      #make comparison based on specs; adjust = "none" in exact; No solution for multcomp in exact simulation
+      pairs_result <- emm_result$contrasts
+      pairs_result_df <- as.data.frame(pairs_result)
+      #Need for exact; not necessary for power function
+      #Convert t-ratio to F-stat
+      pairs_result_df$F.value <- (pairs_result_df$t.ratio)^2
+      #Calculate pes -- The formula for partial eta-squared is equation 13 from Lakens (2013)
+      pairs_result_df$pes <- pairs_result_df$F.value/(pairs_result_df$F.value + pairs_result_df$df) 
+      #Calculate cohen's f
+      pairs_result_df$f2 <- pairs_result_df$pes/(1 - pairs_result_df$pes)
+      
+      
+      pairs_result_df <- pairs_result_df %>% mutate(cohen_f = sqrt(.data$f2)) %>%
+        select(-.data$F.value,-.data$t.ratio,-.data$SE,
+               -.data$f2,-.data$pes, -.data$estimate, -.data$df) %>%
+        select(-.data$cohen_f, -.data$p.value,
+               .data$p.value, .data$cohen_f)
+      
+      emm_sim_data[i,] <- c(pairs_result_df[[2]], #p-value for contrast
+                            pairs_result_df[[3]] #cohen f
+      ) #
+    }
     
     # Store MANOVA result if there are within subject factors
     if (run_manova == TRUE) {
-      manova_result <- Anova.mlm.table(aov_result$Anova)
+      manova_result <- Superpower:::Anova_mlm_table(aov_result$Anova)
     }
     
     for (j in 1:possible_pc) {
@@ -326,8 +360,8 @@ shiny_power <- function(design_result, alpha_level = 0.05, correction = "none",
       y <- dataframe$y[which(dataframe$cond == paired_tests[2,j])]
       #this can be sped up by tweaking the functions that are loaded to only give p and dz
       ifelse(within_between[j] == 0,
-             t_test_res <- effect_size_d(x, y, conf.level = 1 - alpha_level),
-             t_test_res <- effect_size_d_paired(x, y, conf.level = 1 - alpha_level))
+             t_test_res <- Superpower:::effect_size_d(x, y, alpha_level = alpha_level),
+             t_test_res <- Superpower:::effect_size_d_paired(x, y, alpha_level = alpha_level))
       paired_p[j] <- t_test_res$p_value
       paired_d[j] <- ifelse(within_between[j] == 0,
                             t_test_res$d,
@@ -436,6 +470,19 @@ shiny_power <- function(design_result, alpha_level = 0.05, correction = "none",
   pc_results <- data.frame(power_paired, es_paired)
   names(pc_results) = c("power","effect_size")
   
+  #Data summary for emmeans
+  if (emm == TRUE) {
+    emm_power = as.data.frame(apply(as.matrix(emm_sim_data[(1):(nrow(pairs_result_df))]), 2,
+                                    function(x) mean(ifelse(x < alpha_level, 1, 0) * 100)))
+    emm_es = as.data.frame(apply(as.matrix(emm_sim_data[((nrow(pairs_result_df) + 1):(nrow(pairs_result_df)*2))]), 2,
+                                 function(x) mean(x)))
+    
+    emm_results <- data.frame(pairs_result_df$contrast,emm_power, emm_es)
+    names(emm_results) = c("contrast","power","cohen_f")
+  } else{
+    emm_results = NULL
+  }
+  
   #Simulation results from MANOVA
   if (run_manova == TRUE) {
     power_MANOVA = as.data.frame(apply(as.matrix(sim_data[((2*(2 ^ factors - 1) + 2 * possible_pc + 1):(2 ^ factors + (2*(2 ^ factors - 1) + 2 * possible_pc)))]), 2,
@@ -454,9 +501,15 @@ shiny_power <- function(design_result, alpha_level = 0.05, correction = "none",
     cat("\n")
     print(main_results, digits = 4)
     cat("\n")
-    cat("Power and Effect sizes for contrasts")
+    cat("Power and Effect sizes for pairwise comparisons (t-tests)")
     cat("\n")
     print(pc_results, digits = 4)
+    cat("\n")
+    if (emm == TRUE) {
+      cat("Power and Cohen's f from estimated marginal means")
+      cat("\n")
+      print(emm_results, digits = 4)
+    }
     if (run_manova == TRUE) {
       cat("\n")
       cat("Within-Subject Factors Included: Check MANOVA Results")
@@ -473,13 +526,16 @@ shiny_power <- function(design_result, alpha_level = 0.05, correction = "none",
                  main_results = main_results,
                  pc_results = pc_results,
                  manova_results = manova_result,
-                 correction = correction,
+                 emm_results = emm_results,
                  plot1 = plt1,
                  plot2 = plt2,
+                 correction = correction,
                  p_adjust = p_adjust,
+                 emm_p_adjust = emm_p_adjust,
                  nsims = nsims,
                  alpha_level = alpha_level))
 }
+
 
 label_function <- function(design, labelnames = NULL) {
   #If labelnames are not provided, they are generated.
@@ -594,7 +650,14 @@ ui <- dashboardPage(
                    If you have repeated measures you will need to specify if there should be sphericity correction."),
                 h3("Download your Simulation"),
                 h5("Once your simulation is completed a button a button will appear on the sidebar to download a PDF")
-              )),
+              ),              
+              box(
+                title = "NEWS",
+                status = "primary",
+                solidHeader = TRUE,
+                collapsible = FALSE,
+                strong("Current updates to Superpower's Power Shiny App"),
+                h5("Option for estimated marginal means added"))),
       # Design content
       tabItem(tabName = "design_tab",
               fluidRow(
@@ -691,8 +754,37 @@ ui <- dashboardPage(
                               c("None" = "none",
                                 "Greenhouse-Geisser" = "GG",
                                 "Huynh-Feldt" = "HF")),
+                  selectInput("emm", "Would you like to compare the estimated marginal means?",
+                              c("No" = "no",
+                                "Yes" = "yes"
+                              )),
+                  conditionalPanel("input.emm == 'yes'",
+                                   h5("Keeping the default settings will result in all pairwise comparisons being performed."),
+                                   selectInput("emm_model", "What model would you like to use for the estimated marginal means",
+                                               c("Univariate" = "univariate",
+                                                 "Multivariate" = "multivariate")),
+                                   selectInput("contrast_type", "What type of comparisons would you like to make?",
+                                               c("Pairwise" = "pairwise",
+                                                 "Polynomial contrast" = "poly",
+                                                 "Helmert" = "consec",
+                                                 "Compare each level with the average over all levels" = "eff")),
+                                   selectInput("emm_p_adjust", "What correction for multiple comparisons would you like to make for the estimated marginal means?
+                                               Warning: Tukey and Scheffe are not appropriate when there are within-subjects factors",
+                                               c("Holm-Bonferroni" = "holm",
+                                                 "Bonferroni" = "bonferroni",
+                                                 "False Discovery Rate" = "fdr",
+                                                 "None" = "none",
+                                                 "Tukey-Kramer"= "tukey",
+                                                 "Scheffe" = "scheffe")),
+                                   textInput(inputId = "emm_comp", 
+                                             label = "What comparisons would you like to make with estimated marginal means?",
+                                             value = "a + b"),
+                                   textOutput("emm_formula"),
+                                   h5("The addition sign ('+') will add factors for comparisons while factors after a vertical bar '|' specifies the names of predictors to condition on"),
+                                   a("For more information on setting comparisons", href = "https://cran.r-project.org/web/packages/emmeans/vignettes/comparisons.html#formulas")
+                  ),
                   
-                  selectInput("padjust", "Adjustment for multiple comparisons on pairwise comparisons",
+                  selectInput("padjust", "Select adjustment for multiple comparisons (Note: this is meant for *exploratory* ANOVAs). This will adjust the ANOVA-level and t-test (pairwise) comparison effects.",
                               c("None" = "none",
                                 "Bonferroni" = "bonferroni",
                                 "Holm-Bonferroni" = "holm",
@@ -716,8 +808,11 @@ ui <- dashboardPage(
                   title = "Power Analysis Output", status = "primary", solidHeader = TRUE,
                   collapsible = TRUE,
                   tableOutput('tableMain'),
+                  conditionalPanel("input.emm == 'no'",
+                                   tableOutput('tablePC')),
+                  conditionalPanel("input.emm == 'yes'",
+                                   tableOutput('tableEMM'))
                   
-                  tableOutput('tablePC')
                   
                 ) 
               )
@@ -740,13 +835,14 @@ skin = "purple")
 ###############################################################################
 
 # Define server logic
-server <- function(input, output) {
+server <- function(input, output, session) {
 
   #Create set of reactive values
   values <- reactiveValues(design_result = 0,
                            power_result = 0,
                            power_curve = 0,
-                           label_list = 0)
+                           label_list = 0,
+                           emm_output = 0)
   
 values$label_list <- reactive({  
   
@@ -846,9 +942,13 @@ values$label_list <- reactive({
                                                                         as.numeric(input$r_common)
                                                                       },
                                                                       plot = FALSE)
+    values$emm_output <- as.character(values$design_result$frml2)[2] 
+    updateTextInput(session, "emm_comp", value = values$emm_output)
     
   })
 
+  output$emm_formula <- renderText({
+    paste("Enter",as.character(values$design_result$frml2[2]), " above to receive results for all pairwise comparisons")})
 
   #Output text for ANOVA design
   output$DESIGN <- renderText({
@@ -892,7 +992,14 @@ values$label_list <- reactive({
                                                               p_adjust = input$padjust,
                                                               nsims = input$nsims,
                                                               alpha_level = input$sig,
-                                                              verbose = FALSE)
+                                                              verbose = FALSE,
+                                                              emm = if (input$emm == "yes") {
+                                                                TRUE
+                                                              } else{FALSE},
+                                                              emm_model = as.character(input$emm_model),
+                                                              contrast_type = as.character(input$contrast_type),
+                                                              emm_comp = as.character(input$emm_comp),
+                                                              emm_p_adjust = as.character(input$emm_p_adjust))
 
 
   })
@@ -901,15 +1008,24 @@ values$label_list <- reactive({
   output$tableMain <-  renderTable({
     req(input$sim)
     values$power_result$main_results},
+    caption = "Power for ANOVA Effects",
+    caption.placement = getOption("xtable.caption.placement", "top"),
     rownames = TRUE)
 
   #Table output of pairwise comparisons; rownames needed
   output$tablePC <-  renderTable({
     req(input$sim)
     values$power_result$pc_result},
+    caption = "Power for Pairwise Comparisons with t-tests",
+    caption.placement = getOption("xtable.caption.placement", "top"),
     rownames = TRUE)
 
-
+  output$tableEMM <-  renderTable({
+    req(input$sim)
+    values$power_result$emm_results},
+    caption = "Power for Estimated Marginal Means Comparisons",
+    caption.placement = getOption("xtable.caption.placement", "top"),
+    rownames = FALSE)
 
   #Create downloadable report in markdown TINYTEX NEEDS TO BE INSTALLED
   output$report <- downloadHandler(
@@ -925,6 +1041,7 @@ values$label_list <- reactive({
       # Set up parameters to pass to Rmd document
       params <- list(tablePC = values$power_result$pc_result,
                      tableMain = values$power_result$main_results,
+                     tableEMM = values$power_result$emm_results,
                      means_plot = values$design_result$meansplot,
                      n = values$design_result$n,
                      model = deparse(values$design_result$frml1),

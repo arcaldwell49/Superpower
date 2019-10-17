@@ -65,7 +65,7 @@ ui <- dashboardPage(
                 collapsible = FALSE,
                 strong("Current updates to Superpower's Exact Shiny App"),
                 h5("Option for estimated marginal means added"),
-                h5("Plot power output has been removed from the dowloadable pdf, but now can be downloaded as individual csv files")
+                h5("Plot power output has been removed from the dowloadable pdf. These results could sometimes be difficult to see in the pdf format. But now can be downloaded as individual csv files")
               )),
       tabItem(tabName = "design_tab",
               fluidRow(
@@ -162,7 +162,7 @@ ui <- dashboardPage(
 
                   sliderInput("sig",
                               label = "Alpha Level",
-                              min = 0, max = 1, value = 0.05),
+                              min = 0, max = .2, value = 0.05),
 
                   actionButton("sim", "Print Results of Simulation",
                                icon = icon("print"))

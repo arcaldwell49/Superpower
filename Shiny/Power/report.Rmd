@@ -6,6 +6,7 @@ date: '`r format(Sys.time(), "%B %d, %Y")`'
 params:
   tablePC: NA,
   tableMain: NA,
+  tableEMM: NA,
   means_plot: NA,
   n: NA,
   model: NA,
@@ -21,7 +22,9 @@ params:
 
 ---
 
-
+```{r setup, warning=FALSE, message=FALSE, echo=FALSE}
+options(knitr.table.format = 'markdown')
+```
 
 
 Below are the results from a power analysis using a Monte Carlo simulation of a factorial design wherein the data are sampled from a multivariate normal distribution. If you encounter any problems please visit our GitHub page (https://github.com/arcaldwell49/Superpower) to the raise the issue.
@@ -70,16 +73,13 @@ knitr::kable(params$tableMain)
 
 ```
 
-**Multiple Comparisons Power (%) and Effect Sizes (Cohen's d~z~)**
+**Estimated Marginal Means Power (%) and Effect Sizes (Cohen's *f*)**
 
 ```{r echo = FALSE}
-knitr::kable(params$tablePC)
+knitr::kable(params$tableEMM)
 
 ```
 
-```{r, results='asis', echo=FALSE}
-cat("\\newpage")
-```
 
 **Power for MANOVA Results**
 
@@ -89,4 +89,14 @@ Below are the results if analyzed with a MANOVA. Only included if there is a wit
 knitr::kable(params$manova)
 ```
 
+**Multiple Comparisons, *t*-tests, Power (%) and Effect Sizes (Cohen's d~z~)**
+
+```{r echo = FALSE}
+knitr::kable(params$tablePC)
+
+```
+
+```{r, results='asis', echo=FALSE}
+cat("\\newpage")
+```
 
