@@ -2,7 +2,7 @@
 #' @param design_result Output from the ANOVA_design function
 #' @param alpha_level Alpha level used to determine statistical significance
 #' @param correction Set a correction of violations of sphericity. This can be set to "none", "GG" Grennhouse-Geisser, and "HF" Huynh-Feldt
-#' @param p_adjust Correction for multiple comparisons. This will adjust p valeus for ANOVA effects; see ?p.adjust for options
+#' @param p_adjust Correction for multiple comparisons. This will adjust p valeus for ANOVA/MANOVA level effects; see ?p.adjust for options
 #' @param emm Set to FALSE to not perform analysis of estimated marginal means
 #' @param emm_model Set model type ("multivariate", or "univariate") for estimated marginal means
 #' @param contrast_type Select the type of comparison for the estimated marginal means
@@ -15,13 +15,15 @@
 #' 
 #' \describe{
 #'   \item{\code{"sim_data"}}{Output from every iteration of the simulation}
-#'   \item{\code{"main_result"}}{The power analysis results of the ANOVA results.}
-#'   \item{\code{"pc_results"}}{The power analysis results of the pairwise comparison results.}
+#'   \item{\code{"main_result"}}{The power analysis results for ANOVA effects.}
+#'   \item{\code{"pc_results"}}{The power analysis results for pairwise comparisons.}
 #'   \item{\code{"manova_results"}}{Default is "NULL". If a within-subjects factor is included, then the power of the multivariate (i.e. MANOVA) analyses will be provided.}
+#'   \item{\code{"emm_results"}}{The power analysis results of the estimated marginal means.}
 #'   \item{\code{"plot1"}}{Distribution of p-values from the ANOVA results.}
 #'   \item{\code{"plot2"}}{Distribution of p-values from the pairwise comparisons results.}
 #'   \item{\code{"correction"}}{The correction for sphericity applied to the simulation results.}
-#'   \item{\code{"p_adjust"}}{The p-value adjustment applied to the simulation results.}
+#'   \item{\code{"p_adjust"}}{The p-value adjustment applied to the simulation results for ANOVA/MANOVA omnibus tests and t-tests.}
+#'   \item{\code{"emm_p_adjust"}}{The p-value adjustment applied to the simulation results for the estimated marginal means.}
 #'   \item{\code{"nsims"}}{The number of simulations run.}
 #'   \item{\code{"alpha_level"}}{The alpha level, significance cut-off, used for the power analysis.}
 #' 
@@ -352,10 +354,10 @@ ANOVA_power <- function(design_result,
                                                                p_adjust_method = p_adjust,
                                                                correction = correction))}) #This reports PES not GES
       if (emm == TRUE) {
-      emm_result <- emmeans(aov_result, 
+      emm_result <- suppressMessages({emmeans(aov_result, 
                             specs = specs_formula,
                             model = emm_model,
-                            adjust = emm_p_adjust)
+                            adjust = emm_p_adjust)})
       #plot_emm = plot(emm_result, comparisons = TRUE)
       #make comparison based on specs; adjust = "none" in exact; No solution for multcomp in exact simulation
       pairs_result <- emm_result$contrasts
@@ -383,6 +385,7 @@ ANOVA_power <- function(design_result,
       # Store MANOVA result if there are within subject factors
       if (run_manova == TRUE) {
         manova_result <- Anova_mlm_table(aov_result$Anova)
+        manova_result$p.value <- p.adjust(manova_result$p.value, method = p_adjust)
       }
 
       for (j in 1:possible_pc) {

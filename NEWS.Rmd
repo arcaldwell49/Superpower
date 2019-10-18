@@ -16,4 +16,4 @@ Updates from contrast_extension update `r format(Sys.time(), "%a %b %d %Y")`
 
 -Updated Shiny Apps
   -Now includes emmeans options
-  -kableExtra and xlsx packages now needed to knit markdown file in app.
+  -kableExtra, emmeans, magrittr, and dplyr packages now needed to knit markdown file in app.

@@ -24,7 +24,7 @@ This app is intended to be utilized for prospective (a priori) power analysis.
 
 ## Installation
 
-You can install the released version of superpower from [GitHub](https://github.com/arcaldwell49/Superpower) with:
+You can install the developmental version of Superpower from [GitHub](https://github.com/arcaldwell49/Superpower) with:
 
 ``` r
 devtools::install_github("arcaldwell49/Superpower")
@@ -33,12 +33,12 @@ devtools::install_github("arcaldwell49/Superpower")
 
 Currently the ANOVA_design function can create designs up three factors, for both within, between, and mixed designs. It requires the following input: design, n, mu, sd, r, and optionally allows you to set labelnames. 
 
-1. design: string that specifies the design (see below).
-2. n: the sample size for each between subject condition.
-3. mu: a vector with the means for each condition.
-4. sd: the population standard deviation. Assumes homogeneity of variances (only one standard deviation can be provided).
-5. r: the correlation for within designs (or 0 for between designs).
-6. labelnames: This is an optonal vector of words that indicates factor names and level names (see below).
+1. `design`: string that specifies the design (see below).
+2. `n`: the sample size for each between subject condition.
+3. `mu`: a vector with the means for each condition.
+4. `sd`: the population standard deviation. Assumes homogeneity of variances (only one standard deviation can be provided).
+5. `r`: the correlation for within designs (or 0 for between designs).
+6. `labelnames`: This is an optonal vector of words that indicates factor names and level names (see below).
 7. A final optional setting is to specify if you want to output a plot or not (plot = TRUE or FALSE)
 
 ### Specifying the design using 'design'
@@ -72,7 +72,7 @@ If your design has just one factor, just enter the means in the same order as th
 
 So if you enter the means 1, 2, 3, 4, 5, 6, 7, 8 the first 4 means correspond to level 1 of factor 1, the second 4 means correspond to level 2 of factor 1. Within the first 4 means, the first 2 correspond to level 1 of factor 2, and within those 2 means, the first corresponds to level 1 of factor 3.
 
-The plot below visualizes means from 1 to 8 being entered in a vector: mu = c(1, 2, 3, 4, 5, 6, 7, 8) so you can see how the basic ordering works.
+The plot below visualizes means from 1 to 8 being entered in a vector: `mu = c(1, 2, 3, 4, 5, 6, 7, 8)` so you can see how the basic ordering works.
 
 ```{r, fig.width=7, fig.height=4, echo=FALSE, message=FALSE, warning=FALSE}
 design_result <- ANOVA_design(design = "2b*2w*2b",
@@ -91,7 +91,7 @@ For the 2x3 design we have been using as an example, where there are 2 factors (
 
 c("condition", "placebo", "medicine", "time", "time1", "time2", "time3")
 
-As you can see, you follow the order of the design (2b*3w), and first write the **FACTOR** label (condition) followed by the levels of that factor (placebo and medicine). Then you write the second factor name (time) followed by the three labels for each **LEVEL** (time1, time2, time3). **Do not use spaces in the names (so not "time 1" but "time1" or "time_1").**
+As you can see, you follow the order of the design (`2b*3w`), and first write the **FACTOR** label (condition) followed by the levels of that factor (placebo and medicine). Then you write the second factor name (time) followed by the three labels for each **LEVEL** (time1, time2, time3). **Do not use spaces in the names (so not "time 1" but "time1" or "time_1").**
 
 Some examples:
 
@@ -168,9 +168,9 @@ You can set the sample size **per condition** by setting a value for n. The assu
 
 ### Specifying the standard deviation
 
-You can set the standard deviation by setting a value of sd. Currently Superpower only allows you to perform calculations under the assumption of homogeneity of variances (the standard deviation is the same across conditions). Note that there is always some uncertainty in which values you can expect in the study you are planning. It is therefore useful to perform sensitivity analyses (e.g., running the simulation with the expected standard deviation, but also with more conservative or even worst-case-scenario values).
+You can set the common standard deviation by setting a value of sd. Superpower allows you to perform calculations under the assumption of homogeneity of variances (the standard deviation is the same across conditions), or you can *violate this assumption* by entering a vector of standard deviations (one for each condition). If multiple standard deviations are entered then we **highly recommend** that a null design is also simulated to see the impact of this assumption violation on type 1 error. Also, please note that there is always some uncertainty in which values you can expect in the study you are planning. It is therefore useful to perform sensitivity analyses (e.g., running the simulation with the expected standard deviation, but also with more conservative or even worst-case-scenario values).
 
-# Simulation-based power calculations
+# Simulation-Based Power Calculations
 
 There are two ways to calculate the statistical power of a factorial design based on simulations. The first is to repeatedly simulate data for each condition based on the means, sample size, standard deviation, and correlation, under specific statistical assumptions (i.e., normaly distributed data). The `ANOVA_power` function allows you to perform power analyses based on repeatedly simulating normaly distributed data. A second approach is to simulate a dataset that has *exactly* the desired properties - every cell of the design has n datapoints that have the desired mean and standard deviation, and correlation between groups (for a within design). By performing an ANOVA on this dataset, we can calculate the required statistics from the ANOVA result used to calculate the statistical power. The `ANOVA_exact` function allows you to calculate power based on this approach. The `ANOVA_power` function is a bit more flexible (e.g., we can use different ways to correct for multiple comparisons, or in future versions of the package allow you to simulate more realistic datasets that are not normally distributed), but the `ANOVA_exact` function is much faster (and takes seconds, instead of minutes or hours for a large number of simulations). 
 
@@ -180,12 +180,19 @@ The ANOVA_power function takes the result from the ANOVA_design function, and si
 
 It requires the following input: ANOVA_design, alpha_level, p_adjust, nsims, seed, and verbose. 
 
-1. design_result: Output from the ANOVA_design function saved as an object
-2. alpha_level: Alpha level used to determine statistical significance
-3. p_adjust: Correction for multiple comparisons using the [p.adjust](https://www.rdocumentation.org/packages/stats/versions/3.5.3/topics/p.adjust) function 
-4. nsims: number of simulations to perform
-5. seed: Set seed for reproducible results
-6. verbose: Set to FALSE to not print results (default = TRUE)
+1. `design_result`: Output from the ANOVA_design function saved as an object
+2. `alpha_level`: Alpha level used to determine statistical significance
+3. `p_adjust`: Correction for multiple comparisons for exploratory ANOVA/MANOVA using the [p.adjust](https://www.rdocumentation.org/packages/stats/versions/3.5.3/topics/p.adjust) function 
+4. `nsims`: number of simulations to perform
+5. `seed`: Set seed for reproducible results
+6. `verbose`: Set to FALSE to not print results (default = TRUE)
+
+With the following optional input:
+
+1. `contrast_type`: This input will determine the contrast type for the emmeans comparisons. The default is "pairwise". Possible input is limited to "pairwise", "revpairwise", "eff", "consec", "poly", "del.eff", "trt.vs.ctrl", "trt.vs.ctrl1", "trt.vs.ctrlk", and "mean_chg". See help("contrast-methods") with the `emmeans` package loaded for more information.
+2. `emm_model`: emmeans accepts univariate and multivariate models. This will only make a difference if a within-subjects factor is included in the design. Setting this option to "multivariate" will result in the "multivariate" model being selected for the emmeans comparisons. *This is generally recommended if you are interested in the estimated marginal means*.
+3. `emm_comp`: This selects the factors to be included for the emmeans. The default is to take the `frml2` object from the results of `ANOVA_design`, and with the default `contrast_type` = "pairwise", results in *all* the pairwise comparisons being performed. The simple effects can also be perfomed by including | in the emm_comp formula. For example, with two factors (e.g., a and b) `emm_comp = "a+b"` results in all pairwise comparisons being performed while `emm_comp = "a|b"` will result in pairwise comparisons across all levels of a **within** each level of b. 
+4. `emm_p_adjust`: adjustment for multiple comparisons. Note: **this feature only works with** `ANOVA_power`. Currently, this feature includes the Tukey ("tukey"), Scheffe ("scheffe"), Sidak ("sidak"), and Dunnett ("dunnettx") adjustments in addition to all of the options for `p_adjust`.
 
 Simulations typically take some time. Larger numbers of simulations yield more accurate results, but also take a long time. We recommend testing the set up with 100 simulations, and run 1000 if the set-up is correct (or 10000 if you are getting a coffee, or 100.000 if you are about accuracy to digits behind the decimal). 
 
@@ -195,9 +202,9 @@ The ANOVA_exact function takes the result from the ANOVA_design function, and si
 
 ANOVA_exact requires the following input: ANOVA_design, alpha_level, and verbose. 
 
-1. design_result: Output from the ANOVA_design function saved as an object
-2. alpha_level: Alpha level used to determine statistical significance
-3. verbose: Set to FALSE to not print results (default = TRUE)
+1. `design_result`: Output from the ANOVA_design function saved as an object
+2. `alpha_level`: Alpha level used to determine statistical significance
+3. `verbose`: Set to FALSE to not print results (default = TRUE)
 
 Compared to the ANOVA_power function, the ANOVA_exact approach is much faster (it requires simulating only a single dataset). Currently the only difference is that ANOVA_exact does not allow you to examine the consequences of correcting for multiple comparisons (there is no `p_adjust` option), and that ANOVA_exact does not work for sample sizes smaller than 8 (because it is not possible to simulate a dataset with exactly the desired properties for very small sample sizes). 
 
@@ -340,10 +347,18 @@ Simulation based power analyses require you to increase to sample size until pow
 
 plot_power requires the following input: ANOVA_design, max_n, and plot. 
 
-1. design_result: Output from the ANOVA_design function saved as an object
-2. min_n: The minimum sample size you want to plot in the power curve
-2. max_n: The maximum sample size you want to plot in the power curve
-3. plot: Set to FALSE to not print the plot (default = TRUE)
+1. `design_result`: Output from the ANOVA_design function saved as an object
+2. `min_n`: The minimum sample size you want to plot in the power curve
+2. `max_n`: The maximum sample size you want to plot in the power curve
+3. `plot`: Set to FALSE to not print the plot (default = `TRUE`)
+
+With the following optional input:
+
+1. `emm`: tell the function to run emmeans or not; default is set to `FALSE`.
+1. `contrast_type`: This input will determine the contrast type for the emmeans comparisons. The default is "pairwise". Possible input is limited to "pairwise", "revpairwise", "eff", "consec", "poly", "del.eff", "trt.vs.ctrl", "trt.vs.ctrl1", "trt.vs.ctrlk", and "mean_chg". See help("contrast-methods") with the `emmeans` package loaded for more information.
+2. `emm_model`: emmeans accepts univariate and multivariate models. This will only make a difference if a within-subjects factor is included in the design. Setting this option to "multivariate" will result in the "multivariate" model being selected for the emmeans comparisons. *This is generally recommended if you are interested in the estimated marginal means*.
+3. `emm_comp`: This selects the factors to be included for the emmeans. The default is to take the `frml2` object from the results of `ANOVA_design`, and with the default `contrast_type = "pairwise"`, results in *all* the pairwise comparisons being performed. The simple effects can also be perfomed by including | in the emm_comp formula. For example, with two factors (e.g., a and b) `emm_comp = "a+b"` results in all pairwise comparisons being performed while `emm_comp = "a|b"` will result in pairwise comparisons across all levels of a **within** each level of b. 
+
 
 The `plot_power` functions simulates power up to a sample size of `max_n` using the `ANOVA_exact` function. ALthough it is relatively fast, with large sample size to can take some time to produce. In the figure below we can easily see that, assuming the true pattern of means and standard deviations represents our expected pattern of means and standard deviations, we have 80% power around 135 participants per condition, 90% power around 180 participants per condition, and 95% power around 225 participants per condition.
 

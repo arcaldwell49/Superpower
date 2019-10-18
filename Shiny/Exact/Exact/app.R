@@ -29,7 +29,7 @@ ui <- dashboardPage(
       menuItem("Exact Power", tabName = "exact_tab", icon = icon("equals")),
       conditionalPanel("input.sim >=1",
                        downloadButton("report", "Download PDF Report")),
-      menuItem("Plot Power", tabName = "plot_tab", icon = icon("infinity"))
+      menuItem("Power Curve", tabName = "plot_tab", icon = icon("infinity"))
       
     )
   ),
@@ -53,8 +53,8 @@ ui <- dashboardPage(
                  Once you click Submit Design the design details will be printed and you can continue onto the power analysis."),
                 h3("Exact Power Tab"),
                 h5("In this tab, you will setup an *exact* simulation. All you can do at this stage is set the alpha level (default=.05) and decide the estimated marinal means analysis (optional)"),
-                h3("Plot Power Tab"),
-                h5("In this tab, you can see power across a range of sample sizes. All you need to do is set a minimum and maximum sample size"),
+                h3("Power curve Tab"),
+                h5("In this tab, you can see power across a range of sample sizes. All you need to do is set a minimum and maximum sample size. This tab will also allow you to download csv files including the power of ANOVA and estimated marginal means across a range of sample sizes."),
                 h3("Download your Simulation"),
                 h5("Once your simulation is completed a button a button will appear on the sidebar to download a PDF")
               ),              

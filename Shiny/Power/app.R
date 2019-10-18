@@ -11,6 +11,7 @@ library(ggplot2)
 library(rmarkdown)
 library(knitr)
 library(afex)
+library(emmeans)
 library(ggplot2)
 library(reshape2)
 library(MASS)
@@ -179,9 +180,9 @@ shiny_power <-  function(design_result,
     
     specs_formula <- as.formula(paste(contrast_type," ~ ",emm_comp))
     emm_result <- suppressMessages({emmeans(aov_result, 
-                          specs = specs_formula,
-                          model = emm_model,
-                          adjust = emm_p_adjust)})
+                                            specs = specs_formula,
+                                            model = emm_model,
+                                            adjust = emm_p_adjust)})
     #plot_emm = plot(emm_result, comparisons = TRUE)
     #make comparison based on specs; adjust = "none" in exact; No solution for multcomp in exact simulation
     pairs_result <- emm_result$contrasts
@@ -322,10 +323,10 @@ shiny_power <-  function(design_result,
                                                                p_adjust_method = p_adjust,
                                                                correction = correction))}) #This reports PES not GES
     if (emm == TRUE) {
-      emm_result <- emmeans(aov_result, 
+      emm_result <- suppressMessages({emmeans(aov_result, 
                             specs = specs_formula,
                             model = emm_model,
-                            adjust = emm_p_adjust)
+                            adjust = emm_p_adjust)})
       #plot_emm = plot(emm_result, comparisons = TRUE)
       #make comparison based on specs; adjust = "none" in exact; No solution for multcomp in exact simulation
       pairs_result <- emm_result$contrasts
@@ -353,6 +354,7 @@ shiny_power <-  function(design_result,
     # Store MANOVA result if there are within subject factors
     if (run_manova == TRUE) {
       manova_result <- Superpower:::Anova_mlm_table(aov_result$Anova)
+      manova_result$p.value <- p.adjust(manova_result$p.value, method = p_adjust)
     }
     
     for (j in 1:possible_pc) {
@@ -647,7 +649,7 @@ ui <- dashboardPage(
                    Once you click Submit Design the design details will be printed and you can continue onto the power analysis."),
                 h3("Power Simulation Tab"),
                 h5("In this tab, you will setup the Monte Carlo simulation. You will have to specify a correction for multiple comparisons (default=none) and the alpha level (default=.05).
-                   If you have repeated measures you will need to specify if there should be sphericity correction."),
+                   If you have repeated measures you will need to specify the sphericity correction (default=none)."),
                 h3("Download your Simulation"),
                 h5("Once your simulation is completed a button a button will appear on the sidebar to download a PDF")
               ),              
@@ -1052,7 +1054,10 @@ values$label_list <- reactive({
                      nsims = values$power_result$nsims,
                      p_adjust = values$power_result$p_adjust,
                      correction = values$power_result$correction,
-                     manova = values$power_result$manova_result)
+                     manova = values$power_result$manova_result,
+                     emm_p_adjust = input$emm_p_adjust,
+                     emm = input$emm,
+                     emm_model = input$emm_model)
 
       # Knit the document, passing in the `params` list, and eval it in a
       # child of the global environment (this isolates the code in the document

@@ -317,15 +317,16 @@ for all independent comparisons.
 It requires the following input: ANOVA\_design, alpha\_level, p\_adjust,
 nsims, seed, and verbose.
 
-1.  design\_result: Output from the ANOVA\_design function saved as an
+1.  `design_result`: Output from the ANOVA\_design function saved as an
     object
-2.  alpha\_level: Alpha level used to determine statistical significance
-3.  p\_adjust: Correction for multiple comparisons using the
+2.  `alpha_level`: Alpha level used to determine statistical
+    significance
+3.  `p_adjust`: Correction for multiple comparisons using the
     [p.adjust](https://www.rdocumentation.org/packages/stats/versions/3.5.3/topics/p.adjust)
     function
-4.  nsims: number of simulations to perform
-5.  seed: Set seed for reproducible results
-6.  verbose: Set to FALSE to not print results (default = TRUE)
+4.  `nsims`: number of simulations to perform
+5.  `seed`: Set seed for reproducible results
+6.  `verbose`: Set to FALSE to not print results (default = TRUE)
 
 Simulations typically take some time. Larger numbers of simulations
 yield more accurate results, but also take a long time. We recommend
@@ -345,18 +346,62 @@ Aberson for inspiring this approach).
 ANOVA\_exact requires the following input: ANOVA\_design, alpha\_level,
 and verbose.
 
-1.  design\_result: Output from the ANOVA\_design function saved as an
+1.  `design_result`: Output from the ANOVA\_design function saved as an
     object
-2.  alpha\_level: Alpha level used to determine statistical significance
-3.  verbose: Set to FALSE to not print results (default = TRUE)
+2.  `alpha_level`: Alpha level used to determine statistical
+    significance
+3.  `verbose`: Set to FALSE to not print results (default = TRUE)
 
 Compared to the ANOVA\_power function, the ANOVA\_exact approach is much
 faster (it requires simulating only a single dataset). Currently the
 only difference is that ANOVA\_exact does not allow you to examine the
 consequences of correcting for multiple comparisons (there is no
 `p_adjust` option), and that ANOVA\_exact does not work for sample sizes
-smaller than 8 (because it is not possible to simulate a dataset with
-exactly the desired properties for very small sample sizes).
+smaller than the product of the factor-levels(e.g., `2b*2w` would
+require at least n=4). It is not possible to simulate a dataset with
+exactly the desired properties for very small sample sizes.
+
+## Estimated Marginal Means
+
+A new addition to the package is the addition of the estimated marginal
+means (emmeans; also called least-squares means) for specific
+constrasts. These constrasts include *most* of the options available in
+the `emmeans` function from the `emmeans` R package. Estimated marginal
+means options are available in both the `ANOVA_power` and `ANOVA_exact`,
+but on the `ANOVA_power` function allows for *p*-value multiple
+comparisons adjustments for these contrasts.
+
+In order to include the estimated marginal means, set `emm = TRUE`. If
+nothing else is set for the emmeans then all pairwise comparisons, with
+no adjustment for multiple comparisons will be made. The following
+settings can also be made:
+
+1.  `contrast_type`: This input will determine the contrast type for the
+    emmeans comparisons. The default is “pairwise”. Possible input is
+    limited to “pairwise”, “revpairwise”, “eff”, “consec”, “poly”,
+    “del.eff”, “trt.vs.ctrl”, “trt.vs.ctrl1”, “trt.vs.ctrlk”, and
+    “mean\_chg”. See help(“contrast-methods”) with the `emmeans`
+    package loaded for more information.
+2.  `emm_model`: emmeans accepts univariate and multivariate models.
+    This will only make a difference if a within-subjects factor is
+    included in the design. Setting this option to “multivariate” will
+    result in the “multivariate” model being selected for the emmeans
+    comparisons. *This is generally recommended if you are interested in
+    the estimated marginal means*.
+3.  `emm_comp`: This selects the factors to be included for the emmeans.
+    The default is to take the `frml2` object from the results of
+    `ANOVA_design`, and with the default `contrast_type` = “pairwise”,
+    results in *all* the pairwise comparisons being performed. The
+    simple effects can also be perfomed by including | in the emm\_comp
+    formula. For example, with two factors (e.g., a and b) `emm_comp =
+    "a+b"` results in all pairwise comparisons being performed while
+    `emm_comp = "a|b"` will result in pairwise comparisons across all
+    levels of a **within** each level of b.
+4.  `emm_p_adjust`: adjustment for multiple comparisons. Note: **this
+    feature only works with** `ANOVA_power`. Currently, this feature
+    includes the Tukey (“tukey”), Scheffe (“scheffe”), Sidak (“sidak”),
+    and Dunnett (“dunnettx”) adjustments in addition to all of the
+    options for `p_adjust`.
 
 ## Example \#1
 
@@ -550,9 +595,9 @@ ANOVA_exact(design_result)$main_results$power
     ##             power partial_eta_squared cohen_f non_centrality
     ## condition 67.6857               0.029  0.1727         5.9082
     ## 
-    ## Power and Effect sizes for contrasts
+    ## Power and Effect sizes for pairwise comparisons (t-tests)
     ##                                   power effect_size
-    ## p_condition_control_condition_pet 67.69      0.3437
+    ## p_condition_control_condition_pet 67.69        0.34
 
     ## [1] 67.68572
 
@@ -573,9 +618,9 @@ ANOVA_exact(design_result)$main_results$power
     ##             power partial_eta_squared cohen_f non_centrality
     ## condition 84.3127              0.0289  0.1725         8.8623
     ## 
-    ## Power and Effect sizes for contrasts
+    ## Power and Effect sizes for pairwise comparisons (t-tests)
     ##                                   power effect_size
-    ## p_condition_control_condition_pet 84.31      0.3437
+    ## p_condition_control_condition_pet 84.31        0.34
 
     ## [1] 84.3127
 
@@ -596,9 +641,9 @@ ANOVA_exact(design_result)$main_results$power
     ##             power partial_eta_squared cohen_f non_centrality
     ## condition 89.3735              0.0289  0.1724        10.3394
     ## 
-    ## Power and Effect sizes for contrasts
+    ## Power and Effect sizes for pairwise comparisons (t-tests)
     ##                                   power effect_size
-    ## p_condition_control_condition_pet 89.37      0.3437
+    ## p_condition_control_condition_pet 89.37        0.34
 
     ## [1] 89.37347
 
@@ -619,9 +664,9 @@ ANOVA_exact(design_result)$main_results$power
     ##             power partial_eta_squared cohen_f non_centrality
     ## condition 90.1886              0.0288  0.1724        10.6348
     ## 
-    ## Power and Effect sizes for contrasts
+    ## Power and Effect sizes for pairwise comparisons (t-tests)
     ##                                   power effect_size
-    ## p_condition_control_condition_pet 90.19      0.3437
+    ## p_condition_control_condition_pet 90.19        0.34
 
     ## [1] 90.18863
 
@@ -643,7 +688,7 @@ plot.
 4.  plot: Set to FALSE to not print the plot (default = FALSE)
 
 The `plot_power` functions simulates power up to a sample size of
-`max_n` using the `ANOVA_exact` function. ALthough it is relatively
+`max_n` using the `ANOVA_exact` function. Although it is relatively
 fast, with large sample size to can take some time to produce. In the
 figure below we can easily see that, assuming the true pattern of means
 and standard deviations represents our expected pattern of means and

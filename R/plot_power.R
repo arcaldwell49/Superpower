@@ -14,10 +14,13 @@
 #' \describe{
 #'   \item{\code{"plot_ANOVA"}}{Plot of power curves from ANOVA results.}
 #'   \item{\code{"plot_MANOVA"}}{Plot of power curves from MANOVA results. Returns NULL if no within-subject factors.}
+#'   \item{\code{"plot_emm"}}{Plot of power curves from MANOVA results. Returns NULL if emm = FALSE.}
 #'   \item{\code{"power_df"}}{The tabulated ANOVA power results.}
-#'   \item{\code{"power_df_manova"}}{The tabulated MANOVA power results.}
+#'   \item{\code{"power_df_manova"}}{The tabulated MANOVA power results. Returns NULL if no within-subject factors.}
+#'   \item{\code{"power_df_emm"}}{The tabulated Estimated Marginal Means power results. Returns NULL if emm = FALSE.}
 #'   \item{\code{"effect_sizes"}}{Effect sizes (partial eta-squared) from ANOVA results.}
 #'   \item{\code{"effect_sizes_manova"}}{Effect sizes (Pillai's Trace) from MANOVA results. Returns NULL if no within-subject factors.}
+#'   \item{\code{"effect_sizes_emm"}}{ Effect sizes (cohen's f) estimated marginal means results. Returns NULL if emm = FALSE.}
 #'   
 #' }
 #' 
