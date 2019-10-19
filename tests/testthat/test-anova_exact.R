@@ -253,9 +253,46 @@ test_that("Aberson #7",{
                                 plot = FALSE)
   
   p <- ANOVA_exact(design_result,
-                   verbose=FALSE)
+                   verbose = FALSE)
   
   expect_equal(p$main_results$power, c(86.4,82.7,82.7), tolerance = 0.1)
 }
 )
 
+test_that("Aberson Table 5.5",{
+  design_result <- Superpower::ANOVA_design("4b", sd = 10, n = 60, plot = FALSE,
+                                            mu = c(80,82,82,86))
+  
+  power_result <- Superpower::ANOVA_exact(design_result, verbose = FALSE,
+                                          emm = TRUE, contrast_type = "poly")
+  
+  expect_equal(round(power_result$emm_results$power, 1),c(87.4,12,17.9))
+})
+
+test_that("Aberson Table 5.6",{
+  design_result <- Superpower::ANOVA_design("4b", sd = 10, n = 60, plot = FALSE,
+                                            mu = c(80,82,82,86))
+  
+  power_result <- Superpower::ANOVA_exact(design_result, verbose = FALSE,
+                                          emm = TRUE, alpha_level = .0085)
+  
+  expect_equal(round(power_result$emm_results$power, 1),
+               c(6.1,6.1,73.6,.8,32.4,32.4))
+})
+
+test_that("Aberson Table 5.9",{
+design_result <- Superpower::ANOVA_design("2b*2b", sd = 1.7, n = 250, plot = FALSE,
+                                          mu = c(.85,.85,0,.6))
+
+power_result1 <- Superpower::ANOVA_exact(design_result, verbose = FALSE,
+                                         emm = TRUE, emm_comp = "b|a")
+
+power_result2 <- Superpower::ANOVA_exact(design_result, verbose = FALSE,
+                                         emm = TRUE, emm_comp = "a|b")
+
+power_simple <- round(c(power_result1$emm_results$power,
+                  power_result2$emm_results$power),1)
+
+expect_equal(power_simple, c(5,97.6,100,37.6))
+
+})
