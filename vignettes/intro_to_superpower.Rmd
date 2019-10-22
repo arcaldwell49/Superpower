@@ -17,8 +17,6 @@ library(Superpower)
 nsims = 100000
 ```
 
-# An Introduction to Superpower
-
 The goal of Superpower is to easily simulate single factor and factorial designs and empirically calculate power using a simulation approach. Currently, the pacakge can only calculate power for ANOVAs.
 This app is intended to be utilized for prospective (a priori) power analysis.
 
@@ -411,7 +409,8 @@ design_result <- ANOVA_design(design = design,
                    sd = sd, 
                    labelnames = labelnames)
 
-ANOVA_exact(design_result)
+ANOVA_exact(design_result,
+            emm = TRUE) # Pairwise emmeans will automatically run
 ```
 
 The result shows that you would have quite low power with 50 participants, both for the overall ANOVA (just below 50% power), as for the follow up comparisons (approximately 40% power for the control vs cat condition, just above 50% for the control vs dogs condition, and a really low power (around 6%, just above the Type 1 error rate of 5%) for the expected difference between cats and dogs. We can easily confirm the expected power for these simple comparisons using the pwr package.
@@ -460,7 +459,8 @@ design_result <- ANOVA_design(design = design,
                    labelnames = labelnames,
                    plot = FALSE) #do not print the plot (same as above)
 
-ANOVA_exact(design_result)
+ANOVA_exact(design_result,
+            emm = TRUE)
 
 n <- 180
 design_result <- ANOVA_design(design = design,
@@ -470,7 +470,8 @@ design_result <- ANOVA_design(design = design,
                    labelnames = labelnames,
                    plot = FALSE) #do not print the plot (same as above)
 
-ANOVA_exact(design_result)
+ANOVA_exact(design_result,
+            emm = TRUE)
 
 n <- 5380
 design_result <- ANOVA_design(design = design,
@@ -480,7 +481,8 @@ design_result <- ANOVA_design(design = design,
                    labelnames = labelnames,
                    plot = FALSE) #do not print the plot (same as above)
 
-ANOVA_exact(design_result)
+ANOVA_exact(design_result,
+            emm = TRUE)
 
 ```
 
@@ -551,7 +553,8 @@ design_result <- ANOVA_design(design = design,
                               r = r, 
                               labelnames = labelnames)
 
-ANOVA_exact(design_result)
+ANOVA_exact(design_result,
+            emm = TRUE)
 ```
 
 The results of the exact simulation approach are indeed to 80.777%. Note that the simulation calculates Cohen's $d_z$ effect sizes for paired comparisons - which here given the correlation of 0.5 is also 0.5 for a medium effect size. 
@@ -579,7 +582,8 @@ design_result <- ANOVA_design(design = design,
                               r = r, 
                               labelnames = labelnames)
 
-ANOVA_exact(design_result)
+ANOVA_exact(design_result,
+            emm = TRUE)
 ```
 
 ### Power in Repeated Measures ANOVA with More than 2 Groups
@@ -680,7 +684,8 @@ design_result <- ANOVA_design(design = design,
                               sd = sd, 
                               r = r)
 
-ANOVA_exact(design_result)
+ANOVA_exact(design_result,
+            emm = TRUE)
 
 ```
 
@@ -702,7 +707,8 @@ design_result <- ANOVA_design(design = design,
                               sd = sd, 
                               r = r)
 
-ANOVA_exact(design_result)
+ANOVA_exact(design_result,
+            emm = TRUE)
 ```
 
 ## Two-way ANOVA, between participants Design
@@ -795,7 +801,7 @@ If we extend the design with an extra level for each factor, we have a 3x3 desig
 ```{r, fig.width=7, fig.height=4}
 design <- "3b*3b"
 n <- 20
-mu <- c(20, 20, 20, 20, 20, 20, 20, 20, 25) #All means are equal - so there is no real difference.
+mu <- c(20, 20, 20, 20, 20, 20, 20, 20, 25) 
 # Enter means in the order that matches the labels below.
 sd <- 5
 labelnames <- c("Factor_A", "a1", "a2", "a3", "Factor_B", "b1", "b2", "b3") #
