@@ -377,8 +377,8 @@ ANOVA_power <- function(design_result,
         select(-.data$cohen_f, -.data$p.value,
                .data$p.value, .data$cohen_f)
       
-      emm_sim_data[i,] <- c(pairs_result_df[[2]], #p-value for contrast
-                            pairs_result_df[[3]] #cohen f
+      emm_sim_data[i,] <- c(as.numeric(pairs_result_df$p.value), #p-value for contrast
+                            as.numeric(pairs_result_df$cohen_f) #cohen f
                             ) #
     }
 
