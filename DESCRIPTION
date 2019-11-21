@@ -31,13 +31,14 @@ Imports:
     ggplot2,
     gridExtra,
     reshape2,
-    stats
+    stats,
+    dplyr,
+    magrittr
 Suggests: 
     knitr,
     rmarkdown,
     pwr,
     testthat,
-    dplyr,
     covr,
     jmvcore
 VignetteBuilder:

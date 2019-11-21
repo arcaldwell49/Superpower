@@ -46,7 +46,9 @@
 #' @export
 #'
 
-ANOVA_design <- function(design, n, mu, sd, r = 0, labelnames = NULL, plot = FALSE){
+ANOVA_design <- function(design, n, mu, sd, r = 0, 
+                         labelnames = NULL, 
+                         plot = Superpower_options("plot")){
 
 #Check String for an acceptable digits and factor (w or b)
   if (grepl("^(\\d{1,3}(w|b)\\*){0,2}\\d{1,3}(w|b)$", design, ignore.case = FALSE, perl = TRUE) == FALSE) {

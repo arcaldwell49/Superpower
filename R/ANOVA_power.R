@@ -2,21 +2,28 @@
 #' @param design_result Output from the ANOVA_design function
 #' @param alpha_level Alpha level used to determine statistical significance
 #' @param correction Set a correction of violations of sphericity. This can be set to "none", "GG" Grennhouse-Geisser, and "HF" Huynh-Feldt
-#' @param p_adjust Correction for multiple comparisons; see ?p.adjust for options
+#' @param p_adjust Correction for multiple comparisons. This will adjust p valeus for ANOVA/MANOVA level effects; see ?p.adjust for options
+#' @param emm Set to FALSE to not perform analysis of estimated marginal means
+#' @param emm_model Set model type ("multivariate", or "univariate") for estimated marginal means
+#' @param contrast_type Select the type of comparison for the estimated marginal means
+#' @param emm_comp Set the comparisons for estimated marginal means comaparisons. This is a factor name (a), combination of factor names (a+b), or for simple effects a | sign is needed (a|b)
+#' @param emm_p_adjust Correction for multiple comparisons; default is "none". See ?summary.emmGrid for more details on acceptable methods.
 #' @param nsims number of simulations to perform
 #' @param seed Set seed for reproducible results
 #' @param verbose Set to FALSE to not print results (default = TRUE)
-#' @return Returns dataframe with simulation data (p-values and effect sizes), anova results and simple effect results, and plots of p-value distribution.
+#' @return Returns dataframe with simulation data (p-values and effect sizes), anova results (type 3 sums of squares) and simple effect results, and plots of p-value distribution.
 #' 
 #' \describe{
 #'   \item{\code{"sim_data"}}{Output from every iteration of the simulation}
-#'   \item{\code{"main_result"}}{The power analysis results of the ANOVA results.}
-#'   \item{\code{"pc_results"}}{The power analysis results of the pairwise comparison results.}
+#'   \item{\code{"main_result"}}{The power analysis results for ANOVA effects.}
+#'   \item{\code{"pc_results"}}{The power analysis results for pairwise comparisons.}
 #'   \item{\code{"manova_results"}}{Default is "NULL". If a within-subjects factor is included, then the power of the multivariate (i.e. MANOVA) analyses will be provided.}
+#'   \item{\code{"emm_results"}}{The power analysis results of the estimated marginal means.}
 #'   \item{\code{"plot1"}}{Distribution of p-values from the ANOVA results.}
 #'   \item{\code{"plot2"}}{Distribution of p-values from the pairwise comparisons results.}
 #'   \item{\code{"correction"}}{The correction for sphericity applied to the simulation results.}
-#'   \item{\code{"p_adjust"}}{The p-value adjustment applied to the simulation results.}
+#'   \item{\code{"p_adjust"}}{The p-value adjustment applied to the simulation results for ANOVA/MANOVA omnibus tests and t-tests.}
+#'   \item{\code{"emm_p_adjust"}}{The p-value adjustment applied to the simulation results for the estimated marginal means.}
 #'   \item{\code{"nsims"}}{The number of simulations run.}
 #'   \item{\code{"alpha_level"}}{The alpha level, significance cut-off, used for the power analysis.}
 #' 
@@ -35,18 +42,87 @@
 #'       p_adjust = "none", seed = 2019, nsims = 10)
 #' @section References:
 #' too be added
-#' @importFrom stats pnorm pt qnorm qt as.formula median p.adjust
+#' @importFrom stats pnorm pt qnorm qt as.formula median p.adjust pf sd power
 #' @importFrom utils combn
+#' @importFrom graphics pairs
 #' @importFrom reshape2 melt
 #' @importFrom MASS mvrnorm
 #' @importFrom afex aov_car
+#' @import emmeans
 #' @import ggplot2
 #' @export
 #'
 
-ANOVA_power <- function(design_result, alpha_level = 0.05, correction = "none",
+ANOVA_power <- function(design_result, 
+                        alpha_level = Superpower_options("alpha_level"), 
+                        correction = Superpower_options("correction"),
                         p_adjust = "none", nsims = 1000, seed = NULL,
-                        verbose = TRUE){
+                        verbose = Superpower_options("verbose"),
+                        emm = Superpower_options("emm"),
+                        emm_model = Superpower_options("emm_model"),
+                        contrast_type = Superpower_options("contrast_type"),
+                        emm_p_adjust = "none",
+                        emm_comp){
+  
+  #Need this to avoid "undefined" global error from occuring
+  cohen_f <- partial_eta_squared <- non_centrality <- NULL
+  
+  #New checks for emmeans input
+  if (missing(emm)) {
+    emm = FALSE
+  }
+  
+  if (missing(emm_model)) {
+    emm_model = "multivariate"
+  }
+  
+  #Follow if statements limit the possible input for emmeans specifications
+  if (emm == TRUE) {
+    if (is.element(emm_model, c("univariate", "multivariate")) == FALSE ) {
+      stop("emm_model must be set to \"univariate\" or \"multivariate\". ")
+    }
+    if (is.element(contrast_type, 
+                  c("pairwise", 
+                    "revpairwise",
+                    "eff",
+                    "consec",
+                    "poly",
+                    "del.eff",
+                    "trt.vs.ctrl",
+                    "trt.vs.ctrl1",
+                    "trt.vs.ctrlk",
+                    "mean_chg",
+                    "dunnett",
+                    "tukey"
+                  )) == FALSE ) {
+      stop("contrast_type must be of an accepted format. 
+           The tukey & dunnett options are not appropriate for models with within subjects factors. 
+           See help(\"contrast-methods\") for details on the exact methods")
+    }
+  
+  
+  if (is.element(emm_p_adjust, 
+                c("dunnett",
+                  "tukey",
+                  "sidak",
+                  "scheffe",
+                  "dunnettx",
+                  "mvt",
+                  "holm", 
+                  "hochberg", 
+                  "hommel", 
+                  "bonferroni", 
+                  "BH", 
+                  "BY", 
+                  "fdr",
+                  "none")) == FALSE ) {
+    stop("emm_p_adjust must be of an acceptable format.
+           See ?summary.emmGrid for details on the exact methods.")
+  }
+}
+
+
+
 
   if (is.element(p_adjust, c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none")) == FALSE ) {
     stop("p_adjust must be of an acceptable adjustment method: see ?p.adjust")
@@ -74,52 +150,7 @@ ANOVA_power <- function(design_result, alpha_level = 0.05, correction = "none",
     set.seed(seed, kind = "Mersenne-Twister", normal.kind = "Inversion")
   }
 
-  effect_size_d <- function(x, y, conf.level = 0.95){
-    sd1 <- sd(x) #standard deviation of measurement 1
-    sd2 <- sd(y) #standard deviation of measurement 2
-    n1 <- length(x) #number of pairs
-    n2 <- length(y) #number of pairs
-    df <- n1 + n2 - 2
-    m_diff <- mean(y) - mean(x)
-    sd_pooled <- (sqrt((((n1 - 1) * ((sd1^2))) + (n2 - 1) * ((sd2^2))) / ((n1 + n2 - 2)))) #pooled standard deviation
-    j <- (1 - 3/(4 * (n1 + n2 - 2) - 1)) #Calculate Hedges' correction.
-    t_value <- m_diff / sqrt(sd_pooled^2 / n1 + sd_pooled^2 / n2)
-    p_value = 2*pt(-abs(t_value), df = df)
-    d <- m_diff / sd_pooled #Cohen's d
-    d_unb <- d*j #Hedges g, of unbiased d
 
-    invisible(list(d = d,
-                   d_unb = d_unb,
-                   p_value = p_value))
-  }
-
-  effect_size_d_paired <- function(x, y, conf.level = 0.95){
-    sd1 <- sd(x) #standard deviation of measurement 1
-    sd2 <- sd(y) #standard deviation of measurement 2
-    s_diff <- sd(x - y) #standard deviation of the difference scores
-    N <- length(x) #number of pairs
-    df = N - 1
-    s_av <- sqrt((sd1 ^ 2 + sd2 ^ 2) / 2) #averaged standard deviation of both measurements
-
-    #Cohen's d_av, using s_av as standardizer
-    m_diff <- mean(y - x)
-    d_av <- m_diff / s_av
-    d_av_unb <- (1 - (3 / (4 * (N - 1) - 1))) * d_av
-
-    #get the t-value for the CI
-    t_value <- m_diff / (s_diff / sqrt(N))
-    p_value = 2 * pt(-abs(t_value), df = df)
-
-    #Cohen's d_z, using s_diff as standardizer
-    d_z <- t_value / sqrt(N)
-    d_z_unb <- (1 - (3 / (4 * (N - 1) - 1))) * d_z
-
-    invisible(list(
-      d_z = d_z,
-      d_z_unb = d_z_unb,
-      p_value = p_value
-    ))
-  }
 
   #Check to ensure there is a within subject factor -- if none --> no MANOVA
   run_manova <- grepl("w", design_result$design)
@@ -137,6 +168,19 @@ ANOVA_power <- function(design_result, alpha_level = 0.05, correction = "none",
   ###############
 
   design <- design_result$design #String used to specify the design
+  
+  if (grepl("w",design) && is.element(emm_p_adjust,
+                                     c("dunnett",
+                                       "tukey",
+                                       "sidak",
+                                       "scheffe",
+                                       "dunnettx")) == TRUE ) {
+    warning(
+      "The emm_p_adjust selection is inappropriate for the specified design.
+           Consider fdr or holm corrections. See ?summary.emmGrid"
+    )
+  }
+  
   factornames <- design_result$factornames #Get factor names
   n <- design_result$n
   mu = design_result$mu # population means - should match up with the design
@@ -158,7 +202,63 @@ ANOVA_power <- function(design_result, alpha_level = 0.05, correction = "none",
   aov_result <- suppressMessages({aov_car(frml1, #here we use frml1 to enter formula 1 as designed above on the basis of the design
                                          data = dataframe, include_aov = FALSE,
                                          anova_table = list(es = "pes", p_adjust_method = p_adjust)) }) #This reports PES not GES
-
+  if (emm == TRUE) {
+    #Call emmeans with specifcations given in the function
+    #Limited to specs and model
+    if (missing(emm_comp)) {
+      emm_comp = as.character(frml2)[2]
+    }
+    
+    specs_formula <- as.formula(paste(contrast_type," ~ ",emm_comp))
+    emm_result <- suppressMessages({emmeans(aov_result, 
+                          specs = specs_formula,
+                          model = emm_model,
+                          adjust = emm_p_adjust)})
+    #plot_emm = plot(emm_result, comparisons = TRUE)
+    #make comparison based on specs; adjust = "none" in exact; No solution for multcomp in exact simulation
+    pairs_result <- emm_result$contrasts
+    pairs_result_df <- as.data.frame(pairs_result)
+    #Need for exact; not necessary for power function
+    #Convert t-ratio to F-stat
+    pairs_result_df$F.value <- (pairs_result_df$t.ratio)^2
+    #Calculate pes -- The formula for partial eta-squared is equation 13 from Lakens (2013)
+    pairs_result_df$pes <- pairs_result_df$F.value/(pairs_result_df$F.value + pairs_result_df$df) 
+    #Calculate cohen's f
+    pairs_result_df$f2 <- pairs_result_df$pes/(1 - pairs_result_df$pes)
+    #Calculate noncentrality
+    pairs_result_df$lambda <- pairs_result_df$f2*pairs_result_df$df
+    #minusalpha<- 1-alpha_level
+    pairs_result_df$Ft <- qf((1 - alpha_level), 1, pairs_result_df$df)
+    #Calculate power
+    pairs_result_df$power <- (1 - pf(pairs_result_df$Ft, 1, pairs_result_df$df, pairs_result_df$lambda))*100
+    
+    pairs_result_df <- pairs_result_df %>% mutate(partial_eta_squared = .data$pes,
+                                                  cohen_f = sqrt(.data$f2),
+                                                  non_centrality = .data$lambda) %>%
+      select(-.data$p.value,-.data$F.value,-.data$t.ratio,-.data$Ft,-.data$SE,
+             -.data$f2,-.data$lambda,-.data$pes, -.data$estimate, -.data$df) %>%
+      select(-.data$power, -.data$partial_eta_squared, -.data$cohen_f, -.data$non_centrality,
+             .data$power, .data$partial_eta_squared, .data$cohen_f, .data$non_centrality)
+    
+    #rownames from contrasts non readable sticking to row number
+    #rownames(pairs_result_df) <- as.character(pairs_result_df$contrast)
+    #pairs_result_df$contrast <- NULL
+      
+      
+    emm_sim_data <- as.data.frame(matrix(
+      ncol = nrow(pairs_result_df)*2,
+      nrow = nsims))
+    
+    names(emm_sim_data) = c(paste("p_",
+                              rownames(pairs_result_df),
+                              sep = ""),
+                        paste("cohen_f_",
+                              rownames(pairs_result_df),
+                              sep = ""))
+  } else{
+    pairs_result_df = NULL
+  }
+  
   #Run MANOVA if within subject factor is included; otherwise ignored
   if (run_manova == TRUE) {
     manova_result <- Anova_mlm_table(aov_result$Anova)
@@ -253,10 +353,39 @@ ANOVA_power <- function(design_result, alpha_level = 0.05, correction = "none",
                                             anova_table = list(es = "pes",
                                                                p_adjust_method = p_adjust,
                                                                correction = correction))}) #This reports PES not GES
+      if (emm == TRUE) {
+      emm_result <- suppressMessages({emmeans(aov_result, 
+                            specs = specs_formula,
+                            model = emm_model,
+                            adjust = emm_p_adjust)})
+      #plot_emm = plot(emm_result, comparisons = TRUE)
+      #make comparison based on specs; adjust = "none" in exact; No solution for multcomp in exact simulation
+      pairs_result <- emm_result$contrasts
+      pairs_result_df <- as.data.frame(pairs_result)
+      #Need for exact; not necessary for power function
+      #Convert t-ratio to F-stat
+      pairs_result_df$F.value <- (pairs_result_df$t.ratio)^2
+      #Calculate pes -- The formula for partial eta-squared is equation 13 from Lakens (2013)
+      pairs_result_df$pes <- pairs_result_df$F.value/(pairs_result_df$F.value + pairs_result_df$df) 
+      #Calculate cohen's f
+      pairs_result_df$f2 <- pairs_result_df$pes/(1 - pairs_result_df$pes)
+
+      
+      pairs_result_df <- pairs_result_df %>% mutate(cohen_f = sqrt(.data$f2)) %>%
+        select(-.data$F.value,-.data$t.ratio,-.data$SE,
+               -.data$f2,-.data$pes, -.data$estimate, -.data$df) %>%
+        select(-.data$cohen_f, -.data$p.value,
+               .data$p.value, .data$cohen_f)
+      
+      emm_sim_data[i,] <- c(as.numeric(pairs_result_df$p.value), #p-value for contrast
+                            as.numeric(pairs_result_df$cohen_f) #cohen f
+                            ) #
+    }
 
       # Store MANOVA result if there are within subject factors
       if (run_manova == TRUE) {
         manova_result <- Anova_mlm_table(aov_result$Anova)
+        manova_result$p.value <- p.adjust(manova_result$p.value, method = p_adjust)
       }
 
       for (j in 1:possible_pc) {
@@ -264,8 +393,8 @@ ANOVA_power <- function(design_result, alpha_level = 0.05, correction = "none",
         y <- dataframe$y[which(dataframe$cond == paired_tests[2,j])]
         #this can be sped up by tweaking the functions that are loaded to only give p and dz
         ifelse(within_between[j] == 0,
-               t_test_res <- effect_size_d(x, y, conf.level = 1 - alpha_level),
-               t_test_res <- effect_size_d_paired(x, y, conf.level = 1 - alpha_level))
+               t_test_res <- effect_size_d(x, y, alpha_level = alpha_level),
+               t_test_res <- effect_size_d_paired(x, y, alpha_level = alpha_level))
         paired_p[j] <- t_test_res$p_value
         paired_d[j] <- ifelse(within_between[j] == 0,
                                     t_test_res$d,
@@ -373,7 +502,20 @@ ANOVA_power <- function(design_result, alpha_level = 0.05, correction = "none",
 
   pc_results <- data.frame(power_paired, es_paired)
   names(pc_results) = c("power","effect_size")
-
+  
+  #Data summary for emmeans
+  if (emm == TRUE) {
+  emm_power = as.data.frame(apply(as.matrix(emm_sim_data[(1):(nrow(pairs_result_df))]), 2,
+                                  function(x) mean(ifelse(x < alpha_level, 1, 0) * 100)))
+  emm_es = as.data.frame(apply(as.matrix(emm_sim_data[((nrow(pairs_result_df) + 1):(nrow(pairs_result_df)*2))]), 2,
+                               function(x) mean(x)))
+  
+  emm_results <- data.frame(pairs_result_df$contrast,emm_power, emm_es)
+  names(emm_results) = c("contrast","power","cohen_f")
+  } else{
+  emm_results = NULL
+  }
+  
   #Simulation results from MANOVA
   if (run_manova == TRUE) {
     power_MANOVA = as.data.frame(apply(as.matrix(sim_data[((2*(2 ^ factors - 1) + 2 * possible_pc + 1):(2 ^ factors + (2*(2 ^ factors - 1) + 2 * possible_pc)))]), 2,
@@ -392,9 +534,15 @@ ANOVA_power <- function(design_result, alpha_level = 0.05, correction = "none",
     cat("\n")
     print(main_results, digits = 4)
     cat("\n")
-    cat("Power and Effect sizes for contrasts")
+    cat("Power and Effect sizes for pairwise comparisons (t-tests)")
     cat("\n")
     print(pc_results, digits = 4)
+    cat("\n")
+    if (emm == TRUE) {
+    cat("Power and Cohen's f from estimated marginal means")
+    cat("\n")
+    print(emm_results, digits = 4)
+    }
     if (run_manova == TRUE) {
       cat("\n")
       cat("Within-Subject Factors Included: Check MANOVA Results")
@@ -411,10 +559,12 @@ ANOVA_power <- function(design_result, alpha_level = 0.05, correction = "none",
                  main_results = main_results,
                  pc_results = pc_results,
                  manova_results = manova_result,
+                 emm_results = emm_results,
                  plot1 = plt1,
                  plot2 = plt2,
                  correction = correction,
                  p_adjust = p_adjust,
+                 emm_p_adjust = emm_p_adjust,
                  nsims = nsims,
                  alpha_level = alpha_level))
 }

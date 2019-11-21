@@ -10,6 +10,13 @@ library(Superpower)
 library(ggplot2)
 library(rmarkdown)
 library(knitr)
+library(kableExtra)
+
+
+
+Superpower_options(emm = TRUE,
+                   verbose = FALSE,
+                   plot = FALSE)
 
 # Define UI for application
 ui <- dashboardPage(
@@ -20,10 +27,10 @@ ui <- dashboardPage(
       menuItem("Information", tabName = "info_tab", icon = icon("info-circle")),
       menuItem("Design", tabName = "design_tab", icon = icon("bezier-curve")),
       menuItem("Exact Power", tabName = "exact_tab", icon = icon("equals")),
-      menuItem("Plot Power", tabName = "plot_tab", icon = icon("infinity")),
-      conditionalPanel("input.sim_2 >= 1",
-                       downloadButton("report", "Download PDF Report")
-      )
+      conditionalPanel("input.sim >=1",
+                       downloadButton("report", "Download PDF Report")),
+      menuItem("Power Curve", tabName = "plot_tab", icon = icon("infinity"))
+      
     )
   ),
 
@@ -45,16 +52,25 @@ ui <- dashboardPage(
                 h5("You must start with the Design tab in order to perform a power analysis. At this stage you must establish the parameters of the design (sample size, standard deviation, etc).
                  Once you click Submit Design the design details will be printed and you can continue onto the power analysis."),
                 h3("Exact Power Tab"),
-                h5("In this tab, you will setup the Monte Carlo simulation. All you can do at this stage is set the alpha level (default=.05)"),
-                h3("Plot Power Tab"),
-                h5("In this tab, you can see power across a range of sample sizes. All you need to do is set a minimum and maximum sample size"),
+                h5("In this tab, you will setup an *exact* simulation. All you can do at this stage is set the alpha level (default=.05) and decide the estimated marinal means analysis (optional)"),
+                h3("Power curve Tab"),
+                h5("In this tab, you can see power across a range of sample sizes. All you need to do is set a minimum and maximum sample size. This tab will also allow you to download csv files including the power of ANOVA and estimated marginal means across a range of sample sizes."),
                 h3("Download your Simulation"),
                 h5("Once your simulation is completed a button a button will appear on the sidebar to download a PDF")
+              ),              
+              box(
+                title = "NEWS",
+                status = "danger",
+                solidHeader = TRUE,
+                collapsible = FALSE,
+                strong("Current updates to Superpower's Exact Shiny App"),
+                h5("Option for estimated marginal means added"),
+                h5("Plot power output has been removed from the dowloadable pdf. These results could sometimes be difficult to see in the pdf format. But now can be downloaded as individual csv files")
               )),
       tabItem(tabName = "design_tab",
               fluidRow(
                 box(
-                  title = "Inputs", status = "warning", solidHeader = TRUE,
+                  title = "Design Input", status = "warning", solidHeader = TRUE,
                   strong("Specify the factorial design below"), br(),
                   "*Must be specficied to continue*",
 
@@ -64,8 +80,9 @@ ui <- dashboardPage(
                             value = "2b*2w"),
                   
                   selectInput("labelChoice", "Would you like to enter factor and level names?",
-                              c("Yes" = "yes",
-                                "No" = "no" )),
+                              c("No" = "no",
+                                "Yes" = "yes"
+                                )),
                   conditionalPanel(condition = "input.labelChoice == 'yes'",
                   h5("Specify one word for each factor (e.g., AGE and SPEED) and the level of each factor (e.g., old and yound for a factor age with 2 levels)."),
 
@@ -119,10 +136,33 @@ ui <- dashboardPage(
                   title = "Simulation Parameters", status = "warning", solidHeader = TRUE,
 
                   conditionalPanel("input.designBut >= 1",
+                                   
+                                   selectInput("emm", "Would you like to compare the estimated marginal means?",
+                                               c("No" = "no",
+                                                 "Yes" = "yes"
+                                                 )),
+                                   conditionalPanel("input.emm == 'yes'",
+                                                    h5("Keeping the default settings will result in all pairwise comparisons being performed."),
+                                                    selectInput("emm_model", "What model would you like to use for the estimated marginal means",
+                                                                c("Univariate" = "univariate",
+                                                                  "Multivariate" = "multivariate")),
+                                                    selectInput("contrast_type", "What type of comparisons would you like to make?",
+                                                                c("Pairwise" = "pairwise",
+                                                                  "Polynomial contrast" = "poly",
+                                                                  "Helmert" = "consec",
+                                                                  "Compare each level with the average over all levels" = "eff")),
+                                                    textInput(inputId = "emm_comp", 
+                                                              label = "What comparisons would you like to make with estimated marginal means?",
+                                                              value = "a + b"),
+                                                    textOutput("emm_formula"),
+                                                    h5("The addition sign ('+') will add factors for comparisons while factors after a vertical bar '|'  specifies the names of predictors to condition on"),
+                                                    a("For more information on setting comparisons", href = "https://cran.r-project.org/web/packages/emmeans/vignettes/comparisons.html#formulas")
+                                                    ),
+                                   
 
                   sliderInput("sig",
                               label = "Alpha Level",
-                              min = 0, max = 1, value = 0.05),
+                              min = 0, max = .2, value = 0.05),
 
                   actionButton("sim", "Print Results of Simulation",
                                icon = icon("print"))
@@ -134,8 +174,10 @@ ui <- dashboardPage(
                   title = "Power Analysis Output", status = "primary", solidHeader = TRUE,
                   collapsible = TRUE,
                   tableOutput('tableMain'),
-                  
-                  tableOutput('tablePC')
+                  conditionalPanel("input.emm == 'no'",
+                  tableOutput('tablePC')),
+                  conditionalPanel("input.emm == 'yes'",
+                  tableOutput('tableEMM'))
                   
                 )
               )
@@ -155,7 +197,12 @@ ui <- dashboardPage(
                                                max = 500, value = c(3, 100)),
                                    actionButton("sim_2", "Plot Power",
                                                 icon = icon("chart-line")),
-                                   h3("Note: No sphercity correction")
+                                   h3("Note: No sphercity correction"),
+                                   conditionalPanel("input.sim_2 >=1",
+                                                    h5("Download Results for ANOVA and estimated marginal means"),
+                                   downloadButton("dl_data", "Download ANOVA Results"),
+                                   conditionalPanel("input.emm == 'yes' ",
+                                   downloadButton("dl_data2", "Download EMMEANS Results")))
                   )
                 ),
                 
@@ -163,7 +210,8 @@ ui <- dashboardPage(
                   title = "Power Curve across Sample Sizes",
                   status = "primary", solidHeader = TRUE,
                   collapsible = TRUE,
-                  plotOutput('plot_curve')
+                  plotOutput('plot_curve'),
+                  plotOutput('plot_curve_emm')
                   
                 )
               )
@@ -184,12 +232,13 @@ ui <- dashboardPage(
 ###############################################################################
 
 # Define server logic
-server <- function(input, output) {
+server <- function(input, output, session) {
 
   #Create set of reactive values
   values <- reactiveValues(design_result = 0,
                            power_result = 0,
-                           power_curve = 0)
+                           power_curve = 0,
+                           emm_output = 0)
 
   output$sample_size <- renderUI({sliderInput("sample_size",
               label = "Sample Size per Cell",
@@ -217,12 +266,26 @@ server <- function(input, output) {
   observeEvent(input$designBut, {values$design_result <- ANOVA_design(design = as.character(input$design),
                                                                       n = as.numeric(input$sample_size),
                                                                       mu = as.numeric(input$muMatrix),
-                                                                      labelnames = as.vector(unlist(strsplit(gsub("[[:space:]]", "",input$labelnames), ","))),
+                                                                      labelnames = if (input$labelChoice == "yes") {
+                                                                        as.vector(unlist(strsplit(gsub("[[:space:]]", "",input$labelnames), ",")))
+                                                                      }else{
+                                                                        NULL
+                                                                      },
                                                                       sd = as.numeric(input$sd),
                                                                       r = as.numeric(input$r),
                                                                       plot = FALSE)
-  })
+  values$emm_output <- as.character(values$design_result$frml2)[2] 
+  updateTextInput(session, "emm_comp", value = values$emm_output)
 
+  })
+  
+  #observeEvent(input$designBut, {})
+
+  
+  
+  
+  output$emm_formula <- renderText({
+    paste("Enter",as.character(values$design_result$frml2[2]), " above to receive results for all pairwise comparisons")})
 
   #Output text for ANOVA design
   output$DESIGN <- renderText({
@@ -255,22 +318,41 @@ server <- function(input, output) {
   observeEvent(input$sim, {values$power_result <- ANOVA_exact(values$design_result,
                                                               correction = "none",
                                                               alpha_level = input$sig,
-                                                              verbose = FALSE)
+                                                              verbose = FALSE,
+                                                              emm = if (input$emm == "yes") {
+                                                                TRUE
+                                                              } else{FALSE},
+                                                              emm_model = as.character(input$emm_model),
+                                                              contrast_type = as.character(input$contrast_type),
+                                                              emm_comp = as.character(input$emm_comp))
 
 
   })
 
+
+  
   #Table output of ANOVA level effects; rownames needed
   output$tableMain <-  renderTable({
     req(input$sim)
     values$power_result$main_results},
+    caption = "Power for ANOVA effects",
+    caption.placement = getOption("xtable.caption.placement", "top"),
     rownames = TRUE)
 
   #Table output of pairwise comparisons; rownames needed
   output$tablePC <-  renderTable({
     req(input$sim)
     values$power_result$pc_result},
+    caption = "Power for Pairwise Comparisons with t-tests",
+    caption.placement = getOption("xtable.caption.placement", "top"),
     rownames = TRUE)
+  
+  output$tableEMM <-  renderTable({
+    req(input$sim)
+    values$power_result$emm_results},
+    caption = "Power for Estimated Marginal Means Comparisons",
+    caption.placement = getOption("xtable.caption.placement", "top"),
+    rownames = FALSE)
 
   observeEvent(input$sim_2, {
     values$power_curve <- plot_power(
@@ -278,7 +360,12 @@ server <- function(input, output) {
       min_n = input$ss_2[1],
       max_n = input$ss_2[2],
       alpha_level = input$sig,
-      plot = FALSE
+      emm = if (input$emm == "yes") {
+        TRUE
+      } else{FALSE},
+      emm_model = as.character(input$emm_model),
+      contrast_type = as.character(input$contrast_type),
+      emm_comp = as.character(input$emm_comp)
     )
   })
 
@@ -288,7 +375,30 @@ server <- function(input, output) {
     req(input$sim_2)
     values$power_curve$plot_ANOVA
   })
-
+  
+  output$plot_curve_emm <- renderPlot({
+    req(input$sim_2)
+    values$power_curve$plot_emm
+  })
+  
+  output$dl_data <- downloadHandler(
+    filename = function() {
+      paste("ANOVA_power_df", ".csv", sep = "")
+    },
+    content = function(file2) {
+      write.csv(values$power_curve$power_df, file2, row.names = FALSE)
+    }
+  )
+  
+  output$dl_data2 <- downloadHandler(
+    filename = function() {
+      paste("emm_power_df", ".csv", sep = "")
+    },
+    content = function(file3) {
+      write.csv(values$power_curve$power_df_emm, file3, row.names = FALSE)
+    }
+  )
+  
   #Create downloadable report in markdown TINYTEX NEEDS TO BE INSTALLED
   output$report <- downloadHandler(
     # For PDF output, change this to "report.pdf"
@@ -303,6 +413,7 @@ server <- function(input, output) {
       # Set up parameters to pass to Rmd document
       params <- list(tablePC = values$power_result$pc_result,
                      tableMain = values$power_result$main_results,
+                     tableEMM = values$power_result$emm_results,
                      means_plot = values$power_result$plot,
                      n = values$design_result$n,
                      model = deparse(values$design_result$frml1),
@@ -310,8 +421,7 @@ server <- function(input, output) {
                      cor_mat = values$design_result$cor_mat,
                      sigmatrix = values$design_result$sigmatrix,
                      alpha_level = values$power_result$alpha_level,
-                     power_curve = values$power_curve$plot_ANOVA,
-                     power_curve_df = values$power_curve$power_df)
+                     input_emm = input$emm)
 
       # Knit the document, passing in the `params` list, and eval it in a
       # child of the global environment (this isolates the code in the document

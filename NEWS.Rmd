@@ -1,0 +1,19 @@
+---
+title: "NEWS"
+output: github_document
+---
+
+Updates from contrast_extension update `r format(Sys.time(), "%a %b %d %Y")`
+
+-Added estimated marginal means comparisons using `emmeans` R package.
+  -`emm = TRUE` in the ANOVA_power, ANOVA_exact, and plot_power will result in emmeans being calculated
+  -Default is all pairwise comparisons but this can be modified with `contrast_type` and `emm_comp` options
+  
+-Added global options
+  -Options that have crossover between functions can now be set globally for the package
+  -Includes: verbose, emm, emm_model, contrast_type, alpha_level, and plot
+  -These global options can be seen with Superpower_options()
+
+-Updated Shiny Apps
+  -Now includes emmeans options
+  -kableExtra, emmeans, magrittr, and dplyr packages now needed to knit markdown file in app.

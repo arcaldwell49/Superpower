@@ -4,8 +4,14 @@
 \alias{ANOVA_power}
 \title{Simulation function used to estimate power}
 \usage{
-ANOVA_power(design_result, alpha_level = 0.05, correction = "none",
-  p_adjust = "none", nsims = 1000, seed = NULL, verbose = TRUE)
+ANOVA_power(design_result,
+  alpha_level = Superpower_options("alpha_level"),
+  correction = Superpower_options("correction"), p_adjust = "none",
+  nsims = 1000, seed = NULL, verbose = Superpower_options("verbose"),
+  emm = Superpower_options("emm"),
+  emm_model = Superpower_options("emm_model"),
+  contrast_type = Superpower_options("contrast_type"),
+  emm_p_adjust = "none", emm_comp)
 }
 \arguments{
 \item{design_result}{Output from the ANOVA_design function}
@@ -14,26 +20,38 @@ ANOVA_power(design_result, alpha_level = 0.05, correction = "none",
 
 \item{correction}{Set a correction of violations of sphericity. This can be set to "none", "GG" Grennhouse-Geisser, and "HF" Huynh-Feldt}
 
-\item{p_adjust}{Correction for multiple comparisons; see ?p.adjust for options}
+\item{p_adjust}{Correction for multiple comparisons. This will adjust p valeus for ANOVA/MANOVA level effects; see ?p.adjust for options}
 
 \item{nsims}{number of simulations to perform}
 
 \item{seed}{Set seed for reproducible results}
 
 \item{verbose}{Set to FALSE to not print results (default = TRUE)}
+
+\item{emm}{Set to FALSE to not perform analysis of estimated marginal means}
+
+\item{emm_model}{Set model type ("multivariate", or "univariate") for estimated marginal means}
+
+\item{contrast_type}{Select the type of comparison for the estimated marginal means}
+
+\item{emm_p_adjust}{Correction for multiple comparisons; default is "none". See ?summary.emmGrid for more details on acceptable methods.}
+
+\item{emm_comp}{Set the comparisons for estimated marginal means comaparisons. This is a factor name (a), combination of factor names (a+b), or for simple effects a | sign is needed (a|b)}
 }
 \value{
-Returns dataframe with simulation data (p-values and effect sizes), anova results and simple effect results, and plots of p-value distribution.
+Returns dataframe with simulation data (p-values and effect sizes), anova results (type 3 sums of squares) and simple effect results, and plots of p-value distribution.
 
 \describe{
   \item{\code{"sim_data"}}{Output from every iteration of the simulation}
-  \item{\code{"main_result"}}{The power analysis results of the ANOVA results.}
-  \item{\code{"pc_results"}}{The power analysis results of the pairwise comparison results.}
+  \item{\code{"main_result"}}{The power analysis results for ANOVA effects.}
+  \item{\code{"pc_results"}}{The power analysis results for pairwise comparisons.}
   \item{\code{"manova_results"}}{Default is "NULL". If a within-subjects factor is included, then the power of the multivariate (i.e. MANOVA) analyses will be provided.}
+  \item{\code{"emm_results"}}{The power analysis results of the estimated marginal means.}
   \item{\code{"plot1"}}{Distribution of p-values from the ANOVA results.}
   \item{\code{"plot2"}}{Distribution of p-values from the pairwise comparisons results.}
   \item{\code{"correction"}}{The correction for sphericity applied to the simulation results.}
-  \item{\code{"p_adjust"}}{The p-value adjustment applied to the simulation results.}
+  \item{\code{"p_adjust"}}{The p-value adjustment applied to the simulation results for ANOVA/MANOVA omnibus tests and t-tests.}
+  \item{\code{"emm_p_adjust"}}{The p-value adjustment applied to the simulation results for the estimated marginal means.}
   \item{\code{"nsims"}}{The number of simulations run.}
   \item{\code{"alpha_level"}}{The alpha level, significance cut-off, used for the power analysis.}
 

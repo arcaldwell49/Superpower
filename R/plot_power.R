@@ -4,16 +4,23 @@
 #' @param min_n Minimum sample size in power curve.
 #' @param max_n Maximum sample size in power curve.
 #' @param plot Should power plot be printed automatically (defaults to FALSE)
+#' @param emm Set to FALSE to not perform analysis of estimated marginal means
+#' @param emm_model Set model type ("multivariate", or "univariate") for estimated marginal means
+#' @param contrast_type Select the type of comparison for the estimated marginal means
+#' @param emm_comp Set the comparisons for estimated marginal means comaparisons. This is a factor name (a), combination of factor names (a+b), or for simple effects a | sign is needed (a|b)
 #' @return Returns plot with power curves for the ANOVA, and a dataframe with the summary data.
 #' 
 
 #' \describe{
 #'   \item{\code{"plot_ANOVA"}}{Plot of power curves from ANOVA results.}
 #'   \item{\code{"plot_MANOVA"}}{Plot of power curves from MANOVA results. Returns NULL if no within-subject factors.}
+#'   \item{\code{"plot_emm"}}{Plot of power curves from MANOVA results. Returns NULL if emm = FALSE.}
 #'   \item{\code{"power_df"}}{The tabulated ANOVA power results.}
-#'   \item{\code{"power_df_manova"}}{The tabulated MANOVA power results..}
+#'   \item{\code{"power_df_manova"}}{The tabulated MANOVA power results. Returns NULL if no within-subject factors.}
+#'   \item{\code{"power_df_emm"}}{The tabulated Estimated Marginal Means power results. Returns NULL if emm = FALSE.}
 #'   \item{\code{"effect_sizes"}}{Effect sizes (partial eta-squared) from ANOVA results.}
 #'   \item{\code{"effect_sizes_manova"}}{Effect sizes (Pillai's Trace) from MANOVA results. Returns NULL if no within-subject factors.}
+#'   \item{\code{"effect_sizes_emm"}}{ Effect sizes (cohen's f) estimated marginal means results. Returns NULL if emm = FALSE.}
 #'   
 #' }
 #' 
@@ -28,22 +35,68 @@
 #' plot_power(design_result, min_n = 50, max_n = 70)
 #' @section References:
 #' too be added
-#' @importFrom stats pf qf
+#' @importFrom stats pnorm pt qnorm qt as.formula median qf power.t.test pf sd power
 #' @importFrom reshape2 melt
 #' @importFrom MASS mvrnorm
 #' @importFrom afex aov_car
+#' @importFrom graphics pairs
+#' @importFrom magrittr '%>%'
+#' @importFrom dplyr select mutate everything
+#' @import emmeans
 #' @import ggplot2
 #' @export
 
-plot_power <- function(design_result, alpha_level,
+plot_power <- function(design_result, 
+                       alpha_level = Superpower_options("alpha_level"),
                        min_n = 7, max_n = 100,
-                       plot = FALSE){
+                       plot = Superpower_options("plot"),
+                       emm = Superpower_options("emm"),
+                       emm_model = Superpower_options("emm_model"),
+                       contrast_type = Superpower_options("contrast_type"),
+                       emm_comp){
+  
+  #Need this to avoid "undefined" global error or no visible binding from occuring
+  cohen_f <- partial_eta_squared <- non_centrality <- pairs_results_df <- NULL
+  #New checks for emmeans input
+  if (missing(emm)) {
+    emm = FALSE
+  }
+  
+  if (missing(emm_model)) {
+    emm_model = "multivariate"
+  }
+  
+  #Follow if statements limit the possible input for emmeans specifications
+  if (emm == TRUE) {
+    if (is.element(emm_model, c("univariate", "multivariate")) == FALSE ) {
+      stop("emm_model must be set to \"univariate\" or \"multivariate\". ")
+    }
+    if (is.element(contrast_type, 
+                  c("pairwise", 
+                    "revpairwise",
+                    "eff",
+                    "consec",
+                    "poly",
+                    "del.eff",
+                    "trt.vs.ctrl",
+                    "trt.vs.ctrl1",
+                    "trt.vs.ctrlk",
+                    "mean_chg"
+                  )) == FALSE ) {
+      stop("contrast_type must be of an accepted format. 
+           The tukey & dunnett options currently not supported in ANOVA_exact. 
+           See help(\"contrast-methods\") for details on the exact methods")
+    }
+  }
+  
   design = design_result$design
   mu = design_result$mu
   sd <- design_result$sd
   r <- design_result$r
   labelnames <- design_result$labelnames
   n <- design_result$n
+  frml1 <- design_result$frml1
+  frml2 <- design_result$frml2
 
 
   if (missing(alpha_level)) {
@@ -69,8 +122,22 @@ plot_power <- function(design_result, alpha_level,
 
 
   #Do one ANOVA to get number of power columns
+  if (emm == FALSE) {
   exact_result <- ANOVA_exact(design_result, alpha_level = alpha_level,
                               verbose = FALSE)
+  } else {
+    #Call emmeans with specifcations given in the function
+    #Limited to specs and model
+    if (missing(emm_comp)) {
+      emm_comp = as.character(frml2)[2]
+    }
+    exact_result <- ANOVA_exact(design_result, alpha_level = alpha_level,
+                                emm = TRUE,
+                                contrast_type = contrast_type,
+                                emm_model = emm_model,
+                                emm_comp = emm_comp,
+                                verbose = FALSE)
+  }
 
   length_power <- length(exact_result$main_results$power)
 
@@ -91,6 +158,18 @@ plot_power <- function(design_result, alpha_level,
   colnames(power_df_manova) <- c("n", row.names(exact_result$manova_results))
 
   }
+  
+  if (emm == TRUE) {
+
+    length_power_emm <- length(exact_result$emm_results$power)
+    
+    power_df_emm <- as.data.frame(matrix(0, ncol = length_power_emm + 1,
+                                     nrow = max_n + 1 - min_n))
+    power_df_emm[,1] <- c((min_n):max_n)
+    
+    colnames(power_df_emm) <- c("n", as.character(exact_result$emm_results$contrast))
+    
+  } 
 
   for (i in 1:(max_n + 1 - min_n)) {
 
@@ -169,6 +248,57 @@ plot_power <- function(design_result, alpha_level,
 
       power_df_manova[i, 2:(1 + length_power_manova)] <- manova_result$power
     }
+    
+    if (emm == TRUE) {
+      #Call emmeans with specifcations given in the function
+      #Limited to specs and model
+      if (missing(emm_comp)) {
+        emm_comp = as.character(frml2)[2]
+      }
+      
+      specs_formula <- as.formula(paste(contrast_type," ~ ",emm_comp))
+      emm_result_loop <- suppressMessages({emmeans(aov_result, 
+                            specs = specs_formula,
+                            model = emm_model,
+                            adjust = "none")
+      })
+      #plot_emm = plot(emm_result, comparisons = TRUE)
+      #make comparison based on specs; adjust = "none" in exact; No solution for multcomp in exact simulation
+      pairs_result_loop <- emm_result_loop$contrasts
+      pairs_result_df_loop <- as.data.frame(pairs_result_loop)
+      #Need for exact; not necessary for power function
+      #Convert t-ratio to F-stat
+      pairs_result_df_loop$F.value <- (pairs_result_df_loop$t.ratio)^2
+      #Calculate pes -- The formula for partial eta-squared is equation 13 from Lakens (2013)
+      pairs_result_df_loop$pes <- exact_result$emm_results$partial_eta_squared 
+      #Calculate cohen's f
+      pairs_result_df_loop$f2 <- pairs_result_df_loop$pes/(1 - pairs_result_df_loop$pes)
+      #Calculate noncentrality
+      pairs_result_df_loop$lambda <- pairs_result_df_loop$f2*pairs_result_df_loop$df
+      #minusalpha<- 1-alpha_level
+      pairs_result_df_loop$Ft <- qf((1 - alpha_level), 1, pairs_result_df_loop$df)
+      #Calculate power
+      pairs_result_df_loop$power <- (1 - pf(pairs_result_df_loop$Ft, 
+                                            1, pairs_result_df_loop$df, 
+                                            pairs_result_df_loop$lambda))*100
+      
+      pairs_result_df_loop <- pairs_result_df_loop %>% mutate(partial_eta_squared = .data$pes,
+                                                    cohen_f = sqrt(.data$f2),
+                                                    non_centrality = .data$lambda) %>%
+        select(-.data$p.value,-.data$F.value,-.data$t.ratio,-.data$Ft,-.data$SE,
+               -.data$f2,-.data$lambda,-.data$pes, -.data$estimate, -.data$df) %>%
+        select(-.data$power, -.data$partial_eta_squared, -.data$cohen_f, -.data$non_centrality,
+               .data$power, .data$partial_eta_squared, .data$cohen_f, .data$non_centrality)
+      
+      power_df_emm[i, 2:(1 + length_power_emm)] <- pairs_result_df_loop$power
+    } else{
+      pairs_result_df_loop = NULL
+      #plot_emm = NULL
+      emm_result_loop = NULL
+      
+      power_df_emm = NULL
+    }
+    
 
   }
 
@@ -194,6 +324,19 @@ plot_power <- function(design_result, alpha_level,
       labs(x = "Sample size per condition", y = "Power") +
       facet_grid(variable ~ .)
   }
+  
+  if (emm == TRUE) {
+    plot_data_emm <- suppressMessages(melt(power_df_emm, id = c('n')))
+    
+    p3 <- ggplot(data = plot_data_emm,
+                 aes(x = plot_data_emm$n, y = plot_data_emm$value)) +
+      geom_line(size = 1.5) +
+      scale_x_continuous(limits = c(min_n, max_n)) +
+      scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, 10)) +
+      theme_bw() +
+      labs(x = "Sample size per condition", y = "Power") +
+      facet_grid(variable ~ .)
+  }
 
   if (plot == TRUE) {
     print(p1)
@@ -204,16 +347,31 @@ plot_power <- function(design_result, alpha_level,
     power_df_manova = NULL
     effect_sizes_manova = NULL
   }
+  
+  if (emm == FALSE) {
+    p3 = NULL
+    power_df_emm = NULL
+    effect_sizes_emm = NULL
+  }
 
   #Save effect sizes
   effect_sizes <- exact_result$main_results[,2:3]
 
+  if (run_manova == TRUE) {
   effect_sizes_manova <- exact_result$manova_results[,2:3]
-
+  }
+  
+  if (emm == TRUE) {
+  effect_sizes_emm <- exact_result$emm_results %>%
+    select(everything(),-non_centrality,-power)
+}
   invisible(list(plot_ANOVA = p1,
                  plot_MANOVA = p2,
+                 plot_emm = p3,
                  power_df = power_df,
                  power_df_manova = power_df_manova,
+                 power_df_emm = power_df_emm,
                  effect_sizes = effect_sizes,
-                 effect_sizes_manova = effect_sizes_manova))
+                 effect_sizes_manova = effect_sizes_manova,
+                 effect_sizes_emm = effect_sizes_emm))
 }

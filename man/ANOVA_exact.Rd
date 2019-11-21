@@ -4,8 +4,12 @@
 \alias{ANOVA_exact}
 \title{Simulates an exact dataset (mu, sd, and r represent empirical not population mean and covariance matrix) from the design to calculate power}
 \usage{
-ANOVA_exact(design_result, correction = "none", alpha_level,
-  verbose = TRUE)
+ANOVA_exact(design_result, correction = Superpower_options("correction"),
+  alpha_level = Superpower_options("alpha_level"),
+  verbose = Superpower_options("verbose"),
+  emm = Superpower_options("emm"),
+  emm_model = Superpower_options("emm_model"),
+  contrast_type = Superpower_options("contrast_type"), emm_comp)
 }
 \arguments{
 \item{design_result}{Output from the ANOVA_design function}
@@ -15,6 +19,14 @@ ANOVA_exact(design_result, correction = "none", alpha_level,
 \item{alpha_level}{Alpha level used to determine statistical significance}
 
 \item{verbose}{Set to FALSE to not print results (default = TRUE)}
+
+\item{emm}{Set to FALSE to not perform analysis of estimated marginal means}
+
+\item{emm_model}{Set model type ("multivariate", or "univariate") for estimated marginal means}
+
+\item{contrast_type}{Select the type of comparison for the estimated marginal means}
+
+\item{emm_comp}{Set the comparisons for estimated marginal means comaparisons. This is a factor name (a), combination of factor names (a+b), or for simple effects a | sign is needed (a|b)}
 }
 \value{
 Returns dataframe with simulation data (power and effect sizes!), anova results and simple effect results, plot of exact data, and alpha_level. Note: Cohen's f = sqrt(pes/1-pes) and the noncentrality paramter is = f^2*df(error)
@@ -22,8 +34,10 @@ Returns dataframe with simulation data (power and effect sizes!), anova results 
 \describe{
   \item{\code{"dataframe"}}{A dataframe of the simulation result.}
   \item{\code{"aov_result"}}{\code{aov} object returned from \code{\link{aov_car}}.}
-  \item{\code{"main_result"}}{The power analysis results of the ANOVA results.}
-  \item{\code{"pc_results"}}{The power analysis results of the pairwise comparison results.}
+  \item{\code{"aov_result"}}{\code{emmeans} object returned from \code{\link{emmeans}}.}
+  \item{\code{"main_result"}}{The power analysis results for ANOVA level effects.}
+  \item{\code{"pc_results"}}{The power analysis results for the pairwise (t-test) comparisons.}
+  \item{\code{"emm_results"}}{The power analysis results of the pairwise comparison results.}
   \item{\code{"manova_results"}}{Default is "NULL". If a within-subjects factor is included, then the power of the multivariate (i.e. MANOVA) analyses will be provided.}
   \item{\code{"alpha_level"}}{The alpha level, significance cut-off, used for the power analysis.}
   \item{\code{"plot"}}{A plot of the dataframe from the simualtion; should closely match the meansplot in \code{\link{ANOVA_design}}}
@@ -47,6 +61,5 @@ to be added
 design_result <- ANOVA_design(design = "2w*2w", n = 40, mu = c(1, 0, 1, 0),
       sd = 2, r = 0.8, labelnames = c("condition", "cheerful",
       "sad", "voice", "human", "robot"))
- set.seed(252)
 exact_result <- ANOVA_exact(design_result, alpha_level = 0.05)
 }

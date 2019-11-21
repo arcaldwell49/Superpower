@@ -4,8 +4,12 @@
 \alias{plot_power}
 \title{Convenience function to plot power across a range of sample sizes.}
 \usage{
-plot_power(design_result, alpha_level, min_n = 7, max_n = 100,
-  plot = FALSE)
+plot_power(design_result,
+  alpha_level = Superpower_options("alpha_level"), min_n = 7,
+  max_n = 100, plot = Superpower_options("plot"),
+  emm = Superpower_options("emm"),
+  emm_model = Superpower_options("emm_model"),
+  contrast_type = Superpower_options("contrast_type"), emm_comp)
 }
 \arguments{
 \item{design_result}{Output from the ANOVA_design function}
@@ -17,6 +21,14 @@ plot_power(design_result, alpha_level, min_n = 7, max_n = 100,
 \item{max_n}{Maximum sample size in power curve.}
 
 \item{plot}{Should power plot be printed automatically (defaults to FALSE)}
+
+\item{emm}{Set to FALSE to not perform analysis of estimated marginal means}
+
+\item{emm_model}{Set model type ("multivariate", or "univariate") for estimated marginal means}
+
+\item{contrast_type}{Select the type of comparison for the estimated marginal means}
+
+\item{emm_comp}{Set the comparisons for estimated marginal means comaparisons. This is a factor name (a), combination of factor names (a+b), or for simple effects a | sign is needed (a|b)}
 }
 \value{
 Returns plot with power curves for the ANOVA, and a dataframe with the summary data.
@@ -24,10 +36,13 @@ Returns plot with power curves for the ANOVA, and a dataframe with the summary d
 \describe{
   \item{\code{"plot_ANOVA"}}{Plot of power curves from ANOVA results.}
   \item{\code{"plot_MANOVA"}}{Plot of power curves from MANOVA results. Returns NULL if no within-subject factors.}
+  \item{\code{"plot_emm"}}{Plot of power curves from MANOVA results. Returns NULL if emm = FALSE.}
   \item{\code{"power_df"}}{The tabulated ANOVA power results.}
-  \item{\code{"power_df_manova"}}{The tabulated MANOVA power results..}
+  \item{\code{"power_df_manova"}}{The tabulated MANOVA power results. Returns NULL if no within-subject factors.}
+  \item{\code{"power_df_emm"}}{The tabulated Estimated Marginal Means power results. Returns NULL if emm = FALSE.}
   \item{\code{"effect_sizes"}}{Effect sizes (partial eta-squared) from ANOVA results.}
   \item{\code{"effect_sizes_manova"}}{Effect sizes (Pillai's Trace) from MANOVA results. Returns NULL if no within-subject factors.}
+  \item{\code{"effect_sizes_emm"}}{ Effect sizes (cohen's f) estimated marginal means results. Returns NULL if emm = FALSE.}
   
 }
 }
