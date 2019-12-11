@@ -1,5 +1,5 @@
 #' Monte carlo simulation function for simple pre-post parellel group design
-#' @param diff_post Difference between groups at the post time (defalt is zero)
+#' @param post_diff Difference between groups at the post time (defalt is zero)
 #' @param sd standard deviation for all conditions (i.e., common standard deviation; default is 1)
 #' @param r Correlation between pre and post measurement (default is .5)
 #' @param MOE The margin of error. The desired length of one arm of a CI, or the maximum likely estimation error. If blank, it is set to the sd. (see Cummings and Calin-Jageman)
@@ -19,7 +19,12 @@
 #' }
 #' @return Returns dataframe with simulation results at each sample size as well as plots of the confidence intervals widths and power for the ANOVA and ANCOVA result.
 #' @examples
-#' Too be added
+#' # Setup a simple 2x2 design with 
+#' #.5 difference post with sd = 1.5 and r = .85
+#' # Margin of error is at .5 per Cummings recommendations (since post_diff is .5)
+#' # Want to check the sample sizes between n = 10 to 20
+#' ANCOVA_result = simple_ANCOVA(post_diff = .5, sd = 1.5, r = .85, 
+#' min_n = 10, max_n = 20, MOE = .5)
 #' @section References:
 #' Cumming, Geoff, and Robert Calin-Jageman. Introduction to the new statistics: Estimation, open science, and beyond. Routledge, 2016.
 #' @importFrom stats pnorm pt qnorm qt as.formula median p.adjust pf sd power
@@ -38,6 +43,9 @@ simple_ANCOVA <- function(post_diff,sd=1, r = .5,
                           min_n=7, max_n=100, alpha_level=.05,
                           conf_level,
                           nsims = 1000, MOE) {
+  
+  #Need this to avoid "undefined" global error from occuring
+  n_per_group <- power_ANCOVA <- power_ANOVA <- assurance_ANOVA <- assurance_ANCOVA <- NULL
   
   if(missing(conf_level)) {
     conf_level = (1-alpha_level)

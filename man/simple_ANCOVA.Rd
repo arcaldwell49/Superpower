@@ -8,6 +8,8 @@ simple_ANCOVA(post_diff, sd = 1, r = 0.5, min_n = 7, max_n = 100,
   alpha_level = 0.05, conf_level, nsims = 1000, MOE)
 }
 \arguments{
+\item{post_diff}{Difference between groups at the post time (defalt is zero)}
+
 \item{sd}{standard deviation for all conditions (i.e., common standard deviation; default is 1)}
 
 \item{r}{Correlation between pre and post measurement (default is .5)}
@@ -31,9 +33,7 @@ simple_ANCOVA(post_diff, sd = 1, r = 0.5, min_n = 7, max_n = 100,
 
 }}
 
-\item{MOE}{The margin of error. The desired length of one arm of a CI, or the maximum likely estimation error. (see Cummings and Calin-Jageman)}
-
-\item{diff_post}{Difference between groups at the post time (defalt is zero)}
+\item{MOE}{The margin of error. The desired length of one arm of a CI, or the maximum likely estimation error. If blank, it is set to the sd. (see Cummings and Calin-Jageman)}
 }
 \value{
 Returns dataframe with simulation results at each sample size as well as plots of the confidence intervals widths and power for the ANOVA and ANCOVA result.
@@ -47,5 +47,10 @@ Cumming, Geoff, and Robert Calin-Jageman. Introduction to the new statistics: Es
 }
 
 \examples{
-Too be added
+# Setup a simple 2x2 design with 
+#.5 difference post with sd = 1.5 and r = .85
+# Margin of error is at .5 per Cummings recommendations (since post_diff is .5)
+# Want to check the sample sizes between n = 10 to 20
+ANCOVA_result = simple_ANCOVA(post_diff = .5, sd = 1.5, r = .85, 
+min_n = 10, max_n = 20, MOE = .5)
 }

@@ -11,9 +11,9 @@ test_that("error messages", {
 })
 
 #Function check
-test_that("ttest", {
+#test_that("ttest", {
   
   #10.1016/j.jclinepi.2007.02.006
   
 
-})
+#})
