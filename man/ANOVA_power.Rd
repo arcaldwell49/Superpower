@@ -32,7 +32,7 @@ ANOVA_power(design_result,
 
 \item{emm_model}{Set model type ("multivariate", or "univariate") for estimated marginal means}
 
-\item{contrast_type}{Select the type of comparison for the estimated marginal means}
+\item{contrast_type}{Select the type of comparison for the estimated marginal means. See ?emmeans::`contrast-methods` for more details on acceptable methods.}
 
 \item{emm_p_adjust}{Correction for multiple comparisons; default is "none". See ?summary.emmGrid for more details on acceptable methods.}
 

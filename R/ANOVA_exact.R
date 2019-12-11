@@ -5,7 +5,7 @@
 #' @param verbose Set to FALSE to not print results (default = TRUE)
 #' @param emm Set to FALSE to not perform analysis of estimated marginal means
 #' @param emm_model Set model type ("multivariate", or "univariate") for estimated marginal means
-#' @param contrast_type Select the type of comparison for the estimated marginal means
+#' @param contrast_type Select the type of comparison for the estimated marginal means. Default is pairwise. See ?emmeans::`contrast-methods` for more details on acceptable methods.
 #' @param emm_comp Set the comparisons for estimated marginal means comaparisons. This is a factor name (a), combination of factor names (a+b), or for simple effects a | sign is needed (a|b)
 #' @return Returns dataframe with simulation data (power and effect sizes!), anova results and simple effect results, plot of exact data, and alpha_level. Note: Cohen's f = sqrt(pes/1-pes) and the noncentrality paramter is = f^2*df(error)
 #' 
@@ -32,8 +32,6 @@
 #'       sd = 2, r = 0.8, labelnames = c("condition", "cheerful",
 #'       "sad", "voice", "human", "robot"))
 #' exact_result <- ANOVA_exact(design_result, alpha_level = 0.05)
-#' @section References:
-#' to be added
 #' @importFrom stats pnorm pt qnorm qt as.formula median qf power.t.test pf sd power
 #' @importFrom utils combn
 #' @importFrom reshape2 melt
