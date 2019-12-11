@@ -796,9 +796,14 @@ ui <- dashboardPage(
                               label = "Number of Simulations",
                               min = 1000, max = 20000, value = 2000),
 
-                  sliderInput("sig",
-                              label = "Alpha Level",
-                              min = 0, max = .2, value = 0.05),
+                  #sliderInput("sig",
+                  #            label = "Alpha Level",
+                  #            min = 0, max = .2, value = 0.05),
+                  
+                  numericInput("sig", label = "Alpha Level", value = .05, 
+                               min = .0000000000000000000000000000000001, 
+                               max = 1,
+                               step = .001),
 
                   actionButton("sim", "Print Results of Simulation",
                                icon = icon("print"))

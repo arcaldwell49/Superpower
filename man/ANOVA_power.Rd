@@ -32,7 +32,7 @@ ANOVA_power(design_result,
 
 \item{emm_model}{Set model type ("multivariate", or "univariate") for estimated marginal means}
 
-\item{contrast_type}{Select the type of comparison for the estimated marginal means. See ?emmeans::`contrast-methods` for more details on acceptable methods.}
+\item{contrast_type}{Select the type of comparison for the estimated marginal means. Default is pairwise. See ?emmeans::`contrast-methods` for more details on acceptable methods.}
 
 \item{emm_p_adjust}{Correction for multiple comparisons; default is "none". See ?summary.emmGrid for more details on acceptable methods.}
 
@@ -60,11 +60,6 @@ Returns dataframe with simulation data (p-values and effect sizes), anova result
 \description{
 Simulation function used to estimate power
 }
-\section{References}{
-
-too be added
-}
-
 \examples{
 ## Set up a within design with 2 factors, each with 2 levels,
 ## with correlation between observations of 0.8,

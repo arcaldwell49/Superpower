@@ -24,7 +24,7 @@ ANOVA_exact(design_result, correction = Superpower_options("correction"),
 
 \item{emm_model}{Set model type ("multivariate", or "univariate") for estimated marginal means}
 
-\item{contrast_type}{Select the type of comparison for the estimated marginal means. See ?emmeans::`contrast-methods` for more details on acceptable methods.}
+\item{contrast_type}{Select the type of comparison for the estimated marginal means. Default is pairwise. See ?emmeans::`contrast-methods` for more details on acceptable methods.}
 
 \item{emm_comp}{Set the comparisons for estimated marginal means comaparisons. This is a factor name (a), combination of factor names (a+b), or for simple effects a | sign is needed (a|b)}
 }
@@ -47,9 +47,9 @@ Returns dataframe with simulation data (power and effect sizes!), anova results 
 \description{
 Simulates an exact dataset (mu, sd, and r represent empirical not population mean and covariance matrix) from the design to calculate power
 }
-\section{References}{
+\section{Warnings}{
 
-to be added
+Varying the sd or r (e.g., entering multiple values) violates assumptions of homoscedascity and sphericity respectively
 }
 
 \examples{
