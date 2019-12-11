@@ -32,6 +32,8 @@
 #'       sd = 2, r = 0.8, labelnames = c("condition", "cheerful",
 #'       "sad", "voice", "human", "robot"))
 #' exact_result <- ANOVA_exact(design_result, alpha_level = 0.05)
+#' @section Warnings:
+#' Varying the sd or r (e.g., entering multiple values) violates assumptions of homoscedascity and sphericity respectively
 #' @importFrom stats pnorm pt qnorm qt as.formula median qf power.t.test pf sd power
 #' @importFrom utils combn
 #' @importFrom reshape2 melt
