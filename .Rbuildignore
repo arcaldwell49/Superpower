@@ -18,3 +18,5 @@
 ^.*\.jmo$
 ^Validaion$
 ^NEWS\.Rmd$
+^jmvpower\.b\.R$   
+^jmvpower\.h\.R$ 

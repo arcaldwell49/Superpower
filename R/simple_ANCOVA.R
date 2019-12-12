@@ -55,12 +55,12 @@ simple_ANCOVA <- function(post_diff,sd=1, r = .5,
     post_diff = 0
   }
   
-  if(missing(sd)) {
+  if(missing(MOE)) {
     MOE = sd
   }
   
   if(r<=0 | r>=1){
-    stop("r must be a value between 0 and 1")
+    stop("r must be a single value between 0 and 1")
   }
   
   if(sd <= 0){

@@ -11,9 +11,18 @@ test_that("error messages", {
 })
 
 #Function check
-#test_that("ttest", {
+test_that("PASS", {
   
-  #10.1016/j.jclinepi.2007.02.006
+  #Compared to results in PASS
+  set.seed(894126547)
+  ANCOVA_result = simple_ANCOVA(post_diff = .5, sd = 1, r = .65,
+                                alpha_level = .15,
+                                MOE = 1,
+                                min_n = 10,
+                                max_n = 15)
+  expect_length(ANCOVA_result$sim_results$power_ANCOVA, 6)
+  expect_lt(max(ANCOVA_result$sim_results$power_ANCOVA),64.5)
+  expect_gt(min(ANCOVA_result$sim_results$power_ANCOVA),47.5)
   
 
-#})
+})
