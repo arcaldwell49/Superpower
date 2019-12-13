@@ -887,12 +887,9 @@ values$label_list <- reactive({
  
  output$muMatrix <-  renderUI({matrixInput(
    "muMatrix",
-   value = matrix(c(1), 1, 
-                  prod(as.numeric(strsplit(input$design, "\\D+")[[1]])),
-                  dimnames = list(c("mu"),
-                                  c(label_function(input$design)))),
-   rows = list(names = TRUE),
-   cols = list(names = TRUE),
+   value = matrix(c(1), 1, prod(as.numeric(strsplit(input$design, "\\D+")[[1]]))),
+   rows = list(names = FALSE),
+   cols = list(names = FALSE),
    copy = TRUE,
    paste = TRUE
  )
