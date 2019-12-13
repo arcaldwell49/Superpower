@@ -1,7 +1,7 @@
 language: r
 cache: packages
 before_install:
-  - sudo apt-get -y install libxml2-dev
+  - sudo apt-get update
 addons:
   apt:
     update: true
