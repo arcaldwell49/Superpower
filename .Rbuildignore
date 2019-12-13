@@ -20,3 +20,4 @@
 ^NEWS\.Rmd$
 ^jmvpower\.b\.R$   
 ^jmvpower\.h\.R$ 
+^simple_ANCOVA\\.R$
