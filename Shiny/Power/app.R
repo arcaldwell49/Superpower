@@ -566,8 +566,6 @@ label_function <- function(design, labelnames = NULL) {
   # Separate factors with a * (asterisk)
   # Thus "2b*3w) is a design with 2 between levels, and 3 within levels
   
-  #Check if design and means match up - if not, throw an error and stop
-  if(prod(factor_levels) != length(mu)){stop("the length of the vector with means does not match the study design")}
   
   #Check if the design and sd match (either 1 or length of design)
   #if(length(sd) != 1 && prod(factor_levels) != length(sd)){stop("The SD must be a length of 1 or match the length of the study design")}
@@ -887,9 +885,12 @@ values$label_list <- reactive({
  
  output$muMatrix <-  renderUI({matrixInput(
    "muMatrix",
-   value = matrix(c(1), 1, prod(as.numeric(strsplit(input$design, "\\D+")[[1]]))),
-   rows = list(names = FALSE),
-   cols = list(names = FALSE),
+   value = matrix(c(1), 1, 
+                  prod(as.numeric(strsplit(input$design, "\\D+")[[1]])),
+                  dimnames = list(c("mu"),
+                                  c(label_function(input$design)))),
+   rows = list(names = TRUE),
+   cols = list(names = TRUE),
    copy = TRUE,
    paste = TRUE
  )
