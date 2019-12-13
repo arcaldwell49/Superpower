@@ -1,7 +1,5 @@
 language: r
 cache: packages
 before_install:
-  - sudo apt-get update
-addons:
-  apt:
-    update: true
+  - sudo apt-get -qq update
+  - sudo apt-get install -y libmagick++-dev
