@@ -60,7 +60,7 @@ ANOVA_power <- function(design_result,
                         emm_model = Superpower_options("emm_model"),
                         contrast_type = Superpower_options("contrast_type"),
                         emm_p_adjust = "none",
-                        emm_comp){
+                        emm_comp = NULL){
   
   #Need this to avoid "undefined" global error from occuring
   cohen_f <- partial_eta_squared <- non_centrality <- NULL
@@ -203,7 +203,7 @@ ANOVA_power <- function(design_result,
   if (emm == TRUE) {
     #Call emmeans with specifcations given in the function
     #Limited to specs and model
-    if (missing(emm_comp)) {
+    if (is.null(emm_comp)) {
       emm_comp = as.character(frml2)[2]
     }
     
