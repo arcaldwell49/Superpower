@@ -644,7 +644,7 @@ ui <- dashboardPage(
                 a("Click here for the other app", href = "http://shiny.ieis.tue.nl/anova_exact/"),
                 h3("The Design Tab"),
                 h5("You must start with the Design tab in order to perform a power analysis. At this stage you must establish the parameters of the design (sample size, standard deviation, etc).
-                   Once you click Submit Design the design details will be printed and you can continue onto the power analysis."),
+                   Once you click Submit Design the design details will appear and you can continue onto the power analysis."),
                 h3("Power Simulation Tab"),
                 h5("In this tab, you will setup the Monte Carlo simulation. You will have to specify a correction for multiple comparisons (default=none) and the alpha level (default=.05).
                    If you have repeated measures you will need to specify the sphericity correction (default=none)."),
@@ -718,7 +718,7 @@ ui <- dashboardPage(
 
                   h5("Note that for each cell in the design, a mean must be provided. Thus, for a '2b*3w' design, 6 means need to be entered. Means need to be entered in the correct order. The app provides a plot so you can check if you entered means correctly. The general principle has designated factors (i.e., AGE and SPEED) and levels (e.g., old, young)."),
 
-                  strong("Vector of Means"),
+                  strong("Means for Each Cell in the Design"),
                   
                   uiOutput("muMatrix"),
 
@@ -803,7 +803,7 @@ ui <- dashboardPage(
                                max = 1,
                                step = .001),
 
-                  actionButton("sim", "Print Results of Simulation",
+                  actionButton("sim", "Show Results of Simulation",
                                icon = icon("print"))
 
                   )
