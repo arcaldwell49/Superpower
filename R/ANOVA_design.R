@@ -6,6 +6,8 @@
 #' @param r Correlation between dependent variables (single value or matrix)
 #' @param labelnames Optional vector to specifying factor and condition names (recommended, if not used factors and levels are indicated by letters and numbers)
 #' @param plot Should means plot be printed (defaults to TRUE)
+#' @return Returns dataframe with sample data, and the basic information regarding your design. All of the output of this function should be assigned to an object that can be passed to ANOVA_exact, ANOVA_power, or plot_power functions.
+#' 
 #' \describe{
 #'   \item{\code{"dataframe"}}{A sample dataframe of what data could look like given the proposed parameters.}
 #'   \item{\code{"design"}}{\code{aov} The design string, e.g. "2b*2w".}

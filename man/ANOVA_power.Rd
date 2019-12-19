@@ -11,7 +11,7 @@ ANOVA_power(design_result,
   emm = Superpower_options("emm"),
   emm_model = Superpower_options("emm_model"),
   contrast_type = Superpower_options("contrast_type"),
-  emm_p_adjust = "none", emm_comp)
+  emm_p_adjust = "none", emm_comp = NULL)
 }
 \arguments{
 \item{design_result}{Output from the ANOVA_design function}
