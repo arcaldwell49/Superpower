@@ -2,8 +2,8 @@
 Meta
 .Rhistory
 doc
-
 build/js
 build/R
 temp
 *.jmo
+.RData
