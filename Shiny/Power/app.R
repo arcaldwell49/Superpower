@@ -698,14 +698,17 @@ ui <- dashboardPage(
                   uiOutput("sdMatrix") ),
 
                   conditionalPanel(condition = "input.sdChoice == 'no'", 
-                  textInput(inputId = "sd_common", label = "Common Standard Deviation",
+                  numericInput(inputId = "sd_common", label = "Common Standard Deviation",
+                            min = 0,
+                            step = .1,
                             value = 1.03)),
-                  
-                  selectInput("rChoice", "Would you like to enter a correlation matrix? 
+                  conditionalPanel(condition = "output.corr_display == true",
+                  selectInput("rChoice", "Would you like to enter a correlation matrix (rather than a single correlation)? 
                               *Warning: may violate sphericity assumption*",
                               c("No" = "no" ,
                                 "Yes" = "yes"
                               )),
+                  
                   conditionalPanel(condition = "input.rChoice == 'no'", 
                                    textInput(inputId = "r_common", label = "Common correlation among within-subjects factors",
                                              value = .5)),
@@ -714,7 +717,8 @@ ui <- dashboardPage(
                                    strong("Specify the correlation matrix. 
                                           If a correlation is entered across between subjects factor it will be reset to zero.
                                           Values only need to be entered in the upper triangular part and the app will take it from there."),
-                                   uiOutput("rMatrix")),
+                                   
+                                   uiOutput("rMatrix"))),
 
                   h5("Note that for each cell in the design, a mean must be provided. Thus, for a '2b*3w' design, 6 means need to be entered. Means need to be entered in the correct order. The app provides a plot so you can check if you entered means correctly. The general principle has designated factors (i.e., AGE and SPEED) and levels (e.g., old, young)."),
 
@@ -912,17 +916,34 @@ values$label_list <- reactive({
  })
 
 
-  output$sample_size <- renderUI({sliderInput("sample_size",
-              label = "Sample Size per Cell",
-              min = prod(
-                as.numeric(
-                  unlist(
-                    regmatches
-                    (input$design,
-                      gregexpr("[[:digit:]]+",
-                               input$design))))),
-              max = 1000, value = 80)
-  })
+ output$corr_display = reactive(grepl("w",as.character(input$design)))
+ outputOptions(output, "corr_display", suspendWhenHidden = FALSE)
+ 
+ output$sample_size <- renderUI({
+   numericInput("sample_size", 
+                label = "Sample Size per Cell",
+                min = prod(
+                  as.numeric(
+                    unlist(
+                      regmatches
+                      (input$design,
+                        gregexpr("[[:digit:]]+",
+                                 input$design))))),
+                max = 1000, value = 80, step = 1)
+ })
+ 
+ #Old sample size dynamic input
+ #output$sample_size <- renderUI({sliderInput("sample_size",
+ #            label = "Sample Size per Cell",
+ #            min = prod(
+ #              as.numeric(
+ #                unlist(
+ #                  regmatches
+ #                  (input$design,
+ #                    gregexpr("[[:digit:]]+",
+ #                             input$design))))),
+ #            max = 1000, value = 80)
+ #})
 
 
 

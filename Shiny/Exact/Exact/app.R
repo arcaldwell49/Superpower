@@ -166,14 +166,20 @@ ui <- dashboardPage(
 
                   uiOutput("sample_size"),
 
-                  textInput(inputId = "sd", label = "Common Standard Deviation",
+                  numericInput(inputId = "sd", label = "Common Standard Deviation",
+                            min = 0,
+                            step = .01,
                             value = 1.03),
-
+                  conditionalPanel(condition = "output.corr_display == true",
                   h5("Specify the correlation for within-subjects factors."),
 
-                  sliderInput("r",
-                              label = "Common Correlation among Within-Subjects Factors",
-                              min = 0, max = 1, value = 0.87),
+                  #sliderInput("r",
+                  #            label = "Common Correlation among Within-Subjects Factors",
+                  #            min = 0, max = 1, value = 0.87),
+                  numericInput("r", label = "Common Correlation among Within-Subjects Factors", value = .87, 
+                               min = .0000000000000000000000000000000001, 
+                               max = 1,
+                               step = .001)),
 
                   h5("Note that for each cell in the design, a mean must be provided. Thus, for a '2b*3w' design, 6 means need to be entered. Means need to be entered in the correct order. The app provides a plot so you can check if you entered means correctly. The general principle has designated factors (i.e., AGE and SPEED) and levels (e.g., old, young)."),
 
@@ -319,18 +325,35 @@ server <- function(input, output, session) {
                            power_result = 0,
                            power_curve = 0,
                            emm_output = 0)
-
-  output$sample_size <- renderUI({sliderInput("sample_size",
-              label = "Sample Size per Cell",
-              min = prod(
-                as.numeric(
-                  unlist(
-                    regmatches
-                    (input$design,
-                      gregexpr("[[:digit:]]+",
-                               input$design))))),
-              max = 1000, value = 80)
+  
+  output$corr_display = reactive(grepl("w",as.character(input$design)))
+  outputOptions(output, "corr_display", suspendWhenHidden = FALSE)
+  
+  output$sample_size <- renderUI({
+    numericInput("sample_size", 
+                 label = "Sample Size per Cell",
+                 min = prod(
+                   as.numeric(
+                     unlist(
+                       regmatches
+                       (input$design,
+                         gregexpr("[[:digit:]]+",
+                                  input$design))))),
+                 max = 1000, value = 80, step = 1)
   })
+  
+  #Old sample size dynamic input
+  #output$sample_size <- renderUI({sliderInput("sample_size",
+  #            label = "Sample Size per Cell",
+  #            min = prod(
+  #              as.numeric(
+  #                unlist(
+  #                  regmatches
+  #                  (input$design,
+  #                    gregexpr("[[:digit:]]+",
+  #                             input$design))))),
+  #            max = 1000, value = 80)
+  #})
   
   output$muMatrix <-  renderUI({matrixInput(
     "muMatrix",
