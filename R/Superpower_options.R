@@ -43,6 +43,6 @@ Superpower_options <- function(...) {
     if (length(dots) > 1) stop("Superpower_options() can only return the value of a single option.", call. = FALSE)
     return(getOption(paste0("Superpower.", unlist(dots))))
   } else {
-    warning("Unsopported command to Superpower_options(), nothing done.", call. = FALSE)
+    warning("Unsupported command to Superpower_options(), nothing done.", call. = FALSE)
   }
 }
