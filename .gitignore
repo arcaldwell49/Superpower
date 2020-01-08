@@ -6,4 +6,5 @@ build/js
 build/R
 temp
 *.jmo
+*.RData
 .RData

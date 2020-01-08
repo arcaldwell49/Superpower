@@ -60,6 +60,11 @@ Returns dataframe with simulation data (p-values and effect sizes), anova result
 \description{
 Simulation function used to estimate power
 }
+\section{References}{
+
+too be added
+}
+
 \examples{
 ## Set up a within design with 2 factors, each with 2 levels,
 ## with correlation between observations of 0.8,

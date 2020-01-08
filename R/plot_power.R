@@ -95,6 +95,9 @@ plot_power <- function(design_result,
   r <- design_result$r
   labelnames <- design_result$labelnames
   n <- design_result$n
+  if (length(n) != 1 ) {
+    warning("Unequal n designs can only be passed to ANOVA_power")
+  }
   frml1 <- design_result$frml1
   frml2 <- design_result$frml2
 
@@ -252,7 +255,7 @@ plot_power <- function(design_result,
     if (emm == TRUE) {
       #Call emmeans with specifcations given in the function
       #Limited to specs and model
-      if (missing(emm_comp)) {
+      if (missing(emm_comp) | is.null(emm_comp)) {
         emm_comp = as.character(frml2)[2]
       }
       

@@ -123,6 +123,9 @@ ANOVA_exact <- function(design_result,
   design <- design_result$design #String used to specify the design
   factornames <- design_result$factornames #Get factor names
   n <- design_result$n
+  if (length(n) != 1 ) {
+    warning("Unequal n designs can only be passed to ANOVA_power")
+  }
   mu = design_result$mu # population means - should match up with the design
   sd <- design_result$sd #population standard deviation (currently assumes equal variances)
   r <- design_result$r # correlation between within factors (currently only 1 value can be entered)

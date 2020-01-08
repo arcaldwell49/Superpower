@@ -20,11 +20,7 @@ ANOVA_design(design, n, mu, sd, r = 0, labelnames = NULL,
 
 \item{labelnames}{Optional vector to specifying factor and condition names (recommended, if not used factors and levels are indicated by letters and numbers)}
 
-\item{plot}{Should means plot be printed (defaults to TRUE)}
-}
-\value{
-Returns dataframe with sample data, and the basic information regarding your design. All of the output of this function should be assigned to an object that can be passed to ANOVA_exact, ANOVA_power, or plot_power functions.
-
+\item{plot}{Should means plot be printed (defaults to TRUE)
 \describe{
   \item{\code{"dataframe"}}{A sample dataframe of what data could look like given the proposed parameters.}
   \item{\code{"design"}}{\code{aov} The design string, e.g. "2b*2w".}
@@ -34,7 +30,7 @@ Returns dataframe with sample data, and the basic information regarding your des
   \item{\code{"mu"}}{Vector of means.}
   \item{\code{"sd"}}{Vector of standard deviations.}
   \item{\code{"r"}}{Common correlation coefficient.}
-  \item{\code{"n"}}{Sample size per cell.}
+  \item{\code{"n"}}{Sample size per cell. Can be entered as a single value or list of sample sizes for each condition. If unequal n is entered then the design can only be passed onto ANOVA_power.}
   \item{\code{"cor_mat"}}{The correlation matrix.}
   \item{\code{"sigmatrix"}}{The variance-covariance matrix.}
   \item{\code{"design_factors"}}{Total number of within-subjects factors.}
@@ -43,9 +39,10 @@ Returns dataframe with sample data, and the basic information regarding your des
   \item{\code{"factornames"}}{List of the factor titles.}
   \item{\code{"meansplot"}}{Plot of the experimental design.}
 
+}}
 }
-
-Returns Single data-frame with simulated data, design, design list, factor names, formulas for ANOVA, means, sd, correlation, sample size per condition, correlation matrix, covariance matrix, design string, labelnames, labelnameslist, factor names, meansplot
+\value{
+Returns single data-frame with simulated data, design, design list, factor names, formulas for ANOVA, means, sd, correlation, sample size per condition, correlation matrix, covariance matrix, design string, labelnames, labelnameslist, factor names, meansplot
 }
 \description{
 Design function used to specify the parameters to be used in simulations
