@@ -655,7 +655,8 @@ ui <- dashboardPage(
                 solidHeader = TRUE,
                 collapsible = FALSE,
                 strong("Current updates to Superpower's Power Shiny App"),
-                h5("Option for estimated marginal means added"))),
+                h5("Option for estimated marginal means added"),
+                h5("Now allows for unequal n input"))),
       # Design content
       tabItem(tabName = "design_tab",
               fluidRow(

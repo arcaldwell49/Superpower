@@ -4,11 +4,10 @@ output: github_document
 ---
 # Superpower 0.0.3
 
-Updates from simple_ANCOVA update `r format(Sys.time(), "%a %b %d %Y")`
+Update `r format(Sys.time(), "%a %b %d %Y")`
 
-* Added the simple_ANCOVA function
-  * Estimates power for simple 2bx2w design (parellel groups; pre-post)
-  * Also, allows for precision estimate using Geoff Cummings "margin of error"
+- Unequal sample size in the design is now permitted
+  -Limited to the ANOVA_design and ANOVA_power functions
   
 - Added estimated marginal means comparisons using `emmeans` R package.
   - `emm = TRUE` in the ANOVA_power, ANOVA_exact, and plot_power will result in emmeans being calculated
@@ -19,7 +18,8 @@ Updates from simple_ANCOVA update `r format(Sys.time(), "%a %b %d %Y")`
   - Includes: verbose, emm, emm_model, contrast_type, alpha_level, and plot
   - These global options can be seen with Superpower_options()
 
-- Updated Shiny Apps
+- Updated Shiny Apps  
+  - Unequal n allowed for ANOVA_power
   - Added numeric input for alpha level (no longer slider)
   - Now includes emmeans options
   - kableExtra, emmeans, magrittr, and dplyr packages now needed to knit markdown file in app.
