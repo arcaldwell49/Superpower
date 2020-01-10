@@ -11,7 +11,7 @@ ANOVA_power(design_result,
   emm = Superpower_options("emm"),
   emm_model = Superpower_options("emm_model"),
   contrast_type = Superpower_options("contrast_type"),
-  emm_p_adjust = "none", emm_comp)
+  emm_p_adjust = "none", emm_comp = NULL)
 }
 \arguments{
 \item{design_result}{Output from the ANOVA_design function}
@@ -32,7 +32,7 @@ ANOVA_power(design_result,
 
 \item{emm_model}{Set model type ("multivariate", or "univariate") for estimated marginal means}
 
-\item{contrast_type}{Select the type of comparison for the estimated marginal means}
+\item{contrast_type}{Select the type of comparison for the estimated marginal means. Default is pairwise. See ?emmeans::`contrast-methods` for more details on acceptable methods.}
 
 \item{emm_p_adjust}{Correction for multiple comparisons; default is "none". See ?summary.emmGrid for more details on acceptable methods.}
 

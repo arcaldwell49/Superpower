@@ -30,7 +30,7 @@ ANOVA_design(design, n, mu, sd, r = 0, labelnames = NULL,
   \item{\code{"mu"}}{Vector of means.}
   \item{\code{"sd"}}{Vector of standard deviations.}
   \item{\code{"r"}}{Common correlation coefficient.}
-  \item{\code{"n"}}{Sample size per cell.}
+  \item{\code{"n"}}{Sample size per cell. Can be entered as a single value or list of sample sizes for each condition. If unequal n is entered then the design can only be passed onto ANOVA_power.}
   \item{\code{"cor_mat"}}{The correlation matrix.}
   \item{\code{"sigmatrix"}}{The variance-covariance matrix.}
   \item{\code{"design_factors"}}{Total number of within-subjects factors.}
@@ -42,7 +42,7 @@ ANOVA_design(design, n, mu, sd, r = 0, labelnames = NULL,
 }}
 }
 \value{
-Returns Single data-frame with simulated data, design, design list, factor names, formulas for ANOVA, means, sd, correlation, sample size per condition, correlation matrix, covariance matrix, design string, labelnames, labelnameslist, factor names, meansplot
+Returns single data-frame with simulated data, design, design list, factor names, formulas for ANOVA, means, sd, correlation, sample size per condition, correlation matrix, covariance matrix, design string, labelnames, labelnameslist, factor names, meansplot
 }
 \description{
 Design function used to specify the parameters to be used in simulations

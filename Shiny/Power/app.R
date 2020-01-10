@@ -22,22 +22,22 @@ Superpower_options(emm = TRUE,
                    verbose = FALSE,
                    plot = FALSE)
 
-shiny_power <-  function(design_result, 
-                         alpha_level = Superpower_options("alpha_level"), 
-                         correction = Superpower_options("correction"),
-                         p_adjust = "none", nsims = 1000, seed = NULL,
-                         verbose = Superpower_options("verbose"),
-                         emm = Superpower_options("emm"),
-                         emm_model = Superpower_options("emm_model"),
-                         contrast_type = Superpower_options("contrast_type"),
-                         emm_p_adjust = "none",
-                         emm_comp){
+shiny_power <- function(design_result, 
+                        alpha_level = Superpower_options("alpha_level"), 
+                        correction = Superpower_options("correction"),
+                        p_adjust = "none", nsims = 1000, seed = NULL,
+                        verbose = Superpower_options("verbose"),
+                        emm = Superpower_options("emm"),
+                        emm_model = Superpower_options("emm_model"),
+                        contrast_type = Superpower_options("contrast_type"),
+                        emm_p_adjust = "none",
+                        emm_comp = NULL){
   
   #Need this to avoid "undefined" global error from occuring
   cohen_f <- partial_eta_squared <- non_centrality <- NULL
   
   #New checks for emmeans input
-  if (missing(emm)) {
+  if (is.null(emm)) {
     emm = FALSE
   }
   
@@ -90,9 +90,6 @@ shiny_power <-  function(design_result,
     }
   }
   
-  
-  
-  
   if (is.element(p_adjust, c("holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none")) == FALSE ) {
     stop("p_adjust must be of an acceptable adjustment method: see ?p.adjust")
   }
@@ -118,8 +115,6 @@ shiny_power <-  function(design_result,
     })
     set.seed(seed, kind = "Mersenne-Twister", normal.kind = "Inversion")
   }
-  
-  
   
   #Check to ensure there is a within subject factor -- if none --> no MANOVA
   run_manova <- grepl("w", design_result$design)
@@ -160,6 +155,13 @@ shiny_power <-  function(design_result,
   sigmatrix <- design_result$sigmatrix
   dataframe <- design_result$dataframe
   design_list <- design_result$design_list
+  
+  #to allow different n per condition:
+  if (grepl("w", design_result$design) == TRUE && length(unique(design_result$n)) > 1)  {
+    stop("Unequal group sizes are not possible when the design contains within factors")
+  }
+  n_vec <- n # store vector n as n - this is because the code below uses n as a single number, so quick fix for legacy reasons
+  n <- max(n) # now set n to max n for ANOVA_design function
   
   ###############
   # 3. Specify factors for formula ----
@@ -304,89 +306,105 @@ shiny_power <-  function(design_result,
   # 7. Start Simulation ----
   ###############
   withProgress(message = 'Running simulations', value = 0, { #block outside of Shiny
-  for (i in 1:nsims) { #for each simulated experiment
-    incProgress(1/nsims, detail = paste("Now running simulation", i, "out of",nsims,"simulations")) #Block outside of Shiny
-    #We simulate a new y variable, melt it in long format, and add it to the dataframe (surpressing messages)
-    dataframe$y <- suppressMessages({
-      melt(as.data.frame(mvrnorm(
-        n = n,
-        mu = mu,
-        Sigma = as.matrix(sigmatrix)
-      )))$value
-    })
-    
-    # We perform the ANOVA using AFEX
-    #Can be set to NICE to speed up, but required data grabbing from output the change.
-    aov_result <- suppressMessages({aov_car(frml1, #here we use frml1 to enter fromula 1 as designed above on the basis of the design
-                                            data = dataframe, include_aov = FALSE, #Need development code to get aov_include function
-                                            anova_table = list(es = "pes",
-                                                               p_adjust_method = p_adjust,
-                                                               correction = correction))}) #This reports PES not GES
-    if (emm == TRUE) {
-      emm_result <- suppressMessages({emmeans(aov_result, 
-                            specs = specs_formula,
-                            model = emm_model,
-                            adjust = emm_p_adjust)})
-      #plot_emm = plot(emm_result, comparisons = TRUE)
-      #make comparison based on specs; adjust = "none" in exact; No solution for multcomp in exact simulation
-      pairs_result <- emm_result$contrasts
-      pairs_result_df <- as.data.frame(pairs_result)
-      #Need for exact; not necessary for power function
-      #Convert t-ratio to F-stat
-      pairs_result_df$F.value <- (pairs_result_df$t.ratio)^2
-      #Calculate pes -- The formula for partial eta-squared is equation 13 from Lakens (2013)
-      pairs_result_df$pes <- pairs_result_df$F.value/(pairs_result_df$F.value + pairs_result_df$df) 
-      #Calculate cohen's f
-      pairs_result_df$f2 <- pairs_result_df$pes/(1 - pairs_result_df$pes)
+    for (i in 1:nsims) { #for each simulated experiment
+      incProgress(1/nsims, detail = paste("Now running simulation", i, "out of",nsims,"simulations")) #Block outside of Shiny
+      #We simulate a new y variable, melt it in long format, and add it to the dataframe (surpressing messages)
+      
+      dataframe <- design_result$dataframe # read in dataframe again, because we deleted rows from it below if unequal n
+      
+      dataframe$y <- suppressMessages({
+        melt(as.data.frame(mvrnorm(
+          n = n,
+          mu = mu,
+          Sigma = as.matrix(sigmatrix)
+        )))$value
+      })
+      
+      #NEW SECTION TO ALLOW UNEQUAL N
+      #need if for single n
+      if (length(n_vec) > 1) {
+        for (k in 1:length(unique(dataframe$cond))) {
+          #for each unique condition
+          if ((n - n_vec[k]) > 0) {
+            #only sample if we want to remove more than 0 rows
+            dataframe <-
+              dataframe[-sample(which(dataframe$cond  == unique(dataframe$cond)[k]) , (n -
+                                                                                         n_vec[k])) ,]
+          }
+        }
+      }
+      # We perform the ANOVA using AFEX
+      #Can be set to NICE to speed up, but required data grabbing from output the change.
+      aov_result <- suppressMessages({aov_car(frml1, #here we use frml1 to enter fromula 1 as designed above on the basis of the design
+                                              data = dataframe, include_aov = FALSE, #Need development code to get aov_include function
+                                              anova_table = list(es = "pes",
+                                                                 p_adjust_method = p_adjust,
+                                                                 correction = correction))}) #This reports PES not GES
+      if (emm == TRUE) {
+        emm_result <- suppressMessages({emmeans(aov_result, 
+                                                specs = specs_formula,
+                                                model = emm_model,
+                                                adjust = emm_p_adjust)})
+        #plot_emm = plot(emm_result, comparisons = TRUE)
+        #make comparison based on specs; adjust = "none" in exact; No solution for multcomp in exact simulation
+        pairs_result <- emm_result$contrasts
+        pairs_result_df <- as.data.frame(pairs_result)
+        #Need for exact; not necessary for power function
+        #Convert t-ratio to F-stat
+        pairs_result_df$F.value <- (pairs_result_df$t.ratio)^2
+        #Calculate pes -- The formula for partial eta-squared is equation 13 from Lakens (2013)
+        pairs_result_df$pes <- pairs_result_df$F.value/(pairs_result_df$F.value + pairs_result_df$df) 
+        #Calculate cohen's f
+        pairs_result_df$f2 <- pairs_result_df$pes/(1 - pairs_result_df$pes)
+        
+        
+        pairs_result_df <- pairs_result_df %>% mutate(cohen_f = sqrt(.data$f2)) %>%
+          select(-.data$F.value,-.data$t.ratio,-.data$SE,
+                 -.data$f2,-.data$pes, -.data$estimate, -.data$df) %>%
+          select(-.data$cohen_f, -.data$p.value,
+                 .data$p.value, .data$cohen_f)
+        
+        emm_sim_data[i,] <- c(as.numeric(pairs_result_df$p.value), #p-value for contrast
+                              as.numeric(pairs_result_df$cohen_f) #cohen f
+        ) #
+      }
+      
+      # Store MANOVA result if there are within subject factors
+      if (run_manova == TRUE) {
+        manova_result <- Superpower:::Anova_mlm_table(aov_result$Anova)
+        manova_result$p.value <- p.adjust(manova_result$p.value, method = p_adjust)
+      }
+      
+      for (j in 1:possible_pc) {
+        x <- dataframe$y[which(dataframe$cond == paired_tests[1,j])]
+        y <- dataframe$y[which(dataframe$cond == paired_tests[2,j])]
+        #this can be sped up by tweaking the functions that are loaded to only give p and dz
+        ifelse(within_between[j] == 0,
+               t_test_res <- Superpower:::effect_size_d(x, y, alpha_level = alpha_level),
+               t_test_res <- Superpower:::effect_size_d_paired(x, y, alpha_level = alpha_level))
+        paired_p[j] <- t_test_res$p_value
+        paired_d[j] <- ifelse(within_between[j] == 0,
+                              t_test_res$d,
+                              t_test_res$d_z)
+      }
+      
+      # store p-values and effect sizes for calculations and plots.
+      #If needed to create different row names if MANOVA is included
+      if (run_manova == TRUE) {
+        sim_data[i,] <- c(aov_result$anova_table[[6]], #p-value for ANOVA
+                          aov_result$anova_table[[5]], #partial eta squared
+                          p.adjust(paired_p, method = p_adjust), #p-values for paired comparisons
+                          paired_d, #effect sizes
+                          manova_result[[6]]) #p-values for MANOVA
+      } else {
+        sim_data[i,] <- c(aov_result$anova_table[[6]], #p-value for ANOVA
+                          aov_result$anova_table[[5]], #partial eta squared
+                          p.adjust(paired_p, method = p_adjust), #p-values for paired comparisons
+                          paired_d) #effect sizes
+      }
       
       
-      pairs_result_df <- pairs_result_df %>% mutate(cohen_f = sqrt(.data$f2)) %>%
-        select(-.data$F.value,-.data$t.ratio,-.data$SE,
-               -.data$f2,-.data$pes, -.data$estimate, -.data$df) %>%
-        select(-.data$cohen_f, -.data$p.value,
-               .data$p.value, .data$cohen_f)
-      
-      emm_sim_data[i,] <- c(pairs_result_df[[2]], #p-value for contrast
-                            pairs_result_df[[3]] #cohen f
-      ) #
     }
-    
-    # Store MANOVA result if there are within subject factors
-    if (run_manova == TRUE) {
-      manova_result <- Superpower:::Anova_mlm_table(aov_result$Anova)
-      manova_result$p.value <- p.adjust(manova_result$p.value, method = p_adjust)
-    }
-    
-    for (j in 1:possible_pc) {
-      x <- dataframe$y[which(dataframe$cond == paired_tests[1,j])]
-      y <- dataframe$y[which(dataframe$cond == paired_tests[2,j])]
-      #this can be sped up by tweaking the functions that are loaded to only give p and dz
-      ifelse(within_between[j] == 0,
-             t_test_res <- Superpower:::effect_size_d(x, y, alpha_level = alpha_level),
-             t_test_res <- Superpower:::effect_size_d_paired(x, y, alpha_level = alpha_level))
-      paired_p[j] <- t_test_res$p_value
-      paired_d[j] <- ifelse(within_between[j] == 0,
-                            t_test_res$d,
-                            t_test_res$d_z)
-    }
-    
-    # store p-values and effect sizes for calculations and plots.
-    #If needed to create different row names if MANOVA is included
-    if (run_manova == TRUE) {
-      sim_data[i,] <- c(aov_result$anova_table[[6]], #p-value for ANOVA
-                        aov_result$anova_table[[5]], #partial eta squared
-                        p.adjust(paired_p, method = p_adjust), #p-values for paired comparisons
-                        paired_d, #effect sizes
-                        manova_result[[6]]) #p-values for MANOVA
-    } else {
-      sim_data[i,] <- c(aov_result$anova_table[[6]], #p-value for ANOVA
-                        aov_result$anova_table[[5]], #partial eta squared
-                        p.adjust(paired_p, method = p_adjust), #p-values for paired comparisons
-                        paired_d) #effect sizes
-    }
-    
-    
-  }
   }) #close withProgress Block outside of Shiny
   
   ############################################
@@ -497,26 +515,6 @@ shiny_power <-  function(design_result,
   #######################
   # Return Results ----
   #######################
-  if (verbose == TRUE) {
-    # The section below should be blocked out when in Shiny
-    cat("Power and Effect sizes for ANOVA tests")
-    cat("\n")
-    print(main_results, digits = 4)
-    cat("\n")
-    cat("Power and Effect sizes for pairwise comparisons (t-tests)")
-    cat("\n")
-    print(pc_results, digits = 4)
-    cat("\n")
-    if (emm == TRUE) {
-      cat("Power and Cohen's f from estimated marginal means")
-      cat("\n")
-      print(emm_results, digits = 4)
-    }
-    if (run_manova == TRUE) {
-      cat("\n")
-      cat("Within-Subject Factors Included: Check MANOVA Results")
-    }
-  }
   
   #Create empty value if no MANOVA results are included
   if (run_manova == FALSE) {
@@ -566,8 +564,6 @@ label_function <- function(design, labelnames = NULL) {
   # Separate factors with a * (asterisk)
   # Thus "2b*3w) is a design with 2 between levels, and 3 within levels
   
-  #Check if design and means match up - if not, throw an error and stop
-  if(prod(factor_levels) != length(mu)){stop("the length of the vector with means does not match the study design")}
   
   #Check if the design and sd match (either 1 or length of design)
   #if(length(sd) != 1 && prod(factor_levels) != length(sd)){stop("The SD must be a length of 1 or match the length of the study design")}
@@ -646,7 +642,7 @@ ui <- dashboardPage(
                 a("Click here for the other app", href = "http://shiny.ieis.tue.nl/anova_exact/"),
                 h3("The Design Tab"),
                 h5("You must start with the Design tab in order to perform a power analysis. At this stage you must establish the parameters of the design (sample size, standard deviation, etc).
-                   Once you click Submit Design the design details will be printed and you can continue onto the power analysis."),
+                   Once you click Submit Design the design details will appear and you can continue onto the power analysis."),
                 h3("Power Simulation Tab"),
                 h5("In this tab, you will setup the Monte Carlo simulation. You will have to specify a correction for multiple comparisons (default=none) and the alpha level (default=.05).
                    If you have repeated measures you will need to specify the sphericity correction (default=none)."),
@@ -659,7 +655,8 @@ ui <- dashboardPage(
                 solidHeader = TRUE,
                 collapsible = FALSE,
                 strong("Current updates to Superpower's Power Shiny App"),
-                h5("Option for estimated marginal means added"))),
+                h5("Option for estimated marginal means added"),
+                h5("Now allows for unequal n input"))),
       # Design content
       tabItem(tabName = "design_tab",
               fluidRow(
@@ -686,8 +683,18 @@ ui <- dashboardPage(
 
                   #h5("Specify one word for each factor (e.g., AGE and SPEED) and the level of each factor (e.g., old and yound for a factor age with 2 levels)."),
                   #uiOutput("labelnames"),
-
-                  uiOutput("sample_size"),
+                  
+                  selectInput("nChoice", "Would you like to different sample sizes per cell?",
+                              c("No" = "no" ,
+                                "Yes" = "yes"
+                              )),
+                  
+                  conditionalPanel(condition = "input.nChoice == 'no'",
+                  uiOutput("sample_size")),
+                  
+                  conditionalPanel(condition = "input.nChoice == 'yes'",
+                                   strong("Sample Size per Cell"),
+                                   uiOutput("sample_size2")),
                   
                   selectInput("sdChoice", "Would you like to enter multiple standard deviations? 
                               *Warning: Violates homoscedascity assumption*",
@@ -700,27 +707,30 @@ ui <- dashboardPage(
                   uiOutput("sdMatrix") ),
 
                   conditionalPanel(condition = "input.sdChoice == 'no'", 
-                  textInput(inputId = "sd_common", label = "Common Standard Deviation",
+                  numericInput(inputId = "sd_common", label = "Common Standard Deviation",
+                            min = 0,
+                            step = .1,
                             value = 1.03)),
-                  
-                  selectInput("rChoice", "Would you like to enter a correlation matrix? 
+                  conditionalPanel(condition = "output.corr_display == true",
+                  selectInput("rChoice", "Would you like to enter a correlation matrix (rather than a single correlation)? 
                               *Warning: may violate sphericity assumption*",
                               c("No" = "no" ,
                                 "Yes" = "yes"
                               )),
+                  
                   conditionalPanel(condition = "input.rChoice == 'no'", 
-                                   textInput(inputId = "r_common", label = "Common correlation among within-subjects factors",
-                                             value = .5)),
+                                   numericInput(inputId = "r_common", label = "Common correlation among within-subjects factors", min = 0, step = .05, value = .5)),
 
                   conditionalPanel(condition = "input.rChoice == 'yes'", 
                                    strong("Specify the correlation matrix. 
                                           If a correlation is entered across between subjects factor it will be reset to zero.
                                           Values only need to be entered in the upper triangular part and the app will take it from there."),
-                                   uiOutput("rMatrix")),
+                                   
+                                   uiOutput("rMatrix"))),
 
                   h5("Note that for each cell in the design, a mean must be provided. Thus, for a '2b*3w' design, 6 means need to be entered. Means need to be entered in the correct order. The app provides a plot so you can check if you entered means correctly. The general principle has designated factors (i.e., AGE and SPEED) and levels (e.g., old, young)."),
 
-                  strong("Vector of Means"),
+                  strong("Means for Each Cell in the Design"),
                   
                   uiOutput("muMatrix"),
 
@@ -792,15 +802,20 @@ ui <- dashboardPage(
                                 "Holm-Bonferroni" = "holm",
                                 "False Discovery Rate" = "fdr")),
                   
-                  sliderInput("nsims",
+                  numericInput("nsims",
                               label = "Number of Simulations",
-                              min = 1000, max = 20000, value = 2000),
+                              min = 100, step = 100, value = 2000),
 
-                  sliderInput("sig",
-                              label = "Alpha Level",
-                              min = 0, max = .2, value = 0.05),
+                  #sliderInput("sig",
+                  #            label = "Alpha Level",
+                  #            min = 0, max = .2, value = 0.05),
+                  
+                  numericInput("sig", label = "Alpha Level", value = .05, 
+                               min = .0000000000000000000000000000000001, 
+                               max = 1,
+                               step = .001),
 
-                  actionButton("sim", "Print Results of Simulation",
+                  actionButton("sim", "Show Results of Simulation",
                                icon = icon("print"))
 
                   )
@@ -909,24 +924,57 @@ values$label_list <- reactive({
  })
 
 
-  output$sample_size <- renderUI({sliderInput("sample_size",
-              label = "Sample Size per Cell",
-              min = prod(
-                as.numeric(
-                  unlist(
-                    regmatches
-                    (input$design,
-                      gregexpr("[[:digit:]]+",
-                               input$design))))),
-              max = 1000, value = 80)
-  })
+ output$corr_display = reactive(grepl("w",as.character(input$design)))
+ outputOptions(output, "corr_display", suspendWhenHidden = FALSE)
+ 
+ output$sample_size <- renderUI({
+   numericInput("sample_size", 
+                label = "Sample Size per Cell",
+                min = prod(
+                  as.numeric(
+                    unlist(
+                      regmatches
+                      (input$design,
+                        gregexpr("[[:digit:]]+",
+                                 input$design))))),
+                max = 1000, value = 80, step = 1)
+ })
+ 
+ output$sample_size2 <-  renderUI({matrixInput(
+   "sample_size2",
+   value = matrix(c(1), 1, 
+                  prod(as.numeric(strsplit(input$design, "\\D+")[[1]])),
+                  dimnames = list(c("n"),
+                                  c(label_function(input$design)))),
+   rows = list(names = TRUE),
+   cols = list(names = TRUE),
+   copy = TRUE,
+   paste = TRUE
+ )
+ })
+ 
+ #Old sample size dynamic input
+ #output$sample_size <- renderUI({sliderInput("sample_size",
+ #            label = "Sample Size per Cell",
+ #            min = prod(
+ #              as.numeric(
+ #                unlist(
+ #                  regmatches
+ #                  (input$design,
+ #                    gregexpr("[[:digit:]]+",
+ #                             input$design))))),
+ #            max = 1000, value = 80)
+ #})
 
 
 
   observeEvent(input$designBut, {
 
-    values$design_result <- ANOVA_design(design = as.character(input$design),
-                                                                      n = as.numeric(input$sample_size),
+    values$design_result <- suppressWarnings(ANOVA_design(design = as.character(input$design),
+                                                                      n = if(input$nChoice =="yes"){
+                                                                        as.numeric(input$sample_size2)
+                                                                      }
+                                                                        else{as.numeric(input$sample_size)},
                                                                       mu = as.numeric(input$muMatrix),
                                                                       labelnames = if (input$labelChoice == "yes"){
                                                                         as.vector(unlist(strsplit(gsub("[[:space:]]", "",input$labelnames), ",")))
@@ -943,7 +991,7 @@ values$label_list <- reactive({
                                                                       }else{
                                                                         as.numeric(input$r_common)
                                                                       },
-                                                                      plot = FALSE)
+                                                                      plot = FALSE))
     values$emm_output <- as.character(values$design_result$frml2)[2] 
     updateTextInput(session, "emm_comp", value = values$emm_output)
     

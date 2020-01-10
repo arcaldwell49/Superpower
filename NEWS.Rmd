@@ -2,18 +2,24 @@
 title: "NEWS"
 output: github_document
 ---
+# Superpower 0.0.3
 
-Updates from contrast_extension update `r format(Sys.time(), "%a %b %d %Y")`
+Update `r format(Sys.time(), "%a %b %d %Y")`
 
--Added estimated marginal means comparisons using `emmeans` R package.
-  -`emm = TRUE` in the ANOVA_power, ANOVA_exact, and plot_power will result in emmeans being calculated
-  -Default is all pairwise comparisons but this can be modified with `contrast_type` and `emm_comp` options
+- Unequal sample size in the design is now permitted
+  -Limited to the ANOVA_design and ANOVA_power functions
   
--Added global options
-  -Options that have crossover between functions can now be set globally for the package
-  -Includes: verbose, emm, emm_model, contrast_type, alpha_level, and plot
-  -These global options can be seen with Superpower_options()
+- Added estimated marginal means comparisons using `emmeans` R package.
+  - `emm = TRUE` in the ANOVA_power, ANOVA_exact, and plot_power will result in emmeans being calculated
+  - Default is all pairwise comparisons but this can be modified with `contrast_type` and `emm_comp` options
+  
+- Added global options
+  - Options that have crossover between functions can now be set globally for the package
+  - Includes: verbose, emm, emm_model, contrast_type, alpha_level, and plot
+  - These global options can be seen with Superpower_options()
 
--Updated Shiny Apps
-  -Now includes emmeans options
-  -kableExtra, emmeans, magrittr, and dplyr packages now needed to knit markdown file in app.
+- Updated Shiny Apps  
+  - Unequal n allowed for ANOVA_power
+  - Added numeric input for alpha level (no longer slider)
+  - Now includes emmeans options
+  - kableExtra, emmeans, magrittr, and dplyr packages now needed to knit markdown file in app.
