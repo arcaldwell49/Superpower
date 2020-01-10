@@ -30,8 +30,8 @@ jmvpowerClass <- if (requireNamespace('jmvcore')) R6::R6Class(
       for (i in seq_len(ncells))
         mt$addRow(rowKey=i)
 
-      rt <- self$results$sims$results
-      ut <- self$results$sims$multi
+      rt <- self$results$sims$main_result
+      ut <- self$results$sims$pc_results
 
       formula <- as.formula(paste('~', paste(paste0('`', seq_len(n_factors), '`'), collapse='*')))
       terms   <- attr(stats::terms(formula), 'term.labels')
@@ -46,13 +46,17 @@ jmvpowerClass <- if (requireNamespace('jmvcore')) R6::R6Class(
       for (i in seq_len(n_pc))
         ut$addRow(rowKey=i)
 
+      self$results$sims$info$setVisible( ! self$options$simulate)
+
     },
     .run = function() {
 
       mu <- self$options$mu
       labelnames <- self$options$labelnames
+      sd <- self$options$sd
 
       mu <- as.numeric(strsplit(mu, ',')[[1]])
+      sd <- as.numeric(strsplit(sd, ',')[[1]])
 
       if (labelnames == '')
         labelnames <- NULL
@@ -63,7 +67,7 @@ jmvpowerClass <- if (requireNamespace('jmvcore')) R6::R6Class(
         design = self$options$design,
         n = self$options$n,
         mu = mu,
-        sd = self$options$sd,
+        sd = sd,
         r = self$options$r,
         labelnames = labelnames,
         plot = FALSE)
@@ -97,20 +101,32 @@ jmvpowerClass <- if (requireNamespace('jmvcore')) R6::R6Class(
       if ( ! self$options$simulate)
         return()
 
-      rt <- self$results$sims$results
-      ut <- self$results$sims$multi
+      rt <- self$results$sims$main_result
+      ut <- self$results$sims$pc_results
 
       if (rt$isFilled())
         return()
 
+      emm_comp <- self$options$emm_comp
+      if (identical(emm_comp, ""))
+        emm_comp <- NULL
+
       results <- ANOVA_power(
         design,
         alpha_level = self$options$alpha_level,
+        correction = self$options$correction,
         p_adjust = self$options$p_adjust,
-        nsims = self$options$nsims)
+        nsims = self$options$nsims,
+        verbose = FALSE,
+        emm = (self$options$comp == 'emm'),
+        emm_model = self$options$emm_model,
+        contrast_type = self$options$contrast_type,
+        emm_p_adjust = self$options$p_adjust,
+        emm_comp = emm_comp)
 
-      rt <- self$results$sims$results
-      ut <- self$results$sims$multi
+      rt <- self$results$sims$main_result
+      ut <- self$results$sims$pc_results
+      et <- self$results$sims$emm_results
 
       main <- results$main_results
       names <- row.names(main)
@@ -122,14 +138,27 @@ jmvpowerClass <- if (requireNamespace('jmvcore')) R6::R6Class(
         ))
       }
 
-      pc <- results$pc_results
-      names <- row.names(pc)
-      for (i in seq_len(nrow(pc))) {
-        ut$setRow(rowNo=i, values=list(
-          name=names[i],
-          power=pc[i,1],
-          es=pc[i,2]
-        ))
+      if (self$options$comp == 'cells') {
+          pc <- results$pc_results
+          names <- row.names(pc)
+          for (i in seq_len(nrow(pc))) {
+            ut$setRow(rowNo=i, values=list(
+              name=names[i],
+              power=pc[i,1],
+              es=pc[i,2]
+            ))
+          }
+      }
+
+      if (self$options$comp == 'emm') {
+          emm <- results$emm_results
+          for (i in seq_len(nrow(emm))) {
+            et$addRow(rowKey=i, values=list(
+              name=as.character(emm[i,1]),
+              power=emm[i,2],
+              es=emm[i,3]
+            ))
+          }
       }
 
       # self$results$text$setContent(results)
