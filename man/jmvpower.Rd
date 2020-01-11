@@ -2,13 +2,14 @@
 % Please edit documentation in R/jmvpower.h.R
 \name{jmvpower}
 \alias{jmvpower}
-\title{ANOVA power}
+\title{ANOVA Power}
 \usage{
 jmvpower(design = "2b*2w",
-  labelnames = "AGE,old,young,SPEED,fast,slow", n = 80, sd = 1.03,
-  r = 0.87, mu = "1.03, 1.21, 0.98, 1.01", plot = TRUE,
-  simulate = FALSE, alpha_level = 0.05, nsims = 100,
-  p_adjust = "holm")
+  labelnames = "AGE,old,young,SPEED,fast,slow", n = 80, r = 0.5,
+  mu = "1.03, 1.21, 0.98, 1.01", sd = "1", plot = TRUE,
+  alpha_level = 0.05, correction = "none", p_adjust = "holm",
+  nsims = 100, comp = "cells", emm_model = "univariate",
+  contrast_type = "pairwise", emm_comp = "", simulate = FALSE)
 }
 \arguments{
 \item{design}{a string describing the design}
@@ -18,23 +19,36 @@ labels}
 
 \item{n}{an integer specifying the sample size in each condition}
 
-\item{sd}{a number specifying the group standard deviations}
-
-\item{r}{a number specifying the correlation between dependent variables}
+\item{r}{a number specifying the correlation between within-subjects
+variables}
 
 \item{mu}{a comma separated string specifying the group means}
+
+\item{sd}{a number specifying the group standard deviations}
 
 \item{plot}{\code{TRUE} (default) or \code{FALSE} specifying whether to
 provide a means plot}
 
-\item{simulate}{\code{TRUE} or \code{FALSE} (default); perform the
-simulation}
-
 \item{alpha_level}{a number specifying the alpha level}
+
+\item{correction}{\code{'none'} (default), \code{'GG'}, or \code{'HF'};
+perform no, Grennhouse-Geisser, or Huynh-Feldt sphericity correction
+respectively.}
+
+\item{p_adjust}{the p-adjustment method to use}
 
 \item{nsims}{an integer specifying the number of simulations to perform}
 
-\item{p_adjust}{the p-adjustment method to use}
+\item{comp}{.}
+
+\item{emm_model}{.}
+
+\item{contrast_type}{.}
+
+\item{emm_comp}{.}
+
+\item{simulate}{\code{TRUE} or \code{FALSE} (default); perform the
+simulation}
 }
 \value{
 A results object containing:
@@ -42,10 +56,12 @@ A results object containing:
   \code{results$design$summary} \tab \tab \tab \tab \tab a table \cr
   \code{results$design$matrix} \tab \tab \tab \tab \tab a table \cr
   \code{results$design$plot} \tab \tab \tab \tab \tab an image \cr
-  \code{results$sims$results} \tab \tab \tab \tab \tab a table \cr
-  \code{results$sims$multi} \tab \tab \tab \tab \tab a table \cr
+  \code{results$sims$info} \tab \tab \tab \tab \tab a html \cr
+  \code{results$sims$main_result} \tab \tab \tab \tab \tab a table \cr
+  \code{results$sims$pc_results} \tab \tab \tab \tab \tab a table \cr
+  \code{results$sims$emm_results} \tab \tab \tab \tab \tab a table \cr
 }
 }
 \description{
-ANOVA power
+ANOVA Power
 }
