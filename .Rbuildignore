@@ -18,6 +18,11 @@
 ^.*\.jmo$
 ^Validaion$
 ^NEWS\.Rmd$
-^jmvpower\.b\.R$   
-^jmvpower\.h\.R$ 
-^simple_ANCOVA\\.R$
+^jmvpower$   
+^ANCOVA$
+^R/data_generation\.R$
+^R/jmvpower\.b\.R$
+^R/jmvpower\.h\.R$
+^simple_ANCOVA\.R$
+^R/simple_ANCOVA\.R$
+^tests/testthat/test-simple_ANCOVA\.R$

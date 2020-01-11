@@ -67,7 +67,7 @@ ANOVA_design <- function(design, n, mu, sd, r = 0,
   
   #Ensure proper n input
   if (length(n) != 1 ) {
-    warning("Warning: Unequal n designs can only be passed to ANOVA_power")
+    #warning("Warning: Unequal n designs can only be passed to ANOVA_power")
     n_vec <- n # store vector n as n - this is because the code below uses n as a single number, so quick fix for legacy reasons
     n <- max(n) # now set n to max n for ANOVA_design function
   }
