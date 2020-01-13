@@ -4,8 +4,15 @@
 \alias{ANOVA_design}
 \title{Design function used to specify the parameters to be used in simulations}
 \usage{
-ANOVA_design(design, n, mu, sd, r = 0, labelnames = NULL,
-  plot = Superpower_options("plot"))
+ANOVA_design(
+  design,
+  n,
+  mu,
+  sd,
+  r = 0,
+  labelnames = NULL,
+  plot = Superpower_options("plot")
+)
 }
 \arguments{
 \item{design}{String specifying the ANOVA design.}

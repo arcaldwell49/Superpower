@@ -1,12 +1,12 @@
 #' Simulation function used to estimate power
 #' @param design_result Output from the ANOVA_design function
 #' @param alpha_level Alpha level used to determine statistical significance
-#' @param correction Set a correction of violations of sphericity. This can be set to "none", "GG" Grennhouse-Geisser, and "HF" Huynh-Feldt
-#' @param p_adjust Correction for multiple comparisons. This will adjust p valeus for ANOVA/MANOVA level effects; see ?p.adjust for options
+#' @param correction Set a correction of violations of sphericity. This can be set to "none", "GG" Greenhouse-Geisser, and "HF" Huynh-Feldt
+#' @param p_adjust Correction for multiple comparisons. This will adjust p values for ANOVA/MANOVA level effects; see ?p.adjust for options
 #' @param emm Set to FALSE to not perform analysis of estimated marginal means
 #' @param emm_model Set model type ("multivariate", or "univariate") for estimated marginal means
 #' @param contrast_type Select the type of comparison for the estimated marginal means. Default is pairwise. See ?emmeans::`contrast-methods` for more details on acceptable methods.
-#' @param emm_comp Set the comparisons for estimated marginal means comaparisons. This is a factor name (a), combination of factor names (a+b), or for simple effects a | sign is needed (a|b)
+#' @param emm_comp Set the comparisons for estimated marginal means comparisons. This is a factor name (a), combination of factor names (a+b), or for simple effects a | sign is needed (a|b)
 #' @param emm_p_adjust Correction for multiple comparisons; default is "none". See ?summary.emmGrid for more details on acceptable methods.
 #' @param nsims number of simulations to perform
 #' @param seed Set seed for reproducible results

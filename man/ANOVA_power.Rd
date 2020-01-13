@@ -4,23 +4,29 @@
 \alias{ANOVA_power}
 \title{Simulation function used to estimate power}
 \usage{
-ANOVA_power(design_result,
+ANOVA_power(
+  design_result,
   alpha_level = Superpower_options("alpha_level"),
-  correction = Superpower_options("correction"), p_adjust = "none",
-  nsims = 1000, seed = NULL, verbose = Superpower_options("verbose"),
+  correction = Superpower_options("correction"),
+  p_adjust = "none",
+  nsims = 1000,
+  seed = NULL,
+  verbose = Superpower_options("verbose"),
   emm = Superpower_options("emm"),
   emm_model = Superpower_options("emm_model"),
   contrast_type = Superpower_options("contrast_type"),
-  emm_p_adjust = "none", emm_comp = NULL)
+  emm_p_adjust = "none",
+  emm_comp = NULL
+)
 }
 \arguments{
 \item{design_result}{Output from the ANOVA_design function}
 
 \item{alpha_level}{Alpha level used to determine statistical significance}
 
-\item{correction}{Set a correction of violations of sphericity. This can be set to "none", "GG" Grennhouse-Geisser, and "HF" Huynh-Feldt}
+\item{correction}{Set a correction of violations of sphericity. This can be set to "none", "GG" Greenhouse-Geisser, and "HF" Huynh-Feldt}
 
-\item{p_adjust}{Correction for multiple comparisons. This will adjust p valeus for ANOVA/MANOVA level effects; see ?p.adjust for options}
+\item{p_adjust}{Correction for multiple comparisons. This will adjust p values for ANOVA/MANOVA level effects; see ?p.adjust for options}
 
 \item{nsims}{number of simulations to perform}
 
@@ -36,7 +42,7 @@ ANOVA_power(design_result,
 
 \item{emm_p_adjust}{Correction for multiple comparisons; default is "none". See ?summary.emmGrid for more details on acceptable methods.}
 
-\item{emm_comp}{Set the comparisons for estimated marginal means comaparisons. This is a factor name (a), combination of factor names (a+b), or for simple effects a | sign is needed (a|b)}
+\item{emm_comp}{Set the comparisons for estimated marginal means comparisons. This is a factor name (a), combination of factor names (a+b), or for simple effects a | sign is needed (a|b)}
 }
 \value{
 Returns dataframe with simulation data (p-values and effect sizes), anova results (type 3 sums of squares) and simple effect results, and plots of p-value distribution.

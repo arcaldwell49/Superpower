@@ -1,5 +1,8 @@
+An Introduction to Superpower
+================
 
-![](Sticker/Superpower.png)<!-- -->![](Sticker/authors.png)<!-- -->
+![Sticker](https://raw.githubusercontent.com/arcaldwell49/Superpower/master/Sticker/Superpower.png)
+![authors\_image](https://raw.githubusercontent.com/arcaldwell49/Superpower/master/Sticker/authors.png)
 
 [![Build
 Status](https://travis-ci.com/arcaldwell49/superpower.svg?branch=master)](https://travis-ci.com/arcaldwell49/superpower)
@@ -14,14 +17,12 @@ Status](https://travis-ci.com/arcaldwell49/superpower.svg?branch=master)](https:
   - [ANOVA\_exact Function](#the-anova_exact-function)
   - [The plot\_power function](#the-plot_power-function)
 
-# An Introduction to Superpower
-
 The goal of `Superpower` is to easily simulate factorial designs and
 empirically calculate power using a simulation approach. This app is
 intended to be utilized for prospective (a priori) power analysis. In
 addition to this README file we have written a short
-[book](https://arcaldwell49.github.io/SuperpowerBook) documenting the package’s
-capabilities.
+[book](https://arcaldwell49.github.io/SuperpowerBook) documenting the
+package’s capabilities.
 
 ## Installation
 
@@ -45,15 +46,15 @@ labelnames.
 4.  sd: the population standard deviation. Assumes homogeneity of
     variances (only one standard deviation can be provided).
 5.  r: the correlation for within designs (or 0 for between designs).
-6.  labelnames: This is an optonal vector of words that indicates factor
-    names and level names (see below).
+6.  labelnames: This is an optional vector of words that indicates
+    factor names and level names (see below).
 7.  A final optional setting is to specify if you want to output a plot
     or not (plot = TRUE or FALSE)
 
 ### Specifying the design using ‘design’
 
 ‘design’ is used to specify the design. Every factor is specified with a
-number, indicating the numner of levels of the factor, and a letter, b
+number, indicating the number of levels of the factor, and a letter, b
 or w, to indicate whether the factor is manipulated between or within
 participants. For example, a `2b` design has two between-participant
 groups. A `12w` design has one factor with 12 levels, all manipulated
@@ -61,7 +62,7 @@ within-participants. A "2b\*3w" is a design with two factors (a 2b
 factor and a 3w factor), the first of which has 2 between participant
 levels (2b), and the second of which has 3 within participants levels
 (3w). **If there are multiple factors (the functions take up to three
-different factors) seperate factors with a \* (asterisk)**. An example
+different factors) separate factors with a \* (asterisk)**. An example
 of a `2b*3w` design is a group of people in one condition who get a
 drug, and a group of people in another condition who get a placebo, and
 we measure their health before they take the pill, one day after they
@@ -291,13 +292,13 @@ with more conservative or even worst-case-scenario values).
 There are two ways to calculate the statistical power of a factorial
 design based on simulations. The first is to repeatedly simulate data
 for each condition based on the means, sample size, standard deviation,
-and correlation, under specific statistical assumptions (i.e., normaly
-distributed data). The `ANOVA_power` function allows you to perform
-power analyses based on repeatedly simulating normaly distributed data.
-A second approach is to simulate a dataset that has *exactly* the
-desired properties - every cell of the design has n datapoints that have
-the desired mean and standard deviation, and correlation between groups
-(for a within design). By performing an ANOVA on this dataset, we can
+and correlation, under specific statistical assumptions (i.e., normally
+distributed). The `ANOVA_power` function allows you to perform power
+analyses based on repeatedly simulating normally distributed data. A
+second approach is to simulate a dataset that has *exactly* the desired
+properties - every cell of the design has n datapoints that have the
+desired mean and standard deviation, and correlation between groups (for
+a within design). By performing an ANOVA on this dataset, we can
 calculate the required statistics from the ANOVA result used to
 calculate the statistical power. The `ANOVA_exact` function allows you
 to calculate power based on this approach. The `ANOVA_power` function is
@@ -364,12 +365,12 @@ exactly the desired properties for very small sample sizes.
 ## Estimated Marginal Means
 
 A new addition to the package is the addition of the estimated marginal
-means (emmeans; also called least-squares means) for specific
-constrasts. These constrasts include *most* of the options available in
-the `emmeans` function from the `emmeans` R package. Estimated marginal
-means options are available in both the `ANOVA_power` and `ANOVA_exact`,
-but on the `ANOVA_power` function allows for *p*-value multiple
-comparisons adjustments for these contrasts.
+means (emmeans; also called least-squares means) for specific contrasts.
+These contrasts include *most* of the options available in the `emmeans`
+function from the `emmeans` R package. Estimated marginal means options
+are available in both the `ANOVA_power` and `ANOVA_exact`, but on the
+`ANOVA_power` function allows for *p*-value multiple comparisons
+adjustments for these contrasts.
 
 In order to include the estimated marginal means, set `emm = TRUE`. If
 nothing else is set for the emmeans then all pairwise comparisons, with
@@ -392,7 +393,7 @@ settings can also be made:
     The default is to take the `frml2` object from the results of
     `ANOVA_design`, and with the default `contrast_type` = “pairwise”,
     results in *all* the pairwise comparisons being performed. The
-    simple effects can also be perfomed by including | in the emm\_comp
+    simple effects can also be performed by including | in the emm\_comp
     formula. For example, with two factors (e.g., a and b) `emm_comp =
     "a+b"` results in all pairwise comparisons being performed while
     `emm_comp = "a|b"` will result in pairwise comparisons across all
@@ -437,7 +438,7 @@ power_result_vig_1$main_results
     ## anova_voice:emotion 65.915  0.07844837
 
 The result for the power simulation is printed, and has two sections
-(which can be surpressed by setting verbose = FALSE). The first table
+(which can be suppressed by setting verbose = FALSE). The first table
 provides power (from 0 to 100%) and effect sizes (partial eta-squared)
 for the ANOVA result. We see the results for the main effects of factor
 voice, emotion, and the voice\*emotion interaction.
@@ -472,7 +473,7 @@ distributions for all tests in the ANOVA.
 power_result_vig_1$plot1
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
 ## Example \#2
 
@@ -484,7 +485,7 @@ One-Way ANOVA with a specified alpha, sample size, and effect size, on
 see which statistical power we would have for the ANOVA. We expect pets
 to increase life-satisfaction compared to the control condition. Based
 on work by Pavot and Diener (1993) we believe that we can expect
-responses on the life-satifaction scale to have a mean of approximately
+responses on the life-satisfaction scale to have a mean of approximately
 24 in our population, with a standard deviation of 6.4. We expect having
 a pet increases life satisfaction with approximately 2.2 scale points
 for participants who get a pet. We plan to collect data from 200
@@ -701,7 +702,7 @@ plot_power(design_result, min_n = 10, max_n = 250,
            plot = TRUE)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 Because the true pattern of means is always unknown, it is sensible to
 examine the power across a range of scenarios. For example, is the
@@ -722,11 +723,11 @@ plot_power(design_result, max_n = 250,
            plot = TRUE)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
-It could be that in ddition to a slightly smaller effect size, the
-standard deviation is slighty larger than we expected as well. This will
-reduce the power even further, and is thus an even less optimistic
+It could be that in addition to a slightly smaller effect size, the
+standard deviation is slightly larger than we expected as well. This
+will reduce the power even further, and is thus an even less optimistic
 scenario. Let’s assume the true standard deviation is 6.8 instead of
 6.4.
 
@@ -742,7 +743,7 @@ plot_power(design_result, min_n = 10, max_n = 250,
            plot = TRUE)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
 As these different plots make clear, your study never really has a known
 statistical power. Because the true effect size (i.e., the pattern of

@@ -7,7 +7,7 @@
 #' @param emm Set to FALSE to not perform analysis of estimated marginal means
 #' @param emm_model Set model type ("multivariate", or "univariate") for estimated marginal means
 #' @param contrast_type Select the type of comparison for the estimated marginal means
-#' @param emm_comp Set the comparisons for estimated marginal means comaparisons. This is a factor name (a), combination of factor names (a+b), or for simple effects a | sign is needed (a|b)
+#' @param emm_comp Set the comparisons for estimated marginal means comparisons. This is a factor name (a), combination of factor names (a+b), or for simple effects a | sign is needed (a|b)
 #' @return Returns plot with power curves for the ANOVA, and a dataframe with the summary data.
 #' 
 

@@ -2,9 +2,11 @@
 title: "NEWS"
 output: github_document
 ---
-# Superpower 0.0.3
 
-Update `r format(Sys.time(), "%a %b %d %Y")`
+Updated `r format(Sys.time(), "%a %b %d %Y")`
+
+
+# Superpower 0.0.3
 
 - Unequal sample size in the design is now permitted
   -Limited to the ANOVA_design and ANOVA_power functions

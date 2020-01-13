@@ -26,7 +26,7 @@ f_2 = Cohen's f^2
 
 lambda = lambda
 
-F_critical = Criticial F-value
+F_critical = Critical F-value
 
 power = power
 

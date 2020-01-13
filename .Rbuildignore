@@ -2,7 +2,6 @@
 ^mess$
 ^doc$
 ^README_files$
-^README\.Rmd$
 ^README.html$
 ^LICENSE\.md$
 ^superpower\.Rproj$
@@ -13,7 +12,6 @@
 ^Sticker$
 ^jamovi$
 ^build/js$
-^build/R$
 ^temp$
 ^.*\.jmo$
 ^Validaion$
@@ -26,3 +24,4 @@
 ^simple_ANCOVA\.R$
 ^R/simple_ANCOVA\.R$
 ^tests/testthat/test-simple_ANCOVA\.R$
+^README\.Rmd$

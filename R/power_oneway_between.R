@@ -16,7 +16,7 @@
 #'
 #' lambda = lambda
 #'
-#' F_critical = Criticial F-value
+#' F_critical = Critical F-value
 #'
 #' power = power
 #'
