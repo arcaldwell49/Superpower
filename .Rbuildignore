@@ -25,3 +25,4 @@
 ^R/simple_ANCOVA\.R$
 ^tests/testthat/test-simple_ANCOVA\.R$
 ^README\.Rmd$
+^CRAN-RELEASE$
