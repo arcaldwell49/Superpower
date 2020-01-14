@@ -25,6 +25,12 @@ an argument (which has precedence over the global options).
 The following arguments are currently set:
 \itemize{
 \item \code{verbose} should verbose (printed results) be set to true? Default is \code{TRUE}.
+\item \code{emm} Option to perform analysis of estimated marginal means. Default is \code{FALSE}.
+\item \code{emm_model} Model type ("multivariate", or "univariate") for estimated marginal means. Default is \code{"multivariate"}.
+\item \code{contrast_type} The type of comparison for the estimated marginal means. Default is \code{"pairwise"}. See ?emmeans::'contrast-methods' for more details on acceptable methods.
+\item \code{plot} Option to automatically print plots. Default is \code{FALSE}.
+\item \code{alpha_level} Alpha level used to determine statistical significance. Default is .05.
+\item \code{correction} Option to set a correction for sphericity violations. Default is no correction. This can be set to "none", "GG" Greenhouse-Geisser, and "HF" Huynh-Feldt
 }
 }
 \note{

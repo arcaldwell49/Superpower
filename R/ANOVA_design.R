@@ -6,6 +6,8 @@
 #' @param r Correlation between dependent variables (single value or matrix)
 #' @param labelnames Optional vector to specifying factor and condition names (recommended, if not used factors and levels are indicated by letters and numbers)
 #' @param plot Should means plot be printed (defaults to TRUE)
+#' @return Returns single list with simulated data, design, design list, factor names, formulas for ANOVA, means, sd, correlation, sample size per condition, correlation matrix, covariance matrix, design string, labelnames, labelnameslist, factor names, meansplot
+#' 
 #' \describe{
 #'   \item{\code{"dataframe"}}{A sample dataframe of what data could look like given the proposed parameters.}
 #'   \item{\code{"design"}}{\code{aov} The design string, e.g. "2b*2w".}
@@ -25,7 +27,7 @@
 #'   \item{\code{"meansplot"}}{Plot of the experimental design.}
 #' 
 #' }
-#' @return Returns single data-frame with simulated data, design, design list, factor names, formulas for ANOVA, means, sd, correlation, sample size per condition, correlation matrix, covariance matrix, design string, labelnames, labelnameslist, factor names, meansplot
+
 #' @examples
 #' ## Set up a within design with 2 factors, each with 2 levels,
 #' ## with correlation between observations of 0.8,

@@ -39,6 +39,7 @@ test_that("2w", {
 
 # 2w*2w
 test_that("2w*2w", {
+  skip_on_cran()
   design <- ANOVA_design(design = "2w*2w", n = 40, mu = c(1, 0, 1, 0), sd = 2, r = 0.8,
                          labelnames = c("condition", "cheerful", "sad", "voice", "human", "robot"),
                          plot = FALSE)

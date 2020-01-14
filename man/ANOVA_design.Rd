@@ -27,7 +27,11 @@ ANOVA_design(
 
 \item{labelnames}{Optional vector to specifying factor and condition names (recommended, if not used factors and levels are indicated by letters and numbers)}
 
-\item{plot}{Should means plot be printed (defaults to TRUE)
+\item{plot}{Should means plot be printed (defaults to TRUE)}
+}
+\value{
+Returns single list with simulated data, design, design list, factor names, formulas for ANOVA, means, sd, correlation, sample size per condition, correlation matrix, covariance matrix, design string, labelnames, labelnameslist, factor names, meansplot
+
 \describe{
   \item{\code{"dataframe"}}{A sample dataframe of what data could look like given the proposed parameters.}
   \item{\code{"design"}}{\code{aov} The design string, e.g. "2b*2w".}
@@ -46,10 +50,7 @@ ANOVA_design(
   \item{\code{"factornames"}}{List of the factor titles.}
   \item{\code{"meansplot"}}{Plot of the experimental design.}
 
-}}
 }
-\value{
-Returns single data-frame with simulated data, design, design list, factor names, formulas for ANOVA, means, sd, correlation, sample size per condition, correlation matrix, covariance matrix, design string, labelnames, labelnameslist, factor names, meansplot
 }
 \description{
 Design function used to specify the parameters to be used in simulations
