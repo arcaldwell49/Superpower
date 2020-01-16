@@ -68,11 +68,12 @@ ANOVA_design <- function(design, n, mu, sd, r = 0,
   }
   
   #Ensure proper n input
-  if (length(n) != 1 ) {
+  #if (length(n) != 1 ) {
     #warning("Warning: Unequal n designs can only be passed to ANOVA_power")
+    #unequal_design = TRUE
     n_vec <- n # store vector n as n - this is because the code below uses n as a single number, so quick fix for legacy reasons
     n <- max(n) # now set n to max n for ANOVA_design function
-  }
+  #}
   
   #If labelnames are not provided, they are generated.
   #Store factor levels (used many times in the script, calculate once)
@@ -432,7 +433,7 @@ ANOVA_design <- function(design, n, mu, sd, r = 0,
                  mu = mu,
                  sd = sd,
                  r = r,
-                 n = ifelse(length(n) != 1, n_vec, n), #we save n_vec, as inputted, not max_n
+                 n = n_vec, #we save n_vec, as inputted, not max_n
                  cor_mat = cor_mat,
                  sigmatrix = sigmatrix,
                  design_factors = design_factors,

@@ -157,9 +157,9 @@ shiny_power <- function(design_result,
   design_list <- design_result$design_list
   
   #to allow different n per condition:
-  if (grepl("w", design_result$design) == TRUE && length(unique(design_result$n)) > 1)  {
-    stop("Unequal group sizes are not possible when the design contains within factors")
-  }
+  #if (grepl("w", design_result$design) == TRUE && length(unique(design_result$n)) > 1)  {
+  #  stop("Unequal group sizes are not possible when the design contains within factors")
+  #}
   n_vec <- n # store vector n as n - this is because the code below uses n as a single number, so quick fix for legacy reasons
   n <- max(n) # now set n to max n for ANOVA_design function
   
@@ -666,14 +666,14 @@ ui <- dashboardPage(
                   strong("Specify the factorial design below"), br(),
                   "*Must be specficied to continue*",
 
-                  h5("Add numbers for each factor that specify the number of levels in the factors (e.g., 2 for a factor with 2 levels). Add a 'w' after the number for within factors, and a 'b' for between factors. Seperate factors with a * (asterisks). Thus '2b*3w' is a design with two factors, the first of which has 2 between levels, and the second of which has 3 within levels."),
+                  h5("Add numbers that specify the number of levels in the factors (e.g., 2 for a factor with 2 levels). Add a 'w' after the number for within factors, or 'b' for between factors. Seperate factors with an asterisks. Thus '2b*3w' is a design with two factors, the first of which has 2 between levels, and the second of which has 3 within levels."),
 
                   textInput(inputId = "design", label = "Design Input",
                             value = "2b*2w"),
                   
                   selectInput("labelChoice", "Would you like to enter factor and level names?",
-                              c("Yes" = "yes",
-                                "No" = "no" )),
+                              c("No" = "no" ,
+                                "Yes" = "yes" )),
                   
                   conditionalPanel(condition = "input.labelChoice == 'yes'",
                                    h5("Specify one word for each factor (e.g., AGE and SPEED) and the level of each factor (e.g., old and yound for a factor age with 2 levels)."),
@@ -684,7 +684,7 @@ ui <- dashboardPage(
                   #h5("Specify one word for each factor (e.g., AGE and SPEED) and the level of each factor (e.g., old and yound for a factor age with 2 levels)."),
                   #uiOutput("labelnames"),
                   
-                  selectInput("nChoice", "Would you like to different sample sizes per cell?",
+                  selectInput("nChoice", "Would you like to enter different sample sizes per cell?",
                               c("No" = "no" ,
                                 "Yes" = "yes"
                               )),
@@ -728,7 +728,7 @@ ui <- dashboardPage(
                                    
                                    uiOutput("rMatrix"))),
 
-                  h5("Note that for each cell in the design, a mean must be provided. Thus, for a '2b*3w' design, 6 means need to be entered. Means need to be entered in the correct order. The app provides a plot so you can check if you entered means correctly. The general principle has designated factors (i.e., AGE and SPEED) and levels (e.g., old, young)."),
+                  h5("Note that for each cell in the design, a mean must be provided. Thus, for a '2b*3w' design, 6 means need to be entered. Means need to be entered in the correct order. The app provides a plot so you can check if you entered means correctly."),
 
                   strong("Means for Each Cell in the Design"),
                   

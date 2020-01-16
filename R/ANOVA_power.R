@@ -187,6 +187,7 @@ ANOVA_power <- function(design_result,
   dataframe <- design_result$dataframe
   design_list <- design_result$design_list
   
+  #Block this logical in Shiny context (at least for now)
   #to allow different n per condition:
   if (grepl("w", design_result$design) == TRUE && length(unique(design_result$n)) > 1)  {
     stop("Unequal group sizes are not possible when the design contains within factors")
