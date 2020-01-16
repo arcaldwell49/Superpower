@@ -745,6 +745,8 @@ ui <- dashboardPage(
                 title = "Design Output", status = "primary", solidHeader = TRUE,
                 collapsible = TRUE,
                 verbatimTextOutput("DESIGN"),
+                conditionalPanel("input.nChoice == 'yes'",
+                                 paste("WARNING: Ensure sample sizes are the same between levels of within subjects factors (Otherwise the app will crash).")),
                 plotOutput('plot'),
                 tableOutput("corMat"),
                 tableOutput("covMat")
