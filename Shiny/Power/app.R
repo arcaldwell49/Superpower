@@ -1010,7 +1010,7 @@ values$label_list <- reactive({
           "Model formula: ", deparse(values$design_result$frml1),
           "
           ",
-          "Sample size per cell n = ", values$design_result$n)
+          "Sample size per cell n = ", deparse(values$design_result$n))
   })
 
   #Output of correlation and standard deviation matrix
