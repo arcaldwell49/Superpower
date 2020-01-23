@@ -26,3 +26,5 @@
 ^tests/testthat/test-simple_ANCOVA\.R$
 ^README\.Rmd$
 ^CRAN-RELEASE$
+^\.RData$
+^\.Rhistory$

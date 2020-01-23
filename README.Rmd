@@ -263,15 +263,13 @@ power_result_vig_1$main_results
 
 The result for the power simulation is printed, and has two sections (which can be suppressed by setting verbose = FALSE). The first table provides power (from 0 to 100%) and effect sizes (partial eta-squared) for the ANOVA result. We see the results for the main effects of factor voice, emotion, and the voice*emotion interaction. 
 
-The result for the power simulation reveal power is highest for the main effect of emotion. Remember that this is the within-subjects factor, and the means are highly correlated (0.8) - so we have high power for within comparisons. Power is lower for the interaction, and very low for the main effect of voice.
+The result for the power simulation reveals power is highest for the main effect of emotion. Remember that this is the within-subjects factor, and the means are highly correlated (0.8) - so we have high power for within comparisons. Power is lower for the interaction, and very low for the main effect of voice.
 
 An ANOVA is typically followed up with contrasts. A statistical hypothesis often predicts not just an interaction, but also the shape of an interaction. For example, when looking at the plot of our design above, we might be specifically interested in comparing the independent effect for the cheerful vs sad human voice assistant, and the difference for sad voice when they are robotic or human. The second table provides the power for *t*-tests for all comparisons, and the effect sizes (Cohen's d for between-subject contrasts, and Cohen's $d_z$ for within-subject contrasts, see [Lakens, 2013](https://www.frontiersin.org/articles/10.3389/fpsyg.2013.00863/full)).
 
 Power is relatively high for the differences between within-participant conditions, and power is very low for the minor differences among the three similar means (1.03, 0.98, 1.01). In addition to the two tables, the ANOVA_power function returns the raw simulation data (all *p*-values and effect sizes for each simulation, see simulation_result$sim_data) and a plot showing the *p*-value distributions for all tests in the ANOVA.
 
-```{r, fig.width=7, fig.height=4}
-power_result_vig_1$plot1
-```
+![](vignettes/sim_data/vig_1_plot.png)
 
 ## Example #2
 

@@ -222,13 +222,14 @@ design_result <- ANOVA_design(design = "2b*2w",
                    r=0.8, 
                    labelnames = c("voice", "human", "robot", "emotion", "cheerful", "sad"),
                    plot = TRUE)
+```
 
-# power_result_vig_1 <- ANOVA_power(design_result, 
-#                                   alpha = 0.05, 
-#                                   nsims = nsims, 
-#                                   seed = 1234)
-# saveRDS(power_result_vig_1, file = "sim_data/power_result_vig_1.rds")
-power_result_vig_1 <- readRDS(file = "sim_data/power_result_vig_1.rds")
+```{r, eval=FALSE}
+power_result_vig_1 <- ANOVA_power(design_result, 
+                                  alpha = 0.05, 
+                                  nsims = nsims, 
+                                  seed = 1234)
+
 
 ```
 
@@ -240,9 +241,7 @@ An ANOVA is typically followed up with contrasts. A statistical hypothesis often
 
 Power is relatively high for the differences between within-participant conditions, and power is very low for the minor differences among the three similar means (1.03, 0.98, 1.01). In addition to the two tables, the ANOVA_power function returns the raw simulation data (all *p*-values and effect sizes for each simulation, see simulation_result$sim_data) and a plot showing the *p*-value distributions for all tests in the ANOVA.
 
-```{r, fig.width=7, fig.height=4}
-power_result_vig_1$plot1
-```
+![](sim_data/vig_1_plot.png)
 
 ## Power in a Two Group One-Way ANOVA
 
@@ -260,13 +259,14 @@ design_result <- ANOVA_design(design = design,
                               mu = mu, 
                               sd = sd, 
                               labelnames = labelnames)
-
-# power_result_vig_2 <- ANOVA_power(design_result, nsims = nsims, seed = 1234)
-# 
-# saveRDS(power_result_vig_2, file = "sim_data/power_result_vig_2.rds")
+```
+```{r, eval=FALSE}
+power_result_vig_2 <- ANOVA_power(design_result, nsims = nsims, seed = 1234)
+#Note we do not specify any correlation in the ANOVA_design function (default r = 0), nor do we specify an alpha in the ANOVA_power function (default is 0.05)
+```
+```{r, include=FALSE}
 power_result_vig_2 <- readRDS(file = "sim_data/power_result_vig_2.rds")
 
-#Note we do not specify any correlation in the ANOVA_design function (default r = 0), nor do we specify an alpha in the ANOVA_power function (default is 0.05)
 
 ```
 
