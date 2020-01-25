@@ -28,3 +28,4 @@
 ^CRAN-RELEASE$
 ^\.RData$
 ^\.Rhistory$
+^cran-comments\.md$
