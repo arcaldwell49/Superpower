@@ -719,7 +719,7 @@ ui <- dashboardPage(
                               )),
                   
                   conditionalPanel(condition = "input.rChoice == 'no'", 
-                                   numericInput(inputId = "r_common", label = "Common correlation among within-subjects factors", min = 0, step = .05, value = .5)),
+                                   numericInput(inputId = "r_common", label = "Common correlation among within-subjects factors", min = 0, max=.999999999999999, step = .05, value = .5)),
 
                   conditionalPanel(condition = "input.rChoice == 'yes'", 
                                    strong("Specify the correlation matrix. 
@@ -762,8 +762,19 @@ ui <- dashboardPage(
 
                 box(
                   title = "Simulation Parameters", status = "warning", solidHeader = TRUE,
+                  
+                  
+                  
 
                   conditionalPanel("input.designBut >= 1",
+                                   selectInput("seedChoice", "Would you like to set a \"seed\" for reproducible simulations?",
+                                               c("No" = "no" ,
+                                                 "Yes" = "yes" )),
+                                   conditionalPanel(condition = "input.seedChoice == 'yes'",
+                                                    h5("Specify a seed number."),
+                                                    
+                                                    numericInput("seed_num", label = "Seed Number",
+                                                              value = 2019, min = 1,max=1000000000000, step=1)),
                   selectInput("correction", "Sphericity Correction",
                               c("None" = "none",
                                 "Greenhouse-Geisser" = "GG",
@@ -1051,7 +1062,10 @@ values$label_list <- reactive({
                                                               emm_model = as.character(input$emm_model),
                                                               contrast_type = as.character(input$contrast_type),
                                                               emm_comp = as.character(input$emm_comp),
-                                                              emm_p_adjust = as.character(input$emm_p_adjust))
+                                                              emm_p_adjust = as.character(input$emm_p_adjust),
+                                                              seed = if (input$seedChoice == "no"){
+                                                                NULL
+                                                              } else {as.numeric(input$seed_num)})
 
 
   })
