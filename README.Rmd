@@ -12,10 +12,10 @@ suppressWarnings(library("badger"))
 
 ```
 
-![Sticker](https://raw.githubusercontent.com/arcaldwell49/Superpower/master/Sticker/Superpower.png)
+![Sticker](https://raw.githubusercontent.com/arcaldwell49/Superpower/master/Sticker/Superpower2.PNG)
 ![authors_image](https://raw.githubusercontent.com/arcaldwell49/Superpower/master/Sticker/authors.png)
 ```{r oldcode, eval=FALSE, include=FALSE}
-knitr::include_graphics("Sticker/Superpower.png")
+knitr::include_graphics("Sticker/Superpower2.PNG")
 knitr::include_graphics("Sticker/authors.png")
 ```
 

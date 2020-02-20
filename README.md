@@ -1,7 +1,7 @@
 An Introduction to Superpower
 ================
 
-![Sticker](https://raw.githubusercontent.com/arcaldwell49/Superpower/master/Sticker/Superpower.png)
+![Sticker](https://raw.githubusercontent.com/arcaldwell49/Superpower/master/Sticker/Superpower2.PNG)
 ![authors\_image](https://raw.githubusercontent.com/arcaldwell49/Superpower/master/Sticker/authors.png)
 
 [![Build
@@ -443,11 +443,11 @@ provides power (from 0 to 100%) and effect sizes (partial eta-squared)
 for the ANOVA result. We see the results for the main effects of factor
 voice, emotion, and the voice\*emotion interaction.
 
-The result for the power simulation reveal power is highest for the main
-effect of emotion. Remember that this is the within-subjects factor, and
-the means are highly correlated (0.8) - so we have high power for within
-comparisons. Power is lower for the interaction, and very low for the
-main effect of voice.
+The result for the power simulation reveals power is highest for the
+main effect of emotion. Remember that this is the within-subjects
+factor, and the means are highly correlated (0.8) - so we have high
+power for within comparisons. Power is lower for the interaction, and
+very low for the main effect of voice.
 
 An ANOVA is typically followed up with contrasts. A statistical
 hypothesis often predicts not just an interaction, but also the shape of
@@ -469,11 +469,7 @@ the ANOVA\_power function returns the raw simulation data (all
 simulation\_result$sim\_data) and a plot showing the *p*-value
 distributions for all tests in the ANOVA.
 
-``` r
-power_result_vig_1$plot1
-```
-
-![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
+![](vignettes/sim_data/vig_1_plot.png)
 
 ## Example \#2
 
@@ -702,7 +698,7 @@ plot_power(design_result, min_n = 10, max_n = 250,
            plot = TRUE)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 Because the true pattern of means is always unknown, it is sensible to
 examine the power across a range of scenarios. For example, is the
@@ -723,7 +719,7 @@ plot_power(design_result, max_n = 250,
            plot = TRUE)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 It could be that in addition to a slightly smaller effect size, the
 standard deviation is slightly larger than we expected as well. This
@@ -743,7 +739,7 @@ plot_power(design_result, min_n = 10, max_n = 250,
            plot = TRUE)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
 As these different plots make clear, your study never really has a known
 statistical power. Because the true effect size (i.e., the pattern of
