@@ -332,13 +332,13 @@ server <- function(input, output, session) {
   output$sample_size <- renderUI({
     numericInput("sample_size", 
                  label = "Sample Size per Cell",
-                 min = prod(
+                 min = (prod(
                    as.numeric(
                      unlist(
                        regmatches
                        (input$design,
                          gregexpr("[[:digit:]]+",
-                                  input$design))))),
+                                  input$design)))))+1),
                  max = 1000, value = 80, step = 1)
   })
   
@@ -403,7 +403,15 @@ server <- function(input, output, session) {
           "Model formula: ", deparse(values$design_result$frml1),
           "
           ",
-          "Sample size per cell n = ", values$design_result$n)
+          "Sample size per cell n = ", values$design_result$n,
+          "\n",
+          ifelse(values$design_result$n < (prod(
+            as.numeric(
+              unlist(
+                regmatches
+                (input$design,
+                  gregexpr("[[:digit:]]+",
+                           input$design)))))+1), "WARNING: Sample Size must be greater than the product of the cells \n For example, 2b*2w = 4 and requires a sample size of at least 5 per cell", ""))
   })
 
   #Output of correlation and standard deviation matrix
