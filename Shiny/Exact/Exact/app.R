@@ -95,7 +95,6 @@ Superpower_options(emm = TRUE,
 
 # Define UI for application
 ui <- dashboardPage(
-
   dashboardHeader(title = "ANOVA_exact"),
   dashboardSidebar(
     sidebarMenu(
@@ -110,6 +109,7 @@ ui <- dashboardPage(
   ),
 
   dashboardBody(
+    useShinyjs(),
 
     tabItems(
       # Design content
@@ -124,8 +124,7 @@ ui <- dashboardPage(
                  If you do need/want to violate these assumptions please use the ANOVA_power app."),
                 a("Click here for the other app", href = "http://shiny.ieis.tue.nl/anova_power/"),
                 h3("The Design Tab"),
-                h5("You must start with the Design tab in order to perform a power analysis. At this stage you must establish the parameters of the design (sample size, standard deviation, etc).
-                 Once you click Submit Design the design details will appear and you can continue onto the power analysis."),
+                h5("You must start with the Design tab in order to perform a power analysis. At this stage you must establish the parameters of the design (sample size, standard deviation, etc). *Please note the sample size must be greater than the product of the cells \n For example, 2b*2w = 4 and requires a sample size of at least 5 per cell. If this is entered incorrectly, then the \'Submit Design\' button will be disabled. \n Once you click \'Submit Design\' the design details will appear and you can continue onto the power analysis."),
                 h3("Exact Power Tab"),
                 h5("In this tab, you will setup an *exact* simulation. All you can do at this stage is set the alpha level (default=.05) and decide the estimated marinal means analysis (optional)"),
                 h3("Power curve Tab"),
@@ -139,6 +138,7 @@ ui <- dashboardPage(
                 solidHeader = TRUE,
                 collapsible = FALSE,
                 strong("Current updates to Superpower's Exact Shiny App"),
+                h5("Sample size limits have been added. Design cannot be implemented with too small a sample size."),
                 h5("Option for estimated marginal means added"),
                 h5("Plot power output has been removed from the dowloadable pdf. These results could sometimes be difficult to see in the pdf format. But now can be downloaded as individual csv files")
               )),
@@ -325,6 +325,15 @@ server <- function(input, output, session) {
                            power_result = 0,
                            power_curve = 0,
                            emm_output = 0)
+  observe({
+    shinyjs::toggleState("designBut", input$sample_size >= (prod(
+      as.numeric(
+        unlist(
+          regmatches
+          (input$design,
+            gregexpr("[[:digit:]]+",
+                     input$design))))) + 1))
+  })
   
   output$corr_display = reactive(grepl("w",as.character(input$design)))
   outputOptions(output, "corr_display", suspendWhenHidden = FALSE)
@@ -338,7 +347,7 @@ server <- function(input, output, session) {
                        regmatches
                        (input$design,
                          gregexpr("[[:digit:]]+",
-                                  input$design)))))+1),
+                                  input$design))))) + 1),
                  max = 1000, value = 80, step = 1)
   })
   
