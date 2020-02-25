@@ -50,7 +50,7 @@ knitr::kable(params$sigmatrix)
 cat("\\newpage")
 ```
 
-Plot of the individual data points with mean and standard deviation.
+Plot of the design with mean and standard deviation.
 
 ```{r echo = FALSE}
 params$means_plot

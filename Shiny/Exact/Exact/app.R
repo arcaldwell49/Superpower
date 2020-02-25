@@ -528,7 +528,7 @@ server <- function(input, output, session) {
       params <- list(tablePC = values$power_result$pc_result,
                      tableMain = values$power_result$main_results,
                      tableEMM = values$power_result$emm_results,
-                     means_plot = values$power_result$plot,
+                     means_plot = values$design_result$meansplot,
                      n = values$design_result$n,
                      model = deparse(values$design_result$frml1),
                      design = values$design_result$string,
