@@ -35,7 +35,7 @@ devtools::install_github("arcaldwell49/Superpower")
 
 ## ANOVA\_design function
 
-Currently the ANOVA\_design function can create designs up three
+Currently the ANOVA\_design function can create designs with up to three
 factors, for both within, between, and mixed designs. It requires the
 following input: design, n, mu, sd, r, and optionally allows you to set
 labelnames.
