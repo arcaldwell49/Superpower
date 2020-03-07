@@ -656,7 +656,15 @@ ui <- dashboardPage(
                 collapsible = FALSE,
                 strong("Current updates to Superpower's Power Shiny App"),
                 h5("Option for estimated marginal means added"),
-                h5("Now allows for unequal n input"))),
+                h5("Now allows for unequal n input")),              
+              box(
+                title = "CITATION",
+                status = "danger",
+                solidHeader = TRUE,
+                collapsible = FALSE,
+                strong("Please cite as:"),
+                h5("Lakens, D., & Caldwell, A. R. (2019). \"Simulation-Based Power-Analysis for Factorial ANOVA Designs\". PsyArXiv, <https://doi.org/10.31234/osf.io/baxsf>.")
+              )),
       # Design content
       tabItem(tabName = "design_tab",
               fluidRow(

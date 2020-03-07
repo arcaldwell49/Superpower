@@ -141,6 +141,14 @@ ui <- dashboardPage(
                 h5("Sample size limits have been added. Design cannot be implemented with too small a sample size."),
                 h5("Option for estimated marginal means added"),
                 h5("Plot power output has been removed from the dowloadable pdf. These results could sometimes be difficult to see in the pdf format. But now can be downloaded as individual csv files")
+              ),              
+              box(
+                title = "CITATION",
+                status = "danger",
+                solidHeader = TRUE,
+                collapsible = FALSE,
+                strong("Please cite as:"),
+                h5("Lakens, D., & Caldwell, A. R. (2019). \"Simulation-Based Power-Analysis for Factorial ANOVA Designs\". PsyArXiv, <https://doi.org/10.31234/osf.io/baxsf>.")
               )),
       tabItem(tabName = "design_tab",
               fluidRow(
