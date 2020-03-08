@@ -395,7 +395,7 @@ ANOVA_power <- function(design_result,
                -.data$f2,-.data$pes, -.data$estimate, -.data$df) %>%
         select(-.data$cohen_f, -.data$p.value,
                .data$p.value, .data$cohen_f)
-      
+      emm_extra = as.data.frame(pairs_result) %>% select(-.data$contrast,-.data$estimate,-.data$SE, -.data$df,-.data$t.ratio,-.data$p.value)
       emm_sim_data[i,] <- c(as.numeric(pairs_result_df$p.value), #p-value for contrast
                             as.numeric(pairs_result_df$cohen_f) #cohen f
       ) #
@@ -531,6 +531,7 @@ ANOVA_power <- function(design_result,
     
     emm_results <- data.frame(pairs_result_df$contrast,emm_power, emm_es)
     names(emm_results) = c("contrast","power","cohen_f")
+    emm_results <- cbind(emm_results,emm_extra)
   } else{
     emm_results = NULL
   }
