@@ -167,7 +167,7 @@ ui <- dashboardPage(
                                 "Yes" = "yes"
                                 )),
                   conditionalPanel(condition = "input.labelChoice == 'yes'",
-                  h5("Specify one word for each factor (e.g., AGE and SPEED) and the level of each factor (e.g., old and yound for a factor age with 2 levels)."),
+                                   h5("Specify one word for each factor (e.g., AGE and SPEED) and the level of each factor (e.g., old and young for a factor age with 2 levels). First, name the factor (e.g., AGE) then name the levels (e.g., old and young)"),
 
                   textInput("labelnames", label = "Factor & level labels",
                             value = "AGE,old,young,SPEED,fast,slow")),
