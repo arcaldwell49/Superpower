@@ -8,3 +8,4 @@ temp
 *.jmo
 *.RData
 .RData
+inst/doc
