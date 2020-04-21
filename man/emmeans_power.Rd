@@ -42,15 +42,16 @@ Computes power based on t value and degrees of freedom for contrasts.
 (Hoenig & Heisey, 2001).}
 }
 \details{
-Note that calculation of power is based on the t-ratio assuming
+Note that calculation of power is based on the F- and t-ratio assuming
   two-sided testing. Thus, the function does not honor adjustments of the
   testing procedure due to either one-sided testing (or two-one sideded tests)
-  or corrections for multiple comparisons via the `p.adjust` option in `emmeans`.
+  or corrections for multiple comparisons via the \code{p.adjust} option in 
+  \code{emmeans}.
   
   Power for one-sided tests can be calculated, if the means of the simulated
-  dataset are consistent with the directional hypothesis, by halfing
-  `alpha_level`. Similarly, power for Bonferroni-corrected contrasts can be
-  calculated by adjusting `alpha_level` accordingly (see examples).
+  dataset are consistent with the directional hypothesis, by doubeling
+  \code{alpha_level}. Similarly, power for Bonferroni-corrected contrasts can be
+  calculated by adjusting \code{alpha_level} accordingly (see examples).
 }
 \examples{
 

@@ -127,6 +127,32 @@ emmeans_power(
 )
 ```
 
+Similarly, if we want to calculate power for a one-sided test, we can doubling `alpha_level`.
+
+```{r}
+emmeans_power(
+  pairs(simple_condition_effects)[1],
+  alpha_level = 2 * 0.05
+)
+```
+
+Note, that because power is calculated from the squared $t$-value, power is only calculated correctly if the alternative hypothesis is true in the simulated dataset.
+That is, the difference of the condition means is consistent with the tested directional hypothesis.
+
+
+## Equivalence and non-superiority/-inferiority tests
+
+Because `emmeans` can perform equivalence, non-superiority, and -inferiority tests, `emmeans_power()` can calculate the corresponding power for these tests.
+
+```{r}
+emmeans_power(
+  pairs(simple_condition_effects, side = "equivalence", delta = 0.3)[2]
+)
+```
+
+Note, that because power is calculated from the squared $t$-value, power is only calculated correctly if the alternative hypothesis is true in the simulated dataset.
+That is, the difference between the condition means is consistent with the tested directional hypothesis (smaller than `delta`).
+
 
 ## Joint tests
 
