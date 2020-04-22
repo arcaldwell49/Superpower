@@ -38,7 +38,8 @@ Imports:
     reshape2,
     stats,
     dplyr,
-    magrittr
+    magrittr,
+    tidyselect
 Suggests: 
     knitr,
     rmarkdown,
