@@ -219,29 +219,7 @@ ANOVA_power <- function(design_result,
                                             adjust = emm_p_adjust)})
     #plot_emm = plot(emm_result, comparisons = TRUE)
     #make comparison based on specs; adjust = "none" in exact; No solution for multcomp in exact simulation
-    pairs_result <- emm_result$contrasts
-    pairs_result_df <- as.data.frame(pairs_result)
-    #Need for exact; not necessary for power function
-    #Convert t-ratio to F-stat
-    pairs_result_df$F.value <- (pairs_result_df$t.ratio)^2
-    #Calculate pes -- The formula for partial eta-squared is equation 13 from Lakens (2013)
-    pairs_result_df$pes <- pairs_result_df$F.value/(pairs_result_df$F.value + pairs_result_df$df) 
-    #Calculate cohen's f
-    pairs_result_df$f2 <- pairs_result_df$pes/(1 - pairs_result_df$pes)
-    #Calculate noncentrality
-    pairs_result_df$lambda <- pairs_result_df$f2*pairs_result_df$df
-    #minusalpha<- 1-alpha_level
-    pairs_result_df$Ft <- qf((1 - alpha_level), 1, pairs_result_df$df)
-    #Calculate power
-    pairs_result_df$power <- (1 - pf(pairs_result_df$Ft, 1, pairs_result_df$df, pairs_result_df$lambda))*100
-    
-    pairs_result_df <- pairs_result_df %>% mutate(partial_eta_squared = .data$pes,
-                                                  cohen_f = sqrt(.data$f2),
-                                                  non_centrality = .data$lambda) %>%
-      select(-.data$p.value,-.data$F.value,-.data$t.ratio,-.data$Ft,-.data$SE,
-             -.data$f2,-.data$lambda,-.data$pes, -.data$estimate, -.data$df) %>%
-      select(-.data$power, -.data$partial_eta_squared, -.data$cohen_f, -.data$non_centrality,
-             .data$power, .data$partial_eta_squared, .data$cohen_f, .data$non_centrality)
+    pairs_result_df <- emmeans_power(emm_result$contrasts, alpha_level = alpha_level)
     
     #rownames from contrasts non readable sticking to row number
     #rownames(pairs_result_df) <- as.character(pairs_result_df$contrast)

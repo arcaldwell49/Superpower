@@ -41,7 +41,7 @@
 #' @importFrom afex aov_car
 #' @importFrom graphics pairs
 #' @importFrom magrittr '%>%'
-#' @importFrom dplyr select mutate everything
+#' @importFrom dplyr select everything
 #' @import emmeans
 #' @import ggplot2
 #' @export
@@ -267,31 +267,7 @@ plot_power <- function(design_result,
       })
       #plot_emm = plot(emm_result, comparisons = TRUE)
       #make comparison based on specs; adjust = "none" in exact; No solution for multcomp in exact simulation
-      pairs_result_loop <- emm_result_loop$contrasts
-      pairs_result_df_loop <- as.data.frame(pairs_result_loop)
-      #Need for exact; not necessary for power function
-      #Convert t-ratio to F-stat
-      pairs_result_df_loop$F.value <- (pairs_result_df_loop$t.ratio)^2
-      #Calculate pes -- The formula for partial eta-squared is equation 13 from Lakens (2013)
-      pairs_result_df_loop$pes <- exact_result$emm_results$partial_eta_squared 
-      #Calculate cohen's f
-      pairs_result_df_loop$f2 <- pairs_result_df_loop$pes/(1 - pairs_result_df_loop$pes)
-      #Calculate noncentrality
-      pairs_result_df_loop$lambda <- pairs_result_df_loop$f2*pairs_result_df_loop$df
-      #minusalpha<- 1-alpha_level
-      pairs_result_df_loop$Ft <- qf((1 - alpha_level), 1, pairs_result_df_loop$df)
-      #Calculate power
-      pairs_result_df_loop$power <- (1 - pf(pairs_result_df_loop$Ft, 
-                                            1, pairs_result_df_loop$df, 
-                                            pairs_result_df_loop$lambda))*100
-      
-      pairs_result_df_loop <- pairs_result_df_loop %>% mutate(partial_eta_squared = .data$pes,
-                                                    cohen_f = sqrt(.data$f2),
-                                                    non_centrality = .data$lambda) %>%
-        select(-.data$p.value,-.data$F.value,-.data$t.ratio,-.data$Ft,-.data$SE,
-               -.data$f2,-.data$lambda,-.data$pes, -.data$estimate, -.data$df) %>%
-        select(-.data$power, -.data$partial_eta_squared, -.data$cohen_f, -.data$non_centrality,
-               .data$power, .data$partial_eta_squared, .data$cohen_f, .data$non_centrality)
+      pairs_result_df_loop <- emmeans_power(emm_result_loop$contrasts, alpha_level = alpha_level)
       
       power_df_emm[i, 2:(1 + length_power_emm)] <- pairs_result_df_loop$power
     } else{

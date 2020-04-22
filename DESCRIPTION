@@ -1,6 +1,6 @@
 Package: Superpower
 Title: Simulation-Based Power Analysis for Factorial Designs
-Version: 0.0.3
+Version: 0.0.4
 Authors@R: c(person(given = "Aaron",
            family = "Caldwell",
            role = c("aut", "cre"),
@@ -15,14 +15,19 @@ Authors@R: c(person(given = "Aaron",
            person(given = "Jonathon",
            family = "Love",
            role = c("ctb"),
-           email = "jon@thon.cc"))
+           email = "jon@thon.cc"),
+           person(given = "Frederik",
+           family = "Aust",
+           email = "frederik.aust@uni-koeln.de",
+           role = c("ctb"),
+           comment = c(ORCID = "0000-0003-4900-788X")))
 Description: Functions to perform simulations of ANOVA designs of up to three factors. Calculates the observed power and average observed effect size for all main effects and interactions in the ANOVA, and all simple comparisons between conditions. Includes functions for analytic power calculations and additional helper functions that compute effect sizes for ANOVA designs, observed error rates in the simulations, and functions to plot power curves. Please see Lakens, D., & Caldwell, A. R. (2019). "Simulation-Based Power-Analysis for Factorial ANOVA Designs". <doi:10.31234/osf.io/baxsf>.
 URL: https://arcaldwell49.github.io/SuperpowerBook/
 BugReports: https://github.com/arcaldwell49/Superpower/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 Imports: 
     mvtnorm,
     MASS,
@@ -33,7 +38,8 @@ Imports:
     reshape2,
     stats,
     dplyr,
-    magrittr
+    magrittr,
+    tidyselect
 Suggests: 
     knitr,
     rmarkdown,

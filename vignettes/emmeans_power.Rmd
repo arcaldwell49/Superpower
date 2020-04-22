@@ -1,0 +1,171 @@
+---
+title: "Power calculations for `emmeans` analyses"
+author: "Frederik Aust"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output:
+  rmarkdown::html_vignette:
+    df_print: "kable"
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Power calculations for emmeans analyses}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  # collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, message = FALSE}
+library("Superpower")
+library("emmeans")
+```
+
+
+When conducting exact ANOVA power analyses with `Superpower` it is possible to calculate the power for both the omnibus $F$-tests and planned contrasts or post-hoc comparisons.
+It is possible to use this approach to calculate power for standard contrasts, such as pairwise contrasts between cells.
+Here I provide a brief overview of how the output of `ANOVA_exact()` can be used to perform power analyses for tailored planned contrasts and follow-up tests.
+
+# A note of caution
+
+All power analyses for `emmeans`-objects are based on the $F$- and $t$-values from the analyses of the dataset simulated by `ANOVA_exact()` assuming two-sided testing.
+Thus, the `emmeans_power()` does not honor adjustments of the testing procedure due to either one-sided testing (including two one-sided tests) or corrections for multiple comparisons via the `adjust` option in `emmeans`.
+As noted below, for the Bonferroni-adjustment this limitation can be overcome by manually adjusting `alpha_level`.
+
+
+# Post hoc pairwise comparisons
+
+First, we will set up a 2 $\times$ 3 repeated measures design.
+When calling `ANOVA_exact()` pairwise comparisons of expected marginal means are added by setting `emm = TRUE` and `contrast_type = "pairwise"` (default).
+
+```{r}
+# Set up a within design with 2 factors, each with 2 and 3 levels
+design_result <- ANOVA_design(
+  design = "2w*3w",
+  n = 40,
+  mu = c(0.3, 0, 0.5, 0.3, 0, 0),
+  sd = 2,
+  r = 0.8, 
+  labelnames = c("condition", "cheerful", "sad", "voice", "human", "robot", "cartoon")
+)
+
+exact_result <- ANOVA_exact(
+  design_result,
+  alpha_level = 0.05,
+  verbose = FALSE,
+  emm = TRUE,
+  contrast_type = "pairwise"
+)
+```
+
+The result contains the power calculations for both the omnibus $F$-tests and pairwise post-hoc comparisons.
+
+```{r}
+exact_result$main_results
+head(exact_result$emm_results)
+```
+
+The output also contains the `emmeans`-object on which these power calculations are based.
+By manipulating this object it is possible to tailor the power analyses to the contrasts desired for the planned study.
+That is, based on the dataset simulated with `ANOVA_exact()` we can write out the analysis code for `emmeans`-contrasts, just as we would if we were to analyse the empirical data, and use the output to perform the corresponding power analysis.
+
+# Customized `emmeans` contrasts
+
+The `emmeans` reference grid and contrasts are included in the output of `ANOVA_exact()`.
+
+```{r}
+exact_result$emmeans$emmeans
+exact_result$emmeans$contrasts
+```
+
+By using `emmeans_power()` on the contrasts, we can reproduce the results of the previous power analysis for the pairwise comparisons.
+
+```{r}
+head(emmeans_power(exact_result$emmeans$contrasts))
+```
+
+Now, we can manipulate the `emmeans` reference grid to perform additional power analyses.
+In the following example, we calculate the power for the contrasts between sad and cheerful condition for each voice.
+
+```{r}
+simple_condition_effects <- emmeans(
+  exact_result$emmeans$emmeans,
+  specs = ~ condition | voice
+)
+
+emmeans_power(pairs(simple_condition_effects))
+```
+
+We may also calculate the power for testing all condition means against an arbitrary constant.
+
+```{r}
+emmeans_power(test(simple_condition_effects, null = 0.5))
+```
+
+Finally, we can calculate the power for custom contrasts between any linear combination of conditions.
+
+```{r}
+custom_contrast <- contrast(
+  exact_result$emmeans$emmeans,
+  list(robot_vs_sad_human = c(0, 0, 0, 1, -0.5, -0.5))
+)
+
+emmeans_power(custom_contrast)
+```
+
+Although `emmeans_power()` currently ignores adjustments for multiple comparisons, it is possible to calculate the power for Bonferroni-corrected tests by adjusting `alpha_level`.
+
+```{r}
+n_contrasts <- nrow(as.data.frame(simple_condition_effects))
+
+emmeans_power(
+  pairs(simple_condition_effects),
+  alpha_level = 0.05 / n_contrasts
+)
+```
+
+Similarly, if we want to calculate power for a one-sided test, we can doubling `alpha_level`.
+
+```{r}
+emmeans_power(
+  pairs(simple_condition_effects)[1],
+  alpha_level = 2 * 0.05
+)
+```
+
+Note, that because power is calculated from the squared $t$-value, power is only calculated correctly if the alternative hypothesis is true in the simulated dataset.
+That is, the difference of the condition means is consistent with the tested directional hypothesis.
+
+
+## Equivalence and non-superiority/-inferiority tests
+
+Because `emmeans` can perform equivalence, non-superiority, and -inferiority tests, `emmeans_power()` can calculate the corresponding power for these tests.
+
+```{r}
+emmeans_power(
+  pairs(simple_condition_effects, side = "equivalence", delta = 0.3)[2]
+)
+```
+
+Note, that because power is calculated from the squared $t$-value, power is only calculated correctly if the alternative hypothesis is true in the simulated dataset.
+That is, the difference between the condition means is consistent with the tested directional hypothesis (smaller than `delta`).
+
+
+## Joint tests
+
+Another useful application of `emmeans_power()` is to joint tests.
+Lets assume we plan to test the main effect of voice for each of the two conditions separately using `joint_tests()`.
+We can then calculate the power for each Bonferroni-corrected $F$-test as follows.
+
+```{r}
+voice_by_condition <- joint_tests(
+  exact_result$emmeans$emmeans,
+  by = "condition"
+)
+
+emmeans_power(voice_by_condition, alpha_level = 0.05 / 2)
+```
+
