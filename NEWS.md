@@ -1,7 +1,13 @@
 NEWS
 ================
 
-Updated Sun Jan 12 2020
+Updated Wed Apr 22 2020
+
+# Superpower 0.0.4
+
+  - Added emmeans\_power function
+      - Documentation added to the vignette
+  - Small updates to the Shiny apps to fix typos
 
 # Superpower 0.0.3
 
