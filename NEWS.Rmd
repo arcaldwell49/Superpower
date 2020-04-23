@@ -5,6 +5,12 @@ output: github_document
 
 Updated `r format(Sys.time(), "%a %b %d %Y")`
 
+# Superpower 0.0.4
+
+- Added emmeans_power function
+  - Documentation added to the vignette
+
+- Small updates to the Shiny apps to fix typos
 
 # Superpower 0.0.3
 

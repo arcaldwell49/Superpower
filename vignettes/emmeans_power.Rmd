@@ -77,8 +77,8 @@ That is, based on the dataset simulated with `ANOVA_exact()` we can write out th
 The `emmeans` reference grid and contrasts are included in the output of `ANOVA_exact()`.
 
 ```{r}
-exact_result$emmeans$emmeans
-exact_result$emmeans$contrasts
+knitr::kable(exact_result$emmeans$emmeans)
+knitr::kable(exact_result$emmeans$contrasts)
 ```
 
 By using `emmeans_power()` on the contrasts, we can reproduce the results of the previous power analysis for the pairwise comparisons.

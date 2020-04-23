@@ -16,3 +16,17 @@ test_that("error messages", {
                fixed = TRUE)
 
 })
+
+
+test_that("test 2b", {
+  design <- ANOVA_design(design = "2b",
+                         n = 7,
+                         mu = c(0,.5),
+                         sd = 1,
+                         plot = FALSE)
+  
+  p = plot_power(design, min_n = 7, max_n = 100)
+  expect_equal(p$power_df[1,2], 15,tolerance = .1)
+  expect_equal(p$power_df[94,2],96,tolerance = .01)
+  
+})
