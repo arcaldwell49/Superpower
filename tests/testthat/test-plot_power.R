@@ -14,7 +14,18 @@ test_that("error messages", {
   expect_error(plot_power(design),
                "plot_power must have an ANOVA_design object with n > the product of the factors; please increase the n in ANOVA_design function.",
                fixed = TRUE)
+})
 
+test_that("test multi functions", {
+  design <- ANOVA_design(design = "2b*4w",
+                         n = 70,
+                         mu = c(0,0,0,0,0.5,0.5,0.5,0.5),
+                         sd = 1,
+                         plot = FALSE)
+  p <- plot_power(design, emm = TRUE, min_n = 7, max_n = 100)
+  
+  expect_equal(p$power_df_manova[1,3],41.9,tolerance = .01)
+  expect_equal(p$power_df_manova[94,3],99.9,tolerance = .01)
 })
 
 
