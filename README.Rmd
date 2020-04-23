@@ -1,7 +1,6 @@
 ---
 output:
   github_document:
-    pandoc_args: --webtex
 title: An Introduction to Superpower
 editor_options: 
   chunk_output_type: console
@@ -20,6 +19,7 @@ knitr::include_graphics("Sticker/authors.png")
 ```
 
 [![Build Status](https://travis-ci.com/arcaldwell49/superpower.svg?branch=master)](https://travis-ci.com/arcaldwell49/superpower)
+[![codecov](https://codecov.io/gh/arcaldwell49/Superpower/branch/master/graph/badge.svg)](https://codecov.io/gh/arcaldwell49/Superpower)
 `r badge_doi("10.31234/osf.io/baxsf", "yellow")`
 
 

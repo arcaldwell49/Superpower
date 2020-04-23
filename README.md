@@ -6,6 +6,7 @@ An Introduction to Superpower
 
 [![Build
 Status](https://travis-ci.com/arcaldwell49/superpower.svg?branch=master)](https://travis-ci.com/arcaldwell49/superpower)
+[![codecov](https://codecov.io/gh/arcaldwell49/Superpower/branch/master/graph/badge.svg)](https://codecov.io/gh/arcaldwell49/Superpower)
 [![](https://img.shields.io/badge/doi-10.31234/osf.io/baxsf-yellow.svg)](https://doi.org/10.31234/osf.io/baxsf)
 
 ## Table of Contents
@@ -35,7 +36,7 @@ devtools::install_github("arcaldwell49/Superpower")
 
 ## ANOVA\_design function
 
-Currently the ANOVA\_design function can create designs with up to three
+Currently the ANOVA\_design function can create designs up three
 factors, for both within, between, and mixed designs. It requires the
 following input: design, n, mu, sd, r, and optionally allows you to set
 labelnames.
@@ -251,8 +252,7 @@ We should also check the covariance-variance matrix to ensure the
 `ANOVA_design` function working properly. The variance should be the
 diagonal element while the off-diagonal elements should be equal to
 `covariance = correlation*variance` or
-![cov\_{x,y}=\\frac{\\sum\_{i=1}^{N}(x\_{i}-\\bar{x})(y\_{i}-\\bar{y})}{N-1}](https://latex.codecogs.com/png.latex?cov_%7Bx%2Cy%7D%3D%5Cfrac%7B%5Csum_%7Bi%3D1%7D%5E%7BN%7D%28x_%7Bi%7D-%5Cbar%7Bx%7D%29%28y_%7Bi%7D-%5Cbar%7By%7D%29%7D%7BN-1%7D
-"cov_{x,y}=\\frac{\\sum_{i=1}^{N}(x_{i}-\\bar{x})(y_{i}-\\bar{y})}{N-1}").
+\(cov_{x,y}=\frac{\sum_{i=1}^{N}(x_{i}-\bar{x})(y_{i}-\bar{y})}{N-1}\).
 In this case, it is identical to the correlation matrix because the
 variance is equal to 1.
 
@@ -456,8 +456,7 @@ above, we might be specifically interested in comparing the independent
 effect for the cheerful vs sad human voice assistant, and the difference
 for sad voice when they are robotic or human. The second table provides
 the power for *t*-tests for all comparisons, and the effect sizes
-(Cohen’s d for between-subject contrasts, and Cohen’s
-![d\_z](https://latex.codecogs.com/png.latex?d_z "d_z") for
+(Cohen’s d for between-subject contrasts, and Cohen’s \(d_z\) for
 within-subject contrasts, see
 [Lakens, 2013](https://www.frontiersin.org/articles/10.3389/fpsyg.2013.00863/full)).
 
@@ -535,11 +534,10 @@ pwr.t.test(d = 2.2/6.4,
     ## [1] 0.6768572
 
 We can also directly compute Cohen’s f from Cohen’s d for two groups, as
-Cohen (1988) describes, because f =
-![\\frac{1}{2}d](https://latex.codecogs.com/png.latex?%5Cfrac%7B1%7D%7B2%7Dd
-"\\frac{1}{2}d"). So f = 0.5\*0.34375 = 0.171875. And indeed, power
-analysis using the pwr package yields the same result using the
-pwr.anova.test as the power.t.test.
+Cohen (1988) describes, because f = \(\frac{1}{2}d\). So f =
+0.5\*0.34375 = 0.171875. And indeed, power analysis using the pwr
+package yields the same result using the pwr.anova.test as the
+power.t.test.
 
 ``` r
 pwr.anova.test(n = 100,
@@ -698,6 +696,10 @@ plot_power(design_result, min_n = 10, max_n = 250,
            plot = TRUE)
 ```
 
+    ## Warning: Use of `plot_data$n` is discouraged. Use `n` instead.
+
+    ## Warning: Use of `plot_data$value` is discouraged. Use `value` instead.
+
 ![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
 
 Because the true pattern of means is always unknown, it is sensible to
@@ -719,6 +721,10 @@ plot_power(design_result, max_n = 250,
            plot = TRUE)
 ```
 
+    ## Warning: Use of `plot_data$n` is discouraged. Use `n` instead.
+
+    ## Warning: Use of `plot_data$value` is discouraged. Use `value` instead.
+
 ![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
 
 It could be that in addition to a slightly smaller effect size, the
@@ -738,6 +744,10 @@ design_result <- ANOVA_design(design = "2b",
 plot_power(design_result, min_n = 10, max_n = 250, 
            plot = TRUE)
 ```
+
+    ## Warning: Use of `plot_data$n` is discouraged. Use `n` instead.
+
+    ## Warning: Use of `plot_data$value` is discouraged. Use `value` instead.
 
 ![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
