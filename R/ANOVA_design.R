@@ -407,7 +407,7 @@ ANOVA_design <- function(design, n, mu, sd, r = 0,
       geom_point(position = position_dodge(width = 0.9), shape = 10, size = 5, stat = "identity") + #Personal preference for sd -- ARC
       geom_errorbar(aes(ymin = mu - sd, ymax = mu + sd),
                     position = position_dodge(width = 0.9), size = .6, width = .3) +
-      coord_cartesian(ylim = c(min(mu) - sd, max(mu) + sd)) +
+      #coord_cartesian(ylim = c(min(mu) - max(sd), max(mu) + max(sd))) +
       theme_bw(base_size = 16) + ggtitle("Means for each condition in the design") 
     
   } else {
@@ -416,7 +416,7 @@ ANOVA_design <- function(design, n, mu, sd, r = 0,
       geom_point(position = position_dodge(width = 0.9), shape = 10, size = 5, stat = "identity") + #Personal preference for sd -- ARC
       geom_errorbar(aes(ymin = mu - sd, ymax = mu + sd),
                     position = position_dodge(width = 0.9), size = .6, width = .3) +
-      coord_cartesian(ylim = c(min(mu) - sd, max(mu) + sd)) +
+      #coord_cartesian(ylim = c(min(mu) - sd, max(mu) + sd)) +
       theme_bw() + ggtitle("Means for each condition in the design") 
   }
   if (plot == TRUE) {
