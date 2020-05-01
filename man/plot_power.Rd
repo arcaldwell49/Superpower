@@ -9,6 +9,7 @@ plot_power(
   alpha_level = Superpower_options("alpha_level"),
   min_n = 7,
   max_n = 100,
+  desired_power = 90,
   plot = Superpower_options("plot"),
   emm = Superpower_options("emm"),
   emm_model = Superpower_options("emm_model"),
@@ -25,7 +26,9 @@ plot_power(
 
 \item{max_n}{Maximum sample size in power curve.}
 
-\item{plot}{Should power plot be printed automatically (defaults to FALSE)}
+\item{desired_power}{Desired power (e.g., 80, 90). N per group will be highlighted to achieve this desired power in the plot. Defaults to 90.}
+
+\item{plot}{Should power plot be printed automatically (defaults to TRUE)}
 
 \item{emm}{Set to FALSE to not perform analysis of estimated marginal means}
 
@@ -67,5 +70,5 @@ design_result <- ANOVA_design(design = "3b",
                              labelnames = c("condition",
                              "cheerful", "neutral", "sad"))
 
-plot_power(design_result, min_n = 50, max_n = 70)
+plot_power(design_result, min_n = 50, max_n = 70, desired_power = 90)
 }
