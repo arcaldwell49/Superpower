@@ -5,6 +5,11 @@ output: github_document
 
 Updated `r format(Sys.time(), "%a %b %d %Y")`
 
+# Superpower 0.0.5
+
+- Small update to plot_power to fix minor error in original code
+  -Error resulted in power estimates being ~0.1-0.5% off actual power estimate
+
 # Superpower 0.0.4
 
 - Added emmeans_power function
