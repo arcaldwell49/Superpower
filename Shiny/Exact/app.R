@@ -147,7 +147,7 @@ ui <- dashboardPage(
                 box(
                   title = "Design Input", status = "warning", solidHeader = TRUE,
                   strong("Specify the factorial design below"), br(),
-                  "*Must be specficied to continue*",
+                  "*Must be specified to continue*",
 
                   h5("Add numbers for each factor that specify the number of levels in the factors (e.g., 2 for a factor with 2 levels). Add a 'w' after the number for within factors, and a 'b' for between factors. Seperate factors with a * (asterisks). Thus '2b*3w' is a design with two factors, the first of which has 2 between levels, and the second of which has 3 within levels."),
 
