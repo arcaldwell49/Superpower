@@ -138,9 +138,7 @@ ui <- dashboardPage(
                 solidHeader = TRUE,
                 collapsible = FALSE,
                 strong("Current updates to Superpower's Exact Shiny App"),
-                h5("Sample size limits have been added. Design cannot be implemented with too small a sample size."),
-                h5("Option for estimated marginal means added"),
-                h5("Plot power output has been removed from the dowloadable pdf. These results could sometimes be difficult to see in the pdf format. But now can be downloaded as individual csv files")
+                h5("Plot power now highlights the sample size at which desired power is achieved.")
               )),
       tabItem(tabName = "design_tab",
               fluidRow(
@@ -291,6 +289,10 @@ ui <- dashboardPage(
                                                 min = .0000000000000000000000000000000001, 
                                                 max = 1,
                                                 step = .001),
+                                   numericInput("desired", label = "Desired Power", value = 90, 
+                                                min = 5, 
+                                                max = 99.99,
+                                                step = 1),
                                    actionButton("sim_2", "Plot Power",
                                                 icon = icon("chart-line")),
                                    h3("Note: No sphercity correction"),
@@ -492,6 +494,7 @@ server <- function(input, output, session) {
       values$design_result,
       min_n = input$ss_2min,
       max_n = input$ss_2max,
+      desired_power = input$desired,
       alpha_level = input$sig2,
       emm = if (input$emm == "yes") {
         TRUE
