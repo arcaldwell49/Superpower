@@ -6,7 +6,7 @@
     Superpower.emm = FALSE,
     Superpower.emm_model = "multivariate",
     Superpower.contrast_type = "pairwise",
-    Superpower.plot = FALSE,
+    Superpower.plot = TRUE,
     Superpower.alpha_level = .05,
     Superpower.correction = "none"
   )

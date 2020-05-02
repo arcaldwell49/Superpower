@@ -30,6 +30,7 @@
 #' }
 #' 
 #' @examples
+#' \dontrun{
 #' ## Set up a within design with 2 factors, each with 2 levels,
 #' ## with correlation between observations of 0.8,
 #' ## 40 participants (who do all conditions), and standard deviation of 2
@@ -40,6 +41,7 @@
 #'       "sad", "voice", "human", "robot"))
 #' power_result <- ANOVA_power(design_result, alpha_level = 0.05,
 #'       p_adjust = "none", seed = 2019, nsims = 10)
+#'       }
 #' @section References:
 #' too be added
 #' @importFrom stats pnorm pt qnorm qt as.formula median p.adjust pf sd power

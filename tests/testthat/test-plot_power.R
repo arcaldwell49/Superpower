@@ -1,5 +1,11 @@
 context("test-plot_power")
 
+hush=function(code){
+  sink("NUL") # use /dev/null in UNIX
+  tmp = code
+  sink()
+  return(tmp)
+}
 
 
 # error messages
@@ -22,7 +28,8 @@ test_that("test multi functions", {
                          mu = c(0,0,0,0,0.5,0.5,0.5,0.5),
                          sd = 1,
                          plot = FALSE)
-  p <- plot_power(design, emm = TRUE, min_n = 7, max_n = 100)
+  p <- hush(plot_power(design, emm = TRUE, min_n = 7, max_n = 100,
+                  verbose = TRUE))
   design_ex1 <- ANOVA_design(design = "2b*4w",
                          n = 70,
                          mu = c(0,0,0,0,0.5,0.5,0.5,0.5),
@@ -48,7 +55,8 @@ test_that("test 2b", {
                          sd = 1,
                          plot = FALSE)
   
-  p = plot_power(design, emm = TRUE, min_n = 7, max_n = 100)
+  p = hush(plot_power(design, emm = TRUE, min_n = 7, max_n = 100,
+                 verbose = TRUE))
   
   p_ex1 = ANOVA_exact(design, emm = TRUE, verbose = FALSE)
   res7 = p$power_df_emm[p$power_df_emm$n == 7, ]

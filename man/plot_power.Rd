@@ -14,7 +14,8 @@ plot_power(
   emm = Superpower_options("emm"),
   emm_model = Superpower_options("emm_model"),
   contrast_type = Superpower_options("contrast_type"),
-  emm_comp
+  emm_comp,
+  verbose = Superpower_options("verbose")
 )
 }
 \arguments{
@@ -37,6 +38,8 @@ plot_power(
 \item{contrast_type}{Select the type of comparison for the estimated marginal means}
 
 \item{emm_comp}{Set the comparisons for estimated marginal means comparisons. This is a factor name (a), combination of factor names (a+b), or for simple effects a | sign is needed (a|b)}
+
+\item{verbose}{Set to FALSE to not print results (default = TRUE)}
 }
 \value{
 Returns plot with power curves for the ANOVA, and a dataframe with the summary data.
@@ -45,6 +48,9 @@ Returns plot with power curves for the ANOVA, and a dataframe with the summary d
   \item{\code{"plot_ANOVA"}}{Plot of power curves from ANOVA results.}
   \item{\code{"plot_MANOVA"}}{Plot of power curves from MANOVA results. Returns NULL if no within-subject factors.}
   \item{\code{"plot_emm"}}{Plot of power curves from MANOVA results. Returns NULL if emm = FALSE.}
+  \item{\code{"anova_n"}}{Achieved Power and Sample Size for ANOVA-level effects.}
+  \item{\code{"manova_n"}}{Achieved Power and Sample Size for MANOVA-level effects.}
+  \item{\code{"emm_n"}}{Achieved Power and Sample Size for estimated marginal means.}
   \item{\code{"power_df"}}{The tabulated ANOVA power results.}
   \item{\code{"power_df_manova"}}{The tabulated MANOVA power results. Returns NULL if no within-subject factors.}
   \item{\code{"power_df_emm"}}{The tabulated Estimated Marginal Means power results. Returns NULL if emm = FALSE.}
@@ -63,6 +69,7 @@ too be added
 }
 
 \examples{
+\dontrun{
 design_result <- ANOVA_design(design = "3b",
                              n = 20,
                              mu = c(0,0,0.3),
@@ -71,4 +78,5 @@ design_result <- ANOVA_design(design = "3b",
                              "cheerful", "neutral", "sad"))
 
 plot_power(design_result, min_n = 50, max_n = 70, desired_power = 90)
+}
 }
