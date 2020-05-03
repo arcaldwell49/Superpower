@@ -119,6 +119,7 @@ ui <- dashboardPage(
                 status = "danger",
                 solidHeader = TRUE,
                 collapsible = FALSE,
+                h5("Please cite as: Lakens, D., & Caldwell, A. R. (2019). Simulation-Based Power-Analysis for Factorial ANOVA Designs. https://doi.org/10.31234/osf.io/baxsf"),
                 h5("This Shiny app is for performing 'exact' simuations of factorial experimental designs in order to estimate power for an ANOVA and follow-up pairwise comparisons.
                  This app will not allow you to vary the standard deviations or the correlations in within-subjects designs.
                  If you do need/want to violate these assumptions please use the ANOVA_power app."),
@@ -128,7 +129,7 @@ ui <- dashboardPage(
                 h3("Exact Power Tab"),
                 h5("In this tab, you will setup an *exact* simulation. All you can do at this stage is set the alpha level (default=.05) and decide the estimated marinal means analysis (optional)"),
                 h3("Power curve Tab"),
-                h5("In this tab, you can see power across a range of sample sizes. All you need to do is set a minimum and maximum sample size. This tab will also allow you to download csv files including the power of ANOVA and estimated marginal means across a range of sample sizes."),
+                h5("In this tab, you can find your desired power (default = 90%) power across a range of sample sizes. All you need to do is set a minimum and maximum sample size. This tab will also allow you to download csv files including the power of ANOVA and estimated marginal means across a range of sample sizes."),
                 h3("Download your Simulation"),
                 h5("Once your simulation is completed a button a button will appear on the sidebar to download a PDF")
               ),              
@@ -270,7 +271,7 @@ ui <- dashboardPage(
       ),
       # Plot Power content
       tabItem(tabName = "plot_tab",
-              h2("Plot Power Across a Range of Sample Sizes"),
+              h2("Find Desired Power Across a Range of Sample Sizes"),
               fluidRow(
                 box(
                   title = "Set Min and Max Sample Size",
@@ -305,11 +306,19 @@ ui <- dashboardPage(
                 ),
                 
                 box(
-                  title = "Power Curve across Sample Sizes",
+                  title = "ANOVA/MANOVA Effects",
                   status = "primary", solidHeader = TRUE,
                   collapsible = TRUE,
-                  plotOutput('plot_curve'),
-                  plotOutput('plot_curve_emm')
+                  #renderPlot('plot_curve')#,
+                  tableOutput('anova_n'),
+                  tableOutput('manova_n')
+                  
+                ),
+                box(
+                  title = "Estimated Marginal Means",
+                  status = "primary", solidHeader = TRUE,
+                  collapsible = TRUE,
+                  tableOutput('emm_n')
                   
                 )
               )
@@ -501,7 +510,9 @@ server <- function(input, output, session) {
       } else{FALSE},
       emm_model = as.character(input$emm_model),
       contrast_type = as.character(input$contrast_type),
-      emm_comp = as.character(input$emm_comp)
+      emm_comp = as.character(input$emm_comp),
+      plot = FALSE,
+      verbose = FALSE
     )
   })
 
@@ -512,10 +523,28 @@ server <- function(input, output, session) {
     values$power_curve$plot_ANOVA
   })
   
-  output$plot_curve_emm <- renderPlot({
+
+    output$anova_n = renderTable({
     req(input$sim_2)
-    values$power_curve$plot_emm
-  })
+    values$power_curve$anova_n
+  }
+  )
+    
+    output$manova_n = renderTable({
+      req(input$sim_2)
+      values$power_curve$manova_n
+    }
+    )
+    
+    output$emm_n = renderTable({
+      req(input$sim_2)
+      values$power_curve$emm_n
+    }
+    )
+  #output$plot_curve_emm <- renderPlot({
+  #  req(input$sim_2)
+  #  values$power_curve$plot_emm
+  #})
   
   output$dl_data <- downloadHandler(
     filename = function() {
