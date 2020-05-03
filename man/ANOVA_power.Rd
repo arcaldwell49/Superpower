@@ -72,6 +72,7 @@ too be added
 }
 
 \examples{
+\dontrun{
 ## Set up a within design with 2 factors, each with 2 levels,
 ## with correlation between observations of 0.8,
 ## 40 participants (who do all conditions), and standard deviation of 2
@@ -82,4 +83,5 @@ design_result <- ANOVA_design(design = "2w*2w", n = 40, mu = c(1, 0, 1, 0),
       "sad", "voice", "human", "robot"))
 power_result <- ANOVA_power(design_result, alpha_level = 0.05,
       p_adjust = "none", seed = 2019, nsims = 10)
+      }
 }

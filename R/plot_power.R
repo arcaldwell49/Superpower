@@ -9,6 +9,7 @@
 #' @param emm_model Set model type ("multivariate", or "univariate") for estimated marginal means
 #' @param contrast_type Select the type of comparison for the estimated marginal means
 #' @param emm_comp Set the comparisons for estimated marginal means comparisons. This is a factor name (a), combination of factor names (a+b), or for simple effects a | sign is needed (a|b)
+#' @param verbose Set to FALSE to not print results (default = TRUE)
 #' @return Returns plot with power curves for the ANOVA, and a dataframe with the summary data.
 #' 
 
@@ -16,6 +17,9 @@
 #'   \item{\code{"plot_ANOVA"}}{Plot of power curves from ANOVA results.}
 #'   \item{\code{"plot_MANOVA"}}{Plot of power curves from MANOVA results. Returns NULL if no within-subject factors.}
 #'   \item{\code{"plot_emm"}}{Plot of power curves from MANOVA results. Returns NULL if emm = FALSE.}
+#'   \item{\code{"anova_n"}}{Achieved Power and Sample Size for ANOVA-level effects.}
+#'   \item{\code{"manova_n"}}{Achieved Power and Sample Size for MANOVA-level effects.}
+#'   \item{\code{"emm_n"}}{Achieved Power and Sample Size for estimated marginal means.}
 #'   \item{\code{"power_df"}}{The tabulated ANOVA power results.}
 #'   \item{\code{"power_df_manova"}}{The tabulated MANOVA power results. Returns NULL if no within-subject factors.}
 #'   \item{\code{"power_df_emm"}}{The tabulated Estimated Marginal Means power results. Returns NULL if emm = FALSE.}
@@ -26,6 +30,7 @@
 #' }
 #' 
 #' @examples
+#' \dontrun{
 #' design_result <- ANOVA_design(design = "3b",
 #'                              n = 20,
 #'                              mu = c(0,0,0.3),
@@ -34,6 +39,7 @@
 #'                              "cheerful", "neutral", "sad"))
 #'
 #' plot_power(design_result, min_n = 50, max_n = 70, desired_power = 90)
+#' }
 #' @section References:
 #' too be added
 #' @importFrom stats pnorm pt qnorm qt as.formula median qf power.t.test pf sd power
@@ -55,10 +61,11 @@ plot_power <- function(design_result,
                        emm = Superpower_options("emm"),
                        emm_model = Superpower_options("emm_model"),
                        contrast_type = Superpower_options("contrast_type"),
-                       emm_comp){
+                       emm_comp,
+                       verbose = Superpower_options("verbose")){
   
   #Need this to avoid "undefined" global error or no visible binding from occuring
-  cohen_f <- partial_eta_squared <- non_centrality <- pairs_results_df <- value <- label <- NULL
+  cohen_f <- partial_eta_squared <- non_centrality <- pairs_results_df <- value <- label <- variable <- achieved_power <- NULL
   #New checks for emmeans input
   if (missing(emm)) {
     emm = FALSE
@@ -314,6 +321,7 @@ plot_power <- function(design_result,
   annotate_df <- as.data.frame(matrix(0, ncol = 4, nrow = length(row.names(exact_result$main_results)))) #three rows, for N, power, and variable label
   colnames(annotate_df) <- c("n", "power", "variable", "label") # add columns names
   annotate_df$variable <- as.factor(c(row.names(exact_result$main_results))) #add variable label names
+  anova_n = annotate_df
   
   # Create a dataframe with columns for each effect and rows for the N and power for that N
   for (i in 1:length_power) {
@@ -324,6 +332,14 @@ plot_power <- function(design_result,
     if(annotate_df[i,2] < desired_power){annotate_df[i,4] <- "Desired Power Not Reached"}
     if(annotate_df[i,2] >= desired_power){annotate_df[i,4] <- annotate_df[i,1]}
     if(annotate_df[i,2] < desired_power){annotate_df[i,2] <- 5}
+    
+    # Repeat process for tabular results
+    anova_n[i,1] <- tryCatch(findInterval(desired_power, power_df[,(1 + i)]), error=function(e){max_n-min_n}) + min_n #use findinterval to find the first value in the vector before desired power. Add 1 (we want to achieve the power, not stop just short) then add min_n (because the vector starts at min_n, not 0)
+    if(anova_n[i,1] > max_n){anova_n[i,1] <- max_n} # catches cases that do not reach desired power. Then just plot max_n
+    anova_n[i,2] <- power_df[anova_n[i,1]-min_n+1,(i+1)] #store exact power at N for which we pass desired power (for plot)
+    if(anova_n[i,2] < desired_power){anova_n[i,4] <- "Desired Power Not Reached"}
+    if(anova_n[i,2] >= desired_power){anova_n[i,4] <- "Desired Power Achieved"}
+
   }
   
   p1 <- ggplot(data = plot_data, aes(x = n, y = value)) +
@@ -340,9 +356,11 @@ plot_power <- function(design_result,
     plot_data_manova <- suppressMessages(melt(power_df_manova, id = c('n')))
     
     #create data frame for annotation for desired power for manova
-    annotate_df_manova <- as.data.frame(matrix(0, ncol = 3, nrow = length(row.names(exact_result$manova_results)))) #three rows, for N, power, and variable label
-    colnames(annotate_df_manova) <- c("n", "power", "variable") # add columns names
+    annotate_df_manova <- as.data.frame(matrix(0, ncol = 4, nrow = length(row.names(exact_result$manova_results)))) #three rows, for N, power, and variable label
+    colnames(annotate_df_manova) <- c("n", "power", "variable", "label") # add columns names
     annotate_df_manova$variable <- as.factor(c(row.names(exact_result$manova_results))) #add variable label names
+    
+    manova_n = annotate_df_manova
     
     # Create a dataframe with columns for each effect and rows for the N and power for that N
     for (i in 1:length_power_manova) {
@@ -353,6 +371,14 @@ plot_power <- function(design_result,
       if(annotate_df_manova[i,2] < desired_power){annotate_df_manova[i,4] <- "Desired Power Not Reached"}
       if(annotate_df_manova[i,2] >= desired_power){annotate_df_manova[i,4] <- annotate_df_manova[i,1]}
       if(annotate_df_manova[i,2] < desired_power){annotate_df_manova[i,2] <- 5}
+      
+      
+      manova_n[i,1] <- tryCatch(findInterval(desired_power, power_df_manova[,(1 + i)]), error=function(e){max_n-min_n}) + min_n #use findinterval to find the first value in the vector before desired power. Add 1 (we want to achieve the power, not stop just short) then add min_n (because the vector starts at min_n, not 0)
+      if(manova_n[i,1] > max_n){manova_n[i,1] <- max_n} # catches cases that do not reach desired power. Then just plot max_n
+      manova_n[i,2] <- power_df_manova[manova_n[i,1]-min_n+1,(i+1)] #store exact power at N for which we pass desired power (for plot)
+      if(manova_n[i,2] < desired_power){manova_n[i,4] <- "Desired Power Not Reached"}
+      if(manova_n[i,2] >= desired_power){manova_n[i,4] <- "Desired Power Achieved"}
+  
     }
     
     p2 <- ggplot(data = plot_data_manova,
@@ -361,7 +387,7 @@ plot_power <- function(design_result,
       scale_x_continuous(limits = c(min_n, max_n)) +
       scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, 10)) +
       geom_line(y = desired_power, colour="red", alpha = 0.3, size = 1) + 
-      geom_label(data = annotate_df_manova, aes(x = n, y = power, label = n)) +
+      geom_label(data = annotate_df_manova, aes(x = n, y = power, label = label)) +
       theme_bw() +
       labs(x = "Sample size per condition", y = "Power") +
       facet_grid(variable ~ .)
@@ -371,9 +397,11 @@ plot_power <- function(design_result,
     plot_data_emm <- suppressMessages(melt(power_df_emm, id = c('n')))
     
     #create data frame for annotation for desired power for emmeans
-    annotate_df_emm <- as.data.frame(matrix(0, ncol = 3, nrow = length(levels(exact_result$emmeans$contrasts@grid$contrast)))) #three rows, for N, power, and variable label
-    colnames(annotate_df_emm) <- c("n", "power", "variable") # add columns names
+    annotate_df_emm <- as.data.frame(matrix(0, ncol = 4, nrow = length(levels(exact_result$emmeans$contrasts@grid$contrast)))) #three rows, for N, power, and variable label
+    colnames(annotate_df_emm) <- c("n", "power", "variable", "label") # add columns names
     annotate_df_emm$variable <- as.factor(levels(exact_result$emmeans$contrasts@grid$contrast)) #add variable label names
+    emm_n = annotate_df_emm
+    
     i<-1
     # Create a dataframe with columns for each effect and rows for the N and power for that N
     for (i in 1:length_power_emm) {
@@ -384,6 +412,14 @@ plot_power <- function(design_result,
       if(annotate_df_emm[i,2] < desired_power){annotate_df_emm[i,4] <- "Desired Power Not Reached"}
       if(annotate_df_emm[i,2] >= desired_power){annotate_df_emm[i,4] <- annotate_df_emm[i,1]}
       if(annotate_df_emm[i,2] < desired_power){annotate_df_emm[i,2] <- 5}
+      
+      emm_n[i,1] <- tryCatch(findInterval(desired_power, power_df_emm[,(1 + i)]), error=function(e){max_n-min_n}) + min_n 
+      if(emm_n[i,1] > max_n){emm_n[i,1] <- max_n} # catches cases that do not reach desired power. Then just plot max_n
+
+      emm_n[i,2] <- power_df_emm[emm_n[i,1]-min_n+1,(i+1)] #store exact power at N for which we pass desired power (for plot)
+      if(emm_n[i,2] < desired_power){emm_n[i,4] <- "Desired Power Not Reached"}
+      if(emm_n[i,2] >= desired_power){emm_n[i,4] <- "Desired Power Achieved"}
+
     }
     
     p3 <- ggplot(data = plot_data_emm,
@@ -392,7 +428,7 @@ plot_power <- function(design_result,
       scale_x_continuous(limits = c(min_n, max_n)) +
       scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, 10)) +
       geom_line(y = desired_power, colour="red", alpha = 0.3, size = 1) + 
-      geom_label(data = annotate_df_emm, aes(x = n, y = power, label = n)) +
+      geom_label(data = annotate_df_emm, aes(x = n, y = power, label = label)) +
       theme_bw() +
       labs(x = "Sample size per condition", y = "Power") +
       facet_grid(variable ~ .)
@@ -406,12 +442,15 @@ plot_power <- function(design_result,
     p2 = NULL
     power_df_manova = NULL
     effect_sizes_manova = NULL
+    manova_n = NULL
   }
   
   if (emm == FALSE) {
     p3 = NULL
     power_df_emm = NULL
     effect_sizes_emm = NULL
+    emm_n = NULL
+    
   }
   
   #Save effect sizes
@@ -425,7 +464,50 @@ plot_power <- function(design_result,
     effect_sizes_emm <- exact_result$emm_results %>%
       select(everything(),-non_centrality,-power)
   }
-  invisible(list(plot_ANOVA = p1,
+  
+  # Save desired power data frames
+  anova_n = anova_n %>%
+    mutate(achieved_power = power,
+           desired_power = desired_power) %>%
+    select(variable, label, n, achieved_power, desired_power)
+  
+  if (run_manova == TRUE){
+    manova_n = manova_n %>%
+      mutate(achieved_power = power,
+             desired_power = desired_power)  %>%
+      select(variable, label, n, achieved_power, desired_power)
+  }
+  
+  if (emm == TRUE){
+    emm_n = emm_n %>%
+      mutate(achieved_power = power,
+             desired_power = desired_power)  %>%
+      select(variable, label, n, achieved_power, desired_power)
+  }
+  
+  
+  if (verbose == TRUE) {
+    # The section below should be blocked out when in Shiny
+    cat("Achieved Power and Sample Size for ANOVA-level effects")
+    cat("\n")
+    print_anova_n = anova_n
+    print_anova_n$achieved_power = round(anova_n$achieved_power,2)
+    print(print_anova_n)
+    if (emm == TRUE) {
+      cat("\n")
+      cat("Achieved Power and Sample Size for estimated marginal means")
+      cat("\n")
+      print_emm <- emm_n %>%
+        mutate(achieved_power = round(achieved_power,2))
+      print(print_emm)
+    }
+  }
+  
+  
+  invisible(list(anova_n = anova_n,
+                 manova_n = manova_n,
+                 emm_n = emm_n,
+                 plot_ANOVA = p1,
                  plot_MANOVA = p2,
                  plot_emm = p3,
                  power_df = power_df,

@@ -7,6 +7,10 @@ Updated `r format(Sys.time(), "%a %b %d %Y")`
 
 # Superpower 0.0.5
 
+- Superpower_options("plot") is now set to TRUE. Plots will, by default, be printed
+  -Easily reset with Superpower_options(plot = FALSE)
+- plot_power has new features
+  -Plots now show 
 - Small update to plot_power to fix minor error in original code
   -Error resulted in power estimates being ~0.1-0.5% off actual power estimate
 
