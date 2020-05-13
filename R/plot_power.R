@@ -1,7 +1,7 @@
 #' Convenience function to plot power across a range of sample sizes.
 #' @param design_result Output from the ANOVA_design function
 #' @param alpha_level Alpha level used to determine statistical significance
-#' @param min_n Minimum sample size in power curve.
+#' @param min_n Minimum sample size in power curve. Cannot be less than or equal to the product of factors. E.g., if design = "2b*2b" then min_n must be at least 5 (2\*2+1=5)
 #' @param max_n Maximum sample size in power curve.
 #' @param desired_power Desired power (e.g., 80, 90). N per group will be highlighted to achieve this desired power in the plot. Defaults to 90.
 #' @param plot Should power plot be printed automatically (defaults to TRUE)
@@ -110,6 +110,9 @@ plot_power <- function(design_result,
   frml1 <- design_result$frml1
   frml2 <- design_result$frml2
   
+  if (missing(emm_comp)) {
+    emm_comp = as.character(frml2)[2]
+  }
   
   if (missing(alpha_level)) {
     alpha_level <- 0.05
@@ -120,8 +123,8 @@ plot_power <- function(design_result,
   }
   
   #Errors with very small sample size; issue with mvrnorm function from MASS package
-  if (design_result$n < prod(as.numeric(unlist(regmatches(design_result$design,
-                                                          gregexpr("[[:digit:]]+", design_result$design)))))
+  if (design_result$n < (prod(as.numeric(unlist(regmatches(design_result$design,
+                                                          gregexpr("[[:digit:]]+", design_result$design)))))+1)
   ) {
     stop("plot_power must have an ANOVA_design object with n > the product of the factors; please increase the n in ANOVA_design function.")
   }
@@ -133,11 +136,11 @@ plot_power <- function(design_result,
     stop("plot_power must have an ANOVA_design object with n > the product of the factors; please increase the n in ANOVA_design function.")
   }
   if (min_n < prod(as.numeric(unlist(regmatches(design_result$design,
-                                                          gregexpr("[[:digit:]]+", design_result$design)))))
+                                                          gregexpr("[[:digit:]]+", design_result$design)))))+1
   ) {
     prod_fact = prod(as.numeric(unlist(regmatches(design_result$design,
-                                                  gregexpr("[[:digit:]]+", design_result$design)))))
-    warning("min_n < the product of the factors; therefore min_n changed to ", prod_fact)
+                                                  gregexpr("[[:digit:]]+", design_result$design)))))+1
+    warning("min_n <= the product of the factors; therefore min_n changed to ", prod_fact)
     min_n = prod_fact
   }
   
@@ -149,22 +152,22 @@ plot_power <- function(design_result,
   
   
   #Do one ANOVA to get number of power columns
-  if (emm == FALSE) {
-    exact_result <- ANOVA_exact(design_result, alpha_level = alpha_level,
-                                verbose = FALSE)
-  } else {
+  #if (emm == FALSE) {
+  #  exact_result <- ANOVA_exact(design_result, alpha_level = alpha_level,
+  #                              verbose = FALSE)
+  #} else {
     #Call emmeans with specifcations given in the function
     #Limited to specs and model
-    if (missing(emm_comp)) {
-      emm_comp = as.character(frml2)[2]
-    }
+    #if (missing(emm_comp)) {
+    #  emm_comp = as.character(frml2)[2]
+    #}
     exact_result <- ANOVA_exact(design_result, alpha_level = alpha_level,
                                 emm = TRUE,
                                 contrast_type = contrast_type,
                                 emm_model = emm_model,
                                 emm_comp = emm_comp,
                                 verbose = FALSE)
-  }
+  #}
   
   length_power <- length(exact_result$main_results$power)
   
@@ -208,27 +211,30 @@ plot_power <- function(design_result,
                                   labelnames = labelnames,
                                   plot = FALSE)
     
-    if (emm == FALSE) {
+   
       exact_result <- ANOVA_exact(design_result, alpha_level = alpha_level,
-                                  verbose = FALSE)
+                                  emm = TRUE,
+                                  contrast_type = contrast_type,
+                                  emm_model = emm_model,
+                                  emm_comp = emm_comp,
+                                  verbose = FALSE) #old ANOVA_exact(design_result, alpha_level = alpha_level,verbose = FALSE)
       power_df[i, 2:(1 + length_power)] <- exact_result$main_results$power
       
       if (run_manova == TRUE) {
         power_df_manova[i, 2:(1 + length_power_manova)] <- exact_result$manova_results$power
       }
       
-    } else {
+     if (emm == TRUE) {
       #Call emmeans with specifcations given in the function
       #Limited to specs and model
-      if (missing(emm_comp)) {
-        emm_comp = as.character(frml2)[2]
-      }
-      exact_result <- ANOVA_exact(design_result, alpha_level = alpha_level,
-                                  emm = TRUE,
-                                  contrast_type = contrast_type,
-                                  emm_model = emm_model,
-                                  emm_comp = emm_comp,
-                                  verbose = FALSE)
+      #Don't need to run ANOVA_exact twice
+
+      #exact_result <- ANOVA_exact(design_result, alpha_level = alpha_level,
+      #                            emm = TRUE,
+      #                            contrast_type = contrast_type,
+      #                            emm_model = emm_model,
+      #                            emm_comp = emm_comp,
+      #                            verbose = FALSE)
       power_df_emm[i, 2:(1 + length_power_emm)] <- exact_result$emm_results$power
     }
   }

@@ -29,18 +29,46 @@ test_that("test multi functions", {
                          sd = 1,
                          plot = FALSE)
   
-  p <- hush(plot_power(design, emm = TRUE, min_n = 8, max_n = 100))
+  p <- hush(plot_power(design, emm = TRUE, min_n = 9, max_n = 100, plot=FALSE))
   
   p_ex1 = ANOVA_exact(design, emm = TRUE, verbose = FALSE)
   
   res70 = p$power_df_emm[p$power_df_emm$n == 70, ]
   res70 = as.numeric(res70[,-1])
   expect_setequal(round(res70,1), round(p_ex1$emm_results$power,1))
-  expect_equal(p$power_df_manova[1,3],41.9,tolerance = .01)
-  expect_equal(p$power_df_manova[1,2],41.9,tolerance = .01)
-  expect_equal(p$power_df_manova[1,4],5,tolerance = .01)
-  expect_equal(p$power_df_manova[1,5],5,tolerance = .01)
-  expect_equal(p$power_df_manova[93,3],99.9,tolerance = .01)
+  
+  design9 <- ANOVA_design(design = "2b*4w",
+                         n = 9,
+                         mu = c(0,0,0,0,0.5,0.5,0.5,0.5),
+                         sd = 1,
+                         plot = FALSE)
+  
+  design100 <- ANOVA_design(design = "2b*4w",
+                         n = 100,
+                         mu = c(0,0,0,0,0.5,0.5,0.5,0.5),
+                         sd = 1,
+                         plot = FALSE)
+  
+  ex9 = ANOVA_exact(design9, emm = TRUE, verbose = FALSE)
+  
+  ex100 = ANOVA_exact(design100, emm = TRUE, verbose = FALSE)
+  
+  res9 = p$power_df_manova[p$power_df_manova$n == 9, ]
+  res9 = as.numeric(res9[,-1])
+  
+  expect_setequal(round(res9,1), round(ex9$manova_results$power,1))
+  
+  res100 = p$power_df_manova[p$power_df_manova$n == 100, ]
+  res100 = as.numeric(res100[,-1])
+  
+  expect_setequal(round(res100,1), round(ex100$manova_results$power,1))
+  
+  # Old tests
+  #expect_equal(p$power_df_manova[1,3],41.9,tolerance = .01)
+  #expect_equal(p$power_df_manova[1,2],41.9,tolerance = .01)
+  #expect_equal(p$power_df_manova[1,4],5,tolerance = .01)
+  #expect_equal(p$power_df_manova[1,5],5,tolerance = .01)
+  #expect_equal(p$power_df_manova[93,3],99.9,tolerance = .01)
 })
 
 
@@ -58,8 +86,8 @@ test_that("test 2b", {
   res7 = p$power_df_emm[p$power_df_emm$n == 7, ]
   res7 = as.numeric(res7[,-1])
   expect_setequal(round(res7,1), round(p_ex1$emm_results$power,1))
-  expect_equal(p$power_df[1,2], 13.8,tolerance = .05)
-  expect_equal(p$power_df[94,2],96,tolerance = .01)
+  expect_equal(p$power_df[1,2], 13.85,tolerance = .001)
+  expect_equal(p$power_df[94,2],94.04,tolerance = .001)
   
 })
 

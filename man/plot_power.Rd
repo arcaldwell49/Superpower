@@ -23,7 +23,7 @@ plot_power(
 
 \item{alpha_level}{Alpha level used to determine statistical significance}
 
-\item{min_n}{Minimum sample size in power curve.}
+\item{min_n}{Minimum sample size in power curve. Cannot be less than or equal to the product of factors. E.g., if design = "2b*2b" then min_n must be at least 5 (2\*2+1=5)}
 
 \item{max_n}{Maximum sample size in power curve.}
 
