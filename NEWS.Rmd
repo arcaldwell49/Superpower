@@ -10,7 +10,8 @@ Updated `r format(Sys.time(), "%a %b %d %Y")`
 - Superpower_options("plot") is now set to TRUE. Plots will, by default, be printed
   -Easily reset with Superpower_options(plot = FALSE)
 - plot_power has new features
-  -Plots now show 
+  -Plots now show desired power
+  -min_n is now limited; smallest min_n allowed is equal to the product of the design (e.g., '2b*2b' has a smallest min_n of 4)
 - Small update to plot_power to fix minor error in original code
   -Error resulted in power estimates being ~0.1-0.5% off actual power estimate
 
