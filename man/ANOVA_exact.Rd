@@ -2,9 +2,21 @@
 % Please edit documentation in R/ANOVA_exact.R
 \name{ANOVA_exact}
 \alias{ANOVA_exact}
-\title{Simulates an exact dataset (mu, sd, and r represent empirical not population mean and covariance matrix) from the design to calculate power}
+\alias{ANOVA_exact2}
+\title{Simulates an exact dataset (mu, sd, and r represent empirical, not population, mean and covariance matrix) from the design to calculate power}
 \usage{
 ANOVA_exact(
+  design_result,
+  correction = Superpower_options("correction"),
+  alpha_level = Superpower_options("alpha_level"),
+  verbose = Superpower_options("verbose"),
+  emm = Superpower_options("emm"),
+  emm_model = Superpower_options("emm_model"),
+  contrast_type = Superpower_options("contrast_type"),
+  emm_comp
+)
+
+ANOVA_exact2(
   design_result,
   correction = Superpower_options("correction"),
   alpha_level = Superpower_options("alpha_level"),
@@ -49,8 +61,13 @@ Returns dataframe with simulation data (power and effect sizes!), anova results 
 }
 }
 \description{
-Simulates an exact dataset (mu, sd, and r represent empirical not population mean and covariance matrix) from the design to calculate power
+Simulates an exact dataset (mu, sd, and r represent empirical, not population, mean and covariance matrix) from the design to calculate power
 }
+\section{Functions}{
+\itemize{
+\item \code{ANOVA_exact2}: An extension of ANOVA_exact that uses the effect sizes calculated from very large sample size empirical simulation. This allows for small sample sizes, where ANOVA_exact cannot, while still accurately estimating power. However, model objects (emmeans and aov) are not included as output, and pairwise (t-test) results are not currently supported.
+}}
+
 \section{Warnings}{
 
 Varying the sd or r (e.g., entering multiple values) violates assumptions of homoscedascity and sphericity respectively
