@@ -739,6 +739,8 @@ ANOVA_exact2 <- function(design_result,
   invisible(list(main_results = main_results,
                  emm_results = pairs_result_df,
                  manova_results = manova_results,
+                 anova_table = anova_table,
+                 emmeans_table = emm_result,
                  alpha_level = alpha_level,
                  plot = meansplot2))
 }
