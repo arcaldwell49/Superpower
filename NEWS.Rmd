@@ -5,6 +5,12 @@ output: github_document
 
 Updated `r format(Sys.time(), "%a %b %d %Y")`
 
+# Superpower 0.1.0
+- Added ANOVA_exact2 function as an extension of ANOVA_exact
+  -Now functional across all sample sizes but does not return a dataframe of afex aov object
+- Optimal alpha functions from JustifieR package added
+- ANOVA_compromise function added which allows a compromise power analysis to be performed for all comparisons in a design
+
 # Superpower 0.0.5
 
 - Superpower_options("plot") is now set to TRUE. Plots will, by default, be printed

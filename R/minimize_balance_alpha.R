@@ -19,6 +19,7 @@
 #' @section References:
 #' too be added
 #' @importFrom stats optimize
+#' @importFrom ggplot2 ggplot geom_line geom_point theme_minimal scale_x_continuous scale_y_continuous
 #' @export
 #'
 optimal_alpha <- function(power_function, 

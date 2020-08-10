@@ -41,6 +41,7 @@
 #' @importFrom afex aov_car
 #' @importFrom graphics pairs
 #' @importFrom dplyr mutate
+#' @import Hmisc 
 #' @import emmeans
 #' @import ggplot2
 
@@ -668,6 +669,11 @@ ANOVA_exact2 <- function(design_result,
   main_results$power <- main_results$power
   #MANOVA
   if (run_manova == TRUE) {
+    manova_table <- data.frame(pillai_trace = manova_result$test_stat,
+                               num_Df = manova_result$num_Df,
+                               den_Df = manova_result$den_Df,
+                               approx_F = manova_result$approx_F,
+                               p.value = manova_result$p.value)
     manova_results <- data.frame(manova_result$power,
                                  manova_result$test_stat,
                                  sqrt(manova_result$f2),
@@ -733,6 +739,7 @@ ANOVA_exact2 <- function(design_result,
   
   if (run_manova == FALSE) {
     manova_results = NULL
+    manova_table = NULL
   }
   
   # Return results in list()
@@ -740,6 +747,7 @@ ANOVA_exact2 <- function(design_result,
                  emm_results = pairs_result_df,
                  manova_results = manova_results,
                  anova_table = anova_table,
+                 manova_table = manova_table,
                  emmeans_table = emm_result,
                  alpha_level = alpha_level,
                  plot = meansplot2))

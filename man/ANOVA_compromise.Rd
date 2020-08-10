@@ -13,9 +13,7 @@ ANOVA_compromise(
   emm_comp,
   costT1T2 = 1,
   priorH1H0 = 1,
-  error = "minimal",
-  verbose = Superpower_options("verbose"),
-  plot = Superpower_options("plot")
+  error = "minimal"
 )
 }
 \arguments{
@@ -33,13 +31,24 @@ ANOVA_compromise(
 
 \item{costT1T2}{Relative cost of Type 1 errors vs. Type 2 errors.}
 
-\item{priorH1H0}{How much more likely a-priori is H1 than H0?}
+\item{priorH1H0}{How much more likely a-priori is H1 than H0? Default is 1: equally likely.}
 
 \item{error}{Either "minimal" to minimize error rates, or "balance" to balance error rates.}
 
-\item{verbose}{Print each iteration of the optimization function if TRUE. Defaults to FALSE.}
+\item{verbose}{Set to FALSE to not print results (default = TRUE)}
 }
 \value{
+Returns dataframe with simulation data (power and effect sizes!), optimal alpha level, obtained beta error rate (1-power/100), and objective (see below for details). If NA is obtained in a alpha/beta/objective columns this indicates there is no effect for this particular comparison. Also returns alpha-beta compromise plots for all comparisons. Note: Cohen's f = sqrt(pes/1-pes) and the noncentrality parameter is = f^2*df(error)
+
+\describe{
+  \item{\code{"aov_comp"}}{A dataframe of ANOVA-level results.}
+  \item{\code{"aov_plotlist"}}{List of plots for ANOVA-level effects}
+  \item{\code{"manova_comp"}}{A dataframe of MANOVA-level results.}
+  \item{\code{"manova_plotlist"}}{List of plots for MANOVA-level effects.}
+  \item{\code{"emmeans_comp"}}{A dataframe of ANOVA-level results.}
+  \item{\code{"emm_plotlist"}}{List of plots for estimated marginal means contrasts.}
+
+}
 alpha = alpha or Type 1 error that minimizes or balances combined error rates
 beta = beta or Type 2 error that minimizes or balances combined error rates
 objective = value that is the result of the minimization, either 0 (for balance) or the combined weighted error rates
@@ -53,5 +62,12 @@ too be added
 }
 
 \examples{
-## To be added
+\dontrun{
+design_result <- ANOVA_design(design = "3b*2w",
+n = 6,
+mu = c(1, 2, 2, 3, 3, 4),
+sd = 3,
+plot = FALSE)
+example = ANOVA_compromise(design_result,emm = TRUE,emm_comp = "a")
+}
 }

@@ -39,7 +39,8 @@ Imports:
     stats,
     dplyr,
     magrittr,
-    tidyselect
+    tidyselect,
+    Hmisc
 Suggests: 
     knitr,
     rmarkdown,
