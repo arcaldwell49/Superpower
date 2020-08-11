@@ -34,8 +34,6 @@ ANOVA_compromise(
 \item{priorH1H0}{How much more likely a-priori is H1 than H0? Default is 1: equally likely.}
 
 \item{error}{Either "minimal" to minimize error rates, or "balance" to balance error rates.}
-
-\item{verbose}{Set to FALSE to not print results (default = TRUE)}
 }
 \value{
 Returns dataframe with simulation data (power and effect sizes!), optimal alpha level, obtained beta error rate (1-power/100), and objective (see below for details). If NA is obtained in a alpha/beta/objective columns this indicates there is no effect for this particular comparison. Also returns alpha-beta compromise plots for all comparisons. Note: Cohen's f = sqrt(pes/1-pes) and the noncentrality parameter is = f^2*df(error)

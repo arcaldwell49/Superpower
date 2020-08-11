@@ -2,8 +2,8 @@
 #' @param power_function Function that outputs the power, calculated with an analytic function.
 #' @param costT1T2 Relative cost of Type 1 errors vs. Type 2 errors.
 #' @param priorH1H0 How much more likely a-priori is H1 than H0?
-#' @param error Either "minimal" to minimize error rates, or "balance" to balance error rates.
-#' @param verbose Print each iteration of the optimization function if TRUE. Defaults to FALSE.
+#' @param error Either "minimal" to minimize error rates, or "balance" to balance error rate
+#' @param plot When set to TRUE, automatically outputs a plot of alpha (x-axis) and beta (y-axis) error rates
 #' @return
 #' alpha = alpha or Type 1 error that minimizes or balances combined error rates
 #' beta = beta or Type 2 error that minimizes or balances combined error rates
@@ -84,7 +84,7 @@ optimal_alpha <- function(power_function,
     scale_x_continuous("alpha", seq(0,1,0.1)) +
     scale_y_continuous("weighted combined error rate", seq(0,1,0.1), limits = c(0,1))
 
-  if(plot == TRUE){
+  if (plot == TRUE) {
     print(w_c_alpha_plot)
   }
 

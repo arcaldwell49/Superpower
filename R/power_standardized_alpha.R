@@ -4,8 +4,8 @@
 #' @param power_function Function that outputs the power, calculated with an analytic function.
 #' @param alpha The unstandardized alpha level (e.g., 0.05), independent of the sample size.
 #' @param power The desired power, i.e., the outcome of the power calculation you would like to achieve.
-#' @param standardize_N The sample size you want to use to standardize the alpha level for. Defaults to 100 (base on Good, 1982).
-#' @param verbose Print each iteration of the optimization function if TRUE. Defaults to FALSE.
+#' @param standardize_N The sample size you want to use to standardize the alpha level for. Defaults to 100 (based on Good, 1982).
+#' @param verbose Set to FALSE to not print results (default = TRUE)
 #' @return
 #' mean_mat = matrix of the means
 #'
@@ -15,19 +15,36 @@
 #' alternative = 'two.sided')$power", power = 0.9, alpha = 0.05)
 #' res$N
 #' @section References:
-#' too be added
+#' Good, I. J. (1982). C140. Standardized tail-area probabilities. Journal of Statistical Computation and Simulation, 16(1), 65–66. <https://doi.org/10.1080/00949658208810607>
 #' @importFrom stats optimize
 #' @export
 #'
 
-power_standardized_alpha <- function(power_function, alpha = 0.05, power = 0.8, standardize_N = 100, verbose = FALSE) {
+power_standardized_alpha <- function(power_function, 
+                                     alpha = 0.05, 
+                                     power = 0.8, 
+                                     standardize_N = 100,
+                                     verbose = Superpower_options("verbose")) {
+  
+  #Define the function to be minimized
+  f = function(x, power_function, power, standardize_N) {
+    #Calculate standardized alpha based on current N (x), the unstandardized alpha, and standardizer N
+    a_stan <- alpha/sqrt(x/standardize_N)
+    #Calculate power
+    y <- eval(parse(text=paste(power_function)))
+    if(verbose == TRUE){
+      print(x, y, max(y - power, power - y))
+    }
+    max(y - power, power - y)
+  }
 
   #Run optimize to find the minimum
   res <- optimize(f,
                   c(3, 1000),
                   tol = 0.001,
                   power_function = power_function,
-                  power = power)
+                  power = power,
+                  standardize_N = standardize_N)
   a_stan <- alpha/sqrt(ceiling(res$minimum)/standardize_N)
   #Store results
   invisible(list(N = ceiling(res$minimum),
@@ -36,14 +53,4 @@ power_standardized_alpha <- function(power_function, alpha = 0.05, power = 0.8, 
   ))
 }
 
-#Define the function to be minimized
-f = function(x, power_function, power) {
-  #Calculate standardized alpha based on current N (x), the unstandardized alpha, and standardizer N
-  a_stan <- alpha/sqrt(x/standardize_N)
-  #Calculate power
-  y <- eval(parse(text=paste(power_function)))
-  if(verbose == TRUE){
-    print(x, y, max(y - power, power - y))
-  }
-  max(y - power, power - y)
-}
+

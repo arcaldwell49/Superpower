@@ -19,9 +19,9 @@ optimal_alpha(
 
 \item{priorH1H0}{How much more likely a-priori is H1 than H0?}
 
-\item{error}{Either "minimal" to minimize error rates, or "balance" to balance error rates.}
+\item{error}{Either "minimal" to minimize error rates, or "balance" to balance error rate}
 
-\item{verbose}{Print each iteration of the optimization function if TRUE. Defaults to FALSE.}
+\item{plot}{When set to TRUE, automatically outputs a plot of alpha (x-axis) and beta (y-axis) error rates}
 }
 \value{
 alpha = alpha or Type 1 error that minimizes or balances combined error rates

@@ -9,7 +9,7 @@ power_standardized_alpha(
   alpha = 0.05,
   power = 0.8,
   standardize_N = 100,
-  verbose = FALSE
+  verbose = Superpower_options("verbose")
 )
 }
 \arguments{
@@ -19,9 +19,9 @@ power_standardized_alpha(
 
 \item{power}{The desired power, i.e., the outcome of the power calculation you would like to achieve.}
 
-\item{standardize_N}{The sample size you want to use to standardize the alpha level for. Defaults to 100 (base on Good, 1982).}
+\item{standardize_N}{The sample size you want to use to standardize the alpha level for. Defaults to 100 (based on Good, 1982).}
 
-\item{verbose}{Print each iteration of the optimization function if TRUE. Defaults to FALSE.}
+\item{verbose}{Set to FALSE to not print results (default = TRUE)}
 }
 \value{
 mean_mat = matrix of the means
@@ -31,7 +31,7 @@ Because the standardized alpha depends on the sample size (N), and the power dep
 }
 \section{References}{
 
-too be added
+Good, I. J. (1982). C140. Standardized tail-area probabilities. Journal of Statistical Computation and Simulation, 16(1), 65–66. <https://doi.org/10.1080/00949658208810607>
 }
 
 \examples{

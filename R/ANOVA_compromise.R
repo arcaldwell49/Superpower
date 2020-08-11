@@ -1,7 +1,6 @@
 #' Justify your alpha level by minimizing or balancing Type 1 and Type 2 error rates for ANOVAs.
 #' @param design_result Output from the ANOVA_design function
 #' @param correction Set a correction of violations of sphericity. This can be set to "none", "GG" Greenhouse-Geisser, and "HF" Huynh-Feldt
-#' @param verbose Set to FALSE to not print results (default = TRUE)
 #' @param emm Set to FALSE to not perform analysis of estimated marginal means
 #' @param emm_model Set model type ("multivariate", or "univariate") for estimated marginal means
 #' @param contrast_type Select the type of comparison for the estimated marginal means. Default is pairwise. See ?emmeans::`contrast-methods` for more details on acceptable methods.

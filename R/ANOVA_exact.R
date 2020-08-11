@@ -302,6 +302,7 @@ ANOVA_exact <- function(design_result,
   rownames(main_results) <- rownames(anova_table)
   colnames(main_results) <- c("power", "partial_eta_squared", "cohen_f", "non_centrality")
   main_results$power <- main_results$power
+
   #MANOVA
   if (run_manova == TRUE) {
   manova_results <- data.frame(manova_result$power,
@@ -667,11 +668,18 @@ ANOVA_exact2 <- function(design_result,
   rownames(main_results) <- rownames(anova_table)
   colnames(main_results) <- c("power", "partial_eta_squared", "cohen_f", "non_centrality")
   main_results$power <- main_results$power
+  anova_table <- data.frame(effect = rownames(anova_table),
+                            num_df = anova_table$num_Df,
+                            den_df = anova_table$den_Df,
+                            MSE = anova_table$MSE,
+                            F.ratio = anova_table$`F`,
+                            p.value = anova_table$p)
   #MANOVA
   if (run_manova == TRUE) {
-    manova_table <- data.frame(pillai_trace = manova_result$test_stat,
-                               num_Df = manova_result$num_Df,
-                               den_Df = manova_result$den_Df,
+    manova_table <- data.frame(effect = rownames(manova_result),
+                               pillai_trace = manova_result$test_stat,
+                               num_df = manova_result$num_Df,
+                               den_df = manova_result$den_Df,
                                approx_F = manova_result$approx_F,
                                p.value = manova_result$p.value)
     manova_results <- data.frame(manova_result$power,
