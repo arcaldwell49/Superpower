@@ -53,7 +53,7 @@ plot = FALSE)
 x1 = ANOVA_exact2(design_result, verbose = FALSE)
 ex = power.ftest(num_df = x1$anova_table$num_df, 
 den_df = x1$anova_table$den_df, 
-cohen_f = x1$anova_table$cohen_f,
+cohen_f = x1$main_result$cohen_f,
 alpha_level = 0.05,
 liberal_lambda = FALSE)
 }

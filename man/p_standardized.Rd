@@ -18,7 +18,7 @@ Compute standardized alpha level based on unstandardized alpha level and the num
 }
 \section{References}{
 
-too be added
+Good, I. J. (1982). C140. Standardized tail-area probabilities. Journal of Statistical Computation and Simulation, 16(1), 65–66. <https://doi.org/10.1080/00949658208810607>
 }
 
 \examples{

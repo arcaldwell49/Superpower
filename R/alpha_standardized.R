@@ -12,7 +12,7 @@
 #' ## You can change the standardization N, repeating the example above:
 #' alpha_standardized(alpha = 0.05, N = 100, standardize_N = 200)
 #' @section References:
-#' too be added
+#' Good, I. J. (1982). C140. Standardized tail-area probabilities. Journal of Statistical Computation and Simulation, 16(1), 65–66. <https://doi.org/10.1080/00949658208810607>
 #' @export
 #'
 alpha_standardized <- function(alpha, N, standardize_N = 100){

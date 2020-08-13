@@ -8,6 +8,7 @@
 #' @param costT1T2 Relative cost of Type 1 errors vs. Type 2 errors.
 #' @param priorH1H0 How much more likely a-priori is H1 than H0? Default is 1: equally likely.
 #' @param error Either "minimal" to minimize error rates, or "balance" to balance error rates.
+#' @param liberal_lambda Logical indictor of whether to use the liberal (cohen_f^2\*(num_df+den_df)) or conservative (cohen_f^2\*den_df) calculation of the noncentrality (lambda) parameter estimate. Default is FALSE.
 #' @return Returns dataframe with simulation data (power and effect sizes!), optimal alpha level, obtained beta error rate (1-power/100), and objective (see below for details). If NA is obtained in a alpha/beta/objective columns this indicates there is no effect for this particular comparison. Also returns alpha-beta compromise plots for all comparisons. Note: Cohen's f = sqrt(pes/1-pes) and the noncentrality parameter is = f^2*df(error)
 #' 
 #' \describe{
@@ -49,7 +50,9 @@ ANOVA_compromise <- function(design_result,
                              emm_comp,
                              costT1T2 = 1, 
                              priorH1H0 = 1, 
-                             error = "minimal"){
+                             error = "minimal",
+                             liberal_lambda = Superpower_options("liberal_lambda")){
+ 
 
     if (missing(emm_comp)) {
       emm_comp = as.character(design_result$frml2)[2]
@@ -57,40 +60,56 @@ ANOVA_compromise <- function(design_result,
 
   
   x1 = ANOVA_exact2(design_result,
-                           correction = correction,
-                           emm = emm,
-                           emm_model = emm_model,
-                           emm_comp = emm_comp)
+                    correction = correction,
+                    emm = emm,
+                    emm_model = emm_model,
+                    emm_comp = emm_comp,
+                    verbose = FALSE)
+  
   
   aov_comp = data.frame(effect = rownames(x1$main_results),
                         cohen_f = x1$main_results$cohen_f,
-                        num_Df = x1$anova_table$num_Df,
-                        den_Df = x1$anova_table$den_Df,
+                        num_df = x1$anova_table$num_df,
+                        den_df = x1$anova_table$den_df,
                         alpha = NA,
                         beta = NA,
                         objective = NA)
+
+  if(any(is.na(aov_comp$cohen_f)) ||
+     any(is.na(aov_comp$num_df)) ||
+     any(is.na(aov_comp$den_df)) ||
+     any(is.na(aov_comp$effect))) {
+    stop("Missing aov_comp")
+  }
   
   #Calculate noncentrality
   aov_comp$f2 = aov_comp$cohen_f^2
-  aov_comp$lambda <- aov_comp$f2*aov_comp$den_Df
+  aov_comp$lambda <- aov_comp$f2*aov_comp$den_df
   
   aov_plotlist = list()
   
   for (i in 1:nrow(x1$main_results)) {
     if(x1$main_results[i,]$partial_eta_squared >  1e-11){
-      run_func = "(1 - pf(
-  qf((1 - x),
-     aov_comp$num_Df[subline],
-     aov_comp$den_Df[subline]),
-  aov_comp$num_Df[subline],
-  aov_comp$den_Df[subline],
-  aov_comp$lambda[subline]
-))"
-      run_func2 = gsub("subline",i,run_func)
-      alpha_res = Superpower::optimal_alpha(power_function=run_func2,
-                                            costT1T2 = costT1T2, 
-                                            priorH1H0 = priorH1H0, 
-                                            error = error)
+      run_func = "power.ftest(num_df = x_num_df,den_df = x_den_df,cohen_f = x_cohen_f,alpha_level = x,liberal_lambda = x_lamb)$power/100"
+      run_func2 = gsub("x_num_df",
+                       aov_comp$num_df[i],
+                       run_func)
+      run_func2 = gsub("x_den_df",
+                       aov_comp$den_df[i],
+                       run_func2)
+      run_func2 = gsub("x_cohen_f",
+                       aov_comp$cohen_f[i],
+                       run_func2)
+      run_func2 = gsub("x_lamb",
+                       liberal_lambda,
+                       run_func2)
+
+
+      alpha_res = optimal_alpha(power_function = run_func2,
+                                costT1T2 = costT1T2,
+                                priorH1H0 = priorH1H0,
+                                error = error,
+                                plot = FALSE)
       aov_comp[i,]$alpha = alpha_res$alpha
       aov_comp[i,]$beta = alpha_res$beta
       aov_comp[i,]$objective = alpha_res$objective
@@ -103,32 +122,39 @@ ANOVA_compromise <- function(design_result,
   if (!is.null(x1$manova_results)) {
     manova_comp = data.frame(effect = rownames(x1$manova_results),
                              cohen_f = x1$manova_results$cohen_f,
-                             num_Df = x1$manova_table$num_Df,
-                             den_Df = x1$manova_table$den_Df,
+                             num_df = x1$manova_table$num_df,
+                             den_df = x1$manova_table$den_df,
                              alpha = NA,
                              beta = NA,
                              objective = NA)
     
     manova_comp$f2 = manova_comp$cohen_f^2
-    manova_comp$lambda <- manova_comp$f2*manova_comp$den_Df
+    manova_comp$lambda <- manova_comp$f2*manova_comp$den_df
     manova_plotlist = list()
     
-    for (i in 1:nrow(x1$manova_results)) {
+    for (i in 1:nrow(manova_comp)) {
+      
       if (x1$manova_table[i,]$p.value <  1) {
-        run_func = "(1 - pf(
-  qf((1 - x),
-     manova_comp$num_Df[subline],
-     manova_comp$den_Df[subline]),
-  manova_comp$num_Df[subline],
-  manova_comp$den_Df[subline],
-  manova_comp$lambda[subline]
-))"
-        run_func2 = gsub("subline",i,run_func)
+        
+        run_func = "power.ftest(num_df = x_num_df,den_df = x_den_df,cohen_f = x_cohen_f,alpha_level = x,liberal_lambda=x_lamb)$power/100"
+        run_func2 = gsub("x_num_df",
+                         manova_comp$num_df[i],
+                         run_func)
+        run_func2 = gsub("x_den_df",
+                         manova_comp$den_df[i],
+                         run_func2)
+        run_func2 = gsub("x_cohen_f",
+                         manova_comp$cohen_f[i],
+                         run_func2)
+        run_func2 = gsub("x_lamb",
+                         liberal_lambda,
+                         run_func2)
         alpha_res = optimal_alpha(
           power_function = run_func2,
           costT1T2 = costT1T2,
           priorH1H0 = priorH1H0,
-          error = error
+          error = error,
+          plot = FALSE
         )
         manova_comp[i,]$alpha = alpha_res$alpha
         manova_comp[i,]$beta = alpha_res$beta
@@ -140,8 +166,8 @@ ANOVA_compromise <- function(design_result,
     }
     manova_comp = data.frame(effect = manova_comp$effect,
                              cohen_f = manova_comp$cohen_f,
-                             num_Df = manova_comp$num_Df,
-                             den_Df = manova_comp$den_Df,
+                             num_df = manova_comp$num_df,
+                             den_df = manova_comp$den_df,
                              alpha = manova_comp$alpha,
                              beta = manova_comp$beta,
                              objective = manova_comp$objective)
@@ -154,32 +180,37 @@ ANOVA_compromise <- function(design_result,
   if (!is.null(x1$emm_results)) {
     emmeans_comp = data.frame(effect = x1$emm_results$contrast,
                           cohen_f = x1$emm_results$cohen_f,
-                          num_Df = 1,
-                          den_Df = x1$emmeans_table$df,
+                          num_df = 1,
+                          den_df = x1$emmeans_table$df,
                           alpha = NA,
                           beta = NA,
                           objective = NA)
     
     emmeans_comp$f2 = emmeans_comp$cohen_f^2
-    emmeans_comp$lambda <- emmeans_comp$f2*emmeans_comp$den_Df
+    emmeans_comp$lambda <- emmeans_comp$f2*emmeans_comp$den_df
     emm_plotlist = list()
     
     for (i in 1:nrow(x1$emm_results)) {
       if (x1$emmeans_table[i,]$p.value <  1) {
-        run_func = "(1 - pf(
-  qf((1 - x),
-     emmeans_comp$num_Df[subline],
-     emmeans_comp$den_Df[subline]),
-  emmeans_comp$num_Df[subline],
-  emmeans_comp$den_Df[subline],
-  emmeans_comp$lambda[subline]
-))"
-        run_func2 = gsub("subline",i,run_func)
+        run_func = "power.ftest(num_df = x_num_df,den_df = x_den_df,cohen_f = x_cohen_f,alpha_level = x,liberal_lambda=x_lamb)$power/100"
+        run_func2 = gsub("x_num_df",
+                         emmeans_comp$num_df[i],
+                         run_func)
+        run_func2 = gsub("x_den_df",
+                         emmeans_comp$den_df[i],
+                         run_func2)
+        run_func2 = gsub("x_cohen_f",
+                         emmeans_comp$cohen_f[i],
+                         run_func2)
+        run_func2 = gsub("x_lamb",
+                         liberal_lambda,
+                         run_func2)
         alpha_res = optimal_alpha(
           power_function = run_func2,
           costT1T2 = costT1T2,
           priorH1H0 = priorH1H0,
-          error = error
+          error = error,
+          plot = FALSE
         )
         emmeans_comp[i,]$alpha = alpha_res$alpha
         emmeans_comp[i,]$beta = alpha_res$beta
@@ -191,8 +222,8 @@ ANOVA_compromise <- function(design_result,
     }
     emmeans_comp = data.frame(effect = emmeans_comp$effect,
                              cohen_f = emmeans_comp$cohen_f,
-                             num_Df = emmeans_comp$num_Df,
-                             den_Df = emmeans_comp$den_Df,
+                             num_df = emmeans_comp$num_df,
+                             den_df = emmeans_comp$den_df,
                              alpha = emmeans_comp$alpha,
                              beta = emmeans_comp$beta,
                              objective = emmeans_comp$objective)
