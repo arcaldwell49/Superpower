@@ -82,10 +82,6 @@ ANOVA_compromise <- function(design_result,
     stop("Missing aov_comp")
   }
   
-  #Calculate noncentrality
-  aov_comp$f2 = aov_comp$cohen_f^2
-  aov_comp$lambda <- aov_comp$f2*aov_comp$den_df
-  
   aov_plotlist = list()
   
   for (i in 1:nrow(x1$main_results)) {
@@ -128,8 +124,7 @@ ANOVA_compromise <- function(design_result,
                              beta = NA,
                              objective = NA)
     
-    manova_comp$f2 = manova_comp$cohen_f^2
-    manova_comp$lambda <- manova_comp$f2*manova_comp$den_df
+
     manova_plotlist = list()
     
     for (i in 1:nrow(manova_comp)) {
@@ -185,9 +180,8 @@ ANOVA_compromise <- function(design_result,
                           alpha = NA,
                           beta = NA,
                           objective = NA)
+
     
-    emmeans_comp$f2 = emmeans_comp$cohen_f^2
-    emmeans_comp$lambda <- emmeans_comp$f2*emmeans_comp$den_df
     emm_plotlist = list()
     
     for (i in 1:nrow(x1$emm_results)) {

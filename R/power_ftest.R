@@ -33,7 +33,7 @@
 #' @section References:
 #' Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Hillsdale,NJ: Lawrence Erlbaum.
 #' Aberson, C. (2019). Applied Power Analysis for the Behaviorial Sciences (2nd ed.). New York,NY: Routledge.
-#' @importFrom stats uniroot
+#' @importFrom stats uniroot optimize
 #' @export
 #'
 
@@ -71,63 +71,62 @@ power.ftest <- function(num_df = NULL, den_df = NULL,
   } 
     
   if (liberal_lambda == TRUE) {
+  
   p.body <- quote({
-    lambda <- cohen_f^2 * (num_df + den_df + 1)
-    (1 - pf(
-      qf((1 - alpha_level),
-         num_df,
-         den_df),
-      num_df,
-      den_df,
-      lambda
-    ))
+    pf(qf(alpha_level, num_df, den_df, lower.tail =  FALSE), num_df, den_df, cohen_f^2 * (num_df+den_df+1), 
+       lower.tail = FALSE)
   })
   } else {
+    
     p.body <- quote({
-      lambda <- cohen_f^2 * (den_df)
-      (1 - pf(
-        qf((1 - alpha_level),
-           num_df,
-           den_df),
-        num_df,
-        den_df,
-        lambda
-      ))
+      pf(qf(alpha_level, num_df, den_df, lower.tail =  FALSE), num_df, den_df, cohen_f^2 * (den_df), 
+         lower.tail = FALSE)
     })
   }
   
-  if(!is.null(beta_level)){
-    power = 1-beta_level
-  }
+  if (!is.null(beta_level)){
+    pow = 1 - beta_level
+  } 
   
-  if (is.null(beta_level)) {
-    power <- eval(p.body)
-  }
+  if (is.null(beta_level)){
+    pow <- eval(p.body)
+  } else if (is.null(num_df)) {
+    p.body2 = p.body[2]
+    p.body2 = gsub("alpha_level",
+                   alpha_level,
+                   p.body2)
+    p.body2 = gsub("den_df",
+                   den_df,
+                   p.body2)
+    p.body2 = gsub("cohen_f",
+                   cohen_f,
+                   p.body2)
     
-  else if (is.null(num_df)) {
-    
-    num_df <- uniroot(function(num_df) eval(p.body) - power, c(1 + 
-                                                       1e-10, 100))$root
+    num_df = optimize(f = function(num_df) {
+      abs(eval(parse(text=paste(p.body2)))-pow)
+    }, c(0,1000))$min
+
+    #num_df <- uniroot(function(num_df) eval(p.body) - pow, c(1, 100))$root
   }
   else if (is.null(den_df)) {
   
-    den_df <- uniroot(function(den_df) eval(p.body) - power, c(1 + 
+    den_df <- uniroot(function(den_df) eval(p.body) - pow, c(1 + 
                                                        1e-10, 1e+09))$root
   }
   else if (is.null(cohen_f)) {
-    cohen_f <- uniroot(function(cohen_f) eval(p.body) - power, c(1e-07, 
+    cohen_f <- uniroot(function(cohen_f) eval(p.body) - pow, c(1e-07, 
                                                        1e+07))$root
   }
   else if (is.null(alpha_level)) {
     alpha_level <- uniroot(function(alpha_level) eval(p.body) - 
-                           power, c(1e-10, 1 - 1e-10))$root
+                           pow, c(1e-10, 1 - 1e-10))$root
   }
   else {
     stop("internal error")
   }
   
-  power_final = power * 100
-  beta_level = 1 - power
+  power_final = pow * 100
+  beta_level = 1 - pow
   METHOD <- "Power Calculation for F-test"
   structure(list(num_df = num_df, 
                  den_df = den_df, 
@@ -135,6 +134,5 @@ power.ftest <- function(num_df = NULL, den_df = NULL,
                  alpha_level = alpha_level, 
                  beta_level = beta_level,
                  power = power_final, 
-                 lambda = lambda, 
                  method = METHOD), class = "power.htest")
 }
