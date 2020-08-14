@@ -10,6 +10,10 @@ Updated `r format(Sys.time(), "%a %b %d %Y")`
   -Now functional across all sample sizes but does not return a dataframe of afex aov object
 - Optimal alpha functions from JustifieR package added
 - ANOVA_compromise function added which allows a compromise power analysis to be performed for all comparisons in a design
+- ANOVA_design now returns as a class "design_aov" with specific print and plot methods see ?`design_aov-methods`
+  - generate_cor_matrix function is now a non-exported function within the package (no longer contained within ANOVA_design)
+- plot_power now has reduced sample size limtations
+  -Option to use ANOVA_exact2 improves functionality (not limited to product of factors)
 
 # Superpower 0.0.5
 

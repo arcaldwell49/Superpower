@@ -3,6 +3,8 @@
 S3method(emmeans_power,data.frame)
 S3method(emmeans_power,emmGrid)
 S3method(emmeans_power,summary_em)
+S3method(plot,design_aov)
+S3method(print,design_aov)
 export(ANOVA_compromise)
 export(ANOVA_design)
 export(ANOVA_exact)

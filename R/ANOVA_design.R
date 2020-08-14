@@ -354,7 +354,8 @@ ANOVA_design <- function(design, n, mu, sd, r = 0,
   }
   
   # Return results in list()
-  invisible(list(dataframe = dataframe,
+  ## Now S3 method
+  structure(list(dataframe = dataframe,
                  design = design,
                  design_list = design_list,
                  factors = factors,
@@ -370,5 +371,6 @@ ANOVA_design <- function(design, n, mu, sd, r = 0,
                  labelnames = labelnames,
                  labelnameslist = labelnameslist,
                  factornames = factornames,
-                 meansplot = meansplot2))
+                 meansplot = meansplot2),
+            class = "design_aov")
 }

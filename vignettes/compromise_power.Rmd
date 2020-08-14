@@ -4,7 +4,7 @@ author: "Daniel Lakens"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Introduction to justifieR}
+  %\VignetteIndexEntry{Introduction to Justifying Alpha Levels}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

@@ -18,8 +18,25 @@ test_that("error messages", {
   
   expect_error(plot_power(), "argument \"design_result\" is missing, with no default")
   expect_error(plot_power(design),
-               "plot_power must have an ANOVA_design object with n > the product of the factors; please increase the n in ANOVA_design function.",
+               "plot_power must have an ANOVA_design object with n > the product of the factors; please set exact2 argument to TRUE",
                fixed = TRUE)
+  
+
+  expect_error(plot_power(design,
+                           emm = TRUE,
+                           emm_model = "NOT"))
+  
+  expect_error(plot_power(design,
+                           emm = TRUE,
+                           contrast_type = "NOT"))
+  
+  expect_error(plot_power(design,
+                           emm = TRUE,
+                           correction = "none1"))
+  
+  expect_error(plot_power(design,
+                           emm = TRUE,
+                           alpha_level = 1.05))
 })
 
 test_that("test multi functions", {
@@ -30,6 +47,15 @@ test_that("test multi functions", {
                          plot = FALSE)
   
   p <- hush(plot_power(design, emm = TRUE, min_n = 9, max_n = 100, plot=FALSE))
+  # Test exact2 function
+  p_exact2 <- hush(plot_power(
+    design,
+    emm = TRUE,
+    min_n = 9,
+    max_n = 100,
+    plot = FALSE,
+    exact2 = TRUE
+  ))
   
   p_ex1 = ANOVA_exact(design, emm = TRUE, verbose = FALSE)
   
@@ -69,6 +95,50 @@ test_that("test multi functions", {
   #expect_equal(p$power_df_manova[1,4],5,tolerance = .01)
   #expect_equal(p$power_df_manova[1,5],5,tolerance = .01)
   #expect_equal(p$power_df_manova[93,3],99.9,tolerance = .01)
+})
+
+test_that("test multi functions: exact2", {
+  design <- ANOVA_design(design = "2b*4w",
+                         n = 70,
+                         mu = c(0,0,0,0,0.5,0.5,0.5,0.5),
+                         sd = 1,
+                         plot = FALSE)
+  
+  p <- hush(plot_power(design, emm = TRUE, min_n = 9, max_n = 100, plot=FALSE, exact2 = TRUE))
+  # Test exact2 function
+  
+  p_ex1 = ANOVA_exact2(design, emm = TRUE, verbose = FALSE)
+  
+  res70 = p$power_df_emm[p$power_df_emm$n == 70, ]
+  res70 = as.numeric(res70[,-1])
+  expect_setequal(round(res70,1), round(p_ex1$emm_results$power,1))
+  
+  design9 <- ANOVA_design(design = "2b*4w",
+                          n = 9,
+                          mu = c(0,0,0,0,0.5,0.5,0.5,0.5),
+                          sd = 1,
+                          plot = FALSE)
+  
+  design100 <- ANOVA_design(design = "2b*4w",
+                            n = 100,
+                            mu = c(0,0,0,0,0.5,0.5,0.5,0.5),
+                            sd = 1,
+                            plot = FALSE)
+  
+  ex9 = ANOVA_exact2(design9, emm = TRUE, verbose = FALSE)
+  
+  ex100 = ANOVA_exact2(design100, emm = TRUE, verbose = FALSE)
+  
+  res9 = p$power_df_manova[p$power_df_manova$n == 9, ]
+  res9 = as.numeric(res9[,-1])
+  
+  expect_setequal(round(res9,1), round(ex9$manova_results$power,1))
+  
+  res100 = p$power_df_manova[p$power_df_manova$n == 100, ]
+  res100 = as.numeric(res100[,-1])
+  
+  expect_setequal(round(res100,1), round(ex100$manova_results$power,1))
+
 })
 
 

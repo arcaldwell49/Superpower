@@ -15,6 +15,45 @@ test_that("error messages", {
                fixed = TRUE)
   
   expect_error(ANOVA_exact2())
+  
+  design <- ANOVA_design(design = "2b*4w",
+                         n = 75,
+                         mu = c(0,0,0,0,0.5,0.5,0.5,0.5),
+                         sd = 1,
+                         plot = FALSE)
+  
+  
+  expect_error(ANOVA_exact2(design,
+                            emm = TRUE,
+                            emm_model = "NOT"))
+  
+  expect_error(ANOVA_exact2(design,
+                            emm = TRUE,
+                            contrast_type = "NOT"))
+  
+  expect_error(ANOVA_exact2(design,
+                            emm = TRUE,
+                            correction = "none1"))
+  
+  expect_error(ANOVA_exact2(design,
+                            emm = TRUE,
+                            alpha_level = 1.05))
+  
+  expect_error(ANOVA_exact(design,
+                            emm = TRUE,
+                            emm_model = "NOT"))
+  
+  expect_error(ANOVA_exact(design,
+                            emm = TRUE,
+                            contrast_type = "NOT"))
+  
+  expect_error(ANOVA_exact(design,
+                            emm = TRUE,
+                            correction = "none1"))
+  
+  expect_error(ANOVA_exact(design,
+                            emm = TRUE,
+                            alpha_level = 1.05))
 
 
 })
@@ -430,4 +469,52 @@ expect_equal(power_result1$emm_results$power,
 expect_equal(power_result1$emm_results$partial_eta_squared, 
              power_result2$emm_results$partial_eta_squared)
 
+})
+
+test_that("check lambda and verbose",{
+  hush=function(code){
+    sink("NUL") # use /dev/null in UNIX
+    tmp = code
+    sink()
+    return(tmp)
+  }
+  des <- ANOVA_design(
+    "2b*4w",
+    n = 50,
+    sd = c(2),
+    r = c(.45),
+    mu = c(-.25, 0.0, 0.10, 0.15,-.25, -.25, -.25, -.25),
+    plot = FALSE
+  )
+  
+  res = hush(ANOVA_exact(design_result = des,
+                    emm = TRUE,
+                    verbose = TRUE,
+                    liberal_lambda = TRUE))
+  
+  res = hush(ANOVA_exact2(design_result = des,
+                    emm = TRUE,
+                    verbose = TRUE,
+                    liberal_lambda = TRUE))
+  
+  des <- ANOVA_design(
+    "2b*4w*3b",
+    n = 50,
+    sd = c(2),
+    r = c(.45),
+    mu = c(1:24),
+    plot = FALSE
+  )
+  
+  res = hush(ANOVA_exact(design_result = des,
+                    emm = TRUE,
+                    verbose = TRUE,
+                    liberal_lambda = TRUE))
+  
+  res = hush(ANOVA_exact2(design_result = des,
+                     emm = TRUE,
+                     verbose = TRUE,
+                     liberal_lambda = TRUE))
+  
+  
 })
