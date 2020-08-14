@@ -79,7 +79,7 @@ test_that("Test power.ftest", {
                                 plot = FALSE)
   
   x1 = ANOVA_exact2(design_result, verbose = FALSE)
-  beta_test = 1-x1$main_results$power/100
+  beta_test = 1 - x1$main_results$power/100
   
   #beta
   ex = power.ftest(num_df = x1$anova_table$num_df, 

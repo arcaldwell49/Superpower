@@ -93,7 +93,9 @@ emmeans_power.summary_em <- function(x, ...) {
 #' @rdname emmeans_power
 #' @export
 
-emmeans_power.data.frame <- function(x, alpha_level = Superpower_options("alpha_level"), ...) {
+emmeans_power.data.frame <- function(x, 
+                                     alpha_level = Superpower_options("alpha_level"),
+                                     liberal_lambda = Superpower_options("liberal_lambda"), ...) {
   if (is.null(x$t.ratio) & is.null(x$F.ratio)) stop("emmGrid object 'x' does not contain test statistic (t or F). Please set `infer = TRUE` in emmeans.")
   
   # Need for exact; not necessary for power function
@@ -112,7 +114,11 @@ emmeans_power.data.frame <- function(x, alpha_level = Superpower_options("alpha_
   x$f2 <- x$pes/(1 - x$pes)
   
   # Calculate noncentrality parameter
-  x$lambda <- x$f2*x$df2
+  x$lambda <- if (liberal_lambda == FALSE) {
+    x$f2 * x$df2
+  } else {
+    x$f2 * (x$df2 + x$df1 + 1)
+  }
   x$Ft <- qf((1 - alpha_level), x$df1, x$df2)
   
   # Calculate power

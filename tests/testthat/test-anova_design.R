@@ -11,6 +11,10 @@ test_that("errors", {
                "argument \"sd\" is missing, with no default")
   expect_error(ANOVA_design("2w*2b", mu = c(0, 0, 0, 0), sd = 1),
                "argument \"n\" is missing, with no default")
+  
+  expect_error(ANOVA_design("100b", mu = c(1:100),
+                            sd =1,
+                            n = 150))
 
   # passing bad arguments: *SHOULD BE AN ERROR*
   expect_error(ANOVA_design("2w*2b", n = 100, mu = c(0, 0, 0, 0), sd = -1),
@@ -415,4 +419,19 @@ test_that("2b*2b*2w", {
 
   expect_equal(d$design, "2b*2b*2w")
 
+})
+
+# Add final for complete coverage
+
+test_that("Other 3 way designs",{
+  # Needed to cover lines after factors == 3
+  d <- ANOVA_design("2b*2w*2w", n = 100, mu = 1:8, sd = 2, r = .65, plot = FALSE)
+  d <- ANOVA_design("2w*2b*2w", n = 100, mu = 1:8, sd = 2, r = .65, plot = FALSE)
+  d <- ANOVA_design("2w*2w*2b", n = 100, mu = 1:8, sd = 2, r = .65, plot = FALSE)
+  d <- ANOVA_design("2b*2b*2w", n = 100, mu = 1:8, sd = 2, r = .65, plot = FALSE)
+  d <- ANOVA_design("2b*2b*2b", n = 100, mu = 1:8, sd = 2, r = .65, plot = FALSE)
+  d <- ANOVA_design("2w*2b*2b", n = 100, mu = 1:8, sd = 2, r = .65, plot = FALSE)
+  d <- ANOVA_design("2w*2w*2b", n = 100, mu = 1:8, sd = 2, r = .65, plot = FALSE)
+  
+  d <- ANOVA_design("2w*9b", n = 100, mu = 1:18, sd = 2, r = .65, plot = FALSE)
 })

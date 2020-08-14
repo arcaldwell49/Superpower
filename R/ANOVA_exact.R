@@ -7,6 +7,7 @@
 #' @param emm_model Set model type ("multivariate", or "univariate") for estimated marginal means
 #' @param contrast_type Select the type of comparison for the estimated marginal means. Default is pairwise. See ?emmeans::`contrast-methods` for more details on acceptable methods.
 #' @param emm_comp Set the comparisons for estimated marginal means comparisons. This is a factor name (a), combination of factor names (a+b), or for simple effects a | sign is needed (a|b)
+#' @param liberal_lambda Logical indictor of whether to use the liberal (cohen_f^2\*(num_df+den_df)) or conservative (cohen_f^2\*den_df) calculation of the noncentrality (lambda) parameter estimate. Default is FALSE.
 #' @return Returns dataframe with simulation data (power and effect sizes!), anova results and simple effect results, plot of exact data, and alpha_level. Note: Cohen's f = sqrt(pes/1-pes) and the noncentrality parameter is = f^2*df(error)
 #' 
 #' \describe{
@@ -53,6 +54,7 @@ ANOVA_exact <- function(design_result,
                         emm = Superpower_options("emm"),
                         emm_model = Superpower_options("emm_model"),
                         contrast_type = Superpower_options("contrast_type"),
+                        liberal_lambda = Superpower_options("liberal_lambda"),
                         emm_comp) {
   
   #Need this to avoid "undefined" global error from occuring
@@ -223,12 +225,23 @@ ANOVA_exact <- function(design_result,
   #Calculate cohen's f
   anova_table$f2 <- anova_table$pes/(1 - anova_table$pes)
   #Calculate noncentrality
-  anova_table$lambda <- anova_table$f2*anova_table$den_Df
-
+  anova_table$lambda <- if (liberal_lambda == FALSE) {
+    (anova_table$f2 * anova_table$den_Df)
+  } else{
+    (anova_table$f2 * (anova_table$den_Df + anova_table$num_Df + 1))
+  }
+  
   #minusalpha<- 1-alpha_level
   anova_table$Ft <- qf((1 - alpha_level), anova_table$num_Df, anova_table$den_Df)
   #Calculate power
-  anova_table$power <- (1 - pf(anova_table$Ft, anova_table$num_Df, anova_table$den_Df, anova_table$lambda))*100
+  #anova_table$power <- (1 - pf(anova_table$Ft, anova_table$num_Df, anova_table$den_Df, anova_table$lambda))*100
+  anova_table$power <- power.ftest(
+    num_df = anova_table$num_Df,
+    den_df = anova_table$den_Df,
+    cohen_f = sqrt(anova_table$f2),
+    alpha_level = alpha_level,
+    liberal_lambda = liberal_lambda
+  )$power
 
   #MANOVA exact results
 
@@ -239,19 +252,31 @@ ANOVA_exact <- function(design_result,
 
 
   manova_result$f2 <- manova_result$test_stat / (1 - manova_result$test_stat)
-  manova_result$lambda <-   manova_result$f2 *   manova_result$den_Df
+  manova_result$lambda <-   if (liberal_lambda == FALSE) {
+    manova_result$f2 * manova_result$den_Df
+  } else{
+    manova_result$f2 * (manova_result$den_Df + manova_result$num_Df + 1)
+  }
   manova_result$Ft <- qf((1 - alpha_level), manova_result$num_Df,   manova_result$den_Df)
-  manova_result$power <- (1 - pf(manova_result$Ft,
-                                             manova_result$num_Df,
-                                             manova_result$den_Df,
-                                             manova_result$lambda)) * 100
+  #manova_result$power <- (1 - pf(manova_result$Ft,
+  #                                           manova_result$num_Df,
+  #                                           manova_result$den_Df,
+  #                                           manova_result$lambda)) * 100
+  manova_result$power <- power.ftest(
+    num_df = manova_result$num_Df,
+    den_df = manova_result$den_Df,
+    cohen_f = sqrt(manova_result$f2),
+    alpha_level = alpha_level,
+    liberal_lambda = liberal_lambda
+  )$power
+  
 
   }
   
-  if(emm == TRUE){
+  if (emm == TRUE) {
     #Call emmeans with specifcations given in the function
     #Limited to specs and model
-    if(missing(emm_comp)){
+    if (missing(emm_comp)) {
       emm_comp = as.character(frml2)[2]
     }
 
@@ -395,7 +420,8 @@ ANOVA_exact2 <- function(design_result,
                          emm = Superpower_options("emm"),
                          emm_model = Superpower_options("emm_model"),
                          contrast_type = Superpower_options("contrast_type"),
-                         emm_comp) {
+                         emm_comp,
+                         liberal_lambda = Superpower_options("liberal_lambda")) {
   
   #Need this to avoid "undefined" global error from occuring
   cohen_f <- partial_eta_squared <- non_centrality <- NULL
@@ -575,12 +601,22 @@ ANOVA_exact2 <- function(design_result,
   #Calculate cohen's f
   anova_table$f2 <- anova_table$pes/(1 - anova_table$pes)
   #Calculate noncentrality
-  anova_table$lambda <- anova_table$f2*anova_table$den_Df
+  anova_table$lambda <- if(liberal_lambda == FALSE) {
+    anova_table$f2 * anova_table$den_Df
+  } else {
+    anova_table$f2 * (anova_table$den_Df + anova_table$num_Df + 1)
+  }
   
   #minusalpha<- 1-alpha_level
   anova_table$Ft <- qf((1 - alpha_level), anova_table$num_Df, anova_table$den_Df)
   #Calculate power
-  anova_table$power <- (1 - pf(anova_table$Ft, anova_table$num_Df, anova_table$den_Df, anova_table$lambda))*100
+  anova_table$power <- power.ftest(
+    num_df = anova_table$num_Df,
+    den_df = anova_table$den_Df,
+    cohen_f = sqrt(anova_table$f2),
+    alpha_level = alpha_level,
+    liberal_lambda = liberal_lambda
+  )$power
   
   #MANOVA exact results
   
@@ -591,12 +627,19 @@ ANOVA_exact2 <- function(design_result,
     manova_result$num_Df = manova_result_df$num_Df
     
     manova_result$f2 <- manova_result$test_stat / (1 - manova_result$test_stat)
-    manova_result$lambda <-   manova_result$f2 *   manova_result$den_Df
+    manova_result$lambda <-   if (liberal_lambda == FALSE) {
+      manova_result$f2 * manova_result$den_Df
+    } else {
+      manova_result$f2 * (manova_result$den_Df + manova_result$num_Df + 1)
+    }
     manova_result$Ft <- qf((1 - alpha_level), manova_result$num_Df,   manova_result$den_Df)
-    manova_result$power <- (1 - pf(manova_result$Ft,
-                                   manova_result$num_Df,
-                                   manova_result$den_Df,
-                                   manova_result$lambda)) * 100
+    manova_result$power <- power.ftest(
+      num_df = manova_result$num_Df,
+      den_df = manova_result$den_Df,
+      cohen_f = sqrt(manova_result$f2),
+      alpha_level = alpha_level,
+      liberal_lambda = liberal_lambda
+    )$power
     
   }
   
@@ -616,7 +659,9 @@ ANOVA_exact2 <- function(design_result,
     #emm_result$df = as.data.frame(emm_result_DF$contrasts)$df
 
     #obtain pes
-    pairs_result_df1 <- emmeans_power(emm_result, alpha_level = alpha_level)
+    pairs_result_df1 <- emmeans_power(emm_result, 
+                                      alpha_level = alpha_level,
+                                      liberal_lambda = liberal_lambda)
 
     pairs_result_df1$df_actual =  as.data.frame(emm_result_DF$contrasts)$df
     pairs_result_df1$t_actual = sqrt((
@@ -628,7 +673,9 @@ ANOVA_exact2 <- function(design_result,
     emm_result$df = pairs_result_df1$df_actual
     
     emm_result$SE = emm_result$estimate/emm_result$t.ratio
-    pairs_result_df = emmeans_power(emm_result, alpha_level = alpha_level)
+    pairs_result_df = emmeans_power(emm_result, 
+                                    alpha_level = alpha_level,
+                                    liberal_lambda = liberal_lambda)
 
   } else{
     pairs_result_df = NULL

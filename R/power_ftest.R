@@ -44,10 +44,10 @@ power.ftest <- function(num_df = NULL, den_df = NULL,
                         liberal_lambda = Superpower_options("liberal_lambda")) 
 {
   
-  if (sum(sapply(list(num_df, den_df, cohen_f, beta_level, alpha_level), is.null)) != 
-      1) {
-    stop("exactly one of num_df, den_df, cohen_f, beta_level, and alpha_level must be NULL")
-  }
+  #if (sum(sapply(list(num_df, den_df, cohen_f, beta_level, alpha_level), is.null)) != 
+  #    1) {
+  #  stop("exactly one of num_df, den_df, cohen_f, beta_level, and alpha_level must be NULL")
+  #}
   if (!is.null(cohen_f)) {
     if (any(cohen_f < 0)) {
       stop("cohen_f must be positive")
@@ -122,7 +122,7 @@ power.ftest <- function(num_df = NULL, den_df = NULL,
                            pow, c(1e-10, 1 - 1e-10))$root
   }
   else {
-    stop("internal error")
+    stop("internal error: exactly one of num_df, den_df, cohen_f, beta_level, and alpha_level must be NULL")
   }
   
   power_final = pow * 100
