@@ -18,7 +18,24 @@ library(Superpower)
 
 We have recently, August 2020, added 5 new functions to `Superpower` to expand the package's capabilites. In this vignette, we will introduce these new functions and how they can help with study planning.
 
+These new functions include: `power.ftest`, `optimal_alpha`, `ANOVA_compromise`, `alpha_standardized`, and `p_standardized`
+
 The overall goal is to provide ways for researchers to justify their alpha level when designing studies, and provide greater flexibility. 
+
+# How are error rates minimized?
+
+Within the new `optimal_alpha` function, there are two options within the `error` argument: `minimal` or `balanced`.
+
+First, we have an equation for how a weighted combined error rate is calculated when `error = minimal`.
+`(costT1T2 * x + priorH1H0 * y)/(priorH1H0 + costT1T2)`
+
+$WCER =  \frac{\frac{cost_\alpha}{cost_\beta} \cdot \alpha  + \frac{Pr(H_1)}{Pr(H_0)}\cdot\beta}{\frac{Pr(H_1)}{Pr(H_0)}+\frac{cost_\alpha}{cost_\beta}}$
+
+Second, we have an equation for how a weighted combined error rate is calculated when `error = balanced`.
+`max((costT1T2 * x - priorH1H0 * y)/(priorH1H0 + costT1T2), (priorH1H0 * y - costT1T2 * x)/(priorH1H0 + costT1T2))`
+
+$WCER =  max(\frac{\frac{cost_\alpha}{cost_\beta} \cdot \alpha  - \frac{Pr(H_1)}{Pr(H_0)}\cdot\beta}{\frac{Pr(H_1)}{Pr(H_0)}+\frac{cost_\alpha}{cost_\beta}} | \frac{ \frac{Pr(H_1)}{Pr(H_0)}\cdot\beta - \frac{cost_\alpha}{cost_\beta} \cdot \alpha }{\frac{Pr(H_1)}{Pr(H_0)}+\frac{cost_\alpha}{cost_\beta}})$
+
 
 # Minimizing Error Rates
 
@@ -81,4 +98,89 @@ res4$beta
 ```
 
 If you think H1 is four times more likely to be true than H0, you need to worry less about Type 1 errors, and now the alpha that minimizes the weighted error rates is `r 100*round(res4$alpha,2)`%. It is always difficult to decide upon priors (unless you are Omniscient Jones) but even if you ignore them, you are making the decision that H1 and H0 are equally plausible. 
+
+
+# Extending to the Analysis of Variance
+
+Now that the basics of finding an optimal alpha are out of the way we can move on to how these methods can be used for an ANOVA, and *F*-tests in general. 
+
+This is accomplished by the replacing the `power.t.test` function with the `power.ftest` function. As you can see below it operates very similiar to the `power.t.test`; the main differences are that `power.ftest` requires arguments for the degrees of freedom rather than sample size. Further, rather than allow for input of the power as an arugment, `power_ftest` allows the user to input the beta_level.
+
+```
+power.ftest(
+  num_df = NULL,
+  den_df = NULL,
+  cohen_f = NULL,
+  alpha_level = Superpower_options("alpha_level"),
+  beta_level = NULL,
+  liberal_lambda = Superpower_options("liberal_lambda")
+)
+```
+
+The use of the function on its own is simple, but not very intuitive for power analysis on its own.
+
+For example, let us suppose we have known degrees of freedom of 1 and 128 respectively, and an effect size of interest of `cohen_f = .22`. Now we simple want to find what the power would be given an `alpha_level` of .07.
+
+```{r}
+power.ftest(
+  num_df = 1,
+  den_df = 128,
+  cohen_f = .22,
+  alpha_level = .045,
+  beta_level = NULL,
+  liberal_lambda = FALSE
+)
+```
+
+The process is simple for using power.ftest; now we can see where it is actually useful.
+
+
+## An Example with ANOVA_exact2
+
+Let us use an example from another vignette. Imagine you plan to perform a study in which participants interact with an artificial voice assistant that sounds either like a human or like a robot, and who sounds either cheerful or sad.
+In the example below, we can setup a 2*2 mixed design in `ANOVA_design` (first factor, voice, is manipulated between participants, the second factor, emotion, is manipulated within participants). 
+The sample size is fixed at 40 (meaning the researchers are unable to collect more than this amount) in each between subject condition (so 80 participants in total), the assumed population standard deviation is 1.03, the correlation for the within factors is 0.8, and the means are 1.03, 1.21, 0.98, 1.01. We will start by using the default `alpha_level`. The outcome of interest in this case is the interaction effect; this means we want this particular ANOVA-level effect to be detected if it were to exist (more so than other possible outcomes).
+
+```{r, fig.width=7, fig.height=4}
+design_result <- ANOVA_design(design = "2b*2w",
+                   n = 40, 
+                   mu = c(1.03, 1.41, 0.98, 1.01), 
+                   sd = 1.03, 
+                   r=0.8, 
+                   labelnames = c("voice", "human", "robot", "emotion", "cheerful", "sad"),
+                   plot = TRUE)
+```
+
+We can then pass this design onto to the `ANOVA_exact2` function to estimate the effect sizes for the this particular design.
+
+```{r}
+exact2_res = ANOVA_exact2(design_result, verbose = FALSE)
+
+knitr::kable(exact2_res$main_results)
+```
+
+As we can see here we can tell that we are tad underpowered to detect the effect of interest. Now, let us use `power.ftest` to find the alpha that will get us our desired beta (in this case let us assume .2).
+
+```{r}
+power.ftest(num_df = exact2_res$anova_table$num_df[3],
+            den_df = exact2_res$anova_table$den_df[3],
+            cohen_f = exact2_res$main_results$cohen_f[3],
+            alpha_level = NULL,
+            beta_level = .2)
+```
+
+So, we can see that the required alpha in this case is approximately .12. However, what would be the optimal alpha?
+
+Now, let us use this same approach in the `optimal_alpha` function.
+
+```{r}
+res5 = optimal_alpha("power.ftest(num_df = exact2_res$anova_table$num_df[3],
+            den_df = exact2_res$anova_table$den_df[3],
+            cohen_f = exact2_res$main_results$cohen_f[3],
+            alpha_level = x)$power/100",
+            error = "minimal")
+
+res5$alpha
+res5$beta
+```
 
