@@ -1,6 +1,6 @@
 ---
 title: "Introduction to Justifying Alpha Levels"
-author: "Daniel Lakens"
+author: "Daniel Lakens & Aaron R. Caldwell"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
@@ -49,8 +49,10 @@ If we design 2000 studies like this, the number of Type 1 and Type 2 errors we m
 
 The goal in Neyman-Pearson hypothesis testing is to control the number of errors we make, as we perform hypothesis tests. Researchers often rely on convention when setting error rates, and there is no special reason to set the Type 1 error rate at 5% and the Type 2 error rate at 20%, and there might be better choices when designing studies. For example, when collecting 64 participants per condition, it is also not optimally efficient to use these norms. 
 
-```{r}
-res <- optimal_alpha(power_function = "power.t.test(delta = .5, sd = 1, n=64, sig.level = x, type='two.sample', alternative='two.sided')$power")
+```{r fig.height=5, fig.width=6}
+res <- optimal_alpha(power_function = "power.t.test(delta = .5, sd = 1, n=64, 
+                     sig.level = x, type='two.sample', 
+                     alternative='two.sided')$power")
 
 res$alpha
 res$beta
@@ -62,8 +64,10 @@ If a researcher is interested in effects of d = 0.5, and plans to collect 64 par
 
 You can choose to minimize the combined error rates, but you can also decide that it makes most sense to balance the error rates. For example, you might think a Type 1 error is just as problematic as a Type 2 error, and therefore, you want to design a study that has balanced error rates for a smallest effect size of interest (e.g., a 5% Type 1 error rate and a 95% Type 2 error rate). The `optimal_alpha` function can either minimize errors, or balance them, by specifying an additional argument in the function. The default is to minimize error rates, but by adding `error = "balance"` an alpha level is calculated so that the Type 1 error rate equals the Type 2 error rate. 
 
-```{r}
-res2 <- optimal_alpha(power_function = "power.t.test(delta = .5, sd = 1, n=64, sig.level = x, type='two.sample', alternative='two.sided')$power", error = "balance")
+```{r fig.height=5, fig.width=6}
+res2 <- optimal_alpha(power_function = "power.t.test(delta = .5, sd = 1, n=64, 
+                      sig.level = x, type='two.sample', 
+                      alternative='two.sided')$power", error = "balance")
 
 res2$alpha
 res2$beta
@@ -78,8 +82,11 @@ So far we have assumed a Type 1 error and Type 2 error are equally problematic. 
 
 The function has another optional argument, `costT1T2`, that allows you to specify the relative cost of Type1:Type2 errors. By default this is set to 1, but you can set it to 4 (or any other value) such that Type 1 errors are 4 times as costly as Type 2 errors. This will change the weight of Type 1 errors compared to Type 2 errors, and thus also the choice of the best alpha level. 
 
-```{r}
-res3 <- optimal_alpha(power_function = "power.t.test(delta = .5, sd = 1, n=100, sig.level = x, type='two.sample', alternative='two.sided')$power", error = "minimal", costT1T2 = 4)
+```{r fig.height=5, fig.width=6}
+res3 <- optimal_alpha(power_function = "power.t.test(delta = .5, sd = 1, n=100, 
+                      sig.level = x, type='two.sample', 
+                      alternative='two.sided')$power",
+                      error = "minimal", costT1T2 = 4)
 
 res3$alpha
 res3$beta
@@ -90,8 +97,11 @@ Now, the alpha level that minimized the *weighted* Type 1 and Type 2 error rates
 
 Similarly, you can take into account prior probabilities that either the null is true (and you will observe a Type 1 error), or that the alternative hypothesis is true (and you will observe a Type 2 error). By incorporating these expectations, you can minimize or balance error rates in the long run (assuming your priors are correct). Priors can be specified using the `priorH1H0` argument, which by default is 1 (H1 and H0 are equally likely). Setting it to 4 means you think the alternative hypothesis (and hence, Type 2 errors) are 4 times more likely than that the null hypothesis is true (and hence, Type 1 errors). 
 
-```{r}
-res4 <- optimal_alpha(power_function = "power.t.test(delta = .5, sd = 1, n=100, sig.level = x, type='two.sample', alternative='two.sided')$power", error = "minimal", priorH1H0 = 2)
+```{r fig.height=5, fig.width=6}
+res4 <- optimal_alpha(power_function = "power.t.test(delta = .5, sd = 1, n=100, 
+                      sig.level = x, type='two.sample', 
+                      alternative='two.sided')$power", 
+                      error = "minimal", priorH1H0 = 2)
 
 res4$alpha
 res4$beta
@@ -141,13 +151,14 @@ Let us use an example from another vignette. Imagine you plan to perform a study
 In the example below, we can setup a 2*2 mixed design in `ANOVA_design` (first factor, voice, is manipulated between participants, the second factor, emotion, is manipulated within participants). 
 The sample size is fixed at 40 (meaning the researchers are unable to collect more than this amount) in each between subject condition (so 80 participants in total), the assumed population standard deviation is 1.03, the correlation for the within factors is 0.8, and the means are 1.03, 1.21, 0.98, 1.01. We will start by using the default `alpha_level`. The outcome of interest in this case is the interaction effect; this means we want this particular ANOVA-level effect to be detected if it were to exist (more so than other possible outcomes).
 
-```{r, fig.width=7, fig.height=4}
+```{r, fig.width=5, fig.height=4}
 design_result <- ANOVA_design(design = "2b*2w",
                    n = 40, 
                    mu = c(1.03, 1.41, 0.98, 1.01), 
                    sd = 1.03, 
-                   r=0.8, 
-                   labelnames = c("voice", "human", "robot", "emotion", "cheerful", "sad"),
+                   r = 0.8, 
+                   labelnames = c("voice", "human", "robot", 
+                                  "emotion", "cheerful", "sad"),
                    plot = TRUE)
 ```
 
@@ -173,7 +184,7 @@ So, we can see that the required alpha in this case is approximately .12. Howeve
 
 Now, let us use this same approach in the `optimal_alpha` function.
 
-```{r}
+```{r fig.height=5, fig.width=6}
 res5 = optimal_alpha("power.ftest(num_df = exact2_res$anova_table$num_df[3],
             den_df = exact2_res$anova_table$den_df[3],
             cohen_f = exact2_res$main_results$cohen_f[3],
@@ -182,5 +193,35 @@ res5 = optimal_alpha("power.ftest(num_df = exact2_res$anova_table$num_df[3],
 
 res5$alpha
 res5$beta
+```
+
+Interestingly the values for alpha and beta are fairly close to the calculations we made with `power.ftest` alone.
+
+## ANOVA_compromise
+
+Finally, we can extend everything we've done to a convenience function `ANOVA_compromise`. This way we can simply pass on the design from `ANOVA_design` and the optimal alpha can be determined for *every* comparison we select in a study.
+
+```{r ANOVA_compromise}
+comp_res = ANOVA_compromise(design_result,
+                            emm = TRUE)
+```
+
+You'll notice it takes a lot longer to run `ANOVA_compromise` than `ANOVA_exact` or `ANOVA_exact2`, but overall the options (such as `emm = TRUE`) are the same. Now, we can go through the results one-by-one.
+
+```{r}
+#ANOVA results
+knitr::kable(comp_res$aov_comp)
+
+#MANOVA results
+knitr::kable(comp_res$manova_comp)
+
+#emmeans results
+knitr::kable(comp_res$emmeans_comp)
+```
+
+In addition, we can extract the optimal alpha plots for any of the comparisons outlined above. These can be found in `aov_plotlist`, `manova_plotlist`, and `emmeans_plotlist`.
+
+```{r comp_plots, fig.height=5, fig.width=6}
+comp_res$aov_plotlist
 ```
 
