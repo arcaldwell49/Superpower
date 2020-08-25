@@ -1,7 +1,7 @@
 NEWS
 ================
 
-Updated Tue Aug 18 2020
+Updated Tue Aug 25 2020
 
 # Superpower 0.1.0
 
@@ -23,7 +23,11 @@ Updated Tue Aug 18 2020
   - plot\_power now has reduced sample size limtations -Option to use
     ANOVA\_exact2 (exact2 argument) improves functionality (not limited
     to product of factors)
-  - Updated vignettes to include new functions
+  - Updated vignettes to include updated information on functions
+      - New vignette “Introduction to Justifying Alpha Levels”
+  - New Shiny App: justify
+      - Creates a UI for utilizing the ANOVA\_compromise function via
+        Shiny
 
 # Superpower 0.0.5
 

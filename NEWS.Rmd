@@ -17,7 +17,10 @@ Updated `r format(Sys.time(), "%a %b %d %Y")`
   - generate_cor_matrix function is now a non-exported function within the package (no longer contained within ANOVA_design)
 - plot_power now has reduced sample size limtations
   -Option to use ANOVA_exact2 (exact2 argument) improves functionality (not limited to product of factors)
-- Updated vignettes to include new functions
+- Updated vignettes to include updated information on functions
+  - New vignette "Introduction to Justifying Alpha Levels"
+- New Shiny App: justify
+  - Creates a UI for utilizing the ANOVA_compromise function via Shiny
 
 # Superpower 0.0.5
 
