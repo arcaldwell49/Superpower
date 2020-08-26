@@ -1,7 +1,7 @@
 #' Convenience function to plot power across a range of sample sizes.
 #' @param design_result Output from the ANOVA_design function
 #' @param alpha_level Alpha level used to determine statistical significance
-#' @param min_n Minimum sample size in power curve.
+#' @param min_n Minimum sample size in power curve. Cannot be less than or equal to the product of factors. E.g., if design = "2b*2b" then min_n must be at least 5 (2\*2+1=5)
 #' @param max_n Maximum sample size in power curve.
 #' @param desired_power Desired power (e.g., 80, 90). N per group will be highlighted to achieve this desired power in the plot. Defaults to 90.
 #' @param plot Should power plot be printed automatically (defaults to TRUE)
@@ -110,6 +110,9 @@ plot_power <- function(design_result,
   frml1 <- design_result$frml1
   frml2 <- design_result$frml2
   
+  if (missing(emm_comp)) {
+    emm_comp = as.character(frml2)[2]
+  }
   
   if (missing(alpha_level)) {
     alpha_level <- 0.05
@@ -120,10 +123,25 @@ plot_power <- function(design_result,
   }
   
   #Errors with very small sample size; issue with mvrnorm function from MASS package
+  if (design_result$n < (prod(as.numeric(unlist(regmatches(design_result$design,
+                                                          gregexpr("[[:digit:]]+", design_result$design)))))+1)
+  ) {
+    stop("plot_power must have an ANOVA_design object with n > the product of the factors; please increase the n in ANOVA_design function.")
+  }
+  
+  #Errors with very small sample size; issue with mvrnorm function from MASS package
   if (design_result$n < prod(as.numeric(unlist(regmatches(design_result$design,
                                                           gregexpr("[[:digit:]]+", design_result$design)))))
   ) {
     stop("plot_power must have an ANOVA_design object with n > the product of the factors; please increase the n in ANOVA_design function.")
+  }
+  if (min_n < prod(as.numeric(unlist(regmatches(design_result$design,
+                                                          gregexpr("[[:digit:]]+", design_result$design)))))+1
+  ) {
+    prod_fact = prod(as.numeric(unlist(regmatches(design_result$design,
+                                                  gregexpr("[[:digit:]]+", design_result$design)))))+1
+    warning("min_n <= the product of the factors; therefore min_n changed to ", prod_fact)
+    min_n = prod_fact
   }
   
   #Check to ensure there is a within subject factor -- if none --> no MANOVA
@@ -134,22 +152,22 @@ plot_power <- function(design_result,
   
   
   #Do one ANOVA to get number of power columns
-  if (emm == FALSE) {
-    exact_result <- ANOVA_exact(design_result, alpha_level = alpha_level,
-                                verbose = FALSE)
-  } else {
+  #if (emm == FALSE) {
+  #  exact_result <- ANOVA_exact(design_result, alpha_level = alpha_level,
+  #                              verbose = FALSE)
+  #} else {
     #Call emmeans with specifcations given in the function
     #Limited to specs and model
-    if (missing(emm_comp)) {
-      emm_comp = as.character(frml2)[2]
-    }
+    #if (missing(emm_comp)) {
+    #  emm_comp = as.character(frml2)[2]
+    #}
     exact_result <- ANOVA_exact(design_result, alpha_level = alpha_level,
                                 emm = TRUE,
                                 contrast_type = contrast_type,
                                 emm_model = emm_model,
                                 emm_comp = emm_comp,
                                 verbose = FALSE)
-  }
+  #}
   
   length_power <- length(exact_result$main_results$power)
   
@@ -192,126 +210,33 @@ plot_power <- function(design_result,
                                   r = r,
                                   labelnames = labelnames,
                                   plot = FALSE)
-    dataframe <- design_result$dataframe
     
-    dataframe$y <- suppressMessages({
-      melt(as.data.frame(
-        mvrnorm(
-          n = design_result$n,
-          mu = design_result$mu,
-          Sigma = as.matrix(design_result$sigmatrix)
-        )
-      ))$value
-    })
-    
-    # We perform the ANOVA using AFEX
-    #Can be set to NICE to speed up, but required data grabbing from output the change.
-    aov_result <-
-      suppressMessages({
-        aov_car(
-          design_result$frml1,
-          #here we use frml1 to enter fromula 1 as designed above on the basis of the design
-          data = dataframe,
-          include_aov = FALSE,
-          #Need development code to get aov include function
-          anova_table = list(es = "pes",
-                             correction = "none")
-        )
-      }) #This reports PES not GES
-    
-    
-    #Add additional statistics
-    #Create dataframe from afex results
-    anova_table <- as.data.frame(aov_result$anova_table)
-    colnames(anova_table) <- c("num_Df", "den_Df", "MSE", "F", "pes", "p")
-    
-    anova_table$pes <- exact_result$main_results$partial_eta_squared
-    #Calculate cohen's f
-    anova_table$f2 <- anova_table$pes / (1 - anova_table$pes)
-    #Calculate noncentrality
-    anova_table$lambda <- anova_table$f2 * anova_table$den_Df
-    
-    #minusalpha<- 1-alpha_level
-    anova_table$Ft <-
-      qf((1 - alpha_level), anova_table$num_Df, anova_table$den_Df)
-    #Calculate power
-    anova_table$power <-
-      (1 - pf(
-        anova_table$Ft,
-        anova_table$num_Df,
-        anova_table$den_Df,
-        anova_table$lambda
-      )) * 100
-    
-    power_df[i, 2:(1 + length_power)] <- anova_table$power
-    
-    if (run_manova == TRUE) {
-      manova_result <- Anova_mlm_table(aov_result$Anova)
+   
+      exact_result <- ANOVA_exact(design_result, alpha_level = alpha_level,
+                                  emm = TRUE,
+                                  contrast_type = contrast_type,
+                                  emm_model = emm_model,
+                                  emm_comp = emm_comp,
+                                  verbose = FALSE) #old ANOVA_exact(design_result, alpha_level = alpha_level,verbose = FALSE)
+      power_df[i, 2:(1 + length_power)] <- exact_result$main_results$power
       
-      
-      
-      manova_result$f2 <- exact_result$manova_results$pillai_trace / (1 - exact_result$manova_results$pillai_trace)
-      manova_result$lambda <-   manova_result$f2 *   manova_result$den_Df
-      manova_result$Ft <- qf((1 - alpha_level), manova_result$num_Df,   manova_result$den_Df)
-      manova_result$power <- (1 - pf(manova_result$Ft,
-                                     manova_result$num_Df,
-                                     manova_result$den_Df,
-                                     manova_result$lambda)) * 100
-      
-      power_df_manova[i, 2:(1 + length_power_manova)] <- manova_result$power
-    }
-    
-    if (emm == TRUE) {
-      #Call emmeans with specifcations given in the function
-      #Limited to specs and model
-      if (missing(emm_comp) | is.null(emm_comp)) {
-        emm_comp = as.character(frml2)[2]
+      if (run_manova == TRUE) {
+        power_df_manova[i, 2:(1 + length_power_manova)] <- exact_result$manova_results$power
       }
       
-      specs_formula <- as.formula(paste(contrast_type," ~ ",emm_comp))
-      emm_result_loop <- suppressMessages({emmeans(aov_result, 
-                                                   specs = specs_formula,
-                                                   model = emm_model,
-                                                   adjust = "none")
-      })
-      #plot_emm = plot(emm_result, comparisons = TRUE)
-      #make comparison based on specs; adjust = "none" in exact; No solution for multcomp in exact simulation
-      pairs_result_loop <- emm_result_loop$contrasts
-      pairs_result_df_loop <- as.data.frame(pairs_result_loop)
-      #Need for exact; not necessary for power function
-      #Convert t-ratio to F-stat
-      pairs_result_df_loop$F.value <- (pairs_result_df_loop$t.ratio)^2
-      #Calculate pes -- The formula for partial eta-squared is equation 13 from Lakens (2013)
-      pairs_result_df_loop$pes <- exact_result$emm_results$partial_eta_squared 
-      #Calculate cohen's f
-      pairs_result_df_loop$f2 <- pairs_result_df_loop$pes/(1 - pairs_result_df_loop$pes)
-      #Calculate noncentrality
-      pairs_result_df_loop$lambda <- pairs_result_df_loop$f2*pairs_result_df_loop$df
-      #minusalpha<- 1-alpha_level
-      pairs_result_df_loop$Ft <- qf((1 - alpha_level), 1, pairs_result_df_loop$df)
-      #Calculate power
-      pairs_result_df_loop$power <- (1 - pf(pairs_result_df_loop$Ft, 
-                                            1, pairs_result_df_loop$df, 
-                                            pairs_result_df_loop$lambda))*100
-      
-      pairs_result_df_loop <- pairs_result_df_loop %>% mutate(partial_eta_squared = .data$pes,
-                                                              cohen_f = sqrt(.data$f2),
-                                                              non_centrality = .data$lambda) %>%
-        select(-.data$p.value,-.data$F.value,-.data$t.ratio,-.data$Ft,-.data$SE,
-               -.data$f2,-.data$lambda,-.data$pes, -.data$estimate, -.data$df) %>%
-        select(-.data$power, -.data$partial_eta_squared, -.data$cohen_f, -.data$non_centrality,
-               .data$power, .data$partial_eta_squared, .data$cohen_f, .data$non_centrality)
-      
-      power_df_emm[i, 2:(1 + length_power_emm)] <- pairs_result_df_loop$power
-    } else{
-      pairs_result_df_loop = NULL
-      #plot_emm = NULL
-      emm_result_loop = NULL
-      
-      power_df_emm = NULL
+     if (emm == TRUE) {
+      #Call emmeans with specifcations given in the function
+      #Limited to specs and model
+      #Don't need to run ANOVA_exact twice
+
+      #exact_result <- ANOVA_exact(design_result, alpha_level = alpha_level,
+      #                            emm = TRUE,
+      #                            contrast_type = contrast_type,
+      #                            emm_model = emm_model,
+      #                            emm_comp = emm_comp,
+      #                            verbose = FALSE)
+      power_df_emm[i, 2:(1 + length_power_emm)] <- exact_result$emm_results$power
     }
-    
-    
   }
   
   plot_data <- suppressMessages(melt(power_df, id = c('n')))

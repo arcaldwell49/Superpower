@@ -12,7 +12,7 @@ test_that("error messages", {
 
   expect_error(ANOVA_exact(), "argument \"design_result\" is missing, with no default")
   expect_error(ANOVA_exact(design, verbose = FALSE),
-               "ANOVA_exact cannot handle small sample sizes (n < the product of the factors) at this time; please pass this design_result to the ANOVA_power function to simulate power",
+               "ANOVA_exact cannot handle small sample sizes (n <= the product of the factors) at this time; please pass this design_result to the ANOVA_power function to simulate power",
                fixed = TRUE)
 
 })

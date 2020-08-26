@@ -98,7 +98,7 @@ ANOVA_exact <- function(design_result,
   if (design_result$n < prod(as.numeric(unlist(regmatches(design_result$design,
                                        gregexpr("[[:digit:]]+", design_result$design)))))
   ) {
-    stop("ANOVA_exact cannot handle small sample sizes (n < the product of the factors) at this time; please pass this design_result to the ANOVA_power function to simulate power")
+    stop("ANOVA_exact cannot handle small sample sizes (n <= the product of the factors) at this time; please pass this design_result to the ANOVA_power function to simulate power")
   }
 
 
