@@ -10,6 +10,8 @@
 #' @param contrast_type Select the type of comparison for the estimated marginal means
 #' @param emm_comp Set the comparisons for estimated marginal means comparisons. This is a factor name (a), combination of factor names (a+b), or for simple effects a | sign is needed (a|b)
 #' @param verbose Set to FALSE to not print results (default = TRUE)
+#' @param exact2 Logical indicator for which \code{ANOVA_exact} function (\code{ANOVA_exact} or \code{ANOVA_exact2}) to use in the plots. Default is FALSE which uses \code{ANOVA_exact} which has sample size limitations.
+#' @param liberal_lambda Logical indictor of whether to use the liberal (cohen_f^2\*(num_df+den_df)) or conservative (cohen_f^2\*den_df) calculation of the noncentrality (lambda) parameter estimate. Default is FALSE.
 #' @return Returns plot with power curves for the ANOVA, and a dataframe with the summary data.
 #' 
 
@@ -62,7 +64,9 @@ plot_power <- function(design_result,
                        emm_model = Superpower_options("emm_model"),
                        contrast_type = Superpower_options("contrast_type"),
                        emm_comp,
-                       verbose = Superpower_options("verbose")){
+                       verbose = Superpower_options("verbose"),
+                       exact2 = FALSE,
+                       liberal_lambda = Superpower_options("liberal_lambda")){
   
   #Need this to avoid "undefined" global error or no visible binding from occuring
   cohen_f <- partial_eta_squared <- non_centrality <- pairs_results_df <- value <- label <- variable <- achieved_power <- NULL
@@ -123,24 +127,19 @@ plot_power <- function(design_result,
   }
   
   #Errors with very small sample size; issue with mvrnorm function from MASS package
-  if (design_result$n < (prod(as.numeric(unlist(regmatches(design_result$design,
+  if (exact2 == FALSE && design_result$n < (prod(as.numeric(unlist(regmatches(design_result$design,
                                                           gregexpr("[[:digit:]]+", design_result$design)))))+1)
   ) {
-    stop("plot_power must have an ANOVA_design object with n > the product of the factors; please increase the n in ANOVA_design function.")
+    stop("plot_power must have an ANOVA_design object with n > the product of the factors; please set exact2 argument to TRUE")
   }
   
-  #Errors with very small sample size; issue with mvrnorm function from MASS package
-  if (design_result$n < prod(as.numeric(unlist(regmatches(design_result$design,
-                                                          gregexpr("[[:digit:]]+", design_result$design)))))
-  ) {
-    stop("plot_power must have an ANOVA_design object with n > the product of the factors; please increase the n in ANOVA_design function.")
-  }
-  if (min_n < prod(as.numeric(unlist(regmatches(design_result$design,
+
+  if (exact2 == FALSE && min_n < prod(as.numeric(unlist(regmatches(design_result$design,
                                                           gregexpr("[[:digit:]]+", design_result$design)))))+1
   ) {
     prod_fact = prod(as.numeric(unlist(regmatches(design_result$design,
                                                   gregexpr("[[:digit:]]+", design_result$design)))))+1
-    warning("min_n <= the product of the factors; therefore min_n changed to ", prod_fact)
+    warning("min_n <= the product of the factors; therefore min_n changed to ", prod_fact, "\n Set exact2 to TRUE to include this min_n")
     min_n = prod_fact
   }
   
@@ -161,12 +160,23 @@ plot_power <- function(design_result,
     #if (missing(emm_comp)) {
     #  emm_comp = as.character(frml2)[2]
     #}
-    exact_result <- ANOVA_exact(design_result, alpha_level = alpha_level,
+    exact_result <- if (exact2 == FALSE) {
+      ANOVA_exact(design_result, alpha_level = alpha_level,
                                 emm = TRUE,
                                 contrast_type = contrast_type,
                                 emm_model = emm_model,
                                 emm_comp = emm_comp,
-                                verbose = FALSE)
+                                verbose = FALSE,
+                  liberal_lambda = liberal_lambda)
+    } else if (exact2 == TRUE) {
+      ANOVA_exact2(design_result, alpha_level = alpha_level,
+                  emm = TRUE,
+                  contrast_type = contrast_type,
+                  emm_model = emm_model,
+                  emm_comp = emm_comp,
+                  verbose = FALSE,
+                  liberal_lambda = liberal_lambda)
+    }
   #}
   
   length_power <- length(exact_result$main_results$power)
@@ -212,12 +222,23 @@ plot_power <- function(design_result,
                                   plot = FALSE)
     
    
-      exact_result <- ANOVA_exact(design_result, alpha_level = alpha_level,
-                                  emm = TRUE,
-                                  contrast_type = contrast_type,
-                                  emm_model = emm_model,
-                                  emm_comp = emm_comp,
-                                  verbose = FALSE) #old ANOVA_exact(design_result, alpha_level = alpha_level,verbose = FALSE)
+      exact_result <- if (exact2 == FALSE) {
+        ANOVA_exact(design_result, alpha_level = alpha_level,
+                    emm = TRUE,
+                    contrast_type = contrast_type,
+                    emm_model = emm_model,
+                    emm_comp = emm_comp,
+                    verbose = FALSE,
+                    liberal_lambda = liberal_lambda)
+      } else if (exact2 == TRUE) {
+        ANOVA_exact2(design_result, alpha_level = alpha_level,
+                     emm = TRUE,
+                     contrast_type = contrast_type,
+                     emm_model = emm_model,
+                     emm_comp = emm_comp,
+                     verbose = FALSE,
+                     liberal_lambda = liberal_lambda)
+      }
       power_df[i, 2:(1 + length_power)] <- exact_result$main_results$power
       
       if (run_manova == TRUE) {
@@ -229,12 +250,6 @@ plot_power <- function(design_result,
       #Limited to specs and model
       #Don't need to run ANOVA_exact twice
 
-      #exact_result <- ANOVA_exact(design_result, alpha_level = alpha_level,
-      #                            emm = TRUE,
-      #                            contrast_type = contrast_type,
-      #                            emm_model = emm_model,
-      #                            emm_comp = emm_comp,
-      #                            verbose = FALSE)
       power_df_emm[i, 2:(1 + length_power_emm)] <- exact_result$emm_results$power
     }
   }
@@ -322,9 +337,9 @@ plot_power <- function(design_result,
     plot_data_emm <- suppressMessages(melt(power_df_emm, id = c('n')))
     
     #create data frame for annotation for desired power for emmeans
-    annotate_df_emm <- as.data.frame(matrix(0, ncol = 4, nrow = length(levels(exact_result$emmeans$contrasts@grid$contrast)))) #three rows, for N, power, and variable label
+    annotate_df_emm <- as.data.frame(matrix(0, ncol = 4, nrow = length(levels(exact_result$emm_results$contrast)))) #three rows, for N, power, and variable label
     colnames(annotate_df_emm) <- c("n", "power", "variable", "label") # add columns names
-    annotate_df_emm$variable <- as.factor(levels(exact_result$emmeans$contrasts@grid$contrast)) #add variable label names
+    annotate_df_emm$variable <- as.factor(levels(exact_result$emm_results$contrast)) #add variable label names
     emm_n = annotate_df_emm
     
     i<-1

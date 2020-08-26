@@ -13,7 +13,12 @@ emmeans_power(x, ...)
 
 \method{emmeans_power}{summary_em}(x, ...)
 
-\method{emmeans_power}{data.frame}(x, alpha_level = Superpower_options("alpha_level"), ...)
+\method{emmeans_power}{data.frame}(
+  x,
+  alpha_level = Superpower_options("alpha_level"),
+  liberal_lambda = Superpower_options("liberal_lambda"),
+  ...
+)
 }
 \arguments{
 \item{x}{\code{emmGrid}. Grid of contrasts to estimate power from.}
@@ -21,6 +26,8 @@ emmeans_power(x, ...)
 \item{...}{Other arguments passed to the function if object is not already a \code{emmGrid} object.}
 
 \item{alpha_level}{Alpha level used to determine statistical significance}
+
+\item{liberal_lambda}{Logical indictor of whether to use the liberal (cohen_f^2\*(num_df+den_df)) or conservative (cohen_f^2\*den_df) calculation of the noncentrality (lambda) parameter estimate. Default is FALSE.}
 }
 \value{
 Returns dataframe with simulation data (power and effect sizes!), anova results and simple effect results, plot of exact data, and alpha_level. Note: Cohen's f = sqrt(pes/1-pes) and the noncentrality parameter is = f^2*df(error)

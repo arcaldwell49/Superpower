@@ -15,7 +15,9 @@ plot_power(
   emm_model = Superpower_options("emm_model"),
   contrast_type = Superpower_options("contrast_type"),
   emm_comp,
-  verbose = Superpower_options("verbose")
+  verbose = Superpower_options("verbose"),
+  exact2 = FALSE,
+  liberal_lambda = Superpower_options("liberal_lambda")
 )
 }
 \arguments{
@@ -40,6 +42,10 @@ plot_power(
 \item{emm_comp}{Set the comparisons for estimated marginal means comparisons. This is a factor name (a), combination of factor names (a+b), or for simple effects a | sign is needed (a|b)}
 
 \item{verbose}{Set to FALSE to not print results (default = TRUE)}
+
+\item{exact2}{Logical indicator for which \code{ANOVA_exact} function (\code{ANOVA_exact} or \code{ANOVA_exact2}) to use in the plots. Default is FALSE which uses \code{ANOVA_exact} which has sample size limitations.}
+
+\item{liberal_lambda}{Logical indictor of whether to use the liberal (cohen_f^2\*(num_df+den_df)) or conservative (cohen_f^2\*den_df) calculation of the noncentrality (lambda) parameter estimate. Default is FALSE.}
 }
 \value{
 Returns plot with power curves for the ANOVA, and a dataframe with the summary data.

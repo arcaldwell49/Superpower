@@ -27,7 +27,7 @@ BugReports: https://github.com/arcaldwell49/Superpower/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Imports: 
     mvtnorm,
     MASS,
@@ -39,7 +39,8 @@ Imports:
     stats,
     dplyr,
     magrittr,
-    tidyselect
+    tidyselect,
+    Hmisc
 Suggests: 
     knitr,
     rmarkdown,

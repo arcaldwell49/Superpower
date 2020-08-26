@@ -1,0 +1,89 @@
+---
+title: "Optimal Alpha Results"
+subtitle: "Shiny App developed by Dani&euml;l Lakens and Aaron Caldwell"
+output: pdf_document
+
+date: '`r format(Sys.time(), "%B %d, %Y")`'
+params:
+  tablePC: NA,
+  tableMain: NA,
+  means_plot: NA,
+  n: NA,
+  model: NA,
+  design: NA,
+  cor_mat: NA,
+  sigmatrix: NA
+  alpha_level: NA
+  tableEMM: NA
+  input_emm: NA
+---
+
+
+```{r setup, warning=FALSE, message=FALSE, echo=FALSE}
+options(knitr.table.format = 'markdown')
+```
+
+
+Below are the results from a compromise power analysis wherein an optimal alpha and beta are provided as output. If you encounter any problems please visit our GitHub page (https://github.com/arcaldwell49/Superpower) to the raise the issue.
+
+**Study Design**
+
+`r paste(params$design)`
+
+**Model Formula** 
+
+`r paste(params$model)`
+
+The sample size was **`r params$n`** *per cell*.
+
+**Correlation Matrix**
+```{r echo = FALSE}
+knitr::kable(params$cor_mat)
+```
+
+**Variance-Covariance Matrix**
+```{r echo = FALSE}
+knitr::kable(params$sigmatrix)
+```
+
+```{r, results='asis', echo=FALSE}
+cat("\\newpage")
+```
+
+Plot of the design with mean and standard deviation.
+
+```{r echo = FALSE}
+params$means_plot
+```
+
+
+```{r, results='asis', echo=FALSE}
+cat("\\newpage")
+```
+
+With a sample size (per group) of `r params$n` the following optimal alpha and beta error rates are included below.
+
+**ANOVA-level Effects**
+
+```{r echo = FALSE}
+knitr::kable(params$tableMain)
+
+```
+
+**Estimated Marginal Means Effects**
+
+If estimated marginal means were selected, the results are included below. 
+
+```{r echo = FALSE}
+if (params$input_emm == "yes") {
+knitr::kable(params$tableEMM)
+}
+```
+
+
+
+
+
+
+
+

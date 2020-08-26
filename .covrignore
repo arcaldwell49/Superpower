@@ -5,3 +5,4 @@ R/jmvpower.h.R
 R/data_generation.R
 R/simple_ANCOVA.R
 R/manova_functions.R
+R/generate_cor_matrix.R

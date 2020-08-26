@@ -8,7 +8,8 @@
     Superpower.contrast_type = "pairwise",
     Superpower.plot = TRUE,
     Superpower.alpha_level = .05,
-    Superpower.correction = "none"
+    Superpower.correction = "none",
+    Superpower.liberal_lambda = FALSE
   )
   toset <- !(names(op.Superpower) %in% names(op))
   if (any(toset)) options(op.Superpower[toset])

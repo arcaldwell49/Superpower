@@ -1,7 +1,45 @@
 NEWS
 ================
 
-Updated Wed Apr 22 2020
+Updated Tue Aug 25 2020
+
+# Superpower 0.1.0
+
+  - Added ANOVA\_exact2 function as an extension of ANOVA\_exact
+      - Now functional across all sample sizes but does not return a
+        dataframe of afex aov object
+  - liberal\_lambda arugment added: allows users to specify the type of
+    lambda calcuations
+      - When liberal\_lambda = TRUE; lambda = cohen\_f^2 \* (num\_df +
+        den\_df + 1)
+      - When liberal\_lambda = FALSE; lambda = cohen\_f^2 \* den\_df
+  - Optimal alpha functions from JustifieR package added
+  - ANOVA\_compromise function added which allows a compromise power
+    analysis to be performed for all comparisons in a design
+  - ANOVA\_design now returns as a class “design\_aov” with specific
+    print and plot methods see ?`design_aov-methods`
+      - generate\_cor\_matrix function is now a non-exported function
+        within the package (no longer contained within ANOVA\_design)
+  - plot\_power now has reduced sample size limtations -Option to use
+    ANOVA\_exact2 (exact2 argument) improves functionality (not limited
+    to product of factors)
+  - Updated vignettes to include updated information on functions
+      - New vignette “Introduction to Justifying Alpha Levels”
+  - New Shiny App: justify
+      - Creates a UI for utilizing the ANOVA\_compromise function via
+        Shiny
+
+# Superpower 0.0.5
+
+  - Superpower\_options(“plot”) is now set to TRUE. Plots will, by
+    default, be printed -Easily reset with Superpower\_options(plot =
+    FALSE)
+  - plot\_power has new features -Plots now show desired power -min\_n
+    is now limited; smallest min\_n allowed is equal to the product of
+    the design (e.g., ’2b\*2b’ has a smallest min\_n of 4)
+  - Small update to plot\_power to fix minor error in original code
+    -Error resulted in power estimates being \~0.1-0.5% off actual power
+    estimate
 
 # Superpower 0.0.4
 

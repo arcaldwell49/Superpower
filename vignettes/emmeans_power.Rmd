@@ -7,7 +7,7 @@ output:
     df_print: "kable"
     toc: true
 vignette: >
-  %\VignetteIndexEntry{Power calculations for emmeans analyses}
+  %\VignetteIndexEntry{Power calculations for `emmeans` analyses}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
