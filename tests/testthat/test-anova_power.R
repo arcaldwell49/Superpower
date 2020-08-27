@@ -68,8 +68,10 @@ test_that("2w*2w", {
     )
   )
 
-  expect_equal(p$main_results, comp$main_results)
-  expect_equal(p$pc_results, comp$pc_results)
+  expect_setequal(p$main_results$power, comp$main_results$power)
+  expect_setequal(p$pc_results$power, comp$pc_results$power)
+  expect_equal(p$main_results$effect_size, comp$main_results$effect_size)
+  expect_equal(p$pc_results$effect_size, comp$pc_results$effect_size)
   expect_equal(p$p_adjust, "none")
   expect_equal(p$nsims, 50)
 })
