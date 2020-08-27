@@ -15,6 +15,7 @@ Updated `r format(Sys.time(), "%a %b %d %Y")`
 - ANOVA_compromise function added which allows a compromise power analysis to be performed for all comparisons in a design
 - ANOVA_design now returns as a class "design_aov" with specific print and plot methods see ?`design_aov-methods`
   - generate_cor_matrix function is now a non-exported function within the package (no longer contained within ANOVA_design)
+- All simulation functions ANOVA_power, ANOVA_exact, and ANOVA_exact2 now returns as a class "sim_result" with specific print and plot methods see ?`sim_result-methods`
 - plot_power now has reduced sample size limtations
   -Option to use ANOVA_exact2 (exact2 argument) improves functionality (not limited to product of factors)
 - Updated vignettes to include updated information on functions

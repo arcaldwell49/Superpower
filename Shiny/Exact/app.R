@@ -139,7 +139,7 @@ ui <- dashboardPage(
                 solidHeader = TRUE,
                 collapsible = FALSE,
                 strong("Current updates to Superpower's Exact Shiny App"),
-                h5("Plot power now highlights the sample size at which desired power is achieved.")
+                h5("App uses the updated ANOVA_exact2 function. There are no longer sample size limtations for the function")
               )),
       tabItem(tabName = "design_tab",
               fluidRow(
@@ -459,7 +459,7 @@ server <- function(input, output, session) {
     values$design_result$meansplot})
 
   #Runs EXACT simulation and saves result as reactive value
-  observeEvent(input$sim, {values$power_result <- ANOVA_exact(values$design_result,
+  observeEvent(input$sim, {values$power_result <- ANOVA_exact2(values$design_result,
                                                               correction = "none",
                                                               alpha_level = input$sig,
                                                               verbose = FALSE,
@@ -512,7 +512,8 @@ server <- function(input, output, session) {
       contrast_type = as.character(input$contrast_type),
       emm_comp = as.character(input$emm_comp),
       plot = FALSE,
-      verbose = FALSE
+      verbose = FALSE,
+      exact2=TRUE
     )
   })
 
