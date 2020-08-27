@@ -60,6 +60,7 @@ Returns dataframe with simulation data (p-values and effect sizes), anova result
   \item{\code{"emm_p_adjust"}}{The p-value adjustment applied to the simulation results for the estimated marginal means.}
   \item{\code{"nsims"}}{The number of simulations run.}
   \item{\code{"alpha_level"}}{The alpha level, significance cut-off, used for the power analysis.}
+  \item{\code{"method"}}{Record of the function used to produce the simulation}
 
 }
 }

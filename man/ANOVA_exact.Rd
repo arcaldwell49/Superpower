@@ -60,6 +60,7 @@ Returns dataframe with simulation data (power and effect sizes!), anova results 
   \item{\code{"emm_results"}}{The power analysis results of the pairwise comparison results.}
   \item{\code{"manova_results"}}{Default is "NULL". If a within-subjects factor is included, then the power of the multivariate (i.e. MANOVA) analyses will be provided.}
   \item{\code{"alpha_level"}}{The alpha level, significance cut-off, used for the power analysis.}
+  \item{\code{"method"}}{Record of the function used to produce the simulation}
   \item{\code{"plot"}}{A plot of the dataframe from the simulation; should closely match the meansplot in \code{\link{ANOVA_design}}}
 
 }

@@ -92,7 +92,6 @@ optimal_alpha <- function(power_function,
   invisible(list(alpha = res$minimum,
                  beta = 1 - eval(parse(text=paste(power_function))),
                  objective = res$objective,
-                 plot_data = plot_data,
                  plot = w_c_alpha_plot
   )
   )
