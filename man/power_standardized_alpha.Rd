@@ -35,8 +35,10 @@ Good, I. J. (1982). C140. Standardized tail-area probabilities. Journal of Stati
 }
 
 \examples{
+\dontrun{
 res <- power_standardized_alpha(power_function = "pwr::pwr.t.test(d = 0.3,
 n = x, sig.level = a_stan, type = 'two.sample',
 alternative = 'two.sided')$power", power = 0.9, alpha = 0.05)
 res$N
+}
 }

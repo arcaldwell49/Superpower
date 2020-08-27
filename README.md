@@ -107,6 +107,8 @@ The plot below visualizes means from 1 to 8 being entered in a vector:
 mu = c(1, 2, 3, 4, 5, 6, 7, 8) so you can see how the basic ordering
 works.
 
+![](README_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+
 ### Specifying label names
 
 To make sure the plots and tables with simulation results are easy to
@@ -234,6 +236,8 @@ design_result <- ANOVA_design(design = "2w*2w",
                               sd = 2,
                               r <- c(0.91, 0.92, 0.93, 0.94, 0.95, 0.96))
 ```
+
+![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 We can check the correlation matrix by asking for it from the
 design\_result object to check if it was entered the way we wanted:
@@ -425,8 +429,11 @@ design_result <- ANOVA_design(design = "2b*2w",
                    sd = 1.03, 
                    r = 0.8, 
                    labelnames = c("voice", "human", "robot", "emotion", "cheerful", "sad"))
+```
 
+![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
 
+``` r
 power_result_vig_1 <- readRDS(file = "vignettes/sim_data/power_result_vig_1.rds")
 
 power_result_vig_1$main_results
@@ -500,8 +507,11 @@ design_result <- ANOVA_design(design = design,
                               mu = mu, 
                               sd = sd, 
                               labelnames = labelnames)
+```
 
+![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
 
+``` r
 power_result_vig_2 <- readRDS(file = "vignettes/sim_data/power_result_vig_2.rds")
 
 #Note we do not specify any correlation in the ANOVA_design function (default r = 0), nor do we specify an alpha in the ANOVA_power function (default is 0.05)
@@ -582,7 +592,11 @@ design_result <- ANOVA_design(design = "2b",
                    mu = c(24, 26.2), 
                    sd = 6.4, 
                    labelnames = c("condition", "control", "pet"))
+```
 
+![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+``` r
 ANOVA_exact(design_result)$main_results$power
 ```
 
@@ -696,11 +710,11 @@ plot_power(design_result, min_n = 10, max_n = 250,
            plot = TRUE)
 ```
 
-    ## Warning: Use of `plot_data$n` is discouraged. Use `n` instead.
-
-    ## Warning: Use of `plot_data$value` is discouraged. Use `value` instead.
-
 ![](README_files/figure-gfm/unnamed-chunk-13-1.png)<!-- -->
+
+    ## Achieved Power and Sample Size for ANOVA-level effects
+    ##    variable                  label   n achieved_power desired_power
+    ## 1 condition Desired Power Achieved 179          90.03            90
 
 Because the true pattern of means is always unknown, it is sensible to
 examine the power across a range of scenarios. For example, is the
@@ -721,11 +735,11 @@ plot_power(design_result, max_n = 250,
            plot = TRUE)
 ```
 
-    ## Warning: Use of `plot_data$n` is discouraged. Use `n` instead.
-
-    ## Warning: Use of `plot_data$value` is discouraged. Use `value` instead.
-
 ![](README_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+
+    ## Achieved Power and Sample Size for ANOVA-level effects
+    ##    variable                  label   n achieved_power desired_power
+    ## 1 condition Desired Power Achieved 217          90.11            90
 
 It could be that in addition to a slightly smaller effect size, the
 standard deviation is slightly larger than we expected as well. This
@@ -745,11 +759,11 @@ plot_power(design_result, min_n = 10, max_n = 250,
            plot = TRUE)
 ```
 
-    ## Warning: Use of `plot_data$n` is discouraged. Use `n` instead.
-
-    ## Warning: Use of `plot_data$value` is discouraged. Use `value` instead.
-
 ![](README_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+
+    ## Achieved Power and Sample Size for ANOVA-level effects
+    ##    variable                  label   n achieved_power desired_power
+    ## 1 condition Desired Power Achieved 244          90.01            90
 
 As these different plots make clear, your study never really has a known
 statistical power. Because the true effect size (i.e., the pattern of
