@@ -10,10 +10,12 @@
 #' mean_mat = matrix of the means
 #'
 #' @examples
+#' \dontrun{
 #' res <- power_standardized_alpha(power_function = "pwr::pwr.t.test(d = 0.3,
 #' n = x, sig.level = a_stan, type = 'two.sample',
 #' alternative = 'two.sided')$power", power = 0.9, alpha = 0.05)
 #' res$N
+#' }
 #' @section References:
 #' Good, I. J. (1982). C140. Standardized tail-area probabilities. Journal of Statistical Computation and Simulation, 16(1), 65–66. <https://doi.org/10.1080/00949658208810607>
 #' @importFrom stats optimize

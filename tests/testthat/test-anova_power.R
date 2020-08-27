@@ -68,10 +68,10 @@ test_that("2w*2w", {
     )
   )
 
-  expect_setequal(p$main_results$power, comp$main_results$power)
-  expect_setequal(p$pc_results$power, comp$pc_results$power)
-  expect_equal(p$main_results$effect_size, comp$main_results$effect_size)
-  expect_equal(p$pc_results$effect_size, comp$pc_results$effect_size)
+  expect_equal(p$main_results$power, comp$main_results$power, tolerance = .05)
+  expect_equal(p$pc_results$power, comp$pc_results$power, tolerance = .05)
+  expect_equal(p$main_results$effect_size, comp$main_results$effect_size, tolerance = .05)
+  expect_equal(p$pc_results$effect_size, comp$pc_results$effect_size, tolerance = .05)
   expect_equal(p$p_adjust, "none")
   expect_equal(p$nsims, 50)
 })
@@ -86,9 +86,12 @@ design <- ANOVA_design(design = "2b",
                        labelnames = c("condition", "control", "pet"),
                        plot = FALSE)
 set.seed(644)
-system.time(
-  p <- ANOVA_power(design, alpha_level = 0.05, nsims = 1000, verbose = FALSE)
-)
+
+p <- ANOVA_power(design,
+                 alpha_level = 0.05,
+                 nsims = 1000,
+                 verbose = FALSE)
+
 
 pe <- ANOVA_exact(design, verbose = FALSE)
 
