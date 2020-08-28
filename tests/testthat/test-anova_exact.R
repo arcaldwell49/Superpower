@@ -1,5 +1,4 @@
 context("test-anova_exact")
-#library(pwr2ppl)
 
 
 # error messages
@@ -72,6 +71,8 @@ test_that("2w null", {
   expect_equal(p$main_results$power, 5)
   expect_equal(p$pc_results$power, 5)
   expect_equal(p2$main_results, p$main_results)
+  
+  
 
 
 })
@@ -510,11 +511,11 @@ test_that("check lambda and verbose",{
                     emm = TRUE,
                     verbose = TRUE,
                     liberal_lambda = TRUE))
-  
+  test = hush(print(res))
   res = hush(ANOVA_exact2(design_result = des,
                      emm = TRUE,
                      verbose = TRUE,
                      liberal_lambda = TRUE))
-  
+  test = hush(print(res))
   
 })

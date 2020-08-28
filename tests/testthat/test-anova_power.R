@@ -1,6 +1,11 @@
 context("test-anova_power")
 
-
+hush=function(code){
+  sink("NUL") # use /dev/null in UNIX
+  tmp = code
+  sink()
+  return(tmp)
+}
 
 # error messages
 test_that("error messages", {
@@ -10,6 +15,68 @@ test_that("error messages", {
   expect_error(ANOVA_power(design, nsims = -1), "The number of repetitions in simulation must be at least 10; suggested at least 1000 for accurate results")
   expect_error(ANOVA_power(design, nsims = 10, p_adjust = "BEEFERONNI"), "p_adjust must be of an acceptable adjustment method: see ?p.adjust",
                fixed = TRUE)
+  # adding coverage 
+  design <- ANOVA_design(design = "2w", n = 10, mu = c(0, 0), sd = 1, plot = FALSE)
+  res = ANOVA_power(design, nsims = 10,
+                    emm = NULL)
+  expect_error(ANOVA_power(design, nsims = 10,
+                    emm = TRUE, contrast_type = "knope"))
+  expect_error(ANOVA_power(design, nsims = 10,
+                           emm = TRUE, emm_p_adjust = "knope"))
+  expect_error(ANOVA_power(design, nsims = 10,
+                           emm = TRUE, emm_model = "mvt"))
+  expect_error(ANOVA_power(design, nsims = 10,
+                           emm = TRUE, correction = "another"))
+  expect_error(ANOVA_power(design, nsims = 10,
+                           emm = TRUE, alpha_level = 1.1))
+  expect_warning(ANOVA_power(design, nsims = 10,
+                           emm = TRUE, emm_p_adjust = "tukey"))
+  
+  design2 <- ANOVA_design(design = "2w", n = c(10,15), mu = c(0, 0), sd = 1, plot = FALSE)
+  expect_error(ANOVA_power(design2, nsims = 10))
+  
+  design3 <- ANOVA_design(design = "2b", n = c(10,20), mu = c(0, 0), sd = 1, plot = FALSE)
+  res = ANOVA_power(design3, nsims = 10,
+                    emm = NULL)
+  res = hush(ANOVA_power(design3, nsims = 10,
+                    emm = NULL, verbose = TRUE))
+  test = hush(print(res))
+  
+  # below run so coverage high when run on travis
+  design <- ANOVA_design(design = "2w", n = 100, mu = c(0, 0.25), sd = 1, r = 0.5, plot = FALSE)
+  p <- ANOVA_power(design, nsims = 10, verbose = FALSE)
+  
+  design <- ANOVA_design(design = "2w*2w", n = 40, mu = c(1, 0, 1, 0), sd = 2, r = 0.8,
+                         labelnames = c("condition", "cheerful", "sad", "voice", "human", "robot"),
+                         plot = FALSE)
+  p <- ANOVA_power(design, nsims = 10, verbose = FALSE)
+  
+  design <- ANOVA_design(design = "2b*2b*2b",
+                         n = 80,
+                         mu = c(2, 2, 6, 1, 6, 6, 1, 8),
+                         sd = 10,
+                         plot = FALSE)
+
+  p <- ANOVA_power(design, alpha_level = 0.05, nsims = 10, verbose = FALSE) 
+  mu <- c(-0.25, 0.25, 0.25, -0.25)
+  n <- 23
+  sd <- 1
+  r <- 0.5
+  design = "2w*2b"
+  alpha_level <- 0.05
+  p_adjust = "none"
+  labelnames = c("age", "old", "young", "color", "blue", "red")
+  design <- ANOVA_design(design = design,
+                         n = n,
+                         mu = mu,
+                         sd = sd,
+                         r = r,
+                         labelnames = labelnames,
+                         plot = FALSE)
+  
+  p <- ANOVA_power(design, alpha_level = 0.05, nsims = 10, verbose = FALSE)
+  
+  
 })
 
 #2w
@@ -40,6 +107,7 @@ test_that("2w", {
 # 2w*2w
 test_that("2w*2w", {
   skip_on_cran()
+  skip_on_travis()
   design <- ANOVA_design(design = "2w*2w", n = 40, mu = c(1, 0, 1, 0), sd = 2, r = 0.8,
                          labelnames = c("condition", "cheerful", "sad", "voice", "human", "robot"),
                          plot = FALSE)
@@ -68,8 +136,10 @@ test_that("2w*2w", {
     )
   )
 
-  expect_equal(p$main_results, comp$main_results)
-  expect_equal(p$pc_results, comp$pc_results)
+  expect_equal(p$main_results$power, comp$main_results$power, tolerance = .05)
+  expect_equal(p$pc_results$power, comp$pc_results$power, tolerance = .05)
+  expect_equal(p$main_results$effect_size, comp$main_results$effect_size, tolerance = .05)
+  expect_equal(p$pc_results$effect_size, comp$pc_results$effect_size, tolerance = .05)
   expect_equal(p$p_adjust, "none")
   expect_equal(p$nsims, 50)
 })
@@ -77,6 +147,7 @@ test_that("2w*2w", {
 #2b long simulation
 test_that("2b long", {
   skip_on_cran()
+  skip_on_travis()
 design <- ANOVA_design(design = "2b",
                        n = 100,
                        mu = c(24, 26.2),
@@ -84,9 +155,12 @@ design <- ANOVA_design(design = "2b",
                        labelnames = c("condition", "control", "pet"),
                        plot = FALSE)
 set.seed(644)
-system.time(
-  p <- ANOVA_power(design, alpha_level = 0.05, nsims = 1000, verbose = FALSE)
-)
+
+p <- ANOVA_power(design,
+                 alpha_level = 0.05,
+                 nsims = 1000,
+                 verbose = FALSE)
+
 
 pe <- ANOVA_exact(design, verbose = FALSE)
 
@@ -104,6 +178,7 @@ expect_equal(pe$main_results$power/100, p2, tolerance = .02)
 #3 way between
 test_that("3 way between long", {
   skip_on_cran()
+  skip_on_travis()
 
   labelnames <- c("Size", "b", "s", "Color", "g", "r",
                   "Load", "pres", "abs") #
@@ -142,6 +217,7 @@ test_that("3 way between long", {
 #2 way mixed
 test_that("2x2 mixed long", {
   skip_on_cran()
+  skip_on_travis()
 
   mu <- c(-0.25, 0.25, 0.25, -0.25)
   n <- 23

@@ -1,7 +1,7 @@
 NEWS
 ================
 
-Updated Tue Aug 25 2020
+Updated Thu Aug 27 2020
 
 # Superpower 0.1.0
 
@@ -20,6 +20,9 @@ Updated Tue Aug 25 2020
     print and plot methods see ?`design_aov-methods`
       - generate\_cor\_matrix function is now a non-exported function
         within the package (no longer contained within ANOVA\_design)
+  - All simulation functions ANOVA\_power, ANOVA\_exact, and
+    ANOVA\_exact2 now returns as a class “sim\_result” with specific
+    print and plot methods see ?`sim_result-methods`
   - plot\_power now has reduced sample size limtations -Option to use
     ANOVA\_exact2 (exact2 argument) improves functionality (not limited
     to product of factors)

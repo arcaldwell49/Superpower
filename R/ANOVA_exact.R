@@ -19,6 +19,7 @@
 #'   \item{\code{"emm_results"}}{The power analysis results of the pairwise comparison results.}
 #'   \item{\code{"manova_results"}}{Default is "NULL". If a within-subjects factor is included, then the power of the multivariate (i.e. MANOVA) analyses will be provided.}
 #'   \item{\code{"alpha_level"}}{The alpha level, significance cut-off, used for the power analysis.}
+#'   \item{\code{"method"}}{Record of the function used to produce the simulation}
 #'   \item{\code{"plot"}}{A plot of the dataframe from the simulation; should closely match the meansplot in \code{\link{ANOVA_design}}}
 #' 
 #' }
@@ -398,8 +399,10 @@ ANOVA_exact <- function(design_result,
   manova_results = NULL
     }
 
+  
   # Return results in list()
-  invisible(list(dataframe = dataframe,
+  ## Now S3 method
+  structure(list(dataframe = dataframe,
                  aov_result = aov_result,
                  emmeans = emm_result,
                  main_results = main_results,
@@ -407,7 +410,9 @@ ANOVA_exact <- function(design_result,
                  emm_results = pairs_result_df,
                  manova_results = manova_results,
                  alpha_level = alpha_level,
-                 plot = meansplot2))
+                 plot = meansplot2,
+                 method = "ANOVA_exact"),
+            class = "sim_result")
 }
 
 #' @describeIn ANOVA_exact An extension of ANOVA_exact that uses the effect sizes calculated from very large sample size empirical simulation. This allows for small sample sizes, where ANOVA_exact cannot, while still accurately estimating power. However, model objects (emmeans and aov) are not included as output, and pairwise (t-test) results are not currently supported.
@@ -689,8 +694,10 @@ ANOVA_exact2 <- function(design_result,
     y <- dataframe$y[which(dataframe$cond == paired_tests[2,j])]
     #this can be sped up by tweaking the functions that are loaded to only give p and dz
     ifelse(within_between[j] == 0,
-           t_test_res <- effect_size_d_exact(x, y, alpha_level = alpha_level),
-           t_test_res <- effect_size_d_paired_exact(x, y, alpha_level = alpha_level))
+           t_test_res <- effect_size_d_exact2(x, y, sample_size = n,
+                                              alpha_level = alpha_level),
+           t_test_res <- effect_size_d_paired_exact2(x, y, sample_size = n,
+                                                     alpha_level = alpha_level))
     paired_p[j] <- (t_test_res$power*100)
     paired_d[j] <- ifelse(within_between[j] == 0,
                           t_test_res$d,
@@ -797,13 +804,17 @@ ANOVA_exact2 <- function(design_result,
     manova_table = NULL
   }
   
-  # Return results in list()
-  invisible(list(main_results = main_results,
+  # Return results in S3 sim_result
+  
+  structure(list(main_results = main_results,
+                 pc_results = pc_results,
                  emm_results = pairs_result_df,
                  manova_results = manova_results,
                  anova_table = anova_table,
                  manova_table = manova_table,
                  emmeans_table = emm_result,
                  alpha_level = alpha_level,
-                 plot = meansplot2))
+                 plot = meansplot2,
+                 method = "ANOVA_exact2"),
+            class = "sim_result")
 }

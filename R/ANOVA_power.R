@@ -26,6 +26,7 @@
 #'   \item{\code{"emm_p_adjust"}}{The p-value adjustment applied to the simulation results for the estimated marginal means.}
 #'   \item{\code{"nsims"}}{The number of simulations run.}
 #'   \item{\code{"alpha_level"}}{The alpha level, significance cut-off, used for the power analysis.}
+#'   \item{\code{"method"}}{Record of the function used to produce the simulation}
 #' 
 #' }
 #' 
@@ -554,7 +555,9 @@ ANOVA_power <- function(design_result,
   }
   
   # Return results in list()
-  invisible(list(sim_data = sim_data,
+  invisible()
+  
+  structure(list(sim_data = sim_data,
                  main_results = main_results,
                  pc_results = pc_results,
                  manova_results = manova_result,
@@ -565,5 +568,7 @@ ANOVA_power <- function(design_result,
                  p_adjust = p_adjust,
                  emm_p_adjust = emm_p_adjust,
                  nsims = nsims,
-                 alpha_level = alpha_level))
+                 alpha_level = alpha_level,
+                 method = "ANOVA_power"),
+            class = "sim_result")
 }
