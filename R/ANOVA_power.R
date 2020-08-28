@@ -384,7 +384,7 @@ ANOVA_power <- function(design_result,
     
     # Store MANOVA result if there are within subject factors
     if (run_manova == TRUE) {
-      manova_result <- Anova_mlm_table(aov_result$Anova)
+      manova_result <- Anova_mlm_table(aov_result$Anova) # ::: in Shiny
       manova_result$p.value <- p.adjust(manova_result$p.value, method = p_adjust)
     }
     
@@ -393,8 +393,8 @@ ANOVA_power <- function(design_result,
       y <- dataframe$y[which(dataframe$cond == paired_tests[2,j])]
       #this can be sped up by tweaking the functions that are loaded to only give p and dz
       ifelse(within_between[j] == 0,
-             t_test_res <- effect_size_d(x, y, alpha_level = alpha_level),
-             t_test_res <- effect_size_d_paired(x, y, alpha_level = alpha_level))
+             t_test_res <- effect_size_d(x, y, alpha_level = alpha_level), # ::: in Shiny
+             t_test_res <- effect_size_d_paired(x, y, alpha_level = alpha_level)) # ::: in Shiny
       paired_p[j] <- t_test_res$p_value
       paired_d[j] <- ifelse(within_between[j] == 0,
                             t_test_res$d,
