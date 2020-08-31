@@ -260,7 +260,7 @@ test_that("Aberson #3",{
 
 test_that("Aberson #4",{
   design_result <- ANOVA_design(design = "4w",
-                                n = 25,
+                                n = 25, #25
                                 sd = c(.4,.5,.6,.7),
                                 mu = c(-.25, .00, .10, .15),
                                 r = c(.50, 
@@ -277,10 +277,10 @@ test_that("Aberson #4",{
                    verbose=FALSE)
   
   expect_equal(p$main_results$power, c(80.9), tolerance = 0.1)
-  expect_equal(p$main_results$power, p2$main_results$power, tolerance = 0.012)
+  expect_equal(p$main_results$power, p2$main_results$power, tolerance = 0.025)
   expect_equal(p$main_results$partial_eta_squared, 
-               p2$main_results$partial_eta_squared, tolerance = 0.01)
-  expect_equal(p$manova_results$power, p2$manova_results$power, tolerance = 0.015)
+               p2$main_results$partial_eta_squared, tolerance = 0.025)
+  expect_equal(p$manova_results$power, p2$manova_results$power, tolerance = 0.02)
   expect_equal(p$manova_results$cohen_f, p2$manova_results$cohen_f, tolerance = 0.01)
   
   design_result <- ANOVA_design(design = "4w",
@@ -431,15 +431,19 @@ test_that("Aberson Table 5.6",{
                c(6.1,6.1,73.6,.8,32.4,32.4))
   
   expect_equal(power_result1$main_results$power, 
-               power_result2$main_results$power)
+               power_result2$main_results$power,
+               tolerance = .01)
   expect_equal(power_result1$main_results$partial_eta_squared, 
-               power_result2$main_results$partial_eta_squared)
+               power_result2$main_results$partial_eta_squared,
+               tolerance = .01)
   
   expect_equal(power_result1$emm_results$power, 
-               power_result2$emm_results$power)
+               power_result2$emm_results$power,
+               tolerance = .01)
   
   expect_equal(power_result1$emm_results$partial_eta_squared, 
-               power_result2$emm_results$partial_eta_squared)
+               power_result2$emm_results$partial_eta_squared,
+               tolerance = .01)
 })
 
 test_that("Aberson Table 5.9",{

@@ -90,10 +90,10 @@ exact_gen = function(design_result){
   factor_levels <- as.numeric(strsplit(design, "\\D+")[[1]])
   if (design_result$n < prod(as.numeric(unlist(regmatches(design_result$design,
                                                           gregexpr("[[:digit:]]+", 
-                                                                   design_result$design)))))+50) {
+                                                                   design_result$design)))))+60) {
     n = prod(as.numeric(unlist(regmatches(design_result$design,
                                           gregexpr("[[:digit:]]+",
-                                                   design_result$design)))))+50
+                                                   design_result$design)))))+60
   } else {
     n = design_result$n
   }
