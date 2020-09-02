@@ -20,7 +20,7 @@ nsims = 100000
 The goal of Superpower is to easily simulate single factor and factorial designs and empirically calculate power using a simulation approach. Currently, the package can only calculate power for ANOVAs.
 This app is intended to be utilized for prospective (a priori) power analysis. 
 This vignette gives a brief overview of the package's capability. 
-If you would like to see more information on this package please see our online [book](https://aaroncaldwell.us/SuperpowerBook)
+If you would like to see more information on this package please see our online [book](https://aaroncaldwell.us/SuperpowerBook/)
 
 ## Installation
 

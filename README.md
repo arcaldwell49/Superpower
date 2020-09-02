@@ -22,7 +22,7 @@ The goal of `Superpower` is to easily simulate factorial designs and
 empirically calculate power using a simulation approach. This app is
 intended to be utilized for prospective (a priori) power analysis. In
 addition to this README file we have written a short
-[book](https://arcaldwell49.github.io/SuperpowerBook) documenting the
+[book](https://aaroncaldwell.us/SuperpowerBook/) documenting the
 package’s capabilities.
 
 ## Installation
