@@ -16,7 +16,7 @@ library(Superpower)
 
 # Introduction 
 
-We have recently, August 2020, added 5 new functions to `Superpower` to expand the package's capabilites. In this vignette, we will introduce these new functions and how they can help with study planning.
+We have recently, August 2020, added 5 new functions to `Superpower` to expand the package's capabilities. In this vignette, we will introduce these new functions and how they can help with study planning.
 
 These new functions include: `power.ftest`, `optimal_alpha`, `ANOVA_compromise`, `alpha_standardized`, and `p_standardized`
 
@@ -39,7 +39,7 @@ $WCER =  max(\frac{\frac{cost_\alpha}{cost_\beta} \cdot \alpha  - \frac{Pr(H_1)}
 
 # Minimizing Error Rates
 
-Assume we plan to perform an indepedent *t*-test, where our smallest effect size of interest is d = 0.5, and we are planning to collect 64 participants in each condition. We would normally calculate power as follows:
+Assume we plan to perform an independent samples *t*-test, where our smallest effect size of interest is d = 0.5, and we are planning to collect 64 participants in each condition. We would normally calculate power as follows:
 
 `power.t.test(delta = .5, sd = 1, n = 64, sig.level = 0.05, type = 'two.sample', alternative = 'two.sided')$power`
 
@@ -114,7 +114,7 @@ If you think H1 is four times more likely to be true than H0, you need to worry 
 
 Now that the basics of finding an optimal alpha are out of the way we can move on to how these methods can be used for an ANOVA, and *F*-tests in general. 
 
-This is accomplished by the replacing the `power.t.test` function with the `power.ftest` function. As you can see below it operates very similiar to the `power.t.test`; the main differences are that `power.ftest` requires arguments for the degrees of freedom rather than sample size. Further, rather than allow for input of the power as an arugment, `power_ftest` allows the user to input the beta_level.
+This is accomplished by the replacing the `power.t.test` function with the `power.ftest` function. As you can see below it operates very similar to the `power.t.test`; the main differences are that `power.ftest` requires arguments for the degrees of freedom rather than sample size. Further, rather than allow for input of the power as an argument, `power_ftest` allows the user to input the beta_level.
 
 ```
 power.ftest(
@@ -170,7 +170,7 @@ exact2_res = ANOVA_exact2(design_result, verbose = FALSE)
 knitr::kable(exact2_res$main_results)
 ```
 
-As we can see here we can tell that we are tad underpowered to detect the effect of interest. Now, let us use `power.ftest` to find the alpha that will get us our desired beta (in this case let us assume .2).
+As we can see here we can tell that we are tad under-powered to detect the effect of interest. Now, let us use `power.ftest` to find the alpha that will get us our desired beta (in this case let us assume .2).
 
 ```{r}
 power.ftest(num_df = exact2_res$anova_table$num_df[3],

@@ -16,7 +16,7 @@ power.ftest(
 \arguments{
 \item{num_df}{degrees of freedom for numerator}
 
-\item{den_df}{degress of freedom for denominator}
+\item{den_df}{degrees of freedom for denominator}
 
 \item{cohen_f}{Cohen's f effect size. Note: this is the sqrt(f2) if you are used to using pwr.f2.test}
 

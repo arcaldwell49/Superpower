@@ -27,7 +27,7 @@ power_standardized_alpha(
 mean_mat = matrix of the means
 }
 \description{
-Because the standardized alpha depends on the sample size (N), and the power depends on the sample size, deciding upon the sample size to achieve a desired power requires an iterative procedure. Increasing the sample size reduces the standardized alpha, which requires an increase in the sample size for the power analysis, which reduces the standardized alpha. THis function takes a power analysis function that outputs the power as a function of the desired power, the alpha level, as a function of N(x).
+Because the standardized alpha depends on the sample size (N), and the power depends on the sample size, deciding upon the sample size to achieve a desired power requires an iterative procedure. Increasing the sample size reduces the standardized alpha, which requires an increase in the sample size for the power analysis, which reduces the standardized alpha. This function takes a power analysis function that outputs the power as a function of the desired power, the alpha level, as a function of N(x).
 }
 \section{References}{
 

@@ -8,7 +8,7 @@ Updated `r format(Sys.time(), "%a %b %d %Y")`
 # Superpower 0.1.0
 - Added ANOVA_exact2 function as an extension of ANOVA_exact
   - Now functional across all sample sizes but does not return a dataframe of afex aov object
-- liberal_lambda arugment added: allows users to specify the type of lambda calcuations
+- liberal_lambda argument added: allows users to specify the type of lambda calcuations
   - When liberal_lambda = TRUE; lambda = cohen_f^2 * (num_df + den_df + 1)
   - When liberal_lambda = FALSE; lambda = cohen_f^2 * den_df 
 - Optimal alpha functions from JustifieR package added
@@ -16,7 +16,7 @@ Updated `r format(Sys.time(), "%a %b %d %Y")`
 - ANOVA_design now returns as a class "design_aov" with specific print and plot methods see ?`design_aov-methods`
   - generate_cor_matrix function is now a non-exported function within the package (no longer contained within ANOVA_design)
 - All simulation functions ANOVA_power, ANOVA_exact, and ANOVA_exact2 now returns as a class "sim_result" with specific print and plot methods see ?`sim_result-methods`
-- plot_power now has reduced sample size limtations
+- plot_power now has reduced sample size limitations
   -Option to use ANOVA_exact2 (exact2 argument) improves functionality (not limited to product of factors)
 - Updated vignettes to include updated information on functions
   - New vignette "Introduction to Justifying Alpha Levels"

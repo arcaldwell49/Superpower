@@ -3,7 +3,7 @@
 #' Compute power of test or determine parameters to obtain target power. Inspired by the pwr.f2.test function in the pwr package, but allows for varying noncentrality parameter estimates for a more liberal (default in pwr.f2.test) or conservative (default in this function) estimates (see Aberson, Chapter 5, pg 72).
 #' 
 #' @param num_df degrees of freedom for numerator
-#' @param den_df degress of freedom for denominator
+#' @param den_df degrees of freedom for denominator
 #' @param cohen_f Cohen's f effect size. Note: this is the sqrt(f2) if you are used to using pwr.f2.test
 #' @param alpha_level Alpha level used to determine statistical significance. 
 #' @param beta_level Type II error probability (power/100-1)
