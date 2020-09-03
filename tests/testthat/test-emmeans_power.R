@@ -41,6 +41,7 @@ test_that("2b", {
 
 #4b low power
 test_that("4b", {
+  skip_on_cran()
   design <- ANOVA_design(design = "4b", n = 15,
                          mu = c(0, 0.25, 0.33, 0.44),
                          sd = 1, plot = FALSE)

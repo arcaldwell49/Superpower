@@ -148,6 +148,7 @@ test_that("4b", {
 
 #2x4 repeated measures
 test_that("2b*4w", {
+  skip_on_cran()
   design <- ANOVA_design(design = "2b*4w", n = 9,
                          mu = c(0.0, 0.0, 0.0, 0.0,
                                 0, 0.5, 0.5, 0.5),

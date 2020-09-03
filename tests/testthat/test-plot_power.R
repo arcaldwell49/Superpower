@@ -98,6 +98,7 @@ test_that("test multi functions", {
 })
 
 test_that("test multi functions: exact2", {
+  skip_on_cran()
   design <- ANOVA_design(design = "2b*4w",
                          n = 70,
                          mu = c(0,0,0,0,0.5,0.5,0.5,0.5),
@@ -143,6 +144,7 @@ test_that("test multi functions: exact2", {
 
 
 test_that("test 2b", {
+  skip_on_cran()
   design <- ANOVA_design(design = "2b",
                          n = 7,
                          mu = c(0,.5),
@@ -163,6 +165,7 @@ test_that("test 2b", {
 
 
 test_that("match",{
+  skip_on_cran()
   design <- ANOVA_design(design = "3b*2b",
                          n = 20,
                          mu = c(1, 2, 2, 3, 3, 4),

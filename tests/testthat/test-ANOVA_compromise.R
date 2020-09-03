@@ -37,6 +37,7 @@ test_that("example #1 2w",{
 })
 
 test_that("example #2 2w",{
+  skip_on_cran()
   design_result <- ANOVA_design(design = "2w",
                                 n = 50,
                                 mu = c(1:2),
