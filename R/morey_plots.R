@@ -1,25 +1,39 @@
 #' Plot out power sensitivity plots for t or F tests
-#' @param es Effect size range; either cohen's f or cohen's d depending on whether it is an f-test or t-test
+#' @param es Effect size range; either cohen's f or cohen's d depending on whether it is an F-test or t-test
 #' @param n Sample size (t-test only) per group (two sample), total number of pairs (paired samples), or total observations (one-sample); only applies to t-test
-#' @param alternative one- or two-sided test. Can be abbreviated.
-#' @alpha_level A vector of alpha levels; default is 0.05
+#' @param type string specifying the type of t test. Can be abbreviated. (t-test only)
+#' @param alternative one- or two-sided test. Can be abbreviated. (t-test only)
+#' @param alpha_level vector of alpha levels; default is 0.05
 #' @param liberal_lambda Logical indictor of whether to use the liberal (cohen_f^2\*(num_df+den_df)) or conservative (cohen_f^2\*den_df) calculation of the noncentrality (lambda) parameter estimate. Default is FALSE.
 #' @return Returns plots of effect size (x-axis) 
 #'
 #' @examples
 #' \dontrun{
-#' # To be added
+#' # t-test example ------
+#' # Sensitivity for cohen's d from .1 to .5
+#' # sample sizes of 10 and 20
+#' # alpha levels .05 and .075
+#' # type will be paired and one sided
+#' # Set effect sizes with seq function (?seq)
+#' 
+#' morey_plot.ttest(d = seq(.1,.5,.01),
+#' n = c(10,20),
+#' alpha_level = c(.05,.075),
+#' type = "paired",
+#' alternative = "one.sided")
 #' }
 #' @section References:
-#' to be added
-#' @importFrom stats optimize power.t.test
+#' Morey, R.D. (2020). Power and precision Why the push for replacing “power” with “precision” is misguided. Retrieved from: \url{https://medium.com/@richarddmorey/power-and-precision-47f644ddea5e}
+#' @importFrom stats power.t.test
+#' @importFrom tidyr expand_grid
+#' @importFrom magrittr %>%
+#' @importFrom dplyr mutate
 #' @import ggplot2
-#' @import tidyr expand_grid
-#' @import magrittr %>%
-#' @import dplyr mutate
-#' @export
+
 #'
 
+#' @describeIn morey_plot Power-sensitivity plot for t-tests
+#' @export
 morey_plot.ttest = function(es = seq(0,1,.05),
                             n = NULL,
                             type = c("two.sample", "one.sample", "paired"),
@@ -94,12 +108,13 @@ morey_plot.ttest = function(es = seq(0,1,.05),
   
   return(morey_plot)
 }
-
+#' @describeIn morey_plot  Power-sensitivity plot for F-tests
+#' @export
 morey_plot.ftest = function(es = seq(0,1,.05),
                             num_df = 1,
                             den_df = NULL,
                             alpha_level = Superpower_options("alpha_level"),
-                            liberal_lambda = Superpower_options("alpha_level")){
+                            liberal_lambda = Superpower_options("liberal_lambda")){
   xlab = expression(paste("Standardized Effect Size (Cohen's ",italic(f),")")) 
   legend_label = expression(paste(alpha,"-level"))
   if (!is.null(es)) {
@@ -147,19 +162,4 @@ morey_plot.ftest = function(es = seq(0,1,.05),
   return(morey_plot)
 }
 
-test = morey_plot.ftest(den_df=15,
-                        es = seq(0,1,.01),
-                 alpha_level = c(.025,.088))
-test
-ggplot(test$data,
-       aes(x=cohen_f,
-           y=power,
-           color = as.factor(alpha))) +
-  geom_line() 
 
-power.ftest(cohen_f = .1,
-            num_df = 1,
-            den_df = 15,
-            alpha_level = .088,
-            liberal_lambda = TRUE)$power
-morey_plot.ttest(n=12)
