@@ -22,13 +22,19 @@ morey_plot.ftest(
 )
 }
 \arguments{
-\item{es}{Effect size range; either cohen's f or cohen's d depending on whether it is an f-test or t-test}
+\item{es}{Effect size range; either cohen's f or cohen's d depending on whether it is an F-test or t-test}
 
 \item{n}{Sample size (t-test only) per group (two sample), total number of pairs (paired samples), or total observations (one-sample); only applies to t-test}
 
-\item{alternative}{one- or two-sided test. Can be abbreviated.}
+\item{type}{string specifying the type of t test. Can be abbreviated. (t-test only)}
+
+\item{alternative}{one- or two-sided test. Can be abbreviated. (t-test only)}
 
 \item{alpha_level}{vector of alpha levels; default is 0.05}
+
+\item{num_df}{Numerator degrees of freedom for an F-test.}
+
+\item{den_df}{Denominator degrees of freedom for an F-test.}
 
 \item{liberal_lambda}{Logical indictor of whether to use the liberal (cohen_f^2\*(num_df+den_df)) or conservative (cohen_f^2\*den_df) calculation of the noncentrality (lambda) parameter estimate. Default is FALSE.}
 }

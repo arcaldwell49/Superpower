@@ -40,7 +40,8 @@ Imports:
     dplyr,
     magrittr,
     tidyselect,
-    Hmisc
+    Hmisc,
+    tidyr
 Suggests: 
     knitr,
     rmarkdown,

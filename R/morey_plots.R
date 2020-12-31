@@ -1,6 +1,8 @@
 #' Plot out power sensitivity plots for t or F tests
 #' @param es Effect size range; either cohen's f or cohen's d depending on whether it is an F-test or t-test
 #' @param n Sample size (t-test only) per group (two sample), total number of pairs (paired samples), or total observations (one-sample); only applies to t-test
+#' @param num_df Numerator degrees of freedom for an F-test.
+#' @param den_df Denominator degrees of freedom for an F-test.
 #' @param type string specifying the type of t test. Can be abbreviated. (t-test only)
 #' @param alternative one- or two-sided test. Can be abbreviated. (t-test only)
 #' @param alpha_level vector of alpha levels; default is 0.05
@@ -55,7 +57,7 @@ morey_plot.ttest = function(es = seq(0,1,.05),
   }
   
   plot_title = power.t.test(n = min(n),
-                            d = min(es),
+                            delta = min(es),
                             type = type,
                             alternative = alternative)$method %>%
     gsub(replacement = "Curve",
@@ -70,7 +72,7 @@ morey_plot.ttest = function(es = seq(0,1,.05),
   
   sub_title = power.t.test(
     n = min(n),
-    d = min(es),
+    delta = min(es),
     type = type,
     alternative = alternative
   )$alternative %>%
