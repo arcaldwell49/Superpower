@@ -1,14 +1,23 @@
 NEWS
 ================
 
-Updated Thu Aug 27 2020
+Updated Tue Jan 19 2021
+
+# Superpower 0.1.1
+
+  - Added morey\_plot functions.
+      - Plot the effect size (x-axis) at different sample sizes (facets)
+        and at different alpha levels (color).
+      - These plots are helpful in determining the sensitivity of
+        statistical tests (t-test and F-test) across a range of effect
+        sizes.
 
 # Superpower 0.1.0
 
   - Added ANOVA\_exact2 function as an extension of ANOVA\_exact
       - Now functional across all sample sizes but does not return a
         dataframe of afex aov object
-  - liberal\_lambda arugment added: allows users to specify the type of
+  - liberal\_lambda argument added: allows users to specify the type of
     lambda calcuations
       - When liberal\_lambda = TRUE; lambda = cohen\_f^2 \* (num\_df +
         den\_df + 1)
@@ -23,7 +32,7 @@ Updated Thu Aug 27 2020
   - All simulation functions ANOVA\_power, ANOVA\_exact, and
     ANOVA\_exact2 now returns as a class “sim\_result” with specific
     print and plot methods see ?`sim_result-methods`
-  - plot\_power now has reduced sample size limtations -Option to use
+  - plot\_power now has reduced sample size limitations -Option to use
     ANOVA\_exact2 (exact2 argument) improves functionality (not limited
     to product of factors)
   - Updated vignettes to include updated information on functions
