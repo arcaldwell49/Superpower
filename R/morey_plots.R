@@ -1,5 +1,5 @@
 #' Plot out power sensitivity plots for t or F tests
-#' @param es Effect size range; either cohen's f or cohen's d depending on whether it is an F-test or t-test
+#' @param es Effect size magnitudes to include on the plot; either cohen's f or cohen's d depending on whether it is an F-test or t-test
 #' @param n Sample size (t-test only) per group (two sample), total number of pairs (paired samples), or total observations (one-sample); only applies to t-test
 #' @param num_df Numerator degrees of freedom for an F-test.
 #' @param den_df Denominator degrees of freedom for an F-test.
@@ -50,6 +50,8 @@ morey_plot.ttest = function(es = seq(0,1,.05),
   }
   if (!is.null(n) && any(n < 3)) {
     stop("Sample size per group must be at least 3")
+  } else if(is.null(n)){
+    stop("Must provide a sample size; n is set to NULL!")
   }
   if (!is.null(alpha_level) && !is.numeric(alpha_level) || any(0 > 
                                                                alpha_level | alpha_level > 1)) {

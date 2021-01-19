@@ -22,7 +22,7 @@ morey_plot.ftest(
 )
 }
 \arguments{
-\item{es}{Effect size range; either cohen's f or cohen's d depending on whether it is an F-test or t-test}
+\item{es}{Effect size magnitudes to include on the plot; either cohen's f or cohen's d depending on whether it is an F-test or t-test}
 
 \item{n}{Sample size (t-test only) per group (two sample), total number of pairs (paired samples), or total observations (one-sample); only applies to t-test}
 
