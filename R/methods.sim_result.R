@@ -38,6 +38,7 @@ print.sim_result <- function(x,...){
       cat("Power and Effect sizes for estimated marginal means")
       cat("\n")
       print(x$emm_results, digits = 4)
+      cat("\n")
     }
   } else if (x$method == "ANOVA_power") {
     cat("Power and Effect sizes for ANOVA tests")
@@ -53,6 +54,7 @@ print.sim_result <- function(x,...){
       cat("\n")
       print(x$emm_results, digits = 4)
     }
+    cat("\n")
 
   }
 }

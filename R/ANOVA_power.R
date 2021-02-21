@@ -542,11 +542,14 @@ ANOVA_power <- function(design_result,
       cat("Power and Cohen's f from estimated marginal means")
       cat("\n")
       print(emm_results, digits = 4)
+      cat("\n")
     }
     if (run_manova == TRUE) {
       cat("\n")
       cat("Within-Subject Factors Included: Check MANOVA Results")
+      cat("\n")
     }
+    cat("\n")
   }
   
   #Create empty value if no MANOVA results are included
