@@ -72,7 +72,8 @@ test_that("2w null", {
   expect_equal(p$pc_results$power, 5)
   expect_equal(p2$main_results, p$main_results)
   
-  
+  # confint error
+  expect_error(confint(p))
 
 
 })
