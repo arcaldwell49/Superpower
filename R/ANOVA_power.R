@@ -9,7 +9,7 @@
 #' @param emm_comp Set the comparisons for estimated marginal means comparisons. This is a factor name (a), combination of factor names (a+b), or for simple effects a | sign is needed (a|b)
 #' @param emm_p_adjust Correction for multiple comparisons; default is "none". See ?summary.emmGrid for more details on acceptable methods.
 #' @param nsims number of simulations to perform
-#' @param seed Set seed for reproducible results
+#' @param seed Set seed for reproducible results. WARNING: results will differ based on machine type (i.e., Windows will not match OSx)
 #' @param verbose Set to FALSE to not print results (default = TRUE)
 #' @return Returns dataframe with simulation data (p-values and effect sizes), anova results (type 3 sums of squares) and simple effect results, and plots of p-value distribution.
 #' 
@@ -53,7 +53,6 @@
 #' @importFrom afex aov_car
 #' @importFrom purrr map
 #' @importFrom dplyr bind_rows
-#' @importFrom parallel mc.reset.stream
 #' @import pbmcapply
 #' @import emmeans
 #' @import ggplot2

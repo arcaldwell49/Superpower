@@ -90,22 +90,20 @@ test_that("error messages", {
 #2w
 test_that("2w", {
   design <- ANOVA_design(design = "2w", n = 100, mu = c(0, 0.25), sd = 1, r = 0.5, plot = FALSE)
-  #mc.reset.stream()
-  #RNGkind("L'Ecuyer-CMRG")
-  #set.seed(86753)
+
   p <- ANOVA_power(design, nsims = 50, 
                    verbose = FALSE,
                    seed = 86753)
-  #p
+  
 
   comp <- list()
   if (length(grep("windows", Sys.info()["sysname"], ignore.case = TRUE))) {
-    comp$main_results <- data.frame(power = c(70),
-                                    effect_size = c(0.06913817),
+    comp$main_results <- data.frame(power = c(76),
+                                    effect_size = c( 0.07149),
                                     row.names = c("anova_a"))
 
-  comp$pc_results <- data.frame(power = c(70),
-                                effect_size = c(0.2545745),
+  comp$pc_results <- data.frame(power = c(76),
+                                effect_size = c(0.2607),
                                 row.names = c("p_a_a1_a_a2"))
   } else {
     comp$main_results <- data.frame(
@@ -132,6 +130,9 @@ test_that("2w*2w", {
   design <- ANOVA_design(design = "2w*2w", n = 40, mu = c(1, 0, 1, 0), sd = 2, r = 0.8,
                          labelnames = c("condition", "cheerful", "sad", "voice", "human", "robot"),
                          plot = FALSE)
+  
+  
+  if (length(grep("windows", Sys.info()["sysname"], ignore.case = TRUE))) {
 
   set.seed(8675309)
 
@@ -163,6 +164,7 @@ test_that("2w*2w", {
   expect_equal(p$pc_results$effect_size, comp$pc_results$effect_size, tolerance = .05)
   expect_equal(p$p_adjust, "none")
   expect_equal(p$nsims, 50)
+  }
 })
 
 #2b long simulation
@@ -175,6 +177,8 @@ design <- ANOVA_design(design = "2b",
                        sd = 6.4,
                        labelnames = c("condition", "control", "pet"),
                        plot = FALSE)
+
+if (length(grep("windows", Sys.info()["sysname"], ignore.case = TRUE))) {
 set.seed(644)
 
 p <- ANOVA_power(design,
@@ -182,6 +186,7 @@ p <- ANOVA_power(design,
                  nsims = 1000,
                  emm=TRUE,
                  verbose = FALSE)
+
 c = confint(p, parm = "emm_results")
 expect_error(confint(p,parm = "manova_results"))
 
@@ -196,6 +201,7 @@ p2 <- pwr::pwr.t.test(d = 2.2/6.4,
 expect_equal(p$main_results$power/100, p2, tolerance = .02)
 
 expect_equal(pe$main_results$power/100, p2, tolerance = .02)
+}
 })
 
 #3 way between
@@ -212,7 +218,8 @@ test_that("3 way between long", {
                          sd = 10,
                          labelnames = labelnames,
                          plot = FALSE)
-
+  
+  if (length(grep("windows", Sys.info()["sysname"], ignore.case = TRUE))) {
   set.seed(8224)
 
   p <- ANOVA_power(design, alpha_level = 0.05, nsims = 4000, verbose = FALSE)
@@ -234,6 +241,7 @@ test_that("3 way between long", {
 
   expect_equal(rownames(p$pc_results),
                rownames(pe$pc_results))
+  }
 })
 
 
@@ -257,21 +265,19 @@ test_that("2x2 mixed long", {
                          r = r,
                          labelnames = labelnames,
                          plot = FALSE)
+  if (length(grep("windows", Sys.info()["sysname"], ignore.case = TRUE))) {
 
   set.seed(435)
 
   p <- ANOVA_power(design, alpha_level = 0.05, nsims = 1000, verbose = FALSE)
   pe <- ANOVA_exact(design, verbose = FALSE)
 
-
-
   p_inter <- 0.9124984 #power obtained from GPower https://github.com/Lakens/ANOVA_power_simulation/blob/master/validation_files/3.1_validation_power_between_within_2x2.md
 
   expect_equal(p$main_results$power[3]/100, p_inter, tolerance = .02)
   expect_equal(pe$main_results$power[3]/100, p$main_results$power[3]/100, tolerance = .02)
+  
+  }
 })
 
-test_that("sim_result confint method", { 
-  
-  })
 

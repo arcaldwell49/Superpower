@@ -28,7 +28,7 @@ Superpower_options(verbose = FALSE,
 nsims = 250
 ```
 
-In this vignette we will quickly demonstrate a few variations on ANOVA designs and how to implement them in `Superpower`. To see even more designs, please check out our [book](aaroncaldwell.us/SuperpowerBook)
+In this vignette we will quickly demonstrate a few variations on ANOVA designs and how to implement them in `Superpower`. To see even more designs, please check out our [book](aaroncaldwell.us/SuperpowerBook).
 
 # Three between subject conditions
 
