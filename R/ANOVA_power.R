@@ -53,6 +53,7 @@
 #' @importFrom afex aov_car
 #' @importFrom purrr map
 #' @importFrom dplyr bind_rows
+#' @importFrom parallel mc.reset.stream
 #' @import pbmcapply
 #' @import emmeans
 #' @import ggplot2
@@ -137,20 +138,6 @@ ANOVA_power <- function(design_result,
   
   if (nsims < 10) {
     stop("The number of repetitions in simulation must be at least 10; suggested at least 1000 for accurate results")
-  }
-  
-  #Set seed, from sim_design function by Lisa DeBruine
-  if (!is.null(seed)) {
-    # reinstate system seed after simulation
-    sysSeed <- .GlobalEnv$.Random.seed
-    on.exit({
-      if (!is.null(sysSeed)) {
-        .GlobalEnv$.Random.seed <- sysSeed
-      } else {
-        rm(".Random.seed", envir = .GlobalEnv)
-      }
-    })
-    set.seed(seed, kind = "Mersenne-Twister", normal.kind = "Inversion")
   }
   
   #Check to ensure there is a within subject factor -- if none --> no MANOVA
@@ -278,6 +265,21 @@ ANOVA_power <- function(design_result,
   ###############
   # 7. Start Simulation ----
   ###############
+  #Set seed, from sim_design function by Lisa DeBruine
+  if (!is.null(seed)) {
+    # reinstate system seed after simulation
+    sysSeed <- .GlobalEnv$.Random.seed
+    on.exit({
+      if (!is.null(sysSeed)) {
+        .GlobalEnv$.Random.seed <- sysSeed
+      } else {
+        rm(".Random.seed", envir = .GlobalEnv)
+      }
+    })
+    mc.reset.stream()
+    RNGkind("L'Ecuyer-CMRG")
+    set.seed(seed)
+  }
   
   if (length(grep("windows", Sys.info()["sysname"], ignore.case = TRUE))) {
     # Windows Machine does not support mc(*)apply
@@ -296,7 +298,6 @@ ANOVA_power <- function(design_result,
                      alpha_level = alpha_level,
                      mc.cores = 1)
   } else {
-    # Get the sqrt of 1-5 in parallel
     x1 <- pbmclapply(1:nsims, gen_anova, 
                      design_result = design_result,
                      p_adjust = p_adjust,

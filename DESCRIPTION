@@ -43,7 +43,8 @@ Imports:
     Hmisc,
     tidyr,
     pbmcapply,
-    purrr
+    purrr,
+    parallel
 Suggests: 
     knitr,
     rmarkdown,
