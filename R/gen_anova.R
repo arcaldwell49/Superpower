@@ -16,7 +16,6 @@ gen_anova = function(i,
   n_vec <- design_result$n # store vector n as n - this is because the code below uses n as a single number, so quick fix for legacy reasons
   n <- max(n_vec) # now set n to max n for ANOVA_design function
   factornames <- design_result$factornames #Get factor names
-  n <- design_result$n
   mu = design_result$mu # population means - should match up with the design
   sd <- design_result$sd #population standard deviation (currently assumes equal variances)
   r <- design_result$r # correlation between within factors (currently only 1 value can be entered)
@@ -113,7 +112,8 @@ gen_anova = function(i,
   # We perform the ANOVA using AFEX
   #Can be set to NICE to speed up, but required data grabbing from output the change.
   aov_result <- suppressMessages({aov_car(frml1, #here we use frml1 to enter fromula 1 as designed above on the basis of the design
-                                          data = dataframe, include_aov = FALSE, #Need development code to get aov_include function
+                                          data = dataframe, 
+                                          include_aov = FALSE, #Need development code to get aov_include function
                                           anova_table = list(es = "pes",
                                                              p_adjust_method = p_adjust,
                                                              correction = correction))}) #This reports PES not GES

@@ -279,19 +279,38 @@ ANOVA_power <- function(design_result,
   # 7. Start Simulation ----
   ###############
   
-  x1 <- pbmclapply(1:nsims, gen_anova, 
-                   design_result = design_result,
-                   p_adjust = p_adjust,
-                   correction = correction,
-                   run_manova = run_manova,
-                   emm = emm,
-                   emm_model = emm_model,
-                   emm_p_adjust = emm_p_adjust,
-                   emm_comp = emm_comp,
-                   aov_result = aov_result,
-                   manova_result = manova_result,
-                   contrast_type = contrast_type,
-                   alpha_level = alpha_level)
+  if (length(grep("windows", Sys.info()["sysname"], ignore.case = TRUE))) {
+    # Windows Machine does not support mc(*)apply
+    x1 <- pbmclapply(1:nsims, gen_anova, 
+                     design_result = design_result,
+                     p_adjust = p_adjust,
+                     correction = correction,
+                     run_manova = run_manova,
+                     emm = emm,
+                     emm_model = emm_model,
+                     emm_p_adjust = emm_p_adjust,
+                     emm_comp = emm_comp,
+                     aov_result = aov_result,
+                     manova_result = manova_result,
+                     contrast_type = contrast_type,
+                     alpha_level = alpha_level,
+                     mc.cores = 1)
+  } else {
+    # Get the sqrt of 1-5 in parallel
+    x1 <- pbmclapply(1:nsims, gen_anova, 
+                     design_result = design_result,
+                     p_adjust = p_adjust,
+                     correction = correction,
+                     run_manova = run_manova,
+                     emm = emm,
+                     emm_model = emm_model,
+                     emm_p_adjust = emm_p_adjust,
+                     emm_comp = emm_comp,
+                     aov_result = aov_result,
+                     manova_result = manova_result,
+                     contrast_type = contrast_type,
+                     alpha_level = alpha_level)
+  }
   
   sim_data = map(x1, "sim_data") %>%
     bind_rows()
