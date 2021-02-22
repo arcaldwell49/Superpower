@@ -51,6 +51,9 @@
 #' @importFrom reshape2 melt
 #' @importFrom MASS mvrnorm
 #' @importFrom afex aov_car
+#' @importFrom purrr map
+#' @importFrom dplyr bind_rows
+#' @import pbmcapply
 #' @import emmeans
 #' @import ggplot2
 #' @export
@@ -207,7 +210,8 @@ ANOVA_power <- function(design_result,
   
   aov_result <- suppressMessages({aov_car(frml1, #here we use frml1 to enter formula 1 as designed above on the basis of the design
                                           data = dataframe, include_aov = FALSE,
-                                          anova_table = list(es = "pes", p_adjust_method = p_adjust)) }) #This reports PES not GES
+                                          anova_table = list(es = "pes", 
+                                                             p_adjust_method = p_adjust)) }) #This reports PES not GES
   if (emm == TRUE) {
     #Call emmeans with specifcations given in the function
     #Limited to specs and model
@@ -259,21 +263,6 @@ ANOVA_power <- function(design_result,
   #create empty dataframe to store simulation results
   #number of columns for ANOVA results and planned comparisons, times 2 (p-values and effect sizes)
   
-  if (run_manova == TRUE) {
-    #create empty dataframe to store simulation results
-    #number of columns if for ANOVA results and planned comparisons, times 2 (p and es)
-    #more columns added if MANOVA output included 2^factors
-    sim_data <- as.data.frame(matrix(
-      ncol = 2 * (2 ^ factors - 1) + (2 ^ factors) + 2 * possible_pc,
-      nrow = nsims
-    )) } else {
-      
-      sim_data <- as.data.frame(matrix(
-        ncol = 2 * (2 ^ factors - 1) + 2 * possible_pc,
-        nrow = nsims
-      ))
-      
-    }
   
   
   paired_tests <- combn(unique(dataframe$cond),2)
@@ -283,143 +272,32 @@ ANOVA_power <- function(design_result,
   
   #Dynamically create names for the data we will store
   #Again create rownames based on whether or not a MANOVA should be included
-  if (run_manova == TRUE) {
-    names(sim_data) = c(paste("anova_",
-                              rownames(aov_result$anova_table),
-                              sep = ""),
-                        paste("anova_es_",
-                              rownames(aov_result$anova_table),
-                              sep = ""),
-                        paste("p_",
-                              paste(paired_tests[1,],paired_tests[2,],sep = "_"),
-                              sep = ""),
-                        paste("d_",
-                              paste(paired_tests[1,],paired_tests[2,], sep = "_"),
-                              sep = ""),
-                        paste("manova_",
-                              rownames(manova_result),
-                              sep = ""))
-  } else {
-    names(sim_data) = c(paste("anova_",
-                              rownames(aov_result$anova_table),
-                              sep = ""),
-                        paste("anova_es_",
-                              rownames(aov_result$anova_table),
-                              sep = ""),
-                        paste("p_",
-                              paste(paired_tests[1,],paired_tests[2,],sep = "_"),
-                              sep = ""),
-                        paste("d_",
-                              paste(paired_tests[1,],paired_tests[2,], sep = "_"),
-                              sep = ""))
-  }
+
   
   
   ###############
   # 7. Start Simulation ----
   ###############
-  #withProgress(message = 'Running simulations', value = 0, { #block outside of Shiny
-  for (i in 1:nsims) { #for each simulated experiment
-    #incProgress(1/nsims, detail = paste("Now running simulation", i, "out of",nsims,"simulations")) #Block outside of Shiny
-    #We simulate a new y variable, melt it in long format, and add it to the dataframe (surpressing messages)
-    
-    dataframe <- design_result$dataframe # read in dataframe again, because we deleted rows from it below if unequal n
-    
-    dataframe$y <- suppressMessages({
-      melt(as.data.frame(mvrnorm(
-        n = n,
-        mu = mu,
-        Sigma = as.matrix(sigmatrix)
-      )))$value
-    })
-    
-    #NEW SECTION TO ALLOW UNEQUAL N
-    #need if for single n
-    if (length(n_vec) > 1) {
-      for (k in 1:length(unique(dataframe$cond))) {
-        #for each unique condition
-        if ((n - n_vec[k]) > 0) {
-          #only sample if we want to remove more than 0 rows
-          dataframe <-
-            dataframe[-sample(which(dataframe$cond  == unique(dataframe$cond)[k]) , (n -
-                                                                                       n_vec[k])) ,]
-        }
-      }
-    }
-    # We perform the ANOVA using AFEX
-    #Can be set to NICE to speed up, but required data grabbing from output the change.
-    aov_result <- suppressMessages({aov_car(frml1, #here we use frml1 to enter fromula 1 as designed above on the basis of the design
-                                            data = dataframe, include_aov = FALSE, #Need development code to get aov_include function
-                                            anova_table = list(es = "pes",
-                                                               p_adjust_method = p_adjust,
-                                                               correction = correction))}) #This reports PES not GES
-    if (emm == TRUE) {
-      emm_result <- suppressMessages({emmeans(aov_result, 
-                                              specs = specs_formula,
-                                              model = emm_model,
-                                              adjust = emm_p_adjust)})
-      #plot_emm = plot(emm_result, comparisons = TRUE)
-      #make comparison based on specs; adjust = "none" in exact; No solution for multcomp in exact simulation
-      pairs_result <- emm_result$contrasts
-      pairs_result_df <- as.data.frame(pairs_result)
-      #Need for exact; not necessary for power function
-      #Convert t-ratio to F-stat
-      pairs_result_df$F.value <- (pairs_result_df$t.ratio)^2
-      #Calculate pes -- The formula for partial eta-squared is equation 13 from Lakens (2013)
-      pairs_result_df$pes <- pairs_result_df$F.value/(pairs_result_df$F.value + pairs_result_df$df) 
-      #Calculate cohen's f
-      pairs_result_df$f2 <- pairs_result_df$pes/(1 - pairs_result_df$pes)
-      
-      
-      pairs_result_df <- pairs_result_df %>% mutate(cohen_f = sqrt(.data$f2)) %>%
-        select(-.data$F.value,-.data$t.ratio,-.data$SE,
-               -.data$f2,-.data$pes, -.data$estimate, -.data$df) %>%
-        select(-.data$cohen_f, -.data$p.value,
-               .data$p.value, .data$cohen_f)
-      
-      emm_sim_data[i,] <- c(as.numeric(pairs_result_df$p.value), #p-value for contrast
-                            as.numeric(pairs_result_df$cohen_f) #cohen f
-      ) #
-    }
-    
-    # Store MANOVA result if there are within subject factors
-    if (run_manova == TRUE) {
-      manova_result <- Anova_mlm_table(aov_result$Anova) # ::: in Shiny
-      manova_result$p.value <- p.adjust(manova_result$p.value, method = p_adjust)
-    }
-    
-    for (j in 1:possible_pc) {
-      x <- dataframe$y[which(dataframe$cond == paired_tests[1,j])]
-      y <- dataframe$y[which(dataframe$cond == paired_tests[2,j])]
-      #this can be sped up by tweaking the functions that are loaded to only give p and dz
-      ifelse(within_between[j] == 0,
-             t_test_res <- effect_size_d(x, y, alpha_level = alpha_level), # ::: in Shiny
-             t_test_res <- effect_size_d_paired(x, y, alpha_level = alpha_level)) # ::: in Shiny
-      paired_p[j] <- t_test_res$p_value
-      paired_d[j] <- ifelse(within_between[j] == 0,
-                            t_test_res$d,
-                            t_test_res$d_z)
-    }
-    
-    # store p-values and effect sizes for calculations and plots.
-    #If needed to create different row names if MANOVA is included
-    if (run_manova == TRUE) {
-      sim_data[i,] <- c(aov_result$anova_table[[6]], #p-value for ANOVA
-                        aov_result$anova_table[[5]], #partial eta squared
-                        p.adjust(paired_p, method = p_adjust), #p-values for paired comparisons
-                        paired_d, #effect sizes
-                        manova_result[[6]]) #p-values for MANOVA
-    } else {
-      sim_data[i,] <- c(aov_result$anova_table[[6]], #p-value for ANOVA
-                        aov_result$anova_table[[5]], #partial eta squared
-                        p.adjust(paired_p, method = p_adjust), #p-values for paired comparisons
-                        paired_d) #effect sizes
-    }
-    
-    
-  }
-  #}) #close withProgress Block outside of Shiny
   
+  x1 <- pbmclapply(1:nsims, gen_anova, 
+                   design_result = design_result,
+                   p_adjust = p_adjust,
+                   correction = correction,
+                   run_manova = run_manova,
+                   emm = emm,
+                   emm_model = emm_model,
+                   emm_p_adjust = emm_p_adjust,
+                   emm_comp = emm_comp,
+                   aov_result = aov_result,
+                   manova_result = manova_result,
+                   contrast_type = contrast_type,
+                   alpha_level = alpha_level)
+  
+  sim_data = map(x1, "sim_data") %>%
+    bind_rows()
+  
+  emm_sim_data = map(x1, "emm_sim_data") %>%
+    bind_rows()
   ############################################
   #End Simulation              ###############
   
@@ -558,8 +436,7 @@ ANOVA_power <- function(design_result,
   }
   
   # Return results in list()
-  invisible()
-  
+
   structure(list(sim_data = sim_data,
                  main_results = main_results,
                  pc_results = pc_results,

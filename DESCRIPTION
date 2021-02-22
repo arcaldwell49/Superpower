@@ -41,7 +41,9 @@ Imports:
     magrittr,
     tidyselect,
     Hmisc,
-    tidyr
+    tidyr,
+    pbmcapply,
+    purrr
 Suggests: 
     knitr,
     rmarkdown,
