@@ -45,13 +45,14 @@ test_that("4b", {
   design <- ANOVA_design(design = "4b", n = 15,
                          mu = c(0, 0.25, 0.33, 0.44),
                          sd = 1, plot = FALSE)
-  p_monte <- ANOVA_power(design, emm = TRUE, verbose = FALSE, 
-                         nsims = 1000, seed = 22042020,
-                         emm_p_adjust = "bonferroni")
   p <- ANOVA_exact(design, emm = TRUE, verbose = FALSE)
   p_bonf <- ANOVA_exact(design, emm = TRUE, verbose = FALSE,
                         alpha_level = .05/6)
-  
+  p_monte <- ANOVA_power(design, emm = TRUE, verbose = FALSE, 
+                         nsims = 1000, seed = 22042020,
+                         emm_p_adjust = "bonferroni")
+  if (length(grep("windows", Sys.info()["sysname"], ignore.case = TRUE))) {
+
   expect_equal(p$main_results$power, 15, tolerance = 0.1)
   expect_equal(p$pc_results$power,
                c(10.14,14.08,21.39,5.51,7.94,5.98),
@@ -62,6 +63,12 @@ test_that("4b", {
   expect_equal(p_monte$emm_results$power,
                p_bonf$emm_results$power,
                tolerance = 0.1)
+  } else{
+    expect_equal(p$main_results$power, 15, tolerance = 0.1)
+    expect_equal(p_monte$emm_results$power,
+                 p_bonf$emm_results$power,
+                 tolerance = 0.12)
+  }
 
   
 })

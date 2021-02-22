@@ -212,14 +212,14 @@ gen_anova = function(i,
   
 }
 
-mc.reset.stream = function (){
-  if (RNGkind()[1L] == "L'Ecuyer-CMRG") {
-    if (!exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE)) 
-      sample.int(1L)
-    assign("LEcuyer.seed", get(".Random.seed", envir = .GlobalEnv, 
-                               inherits = FALSE), envir = RNGenv)
-  }
-}
+#mc.reset.stream = function (){
+#  if (RNGkind()[1L] == "L'Ecuyer-CMRG") {
+#    if (!exists(".Random.seed", envir = .GlobalEnv, inherits = FALSE)) 
+#      sample.int(1L)
+#    assign("LEcuyer.seed", get(".Random.seed", envir = .GlobalEnv, 
+#                               inherits = FALSE), envir = RNGenv)
+#  }
+#}
 
 
 

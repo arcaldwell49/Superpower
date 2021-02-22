@@ -30,7 +30,7 @@ ANOVA_power(
 
 \item{nsims}{number of simulations to perform}
 
-\item{seed}{Set seed for reproducible results}
+\item{seed}{Set seed for reproducible results. WARNING: results will differ based on machine type (i.e., Windows will not match OSx)}
 
 \item{verbose}{Set to FALSE to not print results (default = TRUE)}
 

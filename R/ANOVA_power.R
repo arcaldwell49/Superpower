@@ -54,6 +54,7 @@
 #' @importFrom purrr map
 #' @importFrom dplyr bind_rows
 #' @import pbmcapply
+#' @import parallel
 #' @import emmeans
 #' @import ggplot2
 #' @export
@@ -275,6 +276,7 @@ ANOVA_power <- function(design_result,
         rm(".Random.seed", envir = .GlobalEnv)
       }
     })
+    
     mc.reset.stream()
     RNGkind("L'Ecuyer-CMRG")
     set.seed(seed)
