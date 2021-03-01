@@ -16,9 +16,7 @@
 \arguments{
 \item{x}{object of class \code{sim_result} as returned from one of the simulation functions in Superpower.}
 
-\item{...}{further arguments passed through, see description of return value
-for details.
-\code{\link{ANOVA_design}}.}
+\item{...}{further arguments passed through, see description of return value}
 
 \item{object}{Result returned from ANOVA_power (only applicable argument for confint)}
 

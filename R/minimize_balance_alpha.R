@@ -8,7 +8,7 @@
 #' alpha = alpha or Type 1 error that minimizes or balances combined error rates
 #' beta = beta or Type 2 error that minimizes or balances combined error rates
 #' objective = value that is the result of the minimization, either 0 (for balance) or the combined weighted error rates
-#'
+#' plot = 
 #' @examples
 #' ## Optimize power for a independent t-test, smallest effect of interest
 #' ## d = 0.5, 100 participants per condition
@@ -21,7 +21,7 @@
 #' @importFrom stats optimize
 #' @importFrom ggplot2 ggplot geom_line geom_point theme_minimal scale_x_continuous scale_y_continuous
 #' @export
-#'
+
 optimal_alpha <- function(power_function, 
                           costT1T2 = 1, 
                           priorH1H0 = 1, 
@@ -89,12 +89,13 @@ optimal_alpha <- function(power_function,
   }
 
   #Store results
-  invisible(list(alpha = res$minimum,
+ structure(list(alpha = res$minimum,
                  beta = 1 - eval(parse(text=paste(power_function))),
                  objective = res$objective,
-                 plot = w_c_alpha_plot
-  )
-  )
+                 plot = w_c_alpha_plot,
+                 power_function = power_function,
+                 method = "optimal_alpha"),
+            class = "opt_alpha")
 }
 
 

@@ -558,7 +558,6 @@ ANOVA_power <- function(design_result,
   }
   
   # Return results in list()
-  invisible()
   
   structure(list(sim_data = sim_data,
                  main_results = main_results,

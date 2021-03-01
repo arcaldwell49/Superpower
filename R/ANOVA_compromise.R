@@ -231,11 +231,14 @@ ANOVA_compromise <- function(design_result,
   #class(compromise_ANOVA) <- "compromise_ANOVA"
   #attr(compromise_ANOVA, aov_comp)
   
-  invisible(list(aov_comp = aov_comp,
+  structure(list(aov_comp = aov_comp,
                  aov_plotlist = aov_plotlist,
                  manova_comp = manova_comp,
                  manova_plotlist = manova_plotlist,
                  emmeans_comp = emmeans_comp,
-                 emm_plotlist = emm_plotlist))
+                 emm_plotlist = emm_plotlist,
+                 method = "ANOVA_compromise"
+                 ),
+            class = "opt_alpha")
   
 }

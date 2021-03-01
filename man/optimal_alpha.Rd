@@ -27,6 +27,7 @@ optimal_alpha(
 alpha = alpha or Type 1 error that minimizes or balances combined error rates
 beta = beta or Type 2 error that minimizes or balances combined error rates
 objective = value that is the result of the minimization, either 0 (for balance) or the combined weighted error rates
+plot =
 }
 \description{
 Justify your alpha level by minimizing or balancing Type 1 and Type 2 error rates.

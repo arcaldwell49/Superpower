@@ -51,7 +51,7 @@ test_that("error messages", {
   c = confint(p, parm = "manova_results")
   c = confint(p, parm = "pc_results")
   # Should produce error
-  expect_error(confint(p, parm = "anova"))
+  expect_error(confint(p, parm = "ancova"))
   expect_error(confint(p, parm = "emm_results"))
   
   design <- ANOVA_design(design = "2w*2w", n = 40, mu = c(1, 0, 1, 0), sd = 2, r = 0.8,

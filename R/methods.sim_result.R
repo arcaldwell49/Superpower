@@ -7,8 +7,6 @@
 #' @param level Argument for confint. Confidence level for binomial proportion confidence intervals (Wilson, 1927). Default is .95.
 #' @param parm Argument for confint. Select what results from the simulation to return with confidence intervals. Options currently include: main_results (default), pc_results, manova_results, and emm_results.
 #' @param ... further arguments passed through, see description of return value
-#'   for details.
-#'   \code{\link{ANOVA_design}}.
 #' @return
 #' \describe{
 #'   \item{\code{print}}{Prints short summary of the simulation result}
@@ -89,14 +87,20 @@ confint.sim_result = function(object,
   }
   if (is.element(return, 
                  c("main_results",
+                   "aov",
+                   "anova",
                    "pc_results",
+                   "pairwise",
                    "emm_results",
-                   "manova_results"
+                   "emmeans",
+                   "emm",
+                   "manova_results",
+                   "manova"
                  )) == FALSE ) {
     stop("return is not set to an exported table from ANOVA_power")
   }
   
-  if(return == "main_results"){
+  if(return == "main_results" || return == "aov" || return == "anova"){
     num_sims = x$nsims
     results = x$main_results
     results$lower.ci = mapply(function(x, y)
@@ -108,7 +112,7 @@ confint.sim_result = function(object,
       results$power,
       num_sims)
     results = results[c("power","lower.ci","upper.ci")]
-  } else if(return == "pc_results"){
+  } else if(return == "pc_results" || return == "pairwise"){
     num_sims = x$nsims
     results = x$pc_results
     results$lower.ci = mapply(function(x, y)
@@ -120,7 +124,7 @@ confint.sim_result = function(object,
       results$power,
       num_sims)
     results= results[c("power","lower.ci","upper.ci")]
-  } else if(return == "manova_results"){
+  } else if(return == "manova_results" || return == "manova"){
     num_sims = x$nsims
     results = x$manova_results
     if(is.null(results)){
@@ -135,7 +139,7 @@ confint.sim_result = function(object,
       results$power,
       num_sims)
     results= results[c("power","lower.ci","upper.ci")]
-  } else if(return == "emm_results"){
+  } else if(return == "emm_results" || return == "emm" || return == "emmeans"){
     num_sims = x$nsims
     results = x$emm_results
     if(is.null(results)){
