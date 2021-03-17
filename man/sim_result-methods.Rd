@@ -28,8 +28,14 @@
 \describe{
   \item{\code{print}}{Prints short summary of the simulation result}
   \item{\code{plot}}{Returns \code{meansplot} or a plot of the distribution of p-values depending on whether an exact or Monte Carlo simulation was performed}
+  \item{\code{confint}}{Returns confidence intervals for the selected result from ANOVA_power}
 }
 }
 \description{
 Methods defined for objects returned from the ANOVA_exact, ANOVA_exact2, and ANOVA_power functions.
 }
+\section{References}{
+
+Wilson, E. (1927). Probable Inference, the Law of Succession, and Statistical Inference. Journal of the American Statistical Association, 22(158), 209-212. doi:10.2307/2276774
+}
+

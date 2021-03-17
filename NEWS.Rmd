@@ -9,6 +9,8 @@ Updated `r format(Sys.time(), "%a %b %d %Y")`
 - Added morey_plot functions.
   - Plot the effect size (x-axis) at different sample sizes (facets) and at different alpha levels (color).
   - These plots are helpful in determining the sensitivity of statistical tests (t-test and F-test) across a range of effect sizes.
+- Added confint method for ANOVA_power produced objects
+  - Calculates confidence level for binomial proportion (# of results that are below alpha level) confidence intervals (Wilson, 1927).
 
 # Superpower 0.1.0
 - Added ANOVA_exact2 function as an extension of ANOVA_exact

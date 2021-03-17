@@ -294,7 +294,7 @@ ui <- dashboardPage(
                                                 min = 5, 
                                                 max = 99.99,
                                                 step = 1),
-                                   actionButton("sim_2", "Plot Power",
+                                   actionButton("sim_2", "Find Desired Power",
                                                 icon = icon("chart-line")),
                                    h3("Note: No sphercity correction"),
                                    conditionalPanel("input.sim_2 >=1",

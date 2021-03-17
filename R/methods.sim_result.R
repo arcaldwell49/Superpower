@@ -11,8 +11,10 @@
 #' \describe{
 #'   \item{\code{print}}{Prints short summary of the simulation result}
 #'   \item{\code{plot}}{Returns \code{meansplot} or a plot of the distribution of p-values depending on whether an exact or Monte Carlo simulation was performed}
+#'   \item{\code{confint}}{Returns confidence intervals for the selected result from ANOVA_power}
 #' }
-#' 
+#' @section References:
+#' Wilson, E. (1927). Probable Inference, the Law of Succession, and Statistical Inference. Journal of the American Statistical Association, 22(158), 209-212. doi:10.2307/2276774
 #' @name sim_result-methods
 
 
@@ -97,7 +99,7 @@ confint.sim_result = function(object,
                    "manova_results",
                    "manova"
                  )) == FALSE ) {
-    stop("return is not set to an exported table from ANOVA_power")
+    stop("object is not set to an exported table from ANOVA_power")
   }
   
   if(return == "main_results" || return == "aov" || return == "anova"){
@@ -153,7 +155,8 @@ confint.sim_result = function(object,
       ci_binom(x,y)[2]*100,
       results$power,
       num_sims)
-    results= results[c("power","lower.ci","upper.ci")]
+    results$contrast = x$emm_results$contrast
+    results= results[c("power","contrast","lower.ci","upper.ci")]
   } 
 
   return(results)
