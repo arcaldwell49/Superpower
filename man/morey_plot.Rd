@@ -36,7 +36,7 @@ morey_plot.ftest(
 
 \item{den_df}{Denominator degrees of freedom for an F-test.}
 
-\item{liberal_lambda}{Logical indictor of whether to use the liberal (cohen_f^2\*(num_df+den_df)) or conservative (cohen_f^2\*den_df) calculation of the noncentrality (lambda) parameter estimate. Default is FALSE.}
+\item{liberal_lambda}{Logical indicator of whether to use the liberal (cohen_f^2\*(num_df+den_df)) or conservative (cohen_f^2\*den_df) calculation of the noncentrality (lambda) parameter estimate. Default is FALSE.}
 }
 \value{
 Returns plots of effect size (x-axis)
@@ -53,7 +53,7 @@ Plot out power sensitivity plots for t or F tests
 
 \section{References}{
 
-Morey, R.D. (2020). Power and precision Why the push for replacing “power” with “precision” is misguided. Retrieved from: \url{https://medium.com/@richarddmorey/power-and-precision-47f644ddea5e}
+Morey, R.D. (2020). Power and precision Why the push for replacing “power” with “precision” is misguided. Retrieved from: \url{https://richarddmorey.medium.com/power-and-precision-47f644ddea5e}
 }
 
 \examples{

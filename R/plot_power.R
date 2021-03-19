@@ -11,7 +11,7 @@
 #' @param emm_comp Set the comparisons for estimated marginal means comparisons. This is a factor name (a), combination of factor names (a+b), or for simple effects a | sign is needed (a|b)
 #' @param verbose Set to FALSE to not print results (default = TRUE)
 #' @param exact2 Logical indicator for which \code{ANOVA_exact} function (\code{ANOVA_exact} or \code{ANOVA_exact2}) to use in the plots. Default is FALSE which uses \code{ANOVA_exact} which has sample size limitations.
-#' @param liberal_lambda Logical indictor of whether to use the liberal (cohen_f^2\*(num_df+den_df)) or conservative (cohen_f^2\*den_df) calculation of the noncentrality (lambda) parameter estimate. Default is FALSE.
+#' @param liberal_lambda Logical indicator of whether to use the liberal (cohen_f^2\*(num_df+den_df)) or conservative (cohen_f^2\*den_df) calculation of the noncentrality (lambda) parameter estimate. Default is FALSE.
 #' @return Returns plot with power curves for the ANOVA, and a dataframe with the summary data.
 #' 
 

@@ -19,7 +19,7 @@
 #' \item \code{plot} Option to automatically print plots. Default is \code{FALSE}.
 #' \item \code{alpha_level} Alpha level used to determine statistical significance. Default is .05.
 #' \item \code{correction} Option to set a correction for sphericity violations. Default is no correction. This can be set to "none", "GG" Greenhouse-Geisser, and "HF" Huynh-Feldt
-#' \item \code{liberal_lambda} Option to set a logical indictor of whether to use the liberal (cohen_f^2\*(num_df+den_df)) or conservative (cohen_f^2\*den_df) calculation of the noncentrality (lambda) parameter estimate. Default is FALSE.
+#' \item \code{liberal_lambda} Option to set a logical indicator of whether to use the liberal (cohen_f^2\*(num_df+den_df)) or conservative (cohen_f^2\*den_df) calculation of the noncentrality (lambda) parameter estimate. Default is FALSE.
 #' }
 #' 
 #' @note All options are saved in the global R \code{\link{options}} with prefix

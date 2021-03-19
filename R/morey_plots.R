@@ -6,7 +6,7 @@
 #' @param type string specifying the type of t test. Can be abbreviated. (t-test only)
 #' @param alternative one- or two-sided test. Can be abbreviated. (t-test only)
 #' @param alpha_level vector of alpha levels; default is 0.05
-#' @param liberal_lambda Logical indictor of whether to use the liberal (cohen_f^2\*(num_df+den_df)) or conservative (cohen_f^2\*den_df) calculation of the noncentrality (lambda) parameter estimate. Default is FALSE.
+#' @param liberal_lambda Logical indicator of whether to use the liberal (cohen_f^2\*(num_df+den_df)) or conservative (cohen_f^2\*den_df) calculation of the noncentrality (lambda) parameter estimate. Default is FALSE.
 #' @return Returns plots of effect size (x-axis) 
 #'
 #' @examples
@@ -25,7 +25,7 @@
 #' alternative = "one.sided")
 #' }
 #' @section References:
-#' Morey, R.D. (2020). Power and precision Why the push for replacing “power” with “precision” is misguided. Retrieved from: \url{https://medium.com/@richarddmorey/power-and-precision-47f644ddea5e}
+#' Morey, R.D. (2020). Power and precision Why the push for replacing “power” with “precision” is misguided. Retrieved from: \url{https://richarddmorey.medium.com/power-and-precision-47f644ddea5e}
 #' @importFrom stats power.t.test
 #' @importFrom tidyr expand_grid
 #' @importFrom magrittr %>%

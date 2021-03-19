@@ -70,7 +70,7 @@ head(exact_result$emm_results)
 
 The output also contains the `emmeans`-object on which these power calculations are based.
 By manipulating this object it is possible to tailor the power analyses to the contrasts desired for the planned study.
-That is, based on the dataset simulated with `ANOVA_exact()` we can write out the analysis code for `emmeans`-contrasts, just as we would if we were to analyse the empirical data, and use the output to perform the corresponding power analysis.
+That is, based on the dataset simulated with `ANOVA_exact()` we can write out the analysis code for `emmeans`-contrasts, just as we would if we were to analyze the empirical data, and use the output to perform the corresponding power analysis.
 
 # Customized `emmeans` contrasts
 

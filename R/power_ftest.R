@@ -7,11 +7,11 @@
 #' @param cohen_f Cohen's f effect size. Note: this is the sqrt(f2) if you are used to using pwr.f2.test
 #' @param alpha_level Alpha level used to determine statistical significance. 
 #' @param beta_level Type II error probability (power/100-1)
-#' @param liberal_lambda Logical indictor of whether to use the liberal (cohen_f^2\*(num_df+den_df)) or conservative (cohen_f^2\*den_df) calculation of the noncentrality (lambda) parameter estimate. Default is FALSE.
+#' @param liberal_lambda Logical indicator of whether to use the liberal (cohen_f^2\*(num_df+den_df)) or conservative (cohen_f^2\*den_df) calculation of the noncentrality (lambda) parameter estimate. Default is FALSE.
 #' 
 #' @return
 #' num_df = degrees of freedom for numerator, 
-#' den_df = degress of freedom for denominator, 
+#' den_df = degrees of freedom for denominator, 
 #' cohen_f = Cohen's f effect size, 
 #' alpha_level = Type 1 error probability, 
 #' beta_level = Type 2 error probability,
@@ -32,7 +32,7 @@
 #' liberal_lambda = FALSE)
 #' @section References:
 #' Cohen, J. (1988). Statistical power analysis for the behavioral sciences (2nd ed.). Hillsdale,NJ: Lawrence Erlbaum.
-#' Aberson, C. (2019). Applied Power Analysis for the Behaviorial Sciences (2nd ed.). New York,NY: Routledge.
+#' Aberson, C. (2019). Applied Power Analysis for the Behavioral Sciences (2nd ed.). New York,NY: Routledge.
 #' @importFrom stats uniroot optimize
 #' @export
 #'

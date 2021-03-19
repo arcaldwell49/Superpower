@@ -27,7 +27,7 @@ emmeans_power(x, ...)
 
 \item{alpha_level}{Alpha level used to determine statistical significance}
 
-\item{liberal_lambda}{Logical indictor of whether to use the liberal (cohen_f^2\*(num_df+den_df)) or conservative (cohen_f^2\*den_df) calculation of the noncentrality (lambda) parameter estimate. Default is FALSE.}
+\item{liberal_lambda}{Logical indicator of whether to use the liberal (cohen_f^2\*(num_df+den_df)) or conservative (cohen_f^2\*den_df) calculation of the noncentrality (lambda) parameter estimate. Default is FALSE.}
 }
 \value{
 Returns dataframe with simulation data (power and effect sizes!), anova results and simple effect results, plot of exact data, and alpha_level. Note: Cohen's f = sqrt(pes/1-pes) and the noncentrality parameter is = f^2*df(error)
@@ -54,15 +54,15 @@ Computes power based on t value and degrees of freedom for contrasts.
 \details{
 Note that calculation of power is based on the F- and t-ratio assuming
   two-sided testing. Thus, the function does not honor adjustments of the
-  testing procedure due to either one-sided testing (or two-one sideded tests)
+  testing procedure due to either one-sided testing (or two-one sided tests)
   or corrections for multiple comparisons via the \code{p.adjust} option in 
   \code{emmeans}.
   
   Power for one-sided tests can be calculated, if the means of the simulated
-  dataset are consistent with the directional hypothesis, by doubeling
+  dataset are consistent with the directional hypothesis, by doubling
   \code{alpha_level}. Similarly, power for Bonferroni-corrected contrasts can be
   calculated by adjusting \code{alpha_level} accordingly (see examples).
-  \code{...} Other arugments passed onto the function
+  \code{...} Other arguments passed onto the function
 }
 \examples{
 \dontrun{
