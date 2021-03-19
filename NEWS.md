@@ -3,7 +3,7 @@ NEWS
 
 Updated Fri Mar 19 2021
 
-# Superpower 0.1.1
+# Superpower 0.1.1 – “Black Canary”
 
   - Added morey\_plot functions.
       - Plot the effect size (x-axis) at different sample sizes (facets)

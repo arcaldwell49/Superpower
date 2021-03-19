@@ -5,7 +5,7 @@ output: github_document
 
 Updated `r format(Sys.time(), "%a %b %d %Y")`
 
-# Superpower 0.1.1
+# Superpower 0.1.1 -- "Black Canary"
 - Added morey_plot functions.
   - Plot the effect size (x-axis) at different sample sizes (facets) and at different alpha levels (color).
   - These plots are helpful in determining the sensitivity of statistical tests (t-test and F-test) across a range of effect sizes.
