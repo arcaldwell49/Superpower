@@ -40,7 +40,7 @@ Below are the results from a power analysis using a Monte Carlo simulation of a 
 
 `r paste(params$model)`
 
-The sample size was **`r params$n`** *per cell*.
+The sample size was **`r params$n`** *per cell* with a total number of observations of **`r params$n*length(diag(as.matrix(params$sigmatrix)))`**.
 
 **Correlation Matrix**
 ```{r echo = FALSE}
