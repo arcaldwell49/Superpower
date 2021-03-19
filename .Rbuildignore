@@ -31,3 +31,6 @@
 ^cran-comments\.md$
 ^.covrignore$
 
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
