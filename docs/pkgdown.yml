@@ -1,0 +1,10 @@
+pandoc: 2.7.3
+pkgdown: 1.6.1
+pkgdown_sha: ~
+articles:
+  compromise_power: compromise_power.html
+  emmeans_power: emmeans_power.html
+  intro_to_superpower: intro_to_superpower.html
+  more_anova_designs: more_anova_designs.html
+last_built: 2021-03-19T16:14Z
+
