@@ -1,7 +1,7 @@
 NEWS
 ================
 
-Updated Tue Jan 19 2021
+Updated Fri Mar 19 2021
 
 # Superpower 0.1.1
 
@@ -11,6 +11,11 @@ Updated Tue Jan 19 2021
       - These plots are helpful in determining the sensitivity of
         statistical tests (t-test and F-test) across a range of effect
         sizes.
+  - Added confint method for ANOVA\_power produced objects
+      - Calculates confidence level for binomial proportion (\# of
+        results that are below alpha level) confidence intervals
+        (Wilson, 1927).
+  - Minor changes to Shiny apps to fix glitches.
 
 # Superpower 0.1.0
 
