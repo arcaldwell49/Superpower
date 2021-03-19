@@ -158,9 +158,9 @@ shiny_power <- function(design_result,
   
   #Block this logical in Shiny context (at least for now)
   #to allow different n per condition:
-  if (grepl("w", design_result$design) == TRUE && length(unique(design_result$n)) > 1)  {
-    stop("Unequal group sizes are not possible when the design contains within factors")
-  }
+  #if (grepl("w", design_result$design) == TRUE && length(unique(design_result$n)) > 1)  {
+  #  stop("Unequal group sizes are not possible when the design contains within factors")
+  #}
   n_vec <- n # store vector n as n - this is because the code below uses n as a single number, so quick fix for legacy reasons
   n <- max(n) # now set n to max n for ANOVA_design function
   
@@ -211,7 +211,7 @@ shiny_power <- function(design_result,
   
   #Run MANOVA if within subject factor is included; otherwise ignored
   if (run_manova == TRUE) {
-    manova_result <- Superpower:::Anova_mlm_table(aov_result$Anova)
+    manova_result <- Superpower:::Anova_mlm_table(aov_result$Anova) #
   }
   ###############
   # 5. Set up dataframe for simulation results
@@ -350,7 +350,7 @@ shiny_power <- function(design_result,
     
     # Store MANOVA result if there are within subject factors
     if (run_manova == TRUE) {
-      manova_result <- Superpower:::Anova_mlm_table(aov_result$Anova)
+      manova_result <- Superpower:::Anova_mlm_table(aov_result$Anova) # ::: in Shiny
       manova_result$p.value <- p.adjust(manova_result$p.value, method = p_adjust)
     }
     
@@ -359,8 +359,8 @@ shiny_power <- function(design_result,
       y <- dataframe$y[which(dataframe$cond == paired_tests[2,j])]
       #this can be sped up by tweaking the functions that are loaded to only give p and dz
       ifelse(within_between[j] == 0,
-             t_test_res <- Superpower:::effect_size_d(x, y, alpha_level = alpha_level),
-             t_test_res <- Superpower:::effect_size_d_paired(x, y, alpha_level = alpha_level))
+             t_test_res <- Superpower:::effect_size_d(x, y, alpha_level = alpha_level), # ::: in Shiny
+             t_test_res <- Superpower:::effect_size_d_paired(x, y, alpha_level = alpha_level)) # ::: in Shiny
       paired_p[j] <- t_test_res$p_value
       paired_d[j] <- ifelse(within_between[j] == 0,
                             t_test_res$d,
@@ -508,11 +508,14 @@ shiny_power <- function(design_result,
       cat("Power and Cohen's f from estimated marginal means")
       cat("\n")
       print(emm_results, digits = 4)
+      cat("\n")
     }
     if (run_manova == TRUE) {
       cat("\n")
       cat("Within-Subject Factors Included: Check MANOVA Results")
+      cat("\n")
     }
+    cat("\n")
   }
   
   #Create empty value if no MANOVA results are included
@@ -521,7 +524,6 @@ shiny_power <- function(design_result,
   }
   
   # Return results in list()
-  invisible()
   
   structure(list(sim_data = sim_data,
                  main_results = main_results,
@@ -659,8 +661,7 @@ ui <- dashboardPage(
                 solidHeader = TRUE,
                 collapsible = FALSE,
                 strong("Current updates to Superpower's Power Shiny App"),
-                h5("Option for estimated marginal means added"),
-                h5("Now allows for unequal n input"))),
+                h5("Confidence intervals for simulation results now provided"))),
       # Design content
       tabItem(tabName = "design_tab",
               fluidRow(
@@ -1077,25 +1078,25 @@ values$label_list <- reactive({
   #Table output of ANOVA level effects; rownames needed
   output$tableMain <-  renderTable({
     req(input$sim)
-    values$power_result$main_results},
-    caption = "Power for ANOVA Effects",
+    confint(values$power_result, "aov")},
+    caption = "Power for ANOVA Effects with 95% Confidence Intervals",
     caption.placement = getOption("xtable.caption.placement", "top"),
     rownames = TRUE)
 
   #Table output of pairwise comparisons; rownames needed
   output$tablePC <-  renderTable({
     req(input$sim)
-    values$power_result$pc_result},
-    caption = "Power for Pairwise Comparisons with t-tests",
+    confint(values$power_result, "pairwise")},
+    caption = "Power for Pairwise Comparisons with 95% Confidence Intervals",
     caption.placement = getOption("xtable.caption.placement", "top"),
     rownames = TRUE)
 
   output$tableEMM <-  renderTable({
     req(input$sim)
-    values$power_result$emm_results},
-    caption = "Power for Estimated Marginal Means Comparisons",
+    confint(values$power_result, "emm")},
+    caption = "Power for Estimated Marginal Means Comparisons with 95% Confidence Intervals",
     caption.placement = getOption("xtable.caption.placement", "top"),
-    rownames = FALSE)
+    rownames = TRUE)
 
   #Create downloadable report in markdown TINYTEX NEEDS TO BE INSTALLED
   output$report <- downloadHandler(

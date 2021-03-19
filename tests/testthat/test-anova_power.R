@@ -42,9 +42,17 @@ test_that("error messages", {
                     emm = NULL, verbose = TRUE))
   test = hush(print(res))
   
+  
   # below run so coverage high when run on travis
   design <- ANOVA_design(design = "2w", n = 100, mu = c(0, 0.25), sd = 1, r = 0.5, plot = FALSE)
   p <- ANOVA_power(design, nsims = 10, verbose = FALSE)
+  # Should not produce error
+  c = confint(p)
+  c = confint(p, parm = "manova_results")
+  c = confint(p, parm = "pc_results")
+  # Should produce error
+  expect_error(confint(p, parm = "ancova"))
+  expect_error(confint(p, parm = "emm_results"))
   
   design <- ANOVA_design(design = "2w*2w", n = 40, mu = c(1, 0, 1, 0), sd = 2, r = 0.8,
                          labelnames = c("condition", "cheerful", "sad", "voice", "human", "robot"),
@@ -159,8 +167,10 @@ set.seed(644)
 p <- ANOVA_power(design,
                  alpha_level = 0.05,
                  nsims = 1000,
+                 emm=TRUE,
                  verbose = FALSE)
-
+c = confint(p, parm = "emm_results")
+expect_error(confint(p,parm = "manova_results"))
 
 pe <- ANOVA_exact(design, verbose = FALSE)
 
@@ -247,3 +257,8 @@ test_that("2x2 mixed long", {
   expect_equal(p$main_results$power[3]/100, p_inter, tolerance = .02)
   expect_equal(pe$main_results$power[3]/100, p$main_results$power[3]/100, tolerance = .02)
 })
+
+test_that("sim_result confint method", { 
+  
+  })
+

@@ -65,7 +65,7 @@ Morey, R.D. (2020). Power and precision Why the push for replacing “power” w
 # type will be paired and one sided
 # Set effect sizes with seq function (?seq)
 
-morey_plot.ttest(d = seq(.1,.5,.01),
+morey_plot.ttest(es = seq(.1,.5,.01),
 n = c(10,20),
 alpha_level = c(.05,.075),
 type = "paired",

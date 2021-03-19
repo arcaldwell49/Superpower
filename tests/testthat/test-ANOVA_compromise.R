@@ -10,8 +10,6 @@ test_that("error messages", {
 
   expect_error(ANOVA_compromise())
 
-
-
 })
 
 
@@ -34,6 +32,8 @@ test_that("example #1 2w",{
                          liberal_lambda = TRUE)
   expect_equal(res$aov_comp$alpha,.05101,tolerance = .001)
   expect_equal(res$aov_comp$beta,.05853,tolerance = .005) # larger error margin with liberal lambda
+  p = plot(res)
+  pr = print(res)
 })
 
 test_that("example #2 2w",{

@@ -55,7 +55,16 @@ ui <- dashboardPage(
                         h3("The t-test Tab"),
                         h5("In this tab the plots for a t-test can be created."),
                         h3("The F-test Tab"),
-                        h5("In this tab, the plots for a F-test (ANOVA) can be created.")
+                        h5("In this tab, the plots for a F-test (ANOVA) can be created."),
+                        strong("Calculating Degrees of Freedom"),
+                        h5("Setting numerator degrees of freedom"),
+                        helpText("For an ANOVA, it is the product of the number of levels (j) in each factor. For a main effect it would just be the number of levels minus 1.
+                                     $$df_1 = \\prod_{i=1}^k j_i-1$$"),
+                        h5("For example, a 2 x 2 ANOVA, would have a numerator degrees of freedom equal to 1, (2-1) x (2-1) for the interaction. The main effect(s) would also be equal to one (e.g., 2-1 = 1)."),
+                        h5("Setting the denominator degrees of freedom"),
+                        helpText("For an ANOVA, it is the total number of observations minus 1 and minus the sum of the numerator degrees of freedom.
+                                     $$df_2 = N-1-\\sum_{i=1}^{k} df1_i $$"),
+                        h5("In this case *N* would be the *total number of observations* in the sample. For example, if we have a 2 x 2 ANOVA with n=20 per group then N=80 and df=80-1-(1+1+1)=74")
                     ),              
                     box(
                         title = "NEWS",
@@ -168,8 +177,8 @@ ui <- dashboardPage(
                                          max = 10000,
                                          step = 1),
                             h5("Set numerator dfs"),
-                            helpText("For an ANOVA, it is the product of the number of levels in each factor:
-                                     $$df_1 = \\prod_{i=1}^k n_i-1$$"),
+                            helpText("For an ANOVA, it is the product of the number of levels in each factor (j) minus 1:
+                                     $$df_1 = \\prod_{i=1}^k j_i-1$$"),
                             uiOutput("f_numMatrix"),
                             numericInput("den_df", 
                                          label = "Number of denominator df(s)", 
@@ -178,8 +187,8 @@ ui <- dashboardPage(
                                          max = 10000,
                                          step = 1),
                             h5("Set denominator dfs"),
-                        helpText("For an ANOVA, it is the total number of observations minus the number of factors:
-                                     $$df_2 = N-k$$"),
+                        helpText("For an ANOVA, it is the total number of observations minus 1, and minus the sum of number of the numerator degrees of freedom:
+                                     $$df_2 = N-1-\\sum_{i=1}^{k} df1_i $$"),
                             uiOutput("f_denMatrix"),
                             hr(style = "border-top: 1px solid #000000;"),
                             h5('Set Alpha Level(s)'),

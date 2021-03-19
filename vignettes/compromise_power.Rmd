@@ -54,8 +54,7 @@ res <- optimal_alpha(power_function = "power.t.test(delta = .5, sd = 1, n=64,
                      sig.level = x, type='two.sample', 
                      alternative='two.sided')$power")
 
-res$alpha
-res$beta
+print(res)
 ```
 
 If a researcher is interested in effects of d = 0.5, and plans to collect 64 participants in each condition, setting the Type 1 error rate to `r 100*round(res$alpha,2)`% will increase the power to `r 100*round(1-res$beta,2)`%. If we would perform 2000 studies designed with these error rates, we would observe 100 Type 1 errors and 120 Type 2 errors. The combined error rate across 2000 studies is 220 instead of 250. In other words, by choosing a more optimal alpha level, we can design lines of research more efficiently, because we are less likely to make errors in our statistical inferences.
@@ -69,9 +68,7 @@ res2 <- optimal_alpha(power_function = "power.t.test(delta = .5, sd = 1, n=64,
                       sig.level = x, type='two.sample', 
                       alternative='two.sided')$power", error = "balance")
 
-res2$alpha
-res2$beta
-
+print(res2)
 ```
 
 Repeating our earlier example, the alpha level is `r 100*round(res2$alpha,2)`%, and the power is `r 100*round(1-res2$beta,2)`% (or the Type 2 error rate is `r 100*round(res2$beta,2)`%). Choosing to balance error rates is only slightly less efficient (`r 100*round(res2$alpha+res2$beta,4)`%) compared to minimizing error rates (`r 100*round(res$alpha+res$beta,4)`%). Power analysis is always a messy business due to the uncertainty in the true effect size, and I would not worry about the rather trivial difference between minimal error rates and balanced error rates, and the latter seems slightly more intuitive to explain, which might give this approach some practical benefits when we try to teach or explain the idea to others. 
@@ -88,9 +85,7 @@ res3 <- optimal_alpha(power_function = "power.t.test(delta = .5, sd = 1, n=100,
                       alternative='two.sided')$power",
                       error = "minimal", costT1T2 = 4)
 
-res3$alpha
-res3$beta
-
+print(res3)
 ```
 
 Now, the alpha level that minimized the *weighted* Type 1 and Type 2 error rates is `r 100*round(res3$alpha,2)`%. 
@@ -103,8 +98,7 @@ res4 <- optimal_alpha(power_function = "power.t.test(delta = .5, sd = 1, n=100,
                       alternative='two.sided')$power", 
                       error = "minimal", priorH1H0 = 2)
 
-res4$alpha
-res4$beta
+print(res4)
 ```
 
 If you think H1 is four times more likely to be true than H0, you need to worry less about Type 1 errors, and now the alpha that minimizes the weighted error rates is `r 100*round(res4$alpha,2)`%. It is always difficult to decide upon priors (unless you are Omniscient Jones) but even if you ignore them, you are making the decision that H1 and H0 are equally plausible. 
@@ -191,8 +185,7 @@ res5 = optimal_alpha("power.ftest(num_df = exact2_res$anova_table$num_df[3],
             alpha_level = x)$power/100",
             error = "minimal")
 
-res5$alpha
-res5$beta
+print(res5)
 ```
 
 Interestingly the values for alpha and beta are fairly close to the calculations we made with `power.ftest` alone.

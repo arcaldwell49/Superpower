@@ -4,25 +4,38 @@
 \alias{sim_result-methods}
 \alias{print.sim_result}
 \alias{plot.sim_result}
+\alias{confint.sim_result}
 \title{Methods for sim_result objects}
 \usage{
 \method{print}{sim_result}(x, ...)
 
 \method{plot}{sim_result}(x, ...)
+
+\method{confint}{sim_result}(object, parm = "main_results", level = 0.95, ...)
 }
 \arguments{
-\item{x}{object of class \code{sim_result} as returned from one of the simulation functions in Superpower}
+\item{x}{object of class \code{sim_result} as returned from one of the simulation functions in Superpower.}
 
-\item{...}{further arguments passed through, see description of return value
-for details.
-\code{\link{ANOVA_design}}.}
+\item{...}{further arguments passed through, see description of return value}
+
+\item{object}{Result returned from ANOVA_power (only applicable argument for confint)}
+
+\item{parm}{Argument for confint. Select what results from the simulation to return with confidence intervals. Options currently include: main_results (default), pc_results, manova_results, and emm_results.}
+
+\item{level}{Argument for confint. Confidence level for binomial proportion confidence intervals (Wilson, 1927). Default is .95.}
 }
 \value{
 \describe{
   \item{\code{print}}{Prints short summary of the simulation result}
   \item{\code{plot}}{Returns \code{meansplot} or a plot of the distribution of p-values depending on whether an exact or Monte Carlo simulation was performed}
+  \item{\code{confint}}{Returns confidence intervals for the selected result from ANOVA_power}
 }
 }
 \description{
 Methods defined for objects returned from the ANOVA_exact, ANOVA_exact2, and ANOVA_power functions.
 }
+\section{References}{
+
+Wilson, E. (1927). Probable Inference, the Law of Succession, and Statistical Inference. Journal of the American Statistical Association, 22(158), 209-212. doi:10.2307/2276774
+}
+
