@@ -9,3 +9,4 @@ temp
 *.RData
 .RData
 inst/doc
+docs

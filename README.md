@@ -1,4 +1,4 @@
-An Introduction to Superpower
+Superpower
 ================
 
 ![Sticker](https://raw.githubusercontent.com/arcaldwell49/Superpower/master/Sticker/Superpower2.PNG)

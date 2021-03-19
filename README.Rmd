@@ -1,7 +1,8 @@
 ---
 output:
   github_document:
-title: An Introduction to Superpower
+  html_document:
+title: Superpower
 editor_options: 
   chunk_output_type: console
 ---
@@ -181,7 +182,7 @@ design_result$cor_mat
 ```
 
 We should also check the covariance-variance matrix to ensure the `ANOVA_design` function working properly. 
-The variance should be the diagonal element while the off-diagonal elements should be equal to `covariance = correlation*variance` or $cov_{x,y}=\frac{\sum_{i=1}^{N}(x_{i}-\bar{x})(y_{i}-\bar{y})}{N-1}$. 
+The variance should be the diagonal element while the off-diagonal elements should be equal to `covariance = correlation*variance`. 
 In this case, it is identical to the correlation matrix because the variance is equal to 1.
 
 ```{r}
@@ -190,7 +191,7 @@ design_result$sigmatrix
 
 ### Specifying the sample size
 
-You can set the sample size **per condition** by setting a value for `n`. The assumption is that you will collect equal sample sizes in all conditions [expanding Superpower to allow different sample sizes in each group is a planned future option].
+You can set the sample size **per condition** by setting a value for `n`. The assumption is that you will collect equal sample sizes in all conditions, but `ANOVA_power` does allow unequal sample sizes *if* all factors are between subjects.
 
 This means for the `2w*2w` design above there are 80 participants/subjects with a total of 320 observations.
 
