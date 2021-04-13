@@ -1,17 +1,16 @@
 citHeader("To cite Superpower in publications, please use:")
 
-citEntry(entry = "Unpublished",
-  author = c(person(given = "Daniel",family = "Lakens",
-           role = c("aut"),
-           email = "D.Lakens@tue.nl"),
-           person(given = "Aaron",
-           family = "Caldwell",
-           role = c("aut", "cre"),
-           email = "arcaldwell49@gmail.com")
-           ),
-  title = "Simulation-Based Power-Analysis for Factorial ANOVA Designs",
-  year = "2019",
-  note = "Accepted for publication at Advances in Methods and Pratcies in Psychological Science",
-  url = "https://doi.org/10.31234/osf.io/baxsf",
-  textVersion = "Lakens, D., & Caldwell, A. R. (2019, May 28). Simulation-Based Power-Analysis for Factorial ANOVA Designs. PsyArXiv Preprints. https://doi.org/10.31234/osf.io/baxsf"
+citEntry(entry = "Article",
+  doi = {10.1177/2515245920951503},
+  url = {https://doi.org/10.1177/2515245920951503},
+  year = {2021},
+  month = jan,
+  publisher = {{SAGE} Publications},
+  volume = {4},
+  number = {1},
+  pages = {251524592095150},
+  author = {Daniël Lakens and Aaron R. Caldwell},
+  title = {Simulation-Based Power Analysis for Factorial Analysis of Variance Designs},
+  journal = {Advances in Methods and Practices in Psychological Science},
+  textVersion = "Lakens, D., & Caldwell, A. R. (2021). Simulation-Based Power Analysis for Factorial Analysis of Variance Designs. Advances in Methods and Practices in Psychological Science, 4(1), 251524592095150. https://doi.org/10.1177/2515245920951503 "
 )
