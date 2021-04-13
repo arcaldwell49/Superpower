@@ -2,7 +2,7 @@ citHeader("To cite Superpower in publications, please use:")
 
 citEntry(entry = "Article",
   doi = {10.1177/2515245920951503},
-  url = {https://doi.org/10.1177/2515245920951503},
+  url = {"https://doi.org/10.1177/2515245920951503"},
   year = {2021},
   month = jan,
   publisher = {{SAGE} Publications},
