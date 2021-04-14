@@ -47,9 +47,30 @@ design_result <- ANOVA_design(design = design,
                    sd = sd, 
                    labelnames = labelnames,
                    plot = TRUE)
-
+```
+```
 ANOVA_exact2(design_result,
             emm = TRUE) # Pairwise emmeans will automatically run
+            
+#> Power and Effect sizes for ANOVA tests
+#>             power partial_eta_squared cohen_f non_centrality
+#> condition 47.5236              0.0314    0.18         4.7651
+#> 
+#> Power and Effect sizes for pairwise comparisons (t-tests)
+#>                                   power effect_size
+#> p_condition_control_condition_cat 39.83        0.34
+#> p_condition_control_condition_dog 52.05        0.41
+#> p_condition_cat_condition_dog      6.10        0.06
+#> 
+#> Power and Effect sizes for estimated marginal means
+#>                            contrast  power partial_eta_squared cohen_f
+#> 1 condition_cat - condition_control 39.909           0.0196190 0.14146
+#> 2     condition_cat - condition_dog  6.107           0.0006611 0.02572
+#> 3 condition_control - condition_dog 52.148           0.0271902 0.16718
+#>   non_centrality
+#> 1        2.94171
+#> 2        0.09725
+#> 3        4.10867
 ```
 
 The result shows that you would have quite low power with 50 participants, both for the overall ANOVA (just below 50% power), as for the follow up comparisons (approximately 40% power for the control vs cat condition, just above 50% for the control vs dogs condition, and a really low power (around 6%, just above the Type 1 error rate of 5%) for the expected difference between cats and dogs. We can easily confirm the expected power for these simple comparisons using the pwr package.
@@ -77,9 +98,9 @@ pwr.t.test(d = 0.4/6.4,
 
 ```
 
-It is clear we would need to collect more participants in each group to increase our power. Let's plot a power curve across a range of sample sizes to see how much we need to increase the sample size. 
+It is clear we would need to collect more participants in each group to increase our power. We can plot a power curve across a range of sample sizes to see how much we need to increase the sample size. 
 
-```{r, fig.width=7, fig.height=4}
+```{r eval=FALSE}
 plot_power(design_result, min_n = 10, max_n = 250)
 ```
 
@@ -513,9 +534,10 @@ power_res$power_AB
 
 ```
 
-As we see, power is quite low with n = 20 per cell. Let's examine how the power increases, as the sample size per condition increases.
+As we see, power is quite low with n = 20 per cell. Again, we can see power across
 
-```{r, fig.width=7, fig.height=8}
+```{r, eval=FALSE}
+# Not Run
 plot_power(design_result, min_n = 20, max_n = 100)
 ```
 
@@ -570,7 +592,8 @@ knitr::kable(confint(power_result_vig_4, level = .98))
 
 We can use the exact simulation as well.
 
-```{r}
+```{r eval=FALSE}
+# Not Run
 ANOVA_exact2(design_result = design_result)
 ```
 

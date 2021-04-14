@@ -395,46 +395,21 @@ With the following optional input:
 2. `emm_model`: emmeans accepts univariate and multivariate models. This will only make a difference if a within-subjects factor is included in the design. Setting this option to "multivariate" will result in the "multivariate" model being selected for the emmeans comparisons. *This is generally recommended if you are interested in the estimated marginal means*.
 3. `emm_comp`: This selects the factors to be included for the emmeans. The default is to take the `frml2` object from the results of `ANOVA_design`, and with the default `contrast_type = "pairwise"`, results in *all* the pairwise comparisons being performed. The simple effects can also be performed by including | in the emm_comp formula. For example, with two factors (e.g., a and b) `emm_comp = "a+b"` results in all pairwise comparisons being performed while `emm_comp = "a|b"` will result in pairwise comparisons across all levels of a **within** each level of b. 
 
-
 The `plot_power` functions simulates power up to a sample size of `max_n` using the `ANOVA_exact` function. Although it is relatively fast, with large sample size to can take some time to produce. In the figure below we can easily see that, assuming the true pattern of means and standard deviations represents our expected pattern of means and standard deviations, we have 80% power around 135 participants per condition, 90% power around 180 participants per condition, and 95% power around 225 participants per condition.
 
 ```{r, fig.width=7, fig.height=4}
 plot_power(design_result, min_n = 10, max_n = 250)
 ```
 
-Because the true pattern of means is always unknown, it is sensible to examine the power across a range of scenarios. For example, is the difference in means is somewhat smaller,because the means are 24 and 26 instead of 24 and 26.2, we can compare the power curve above with the power curve for a slightly less optimistic scenario (where the true effect size is slightly smaller).
+Because the true pattern of means is always unknown, it is sensible to examine the power across a range of scenarios. 
 
-```{r, fig.width=7, fig.height=4}
-design_result <- ANOVA_design(design = "2b",
-                   n = 180, 
-                   mu = c(24, 26), 
-                   sd = 6.4, 
-                   labelnames = c("condition", "control", "pet"),
-                   plot = FALSE)
-
-plot_power(design_result, max_n = 250)
-```
-
-It could be that in addition to a slightly smaller effect size, the standard deviation is slightly larger than we expected as well. This will reduce the power even further, and is thus an even less optimistic scenario. Let's assume the true standard deviation is 6.8 instead of 6.4.
-
-```{r, fig.width=7, fig.height=4}
-design_result <- ANOVA_design(design = "2b",
-                   n = 180, 
-                   mu = c(24, 26), 
-                   sd = 6.8, 
-                   labelnames = c("condition", "control", "pet"),
-                   plot = FALSE)
-
-plot_power(design_result, min_n = 10, max_n = 250)
-```
-
-As these different plots make clear, your study never really has a known statistical power. Because the true effect size (i.e., the pattern of means and standard deviations) is unknown, the true power of your study is unknown. A study has 90% power *assuming a specific effect size*, but if the effect size is different than what you expected, the true power can be either higher or lower. We should therefore always talk about the 'expected' power when we do an a-priori power analysis, and provide a good justification for our expectations (i.e., for the pattern of means, standard deviations, and correlations for within designs).
+As these different plots can make clear, your study never really has a known statistical power. Because the true effect size (i.e., the pattern of means and standard deviations) is unknown, the true power of your study is unknown. A study has 90% power *assuming a specific effect size*, but if the effect size is different than what you expected, the true power can be either higher or lower. We should therefore always talk about the 'expected' power when we do an a-priori power analysis, and provide a good justification for our expectations (i.e., for the pattern of means, standard deviations, and correlations for within designs).
 
 ## Power-Sensitivity Relationship: Morey Plots
 
 There is a direct relationship between standardized effect sizes and statistical power. Sometimes it may be useful to see the relationship between the effect size and power. That is where the `morey_plot` functions come in handy. In essence, you can plot statistical power (y-axis) as a function of effect size (x-axis; Cohen's *f* or Cohen's *d*). In addition, multiple sample sizes (facets) and alpha levels (color). For a *t*-test, the type of test (paired, one-sample, or two-sample) and alternative hypothesis (one.sided or two.sided) can be provided.
 
-```{r, fig.width=7, fig.height=4}
+```{r morey1, fig.width=7, fig.height=4}
 morey_plot.ttest(
   es = seq(.1, .5, .01),
   n = c(10, 20),
@@ -446,7 +421,7 @@ morey_plot.ttest(
 
 For the *F*-test, the options are a little different. First, instead of sample size, the numerator and denominator degrees of freedom must be provided (multiple values can be provided for either or both). Second, the effect size is now in the form of Cohen's *f*. Third, there is no type or alternative argument. Lastly, there is the option to set the non-centrality argument to a "liberal" lambda; this has a minuscule effect on power but I suggest that the liberal_lambda argument be set to FALSE.
 
-```{r, fig.width=7, fig.height=6}
+```{r morey2, fig.width=7, fig.height=6}
 morey_plot.ftest(
   es = seq(.1, .5, .01),
   num_df = c(1, 2),

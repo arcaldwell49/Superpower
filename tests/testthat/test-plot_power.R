@@ -40,6 +40,7 @@ test_that("error messages", {
 })
 
 test_that("test multi functions", {
+  skip_on_cran()
   design <- ANOVA_design(design = "2b*4w",
                          n = 70,
                          mu = c(0,0,0,0,0.5,0.5,0.5,0.5),

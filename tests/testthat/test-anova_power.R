@@ -258,7 +258,5 @@ test_that("2x2 mixed long", {
   expect_equal(pe$main_results$power[3]/100, p$main_results$power[3]/100, tolerance = .02)
 })
 
-test_that("sim_result confint method", { 
-  
-  })
+
 

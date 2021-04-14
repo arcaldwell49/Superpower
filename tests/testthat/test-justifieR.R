@@ -26,6 +26,7 @@ sig.level = x, type = 'two.sample', alternative = 'two.sided')$power",
   expect_equal(res$alpha, .05101, tolerance = .001)
   expect_equal(res$beta, .05853, tolerance = .001)
   
+  skip_on_cran()
   res <- optimal_alpha(power_function = "power.t.test(delta = .656, sd = 1, n = 50,
 sig.level = x, type = 'two.sample', alternative = 'two.sided')$power",
                        plot = FALSE,
