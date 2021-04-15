@@ -178,7 +178,7 @@ Do not use to calculate &quot;observed power&quot; for empirical datasets
     </tr>
     <tr>
       <th>liberal_lambda</th>
-      <td><p>Logical indictor of whether to use the liberal (cohen_f^2\*(num_df+den_df)) or conservative (cohen_f^2\*den_df) calculation of the noncentrality (lambda) parameter estimate. Default is FALSE.</p></td>
+      <td><p>Logical indicator of whether to use the liberal (cohen_f^2\*(num_df+den_df)) or conservative (cohen_f^2\*den_df) calculation of the noncentrality (lambda) parameter estimate. Default is FALSE.</p></td>
     </tr>
     </table>
 
@@ -204,14 +204,14 @@ Do not use to calculate &quot;observed power&quot; for empirical datasets
 
     <p>Note that calculation of power is based on the F- and t-ratio assuming
   two-sided testing. Thus, the function does not honor adjustments of the
-  testing procedure due to either one-sided testing (or two-one sideded tests)
+  testing procedure due to either one-sided testing (or two-one sided tests)
   or corrections for multiple comparisons via the <code>p.adjust</code> option in 
   <code>emmeans</code>.</p>  
 <p>Power for one-sided tests can be calculated, if the means of the simulated
-  dataset are consistent with the directional hypothesis, by doubeling
+  dataset are consistent with the directional hypothesis, by doubling
   <code>alpha_level</code>. Similarly, power for Bonferroni-corrected contrasts can be
   calculated by adjusting <code>alpha_level</code> accordingly (see examples).
-  <code>...</code> Other arugments passed onto the function</p>
+  <code>...</code> Other arguments passed onto the function</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Hoenig, J. M., &amp; Heisey, D. M. (2001). The Abuse of Power. The American Statistician, 55(1), 19–24. https://doi.org/10.1198/000313001300339897</p>

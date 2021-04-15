@@ -94,7 +94,7 @@
       <h1 data-toc-skip>More ANOVA designs</h1>
                         <h4 class="author">Aaron R. Caldwell</h4>
             
-            <h4 class="date">2021-03-19</h4>
+            <h4 class="date">2021-04-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/arcaldwell49/Superpower/blob/master/vignettes/more_anova_designs.Rmd"><code>vignettes/more_anova_designs.Rmd</code></a></small>
       <div class="hidden name"><code>more_anova_designs.Rmd</code></div>
@@ -118,7 +118,7 @@
 <span class="fu"><a href="../reference/Superpower_options.html">Superpower_options</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">FALSE</span>,
                    plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="va">nsims</span> <span class="op">=</span> <span class="fl">250</span></code></pre></div>
-<p>In this vignette we will quickly demonstrate a few variations on ANOVA designs and how to implement them in <code>Superpower</code>. To see even more designs, please check out our <a href="aaroncaldwell.us/SuperpowerBook">book</a></p>
+<p>In this vignette we will quickly demonstrate a few variations on ANOVA designs and how to implement them in <code>Superpower</code>. To see even more designs, please check out our <a href="https://aaroncaldwell.us/SuperpowerBook/">book</a></p>
 <div id="three-between-subject-conditions" class="section level1">
 <h1 class="hasAnchor">
 <a href="#three-between-subject-conditions" class="anchor"></a>Three between subject conditions</h1>
@@ -137,29 +137,28 @@
                    labelnames <span class="op">=</span> <span class="va">labelnames</span>,
                    plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="more_anova_designs_files/figure-html/unnamed-chunk-2-1.png" width="672"></p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>,
-            emm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Pairwise emmeans will automatically run</span>
-<span class="co">#&gt; Power and Effect sizes for ANOVA tests</span>
-<span class="co">#&gt;             power partial_eta_squared cohen_f non_centrality</span>
-<span class="co">#&gt; condition 47.5236              0.0314    0.18         4.7651</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Power and Effect sizes for pairwise comparisons (t-tests)</span>
-<span class="co">#&gt;                                   power effect_size</span>
-<span class="co">#&gt; p_condition_control_condition_cat 39.83        0.34</span>
-<span class="co">#&gt; p_condition_control_condition_dog 52.05        0.41</span>
-<span class="co">#&gt; p_condition_cat_condition_dog      6.10        0.06</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Power and Effect sizes for estimated marginal means</span>
-<span class="co">#&gt;                            contrast  power partial_eta_squared cohen_f</span>
-<span class="co">#&gt; 1 condition_cat - condition_control 39.909           0.0196190 0.14146</span>
-<span class="co">#&gt; 2     condition_cat - condition_dog  6.107           0.0006611 0.02572</span>
-<span class="co">#&gt; 3 condition_control - condition_dog 52.148           0.0271902 0.16718</span>
-<span class="co">#&gt;   non_centrality</span>
-<span class="co">#&gt; 1        2.94171</span>
-<span class="co">#&gt; 2        0.09725</span>
-<span class="co">#&gt; 3        4.10867</span></code></pre></div>
+<pre><code><a href="../reference/ANOVA_exact.html">ANOVA_exact2(design_result,
+            emm = TRUE) # Pairwise emmeans will automatically run
+            
+#&gt; Power and Effect sizes for ANOVA tests
+#&gt;             power partial_eta_squared cohen_f non_centrality
+#&gt; condition 47.5236              0.0314    0.18         4.7651
+#&gt; 
+#&gt; Power and Effect sizes for pairwise comparisons (t-tests)
+#&gt;                                   power effect_size
+#&gt; p_condition_control_condition_cat 39.83        0.34
+#&gt; p_condition_control_condition_dog 52.05        0.41
+#&gt; p_condition_cat_condition_dog      6.10        0.06
+#&gt; 
+#&gt; Power and Effect sizes for estimated marginal means
+#&gt;                            contrast  power partial_eta_squared cohen_f
+#&gt; 1 condition_cat - condition_control 39.909           0.0196190 0.14146
+#&gt; 2     condition_cat - condition_dog  6.107           0.0006611 0.02572
+#&gt; 3 condition_control - condition_dog 52.148           0.0271902 0.16718
+#&gt;   non_centrality
+#&gt; 1        2.94171
+#&gt; 2        0.09725
+#&gt; 3        4.10867</a></code></pre>
 <p>The result shows that you would have quite low power with 50 participants, both for the overall ANOVA (just below 50% power), as for the follow up comparisons (approximately 40% power for the control vs cat condition, just above 50% for the control vs dogs condition, and a really low power (around 6%, just above the Type 1 error rate of 5%) for the expected difference between cats and dogs. We can easily confirm the expected power for these simple comparisons using the pwr package. For our example, Cohen’s d (the standardized mean difference) is 2.2/6.4, or d = 0.34375 for the difference between the control condition and cats, 2.6/6.4 of d = 0.40625 for the difference between the control condition and dogs, and 0.4/6.4 or d = 0.0625 for the difference between cats and dogs as pets.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/heliosdrm/pwr">pwr</a></span><span class="op">)</span>
@@ -183,7 +182,7 @@
            type<span class="op">=</span><span class="st">"two.sample"</span>,
            alternative<span class="op">=</span><span class="st">"two.sided"</span><span class="op">)</span><span class="op">$</span><span class="va">power</span>
 <span class="co">#&gt; [1] 0.06104044</span></code></pre></div>
-<p>It is clear we would need to collect more participants in each group to increase our power. Let’s plot a power curve across a range of sample sizes to see how much we need to increase the sample size.</p>
+<p>It is clear we would need to collect more participants in each group to increase our power. We can plot a power curve across a range of sample sizes to see how much we need to increase the sample size.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plot_power.html">plot_power</a></span><span class="op">(</span><span class="va">design_result</span>, min_n <span class="op">=</span> <span class="fl">10</span>, max_n <span class="op">=</span> <span class="fl">250</span><span class="op">)</span></code></pre></div>
 <p>We see 134 participants give us around 90% power for the ANOVA. But we should also check the power for the comparison of the control condition and the cat condition.</p>
@@ -448,7 +447,7 @@
         param <span class="op">=</span> <span class="st">"main_results"</span>,
         level <span class="op">=</span> <span class="fl">.98</span><span class="op">)</span>
 <span class="co">#&gt;             power lower.ci upper.ci</span>
-<span class="co">#&gt; anova_speed  96.4 93.30096 98.09467</span></code></pre></div>
+<span class="co">#&gt; anova_speed  97.2 94.33422 98.63719</span></code></pre></div>
 <p>The results of the simulation are indeed very close to 96.9% (the confidence intervals from the simulation include ). We can see this is in line with the power estimate from Gpower:</p>
 <p><img src="screenshots/gpower_12.png" width="600px"></p>
 <p>We can even check the calculation of Cohen’s f SPSS style in GPower. We take the GPower settings as illustrated above. We click the ‘Options’ button, and check the radio button next to ‘As in SPSS’. Click ok, and you will notice that the ‘Corr among rep measures’ field has disappeared. The correlation does not need to be entered separately, but is incorporated in Cohen’s f. The value of Cohen’s f, which was 0.25, has changed into 0.7024394. This is the SPSS equivalent. The value is much larger. This value, and it’s corresponding partial eta-squared, incorporate the correlation between observations.</p>
@@ -496,8 +495,8 @@
 <span class="co">#&gt;                contrast power partial_eta_squared   cohen_f non_centrality</span>
 <span class="co">#&gt; 1 a_a1 b_b1 - a_a2 b_b1 63.76           1.127e-01 3.563e-01      5.587e+00</span>
 <span class="co">#&gt; 2 a_a1 b_b1 - a_a1 b_b2 37.28           5.970e-02 2.520e-01      2.794e+00</span>
-<span class="co">#&gt; 3 a_a1 b_b1 - a_a2 b_b2  5.00           6.113e-34 2.472e-17      2.690e-32</span>
-<span class="co">#&gt; 4 a_a2 b_b1 - a_a1 b_b2  5.00           6.113e-34 2.472e-17      2.690e-32</span>
+<span class="co">#&gt; 3 a_a1 b_b1 - a_a2 b_b2  5.00           2.516e-33 5.016e-17      1.107e-31</span>
+<span class="co">#&gt; 4 a_a2 b_b1 - a_a1 b_b2  5.00           8.049e-33 8.972e-17      3.542e-31</span>
 <span class="co">#&gt; 5 a_a2 b_b1 - a_a2 b_b2 37.28           5.970e-02 2.520e-01      2.794e+00</span>
 <span class="co">#&gt; 6 a_a1 b_b2 - a_a2 b_b2 63.76           1.127e-01 3.563e-01      5.587e+00</span></code></pre></div>
 <p>We can simulate the same Two-Way ANOVA increasing the correlation to 0.7. Power should be 98.98% for the two-way interaction.</p>
@@ -538,8 +537,8 @@
 <span class="co">#&gt;                contrast power partial_eta_squared   cohen_f non_centrality</span>
 <span class="co">#&gt; 1 a_a1 b_b1 - a_a2 b_b1 84.72           1.747e-01 4.600e-01      9.312e+00</span>
 <span class="co">#&gt; 2 a_a1 b_b1 - a_a1 b_b2 37.28           5.970e-02 2.520e-01      2.794e+00</span>
-<span class="co">#&gt; 3 a_a1 b_b1 - a_a2 b_b2  5.00           2.846e-32 1.687e-16      1.252e-30</span>
-<span class="co">#&gt; 4 a_a2 b_b1 - a_a1 b_b2  5.00           1.933e-32 1.390e-16      8.505e-31</span>
+<span class="co">#&gt; 3 a_a1 b_b1 - a_a2 b_b2  5.00           3.505e-33 5.920e-17      1.542e-31</span>
+<span class="co">#&gt; 4 a_a2 b_b1 - a_a1 b_b2  5.00           1.180e-32 1.086e-16      5.194e-31</span>
 <span class="co">#&gt; 5 a_a2 b_b1 - a_a2 b_b2 37.28           5.970e-02 2.520e-01      2.794e+00</span>
 <span class="co">#&gt; 6 a_a1 b_b2 - a_a2 b_b2 84.72           1.747e-01 4.600e-01      9.312e+00</span></code></pre></div>
 </div>
@@ -754,9 +753,10 @@ Vizualization for the expected means and confidence intervals for a crossover in
 <span class="co">#&gt; [1] 44.86306</span>
 <span class="va">power_res</span><span class="op">$</span><span class="va">power_AB</span>
 <span class="co">#&gt; [1] 64.34127</span></code></pre></div>
-<p>As we see, power is quite low with n = 20 per cell. Let’s examine how the power increases, as the sample size per condition increases.</p>
+<p>As we see, power is quite low with n = 20 per cell. Again, we can see power across</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/plot_power.html">plot_power</a></span><span class="op">(</span><span class="va">design_result</span>, min_n <span class="op">=</span> <span class="fl">20</span>, max_n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="co"># Not Run</span>
+<span class="fu"><a href="../reference/plot_power.html">plot_power</a></span><span class="op">(</span><span class="va">design_result</span>, min_n <span class="op">=</span> <span class="fl">20</span>, max_n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div id="two-by-two-anova-within-design" class="section level2">
@@ -806,41 +806,28 @@ Vizualization for the expected means and confidence intervals for a crossover in
 <tbody>
 <tr class="odd">
 <td align="left">anova_A</td>
-<td align="right">26.8</td>
-<td align="right">21.69113</td>
-<td align="right">32.61105</td>
+<td align="right">32.4</td>
+<td align="right">26.90297</td>
+<td align="right">38.42972</td>
 </tr>
 <tr class="even">
 <td align="left">anova_B</td>
-<td align="right">64.0</td>
-<td align="right">57.87950</td>
-<td align="right">69.69677</td>
+<td align="right">64.4</td>
+<td align="right">58.28779</td>
+<td align="right">70.07637</td>
 </tr>
 <tr class="odd">
 <td align="left">anova_A:B</td>
-<td align="right">26.0</td>
-<td align="right">20.95502</td>
-<td align="right">31.77138</td>
+<td align="right">23.6</td>
+<td align="right">18.76067</td>
+<td align="right">29.23837</td>
 </tr>
 </tbody>
 </table>
 <p>We can use the exact simulation as well.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span>design_result <span class="op">=</span> <span class="va">design_result</span><span class="op">)</span>
-<span class="co">#&gt; Power and Effect sizes for ANOVA tests</span>
-<span class="co">#&gt;       power partial_eta_squared cohen_f non_centrality</span>
-<span class="co">#&gt; A   26.1479              0.0922  0.3187         1.9302</span>
-<span class="co">#&gt; B   62.6897              0.2336  0.5521         5.7905</span>
-<span class="co">#&gt; A:B 26.1479              0.0922  0.3187         1.9302</span>
-<span class="co">#&gt; </span>
-<span class="co">#&gt; Power and Effect sizes for pairwise comparisons (t-tests)</span>
-<span class="co">#&gt;                       power effect_size</span>
-<span class="co">#&gt; p_A_a1_B_b1_A_a1_B_b2 26.92       -0.32</span>
-<span class="co">#&gt; p_A_a1_B_b1_A_a2_B_b1 39.70        0.40</span>
-<span class="co">#&gt; p_A_a1_B_b1_A_a2_B_b2  5.00        0.00</span>
-<span class="co">#&gt; p_A_a1_B_b2_A_a2_B_b1 64.23        0.55</span>
-<span class="co">#&gt; p_A_a1_B_b2_A_a2_B_b2 13.60        0.20</span>
-<span class="co">#&gt; p_A_a2_B_b1_A_a2_B_b2 76.52       -0.63</span></code></pre></div>
+<code class="sourceCode R"><span class="co"># Not Run</span>
+<span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span>design_result <span class="op">=</span> <span class="va">design_result</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
   </div>
