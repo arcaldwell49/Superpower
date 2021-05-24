@@ -46,7 +46,8 @@ test_that("power_standardized_alpha",{
   res <- power_standardized_alpha(power_function = "power.t.test(delta = .3,
   sd = 1, n = x,  sig.level = a_stan, type = 'two.sample', 
                                   alternative = 'two.sided')$power", 
-                                  power = 0.9, alpha = 0.05)
+                                  power = 0.9, alpha = 0.05,
+  verbose = FALSE)
   expect_equal(res$N, 265)
   
 })
@@ -55,7 +56,8 @@ test_that("power_standardized_alpha",{
   res <- power_standardized_alpha(power_function = "power.t.test(delta = .3,
   sd = 1, n = x,  sig.level = a_stan, type = 'two.sample', 
                                   alternative = 'two.sided')$power", 
-                                  power = 0.9, alpha = 0.05)
+                                  power = 0.9, alpha = 0.05,
+  verbose = FALSE)
   expect_equal(res$N, 265)
   
 })

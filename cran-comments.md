@@ -10,4 +10,6 @@
 
 ## Other Comments
 
+* This is an "emergency" patch to resolve errors produced on linux devel tests.
 * Author names in the DESCRIPTION are correctly spelled (i.e., Lakens and Caldwell)
+

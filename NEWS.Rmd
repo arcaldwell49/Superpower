@@ -5,6 +5,9 @@ output: github_document
 
 Updated `r format(Sys.time(), "%a %b %d %Y")`
 
+# Superpower 0.1.2 -- "Rex Splode"
+- Minor fixes to power_standardized_alpha to keep Superpower on CRAN
+
 # Superpower 0.1.1 -- "Black Canary"
 - Added morey_plot functions.
   - Plot the effect size (x-axis) at different sample sizes (facets) and at different alpha levels (color).
