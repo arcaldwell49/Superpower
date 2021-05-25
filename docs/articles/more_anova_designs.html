@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Superpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -88,13 +88,13 @@
 
       
 
-      </header><script src="more_anova_designs_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="more_anova_designs_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>More ANOVA designs</h1>
                         <h4 class="author">Aaron R. Caldwell</h4>
             
-            <h4 class="date">2021-04-15</h4>
+            <h4 class="date">2021-05-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/arcaldwell49/Superpower/blob/master/vignettes/more_anova_designs.Rmd"><code>vignettes/more_anova_designs.Rmd</code></a></small>
       <div class="hidden name"><code>more_anova_designs.Rmd</code></div>
@@ -105,10 +105,6 @@
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://aaroncaldwell.us/SuperpowerBook/">Superpower</a></span><span class="op">)</span>
-<span class="co">#&gt; Registered S3 methods overwritten by 'tibble':</span>
-<span class="co">#&gt;   method     from  </span>
-<span class="co">#&gt;   format.tbl pillar</span>
-<span class="co">#&gt;   print.tbl  pillar</span>
 <span class="co">#&gt; Registered S3 methods overwritten by 'lme4':</span>
 <span class="co">#&gt;   method                          from</span>
 <span class="co">#&gt;   cooks.distance.influence.merMod car </span>
@@ -447,7 +443,7 @@
         param <span class="op">=</span> <span class="st">"main_results"</span>,
         level <span class="op">=</span> <span class="fl">.98</span><span class="op">)</span>
 <span class="co">#&gt;             power lower.ci upper.ci</span>
-<span class="co">#&gt; anova_speed  97.2 94.33422 98.63719</span></code></pre></div>
+<span class="co">#&gt; anova_speed  94.4 90.82093 96.63524</span></code></pre></div>
 <p>The results of the simulation are indeed very close to 96.9% (the confidence intervals from the simulation include ). We can see this is in line with the power estimate from Gpower:</p>
 <p><img src="screenshots/gpower_12.png" width="600px"></p>
 <p>We can even check the calculation of Cohen’s f SPSS style in GPower. We take the GPower settings as illustrated above. We click the ‘Options’ button, and check the radio button next to ‘As in SPSS’. Click ok, and you will notice that the ‘Corr among rep measures’ field has disappeared. The correlation does not need to be entered separately, but is incorporated in Cohen’s f. The value of Cohen’s f, which was 0.25, has changed into 0.7024394. This is the SPSS equivalent. The value is much larger. This value, and it’s corresponding partial eta-squared, incorporate the correlation between observations.</p>
@@ -495,8 +491,8 @@
 <span class="co">#&gt;                contrast power partial_eta_squared   cohen_f non_centrality</span>
 <span class="co">#&gt; 1 a_a1 b_b1 - a_a2 b_b1 63.76           1.127e-01 3.563e-01      5.587e+00</span>
 <span class="co">#&gt; 2 a_a1 b_b1 - a_a1 b_b2 37.28           5.970e-02 2.520e-01      2.794e+00</span>
-<span class="co">#&gt; 3 a_a1 b_b1 - a_a2 b_b2  5.00           2.516e-33 5.016e-17      1.107e-31</span>
-<span class="co">#&gt; 4 a_a2 b_b1 - a_a1 b_b2  5.00           8.049e-33 8.972e-17      3.542e-31</span>
+<span class="co">#&gt; 3 a_a1 b_b1 - a_a2 b_b2  5.00           1.308e-33 3.617e-17      5.757e-32</span>
+<span class="co">#&gt; 4 a_a2 b_b1 - a_a1 b_b2  5.00           5.735e-33 7.573e-17      2.523e-31</span>
 <span class="co">#&gt; 5 a_a2 b_b1 - a_a2 b_b2 37.28           5.970e-02 2.520e-01      2.794e+00</span>
 <span class="co">#&gt; 6 a_a1 b_b2 - a_a2 b_b2 63.76           1.127e-01 3.563e-01      5.587e+00</span></code></pre></div>
 <p>We can simulate the same Two-Way ANOVA increasing the correlation to 0.7. Power should be 98.98% for the two-way interaction.</p>
@@ -537,8 +533,8 @@
 <span class="co">#&gt;                contrast power partial_eta_squared   cohen_f non_centrality</span>
 <span class="co">#&gt; 1 a_a1 b_b1 - a_a2 b_b1 84.72           1.747e-01 4.600e-01      9.312e+00</span>
 <span class="co">#&gt; 2 a_a1 b_b1 - a_a1 b_b2 37.28           5.970e-02 2.520e-01      2.794e+00</span>
-<span class="co">#&gt; 3 a_a1 b_b1 - a_a2 b_b2  5.00           3.505e-33 5.920e-17      1.542e-31</span>
-<span class="co">#&gt; 4 a_a2 b_b1 - a_a1 b_b2  5.00           1.180e-32 1.086e-16      5.194e-31</span>
+<span class="co">#&gt; 3 a_a1 b_b1 - a_a2 b_b2  5.00           5.747e-36 2.397e-18      2.529e-34</span>
+<span class="co">#&gt; 4 a_a2 b_b1 - a_a1 b_b2  5.00           6.646e-33 8.152e-17      2.924e-31</span>
 <span class="co">#&gt; 5 a_a2 b_b1 - a_a2 b_b2 37.28           5.970e-02 2.520e-01      2.794e+00</span>
 <span class="co">#&gt; 6 a_a1 b_b2 - a_a2 b_b2 84.72           1.747e-01 4.600e-01      9.312e+00</span></code></pre></div>
 </div>
@@ -806,21 +802,21 @@ Vizualization for the expected means and confidence intervals for a crossover in
 <tbody>
 <tr class="odd">
 <td align="left">anova_A</td>
-<td align="right">32.4</td>
-<td align="right">26.90297</td>
-<td align="right">38.42972</td>
+<td align="right">22.8</td>
+<td align="right">18.03413</td>
+<td align="right">28.38912</td>
 </tr>
 <tr class="even">
 <td align="left">anova_B</td>
-<td align="right">64.4</td>
-<td align="right">58.28779</td>
-<td align="right">70.07637</td>
+<td align="right">62.8</td>
+<td align="right">56.65723</td>
+<td align="right">68.55536</td>
 </tr>
 <tr class="odd">
 <td align="left">anova_A:B</td>
-<td align="right">23.6</td>
-<td align="right">18.76067</td>
-<td align="right">29.23837</td>
+<td align="right">24.4</td>
+<td align="right">19.48972</td>
+<td align="right">30.08511</td>
 </tr>
 </tbody>
 </table>

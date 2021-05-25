@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Superpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
       </span>
     </div>
 
@@ -88,13 +88,13 @@
 
       
 
-      </header><script src="emmeans_power_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="emmeans_power_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Power calculations for <code>emmeans</code> analyses</h1>
                         <h4 class="author">Frederik Aust</h4>
             
-            <h4 class="date">15 April, 2021</h4>
+            <h4 class="date">24 May, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/arcaldwell49/Superpower/blob/master/vignettes/emmeans_power.Rmd"><code>vignettes/emmeans_power.Rmd</code></a></small>
       <div class="hidden name"><code>emmeans_power.Rmd</code></div>
@@ -403,28 +403,28 @@
 <pre><code>#&gt;                             contrast         voice   power partial_eta_squared
 #&gt; 1 condition_cheerful - condition_sad voice_cartoon 68.3716        1.381215e-01
 #&gt; 2 condition_cheerful - condition_sad   voice_human  5.0000        1.975313e-33
-#&gt; 3 condition_cheerful - condition_sad   voice_robot  5.0000        2.777784e-33
+#&gt; 3 condition_cheerful - condition_sad   voice_robot  5.0000        1.975313e-32
 #&gt;        cohen_f non_centrality
-#&gt; 1 4.003204e-01   6.250000e+00
-#&gt; 2 4.444449e-17   7.703720e-32
-#&gt; 3 5.270468e-17   1.083336e-31</code></pre>
+#&gt; 1 4.003204e-01    6.25000e+00
+#&gt; 2 4.444449e-17    7.70372e-32
+#&gt; 3 1.405458e-16    7.70372e-31</code></pre>
 <p>We may also calculate the power for testing all condition means against an arbitrary constant.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/emmeans_power.html">emmeans_power</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/summary.emmGrid.html">test</a></span><span class="op">(</span><span class="va">simple_condition_effects</span>, null <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>#&gt;            condition         voice     power partial_eta_squared      cohen_f
-#&gt; 1 condition_cheerful voice_cartoon  5.000000        7.111126e-33 8.432749e-17
-#&gt; 2      condition_sad voice_cartoon 33.831141        6.024096e-02 2.531848e-01
-#&gt; 3 condition_cheerful   voice_human  9.462673        1.015228e-02 1.012739e-01
-#&gt; 4      condition_sad   voice_human  9.462673        1.015228e-02 1.012739e-01
-#&gt; 5 condition_cheerful   voice_robot 33.831141        6.024096e-02 2.531848e-01
-#&gt; 6      condition_sad   voice_robot 33.831141        6.024096e-02 2.531848e-01
+<pre><code>#&gt;            condition         voice     power partial_eta_squared   cohen_f
+#&gt; 1 condition_cheerful voice_cartoon  5.000000          0.00000000 0.0000000
+#&gt; 2      condition_sad voice_cartoon 33.831141          0.06024096 0.2531848
+#&gt; 3 condition_cheerful   voice_human  9.462673          0.01015228 0.1012739
+#&gt; 4      condition_sad   voice_human  9.462673          0.01015228 0.1012739
+#&gt; 5 condition_cheerful   voice_robot 33.831141          0.06024096 0.2531848
+#&gt; 6      condition_sad   voice_robot 33.831141          0.06024096 0.2531848
 #&gt;   non_centrality
-#&gt; 1   2.773339e-31
-#&gt; 2   2.500000e+00
-#&gt; 3   4.000000e-01
-#&gt; 4   4.000000e-01
-#&gt; 5   2.500000e+00
-#&gt; 6   2.500000e+00</code></pre>
+#&gt; 1            0.0
+#&gt; 2            2.5
+#&gt; 3            0.4
+#&gt; 4            0.4
+#&gt; 5            2.5
+#&gt; 6            2.5</code></pre>
 <p>Finally, we can calculate the power for custom contrasts between any linear combination of conditions.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">custom_contrast</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/contrast.html">contrast</a></span><span class="op">(</span>
@@ -448,9 +448,9 @@
 #&gt; 2 condition_cheerful - condition_sad   voice_human  0.8333333
 #&gt; 3 condition_cheerful - condition_sad   voice_robot  0.8333333
 #&gt;   partial_eta_squared      cohen_f non_centrality
-#&gt; 1        1.381215e-01 4.003204e-01   6.250000e+00
-#&gt; 2        1.975313e-33 4.444449e-17   7.703720e-32
-#&gt; 3        2.777784e-33 5.270468e-17   1.083336e-31</code></pre>
+#&gt; 1        1.381215e-01 4.003204e-01    6.25000e+00
+#&gt; 2        1.975313e-33 4.444449e-17    7.70372e-32
+#&gt; 3        1.975313e-32 1.405458e-16    7.70372e-31</code></pre>
 <p>Similarly, if we want to calculate power for a one-sided test, we can doubling <code>alpha_level</code>.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/emmeans_power.html">emmeans_power</a></span><span class="op">(</span>
