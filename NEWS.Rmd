@@ -5,6 +5,9 @@ output: github_document
 
 Updated `r format(Sys.time(), "%a %b %d %Y")`
 
+# Superpower 0.2.0 -- "Doctor Fate"
+- Added power_oneway_ancova & power_con_ancova to allow for a basic power analysis of an analysis of covariance (ANCOVA) for one-way, between group designs.
+
 # Superpower 0.1.2 -- "Rex Splode"
 - Minor fixes to power_standardized_alpha to keep Superpower on CRAN
 
