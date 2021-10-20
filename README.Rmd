@@ -19,7 +19,7 @@ knitr::include_graphics("Sticker/Superpower2.PNG")
 knitr::include_graphics("Sticker/authors.png")
 ```
 
-[![Build Status](https://travis-ci.com/arcaldwell49/superpower.svg?branch=master)](https://travis-ci.com/arcaldwell49/superpower)
+[![R-CMD-check](https://github.com/arcaldwell49/Superpower/workflows/R-CMD-check/badge.svg)](https://github.com/arcaldwell49/Superpower/actions)
 [![codecov](https://codecov.io/gh/arcaldwell49/Superpower/branch/master/graph/badge.svg)](https://codecov.io/gh/arcaldwell49/Superpower)
 `r badge_doi("10.31234/osf.io/baxsf", "yellow")`
 
