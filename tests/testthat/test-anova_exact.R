@@ -512,6 +512,8 @@ test_that("check lambda and verbose",{
     mu = c(1:24),
     plot = FALSE
   )
+  expect_equal(as.vector(diag(as.matrix(des$sigmatrix))), 
+               rep(4,24))
   
   res = hush(ANOVA_exact(design_result = des,
                     emm = TRUE,

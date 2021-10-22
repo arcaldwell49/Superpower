@@ -1,5 +1,10 @@
 context("test-ANOVA_compromise")
-
+hush=function(code){
+  sink("NUL") # use /dev/null in UNIX
+  tmp = code
+  sink()
+  return(tmp)
+}
 # error messages
 test_that("error messages", {
   design <- ANOVA_design(design = "2b*4w",
@@ -33,7 +38,7 @@ test_that("example #1 2w",{
   expect_equal(res$aov_comp$alpha,.05101,tolerance = .001)
   expect_equal(res$aov_comp$beta,.05853,tolerance = .005) # larger error margin with liberal lambda
   p = plot(res)
-  pr = print(res)
+  pr = hush(print(res))
 })
 
 test_that("example #2 2w",{

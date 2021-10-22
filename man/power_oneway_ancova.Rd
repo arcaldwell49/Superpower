@@ -10,7 +10,7 @@ power_oneway_ancova(
   n_cov = 1,
   r2 = NULL,
   sd = 1,
-  alpha_level = 0.05,
+  alpha_level = Superpower_options("alpha_level"),
   beta_level = NULL,
   round_up = TRUE,
   type = "exact"
