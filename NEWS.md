@@ -1,7 +1,7 @@
 NEWS
 ================
 
-Updated Mon May 24 2021
+Updated Sat Oct 30 2021
 
 # Superpower 0.1.2 – “Rex Splode”
 
@@ -35,7 +35,7 @@ Updated Mon May 24 2021
 -   ANOVA\_compromise function added which allows a compromise power
     analysis to be performed for all comparisons in a design
 -   ANOVA\_design now returns as a class “design\_aov” with specific
-    print and plot methods see ?`design_aov-methods`
+    print and plot methods see ?\`design_aov-methods\`
     -   generate\_cor\_matrix function is now a non-exported function
         within the package (no longer contained within ANOVA\_design)
 -   All simulation functions ANOVA\_power, ANOVA\_exact, and
