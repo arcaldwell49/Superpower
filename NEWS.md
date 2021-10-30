@@ -1,7 +1,7 @@
 NEWS
 ================
 
-Updated Sat Oct 30 2021
+Updated Sat Oct 30 2021 (found small error in notes below)
 
 # Superpower 0.1.2 – “Rex Splode”
 
