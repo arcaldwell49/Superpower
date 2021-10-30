@@ -1,22 +1,21 @@
 Superpower
 ================
 
-![Sticker](https://raw.githubusercontent.com/arcaldwell49/Superpower/master/Sticker/Superpower2.PNG)
-![authors\_image](https://raw.githubusercontent.com/arcaldwell49/Superpower/master/Sticker/authors.png)
+<img src=https://raw.githubusercontent.com/arcaldwell49/Superpower/master/Sticker/Superpower2_v2.PNG alt="sticker" width="200"/>
+<img src=https://raw.githubusercontent.com/arcaldwell49/Superpower/master/Sticker/authors.png alt="authors" width="200"/>
 
-[![Build
-Status](https://travis-ci.com/arcaldwell49/superpower.svg?branch=master)](https://travis-ci.com/arcaldwell49/superpower)
+[![R-CMD-check](https://github.com/arcaldwell49/Superpower/workflows/R-CMD-check/badge.svg)](https://github.com/arcaldwell49/Superpower/actions)
 [![codecov](https://codecov.io/gh/arcaldwell49/Superpower/branch/master/graph/badge.svg)](https://codecov.io/gh/arcaldwell49/Superpower)
 [![](https://img.shields.io/badge/doi-10.31234/osf.io/baxsf-yellow.svg)](https://doi.org/10.31234/osf.io/baxsf)
 
 ## Table of Contents
 
-  - [ANOVA\_design Function](#anova_design-function)
-  - [Simulation-based power
+-   [ANOVA\_design Function](#anova_design-function)
+-   [Simulation-based power
     calculations](#simulation-based-power-calculations)
-  - [ANOVA\_power Function](#the-anova_power-function)
-  - [ANOVA\_exact Function](#the-anova_exact-function)
-  - [The plot\_power function](#the-plot_power-function)
+-   [ANOVA\_power Function](#the-anova_power-function)
+-   [ANOVA\_exact Function](#the-anova_exact-function)
+-   [The plot\_power function](#the-plot_power-function)
 
 The goal of `Superpower` is to easily simulate factorial designs and
 empirically calculate power using a simulation approach. This app is
@@ -135,28 +134,16 @@ Some examples:
 
 1.  One within factor (time with 2 levels), 2w:
 
-<!-- end list -->
-
-  - `c("time", "morning", "evening")`
-
-<!-- end list -->
+-   `c("time", "morning", "evening")`
 
 2.  Two between factors (time and group, each with 2 levels), 2b\*2b:
 
-<!-- end list -->
-
-  - `c("time", "morning", "evening", "group", "control",
-    "experimental")`
-
-<!-- end list -->
+-   `c("time", "morning", "evening", "group", "control", "experimental")`
 
 3.  Two between factors (time and group, first with 4 levels, second
     with 2 levels), 4b\*2b:
 
-<!-- end list -->
-
-  - `c("time", "morning", "afternoon" ,"evening", "night", "group",
-    "control", "experimental")`
+-   `c("time", "morning", "afternoon" ,"evening", "night", "group", "control", "experimental")`
 
 ### Specifying the correlation
 
@@ -218,7 +205,7 @@ top to bottom, and left to right, illustrated by the increasing
 correlations in the table below.
 
 | Factor | a1\_b1 | a1\_b2 | a2\_b1 | a2\_b2 |
-| :----- | ------ | ------ | ------ | ------ |
+|:-------|--------|--------|--------|--------|
 | a1\_b1 | 1.00   | 0.91   | 0.92   | 0.93   |
 | a1\_b2 | 0.91   | 1.00   | 0.94   | 0.95   |
 | a2\_b1 | 0.92   | 0.94   | 1.00   | 0.96   |
@@ -255,10 +242,8 @@ design_result$cor_mat
 We should also check the covariance-variance matrix to ensure the
 `ANOVA_design` function working properly. The variance should be the
 diagonal element while the off-diagonal elements should be equal to
-`covariance = correlation*variance` or
-\(cov_{x,y}=\frac{\sum_{i=1}^{N}(x_{i}-\bar{x})(y_{i}-\bar{y})}{N-1}\).
-In this case, it is identical to the correlation matrix because the
-variance is equal to 1.
+`covariance = correlation*variance`. In this case, it is identical to
+the correlation matrix because the variance is equal to 1.
 
 ``` r
 design_result$sigmatrix
@@ -274,8 +259,8 @@ design_result$sigmatrix
 
 You can set the sample size **per condition** by setting a value for
 `n`. The assumption is that you will collect equal sample sizes in all
-conditions \[expanding Superpower to allow different sample sizes in
-each group is a planned future option\].
+conditions, but `ANOVA_power` does allow unequal sample sizes *if* all
+factors are between subjects.
 
 This means for the `2w*2w` design above there are 80
 participants/subjects with a total of 320 observations.
@@ -385,8 +370,8 @@ settings can also be made:
     emmeans comparisons. The default is “pairwise”. Possible input is
     limited to “pairwise”, “revpairwise”, “eff”, “consec”, “poly”,
     “del.eff”, “trt.vs.ctrl”, “trt.vs.ctrl1”, “trt.vs.ctrlk”, and
-    “mean\_chg”. See help(“contrast-methods”) with the `emmeans`
-    package loaded for more information.
+    “mean\_chg”. See help(“contrast-methods”) with the `emmeans` package
+    loaded for more information.
 2.  `emm_model`: emmeans accepts univariate and multivariate models.
     This will only make a difference if a within-subjects factor is
     included in the design. Setting this option to “multivariate” will
@@ -397,11 +382,11 @@ settings can also be made:
     The default is to take the `frml2` object from the results of
     `ANOVA_design`, and with the default `contrast_type` = “pairwise”,
     results in *all* the pairwise comparisons being performed. The
-    simple effects can also be performed by including | in the emm\_comp
-    formula. For example, with two factors (e.g., a and b) `emm_comp =
-    "a+b"` results in all pairwise comparisons being performed while
-    `emm_comp = "a|b"` will result in pairwise comparisons across all
-    levels of a **within** each level of b.
+    simple effects can also be performed by including \| in the
+    emm\_comp formula. For example, with two factors (e.g., a and b)
+    `emm_comp = "a+b"` results in all pairwise comparisons being
+    performed while `emm_comp = "a|b"` will result in pairwise
+    comparisons across all levels of a **within** each level of b.
 4.  `emm_p_adjust`: adjustment for multiple comparisons. Note: **this
     feature only works with** `ANOVA_power`. Currently, this feature
     includes the Tukey (“tukey”), Scheffe (“scheffe”), Sidak (“sidak”),
@@ -463,9 +448,9 @@ above, we might be specifically interested in comparing the independent
 effect for the cheerful vs sad human voice assistant, and the difference
 for sad voice when they are robotic or human. The second table provides
 the power for *t*-tests for all comparisons, and the effect sizes
-(Cohen’s d for between-subject contrasts, and Cohen’s \(d_z\) for
-within-subject contrasts, see
-[Lakens, 2013](https://www.frontiersin.org/articles/10.3389/fpsyg.2013.00863/full)).
+(Cohen’s d for between-subject contrasts, and Cohen’s *d*<sub>*z*</sub>
+for within-subject contrasts, see [Lakens,
+2013](https://www.frontiersin.org/articles/10.3389/fpsyg.2013.00863/full)).
 
 Power is relatively high for the differences between within-participant
 conditions, and power is very low for the minor differences among the
@@ -544,10 +529,9 @@ pwr.t.test(d = 2.2/6.4,
     ## [1] 0.6768572
 
 We can also directly compute Cohen’s f from Cohen’s d for two groups, as
-Cohen (1988) describes, because f = \(\frac{1}{2}d\). So f =
-0.5\*0.34375 = 0.171875. And indeed, power analysis using the pwr
-package yields the same result using the pwr.anova.test as the
-power.t.test.
+Cohen (1988) describes, because f = $\\frac{1}{2}d$. So f = 0.5\*0.34375
+= 0.171875. And indeed, power analysis using the pwr package yields the
+same result using the pwr.anova.test as the power.t.test.
 
 ``` r
 pwr.anova.test(n = 100,
