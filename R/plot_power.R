@@ -44,9 +44,7 @@
 #' }
 #' @section References:
 #' too be added
-#' @importFrom stats pnorm pt qnorm qt as.formula median qf power.t.test pf sd power
-#' @importFrom reshape2 melt
-#' @importFrom MASS mvrnorm
+#' @importFrom stats pnorm pt qnorm qt as.formula median qf power.t.test pf sd power reshape
 #' @importFrom afex aov_car
 #' @importFrom graphics pairs
 #' @importFrom magrittr '%>%'
@@ -145,10 +143,6 @@ plot_power <- function(design_result,
   
   #Check to ensure there is a within subject factor -- if none --> no MANOVA
   run_manova <- grepl("w", design_result$design)
-  
-  
-  
-  
   
   #Do one ANOVA to get number of power columns
   #if (emm == FALSE) {
@@ -254,7 +248,15 @@ plot_power <- function(design_result,
     }
   }
   
-  plot_data <- suppressMessages(melt(power_df, id = c('n')))
+  #plot_data <- suppressMessages(melt(power_df, id = c('n')))
+  plot_data <- stats::reshape(data = power_df,
+                               timevar = "variable",
+                               varying = design_result$factornames,
+                               times = design_result$factornames,
+                               idvar = "n",
+                               v.name = "value",
+                               direction = "long")
+
   plot_data$variable <- as.factor(plot_data$variable)
   
   #create data frame for annotation for desired power
@@ -293,7 +295,14 @@ plot_power <- function(design_result,
     facet_grid(variable ~ .)
   
   if (run_manova == TRUE) {
-    plot_data_manova <- suppressMessages(melt(power_df_manova, id = c('n')))
+    #plot_data_manova <- suppressMessages(melt(power_df_manova, id = c('n')))
+    plot_data_manova <- stats::reshape(data = power_df_manova,
+                                timevar = "variable",
+                                varying = design_result$factornames,
+                                times = design_result$factornames,
+                                idvar = "n",
+                                v.name = "value",
+                                direction = "long")
     
     #create data frame for annotation for desired power for manova
     annotate_df_manova <- as.data.frame(matrix(0, ncol = 4, nrow = length(row.names(exact_result$manova_results)))) #three rows, for N, power, and variable label
@@ -334,7 +343,14 @@ plot_power <- function(design_result,
   }
   
   if (emm == TRUE) {
-    plot_data_emm <- suppressMessages(melt(power_df_emm, id = c('n')))
+    #plot_data_emm <- suppressMessages(melt(power_df_emm, id = c('n')))
+    plot_data_emm <- stats::reshape(data = power_df_emm,
+                                timevar = "variable",
+                                varying = design_result$factornames,
+                                times = design_result$factornames,
+                                idvar = "n",
+                                v.name = "value",
+                                direction = "long")
     
     #create data frame for annotation for desired power for emmeans
     annotate_df_emm <- as.data.frame(matrix(0, ncol = 4, nrow = length(levels(exact_result$emm_results$contrast)))) #three rows, for N, power, and variable label

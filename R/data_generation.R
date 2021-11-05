@@ -1,5 +1,4 @@
-#' @importFrom MASS mvrnorm
-#' @importFrom reshape2 melt dcast
+
 #' @importFrom stats lm confint
 #' @importFrom magrittr '%>%'
 #' @importFrom dplyr select mutate everything

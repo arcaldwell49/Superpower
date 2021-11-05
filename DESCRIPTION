@@ -28,18 +28,15 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 RoxygenNote: 7.1.1
 Imports: 
-    mvtnorm,
     MASS,
     afex,
     emmeans,
     ggplot2,
-    gridExtra,
     reshape2,
     stats,
     dplyr,
     magrittr,
     tidyselect,
-    Hmisc,
     tidyr
 Suggests: 
     knitr,

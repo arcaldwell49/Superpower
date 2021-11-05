@@ -38,12 +38,9 @@
 #' Varying the sd or r (e.g., entering multiple values) violates assumptions of homoscedascity and sphericity respectively
 #' @importFrom stats pnorm pt qnorm qt as.formula median qf power.t.test pf sd power
 #' @importFrom utils combn
-#' @importFrom reshape2 melt
-#' @importFrom MASS mvrnorm
 #' @importFrom afex aov_car
 #' @importFrom graphics pairs
 #' @importFrom dplyr mutate
-#' @import Hmisc 
 #' @import emmeans
 #' @import ggplot2
 
@@ -134,6 +131,7 @@ ANOVA_exact <- function(design_result,
   factors <- design_result$factors
   design_factors <- design_result$design_factors
   sigmatrix <- design_result$sigmatrix
+  cormatrix <- design_result$cor_mat
   dataframe <- design_result$dataframe
   design_list <- design_result$design_list
 
@@ -198,13 +196,21 @@ ANOVA_exact <- function(design_result,
   #empirical set to true to create "exact" dataset
 
   dataframe$y <- suppressMessages({
-    melt(as.data.frame(mvrnorm(
+    c(as.matrix(rnorm_multi(
       n = n,
       mu = mu,
-      Sigma = as.matrix(sigmatrix),
+      r = c(as.matrix(cormatrix)),
       empirical = TRUE
-    )))$value
+    )))
   })
+#    suppressMessages({
+#    c(mvrnorm(
+#      n = n,
+#      mu = mu,
+#      Sigma = as.matrix(sigmatrix),
+#      empirical = TRUE
+#    ))
+#  })
 
   # We perform the ANOVA using AFEX
   aov_result <- suppressMessages({aov_car(frml1, #here we use frml1 to enter fromula 1 as designed above on the basis of the design
@@ -362,7 +368,7 @@ ANOVA_exact <- function(design_result,
   meansplot2 = meansplot +
     geom_jitter(position = position_jitter(0.2)) +
     stat_summary(
-      fun.data = "mean_sdl",
+      fun.data = "smean.sdl",
       fun.args = list(mult = 1),
       geom = "crossbar",
       color = "red"
@@ -465,13 +471,9 @@ ANOVA_exact2 <- function(design_result,
     stop("Correction for sphericity can only be none, GG, or HF")
   }
   
-  
-  
   #Check to ensure there is a within subject factor -- if none --> no MANOVA
   run_manova <- grepl("w", design_result$design)
-  
-  
-  
+
   round_dig <- 4 #Set digits to which you want to round the output.
   
   if (missing(alpha_level)) {
@@ -495,11 +497,10 @@ ANOVA_exact2 <- function(design_result,
   factors <- design_result$factors
   design_factors <- design_result$design_factors
   sigmatrix <- design_result$sigmatrix
+  cormatrix <- design_result$cor_mat
   dataframe_df <- monte_gen(design_result,
                             n = n)
   design_list <- design_result$design_list
-  
-  
   
   ###############
   #Specify factors for formula ----
@@ -766,7 +767,7 @@ ANOVA_exact2 <- function(design_result,
   
   meansplot2 = meansplot +
     stat_summary(
-      fun.data = "mean_sdl",
+      fun.data = "smean.sdl",
       fun.args = list(mult = 1),
       geom = "crossbar",
       color = "red"

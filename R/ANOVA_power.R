@@ -45,11 +45,9 @@
 #'       }
 #' @section References:
 #' too be added
-#' @importFrom stats pnorm pt qnorm qt as.formula median p.adjust pf sd power
+#' @importFrom stats pnorm pt qnorm qt as.formula median p.adjust pf sd power reshape
 #' @importFrom utils combn
 #' @importFrom graphics pairs
-#' @importFrom reshape2 melt
-#' @importFrom MASS mvrnorm
 #' @importFrom afex aov_car
 #' @import emmeans
 #' @import ggplot2
@@ -187,6 +185,7 @@ ANOVA_power <- function(design_result,
   factors <- design_result$factors
   design_factors <- design_result$design_factors
   sigmatrix <- design_result$sigmatrix
+  cormatrix <- design_result$cor_mat
   dataframe <- design_result$dataframe
   design_list <- design_result$design_list
   
@@ -326,11 +325,12 @@ ANOVA_power <- function(design_result,
     dataframe <- design_result$dataframe # read in dataframe again, because we deleted rows from it below if unequal n
     
     dataframe$y <- suppressMessages({
-      melt(as.data.frame(mvrnorm(
+      c(as.matrix(rnorm_multi(
         n = n,
         mu = mu,
-        Sigma = as.matrix(sigmatrix)
-      )))$value
+        r = c(as.matrix(cormatrix)),
+        empirical = FALSE
+      )))
     })
     
     #NEW SECTION TO ALLOW UNEQUAL N
@@ -430,8 +430,18 @@ ANOVA_power <- function(design_result,
   
   # melt the data into a long format for plots in ggplot2
   
-  plotData <- suppressMessages(melt(sim_data[1:(2 ^ factors - 1)], value.name = 'p'))
-  
+  #plotData <- suppressMessages(melt(sim_data[1:(2 ^ factors - 1)], value.name = 'p'))
+  plotData2 <- suppressMessages({
+    stats::reshape(sim_data[1:(2 ^ factors - 1)],
+                   direction = "long",
+                   varying = colnames(sim_data[1:(2 ^ factors - 1)]),
+                   times = colnames(sim_data[1:(2 ^ factors - 1)]),
+                   v.name = "y")
+  })
+  variable = plotData2$time
+  p_vals = plotData2$y
+  plotData = data.frame(variable = variable,
+                        p = p_vals)
   SalientLineColor <- "#535353"
   LineColor <- "Black"
   BackgroundColor <- "White"
@@ -460,9 +470,21 @@ ANOVA_power <- function(design_result,
     theme_bw()
   #Plot p-value distributions for simple comparisons
   # melt the data into a ggplot friendly 'long' format
-  p_paired <- sim_data[(2 * (2 ^ factors - 1) + 1):(2 * (2 ^ factors - 1) + possible_pc)]
+  #p_paired <- sim_data[(2 * (2 ^ factors - 1) + 1):(2 * (2 ^ factors - 1) + possible_pc)]
+  plotData2 = suppressMessages({
+    stats::reshape(sim_data[(2 * (2 ^ factors - 1) + 1):(2 * (2 ^ factors - 1) + possible_pc)],
+                   direction = "long",
+                   varying = colnames(sim_data[(2 * (2 ^ factors - 1) + 1):(2 * (2 ^ factors - 1) + possible_pc)]),
+                   times = colnames(sim_data[(2 * (2 ^ factors - 1) + 1):(2 * (2 ^ factors - 1) + possible_pc)]),
+                   v.name = "y")
+  })
   
-  plotData <- suppressMessages(melt(p_paired, value.name = 'p'))
+  variable = plotData2$time
+  p_vals = plotData2$y
+  plotData = data.frame(variable = variable,
+                        p = p_vals)
+  
+  #plotData <- suppressMessages(melt(p_paired, value.name = 'p'))
   #create variable p to use in ggplot and prevent package check error.
   p <- plotData$p
   # Create line breaks in variable

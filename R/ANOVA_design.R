@@ -38,10 +38,8 @@
 #'       labelnames = c("condition", "cheerful", "sad", "voice", "human", "robot"))
 #' @section Warnings:
 #' Varying the sd or r (e.g., entering multiple values) violates assumptions of homoscedascity and sphericity respectively
-#' @importFrom stats pnorm pt qnorm qt as.formula median
+#' @importFrom stats pnorm pt qnorm qt as.formula median reshape
 #' @importFrom utils combn
-#' @importFrom reshape2 melt
-#' @importFrom MASS mvrnorm
 #' @importFrom afex aov_car
 #' @importFrom grDevices colorRampPalette
 #' @import ggplot2
@@ -210,17 +208,30 @@ ANOVA_design <- function(design, n, mu, sd, r = 0,
   ###############
   
   #Create the data frame. This will be re-used in the simulation (y variable is overwritten) but created only once to save time in the simulation
-  dataframe <- as.data.frame(mvrnorm(n = n,
-                                     mu = mu,
-                                     Sigma = sigmatrix,
-                                     empirical = FALSE))
+  dataframe <- rnorm_multi(
+    n = n,
+    mu = mu,
+    r = c(as.matrix(cor_mat)),
+    varnames = design_list,
+    empirical = FALSE
+  )
   dataframe$subject<-as.factor(c(1:n)) #create temp subject variable just for merging
   #Melt dataframe
-  dataframe <- melt(dataframe,
-                    id.vars = "subject",
-                    variable.name = "cond",
-                    value.name = "y")
+  #d2 <- melt(dataframe,
+  #                  id.vars = "subject",
+  #                  variable.name = "cond",
+  #                  value.name = "y")
   
+  d3 = stats::reshape(dataframe,
+                      idvar = "subject",
+                      timevar = "cond",
+                      times = design_list,
+                      v.name = "y",
+                      varying = design_list,
+                      direction = "long")
+  rownames(d3) = NULL
+  dataframe = d3
+
   # Let's break this down - it's a bit tricky. First, we want to create a list of labelnames that will indicate the factors.
   # We are looping this over the number of factors.
   # This: factor_levels - takes the string used to specify the design and turn it in a list.

@@ -18,6 +18,7 @@
 ^NEWS\.Rmd$
 ^jmvpower$   
 ^ANCOVA$
+^R/reshape\.R$
 ^R/data_generation\.R$
 ^R/jmvpower\.b\.R$
 ^R/jmvpower\.h\.R$

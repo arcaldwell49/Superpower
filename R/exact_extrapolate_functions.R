@@ -8,6 +8,7 @@ monte_gen = function(design_result,n){
   factors <- design_result$factors
   design_factors <- design_result$design_factors
   sigmatrix <- design_result$sigmatrix
+  cormatrix <- design_result$cor_mat
   design_list <- design_result$design_list
   labelnameslist <- design_result$labelnameslist
   factor_levels <- as.numeric(strsplit(design, "\\D+")[[1]])
@@ -16,16 +17,23 @@ monte_gen = function(design_result,n){
   ###############
   
   #Create the data frame. This will be re-used in the simulation (y variable is overwritten) but created only once to save time in the simulation
-  dataframe <- as.data.frame(mvrnorm(n = n,
-                                     mu = mu,
-                                     Sigma = sigmatrix,
-                                     empirical = FALSE))
+  dataframe <- rnorm_multi(
+    n = n,
+    mu = mu,
+    r = c(as.matrix(cormatrix)),
+    varnames = design_list,
+    empirical = FALSE
+  )
   dataframe$subject<-as.factor(c(1:n)) #create temp subject variable just for merging
-  #Melt dataframe
-  dataframe <- melt(dataframe,
-                    id.vars = "subject",
-                    variable.name = "cond",
-                    value.name = "y")
+  d3 = stats::reshape(dataframe,
+                      idvar = "subject",
+                      timevar = "cond",
+                      times = design_list,
+                      v.name = "y",
+                      varying = design_list,
+                      direction = "long")
+  rownames(d3) = NULL
+  dataframe = d3
   
   # Let's break this down - it's a bit tricky. First, we want to create a list of labelnames that will indicate the factors.
   # We are looping this over the number of factors.
@@ -85,6 +93,7 @@ exact_gen = function(design_result){
   factors <- design_result$factors
   design_factors <- design_result$design_factors
   sigmatrix <- design_result$sigmatrix
+  cormatrix <- design_result$cor_mat
   design_list <- design_result$design_list
   labelnameslist <- design_result$labelnameslist
   factor_levels <- as.numeric(strsplit(design, "\\D+")[[1]])
@@ -102,16 +111,23 @@ exact_gen = function(design_result){
   ###############
   
   #Create the data frame. This will be re-used in the simulation (y variable is overwritten) but created only once to save time in the simulation
-  dataframe <- as.data.frame(mvrnorm(n = n,
-                                     mu = mu,
-                                     Sigma = sigmatrix,
-                                     empirical = TRUE))
+  dataframe <- rnorm_multi(
+    n = n,
+    mu = mu,
+    r = c(as.matrix(cormatrix)),
+    varnames = design_list,
+    empirical = TRUE
+  )
   dataframe$subject<-as.factor(c(1:n)) #create temp subject variable just for merging
-  #Melt dataframe
-  dataframe <- melt(dataframe,
-                    id.vars = "subject",
-                    variable.name = "cond",
-                    value.name = "y")
+  d3 = stats::reshape(dataframe,
+                      idvar = "subject",
+                      timevar = "cond",
+                      times = design_list,
+                      v.name = "y",
+                      varying = design_list,
+                      direction = "long")
+  rownames(d3) = NULL
+  dataframe = d3
   
   # Let's break this down - it's a bit tricky. First, we want to create a list of labelnames that will indicate the factors.
   # We are looping this over the number of factors.
