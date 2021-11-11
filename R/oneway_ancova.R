@@ -137,7 +137,7 @@ power_oneway_ancova <- function(n = NULL,
     n_1 = N_tot / length(mu)
     n = rep(n_1, length(mu))
   }else {
-    stop("internal error: exactly one of num_df, den_df, cohen_f, beta_level, and alpha_level must be NULL")
+    stop("internal error: exactly one of n, r2, beta_level, and alpha_level must be NULL")
   }
   
   if(round_up == TRUE && (!(N_tot%%1==0) || !any(n%%1==0))) {
