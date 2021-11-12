@@ -1,0 +1,313 @@
+ANCOVA_analytic <- function (design,
+                             mu,
+                             n = NULL,
+                             sd,
+                             r2 = NULL, 
+                             n_cov, 
+                             alpha_level = Superpower_options("alpha_level"), 
+                             beta_level = NULL,
+                             label_list = NULL,
+                             design_result = NULL,
+                             round_up = TRUE
+) {
+  if(!is.null(design_result)){
+    mu = design_result$mu
+    sd = design_result$sd
+    n = design_result$n
+
+    
+    factornames = design_result$factornames
+    frml3 = as.formula(paste(gsub("\\+", "*",design_result$frml2),collapse=" "))
+    labelnameslist = design_result$labelnameslist
+    design = design_result$design
+  } else{
+    
+    #Check String for an acceptable digits and factor (w or b)
+    if (grepl("^(\\d{1,3}(w|b)\\*){0,2}\\d{1,3}(w|b)$", design, ignore.case = FALSE, perl = TRUE) == FALSE) {
+      stop("Problem in the design argument: must input number of levels as integer (2-999) and factor-type (between or within) as lower case b (between) or w (within)")
+    }
+    
+    #Ensure sd is greater than 0
+    if (any(sd <= 0) || length(sd) != 1) {
+      stop("Standard deviation (sd) is less than or equal to zero; input a single value greater than zero")
+    }
+    
+    #Ensure, if single correlation is input, that it is between 0 and 1
+    if (any(r < -1) | any(r > 1.0) ) {
+      stop("Correlation must be greater than -1 and less than 1")
+    }
+    
+    factor_levels <- as.numeric(strsplit(design, "\\D+")[[1]])
+    labelnames = NULL
+    if (is.null(label_list)) {
+      label_list = list()
+      for (i1 in 1:length(factor_levels)){
+        label_list1 = NULL
+        labelnames <- append(labelnames,paste(paste(letters[i1]), sep = ""))
+        
+        for (i2 in 1:factor_levels[i1]){
+          labelnames <- append(labelnames,paste(paste(letters[i1]), paste(i2), sep = ""))
+          label_list1 = c(label_list1,paste(paste(letters[i1]), paste(i2), sep = ""))
+        }
+       
+        label_list[[i1]] = as.vector(label_list1)
+        names(label_list)[i1] = paste(paste(letters[i1]), sep = "")
+        
+      }
+      
+    } else{
+      for(i in 1:length(label_list)){
+        
+        labelnames = append(labelnames, names(label_list)[i])
+        labelnames = append(labelnames, label_list[[i]])
+      }
+    
+    }
+    
+    labelnameslist = label_list
+    factornames = names(label_list)
+
+  }
+  
+  if( missing(mu) ||  missing(sd) || missing(n_cov)){
+    stop("mu, sd, and n_cov are missing and must be provided")
+  }
+  
+  n_grp = length(mu)
+  
+  if(!is.null(n)){
+    if(length(n==1)){
+      nvec = rep(n,length(mu))
+    } else {nvec = n}
+    
+    if(length(nvec) != length(mu)){
+      stop("Length of N and mu do not match!")
+    }
+  }
+  factorlist = list()
+  
+  if(length(factornames) == 1){
+    con_df = data.frame(a = 1:length(labelnameslist[[1]]))
+    con_df$a = as.factor(con_df$a)
+    contrasts(con_df$a) = "contr.sum"
+    con_mat = model.matrix(~a,con_df)
+    colnames(con_mat) = attr(con_mat, "assign")
+    cmat_a = con_mat[,which(colnames(con_mat)==1)]
+    cmats = list(a = cmat_a)
+    factorlist = factornames
+  } else if(length(factornames) == 2){
+    con_df = as.data.frame(expand.grid(b = 1:length(labelnameslist[[2]]),
+                                       a = 1:length(labelnameslist[[1]])))
+    con_df$a = as.factor(con_df$a)
+    con_df$b = as.factor(con_df$b)
+    contrasts(con_df$a) = "contr.sum"
+    contrasts(con_df$b) = "contr.sum"
+    #colnames(con_df) = design_result$factornames
+    con_mat = model.matrix(~a*b,con_df)
+    colnames(con_mat) = attr(con_mat, "assign")
+    cmat_a = t(as.matrix(con_mat[,which(colnames(con_mat)==1)]))
+    cmat_b = t(as.matrix(con_mat[,which(colnames(con_mat)==2)]))
+    cmat_ab = t(as.matrix(con_mat[,which(colnames(con_mat)==3)]))
+    cmats = list(a = cmat_a, b = cmat_b, ab=cmat_ab)
+    factorlist = c(factornames[1],
+                    factornames[2],
+                    paste0(factornames[1], ":",
+                           factornames[2]))
+  } else {
+    con_df = as.data.frame(expand.grid(c = 1:length(labelnameslist[[3]]),
+                                       b = 1:length(labelnameslist[[2]]),
+                                       a = 1:length(labelnameslist[[1]])))
+    con_df$a = as.factor(con_df$a)
+    con_df$b = as.factor(con_df$b)
+    con_df$c = as.factor(con_df$c)
+    contrasts(con_df$a) = "contr.sum"
+    contrasts(con_df$b) = "contr.sum"
+    contrasts(con_df$c) = "contr.sum"
+    #colnames(con_df) = design_result$factornames
+    con_mat = model.matrix(~a*b*c,con_df)
+    colnames(con_mat) = attr(con_mat, "assign")
+    cmat_a = t(as.matrix(con_mat[,which(colnames(con_mat)==1)]))
+    cmat_b = t(as.matrix(con_mat[,which(colnames(con_mat)==2)]))
+    cmat_c = t(as.matrix(con_mat[,which(colnames(con_mat)==3)]))
+    cmat_ab = t(as.matrix(con_mat[,which(colnames(con_mat)==4)]))
+    cmat_ac = t(as.matrix(con_mat[,which(colnames(con_mat)==5)]))
+    cmat_bc = t(as.matrix(con_mat[,which(colnames(con_mat)==6)]))
+    cmat_abc = t(as.matrix(con_mat[,which(colnames(con_mat)==7)]))
+    cmats = list(a = cmat_a, b = cmat_b, c = cmat_c,
+                 ab = cmat_ab, ac = cmat_ac, bc = cmat_bc,
+                 abc = cmat_abc)
+    factorlist = c(factornames[1],
+                    factornames[2],
+                    factornames[3],
+                    paste0(factornames[1], ":",
+                           factornames[2]),
+                    paste0(factornames[1], ":",
+                           factornames[3]),
+                    paste0(factornames[2], ":",
+                           factornames[3]),
+                    paste0(factornames[1], ":",
+                           factornames[2], ":",
+                           factornames[3]))
+  }
+  #cmat = t(contr.sum(length(nvec))) # Contrast matrix
+  # Create matrix for Wald statistic (W star; eq 10 from Shieh)
+  pow_res = list()
+  
+  if (!is.null(beta_level)){
+    pow = 1 - beta_level
+  } 
+  
+  p.body = quote({pow_anc_meth(
+    cmat = cmat,
+    mu = mu, 
+    nvec = nvec, 
+    n_cov = n_cov, 
+    r2 = r2, 
+    sd = sd, 
+    alpha_level = alpha_level
+  )})
+  
+  if (is.null(beta_level)){
+    for(i1 in 1:length(cmats)){
+      cmat = cmats[[i1]]
+      res <- eval(p.body)
+      beta_level <- 1-res$pow
+      pow_res[[i1]] = list(
+        cmat = cmat,
+        mu = mu, 
+        nvec = nvec, 
+        n_cov = n_cov, 
+        r2 = res$r2, 
+        sd = sd, 
+        alpha_level = res$alpha_level,
+        pow = res$pow,
+        beta_level = beta_level,
+        num_df = res$num_df,
+        den_df = res$den_df,
+        N_tot = res$N_tot
+      )
+    }
+    names(pow_res) = names(cmats)
+
+  } else if(is.null(r2)) {
+    
+    for(i1 in 1:length(cmats)){
+      cmat = cmats[[i1]]
+      r2 <- uniroot(function(r2) eval(p.body)$pow - 
+                                          pow, c(1e-10, 1 - 1e-10))$root
+      res <- eval(p.body) 
+      beta_level <- 1-res$pow
+      pow_res[[i1]] = list(
+        cmat = cmat,
+        mu = mu, 
+        nvec = nvec, 
+        n_cov = n_cov, 
+        r2 = r2, 
+        sd = sd, 
+        alpha_level = alpha_level,
+        pow = pow,
+        beta_level = beta_level,
+        num_df = res$num_df,
+        den_df = res$den_df,
+        N_tot = res$N_tot
+      )
+    }
+    names(pow_res) = names(cmats)
+    
+  } else if (is.null(alpha_level)) {
+    
+    for(i1 in 1:length(cmats)){
+      cmat = cmats[[i1]]
+
+      alpha_level <- uniroot(function(alpha_level) eval(p.body)$pow - 
+                               pow, c(1e-10, 1 - 1e-10))$root
+      res <- eval(p.body)
+      beta_level <- 1-res$pow
+      pow_res[[i1]] = list(
+        cmat = cmat,
+        mu = mu, 
+        nvec = nvec, 
+        n_cov = n_cov, 
+        r2 = res$r2, 
+        sd = sd, 
+        alpha_level = res$alpha_level,
+        pow = res$pow,
+        beta_level = beta_level,
+        num_df = res$num_df,
+        den_df = res$den_df,
+        N_tot = res$N_tot
+      )
+    }
+    names(pow_res) = names(cmats)
+    
+  } else if (is.null(n)){
+    
+    p.body2 <- quote({
+      pwr_method(mu,
+                 n = rep(N_tot/length(mu), length(mu)),
+                 n_cov,
+                 r2,
+                 sd,
+                 alpha_level,
+                 type)
+    })
+    
+    for(i1 in 1:length(cmats)){
+      cmat = cmats[[i1]]
+      
+      N_tot <- uniroot(function(N_tot){ eval(p.body2) - pow}, 
+                             c(2*length(mu)+n_cov, 1e+09))$root
+      res <- eval(p.body2)
+      beta_level <- 1-res$pow
+      if(round_up == TRUE && (!(N_tot%%1==0) || !any(res$nvec%%1==0))) {
+        N_tot = length(mu)*ceiling(N_tot / length(mu))
+
+        res <- eval(p.body2)
+
+      }
+      pow_res[[i1]] = list(
+        cmat = cmat,
+        mu = mu, 
+        nvec = res$nvec, 
+        n_cov = res$n_cov, 
+        r2 = res$r2, 
+        sd = sd, 
+        alpha_level = res$alpha_level,
+        pow = res$pow,
+        beta_level = res$beta_level,
+        num_df = res$num_df,
+        den_df = res$den_df,
+        N_tot = res$N_tot
+      )
+    }
+    names(pow_res) = names(cmats)
+    
+    
+  }else {
+    stop("internal error: exactly one of n, r2, beta_level, and alpha_level must be NULL")
+  }
+  
+  #names(pow_res) = factorlist
+  df_pow = data.frame(factor = character(),
+                      N_tot = integer(),
+                      n_cov = integer(),
+                      r2 = double(),
+                      alpha_level = double(),
+                      beta_level = double(),
+                      power = double())
+
+  for(i1 in 1:length(pow_res)){
+    df_pow[i1,]$factor = factorlist[i1]
+    df_pow[i1,]$N_tot = pow_res[[i1]]$N_tot
+    df_pow[i1,]$n_cov = pow_res[[i1]]$n_cov
+    df_pow[i1,]$r2 = pow_res[[i1]]$r2
+    df_pow[i1,]$alpha_level = pow_res[[i1]]$alpha_level
+    df_pow[i1,]$beta_level = pow_res[[i1]]$beta_level
+    df_pow[i1,]$power = pow_res[[i1]]$pow*100
+  }
+  rownames(df_pow)  = NULL
+
+  return(df_pow)
+  
+  
+}

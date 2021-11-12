@@ -123,7 +123,7 @@ power_oneway_ancova <- function(n = NULL,
     
     p.body2 <- quote({
       pwr_method(mu,
-                 n = rep(N_tot/3, length(mu)),
+                 n = rep(N_tot/length(mu), length(mu)),
                  n_cov,
                  r2,
                  sd,

@@ -1,8 +1,16 @@
-pow_anc_fac = function(cmat,
-                       mu,
-                       n_grp,
-                       N_tot,
-                       nvec){
+pow_anc_meth = function(cmat,
+                        mu, # Vector of Group Means
+                        nvec, # Group Sample Sizes
+                        n_cov, # Number of Covariates
+                        r2, # Coefficient of Determination
+                        sd, # SD UNADJUSTED
+                        alpha_level # Alpha level
+                        ){
+  
+  n_grp = length(mu)
+  mu = mu
+  var_e = (sd^2*(1-r2))
+  
   numint <- 2000
   dd <- 1e-5
   coevec <- c(1,
@@ -57,5 +65,14 @@ pow_anc_fac = function(cmat,
               num_df = num_df,
               den_df = den_df,
               N_tot = N_tot,
-              alpha_level = alpha_level))
+              beta_level = 1-pow,
+              alpha_level = alpha_level,
+              cmat = cmat,
+              mu = mu, 
+              nvec = nvec, 
+              n_cov = n_cov, 
+              r2 = r2, 
+              sd = sd))
 }
+
+
