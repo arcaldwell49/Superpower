@@ -1,4 +1,20 @@
-ANCOVA_analytic <- function (design,
+#' Power Calculations for a factorial ANCOVA
+#' 
+#' Compute power of ANCOVA omnibus tests 
+#' 
+#' @return
+#' @examples
+#' # To be added
+#' @section References:
+#' Keppel, G. (1991). Design and Analysis A Researcher's Handbook. 3rd Edition. Prentice Hall. Englewood Cliffs, New Jersey. See pages 323 - 324. 
+#' Shieh, G. (2017). Power and sample size calculations for contrast analysis in ANCOVA. Multivariate behavioral research, 52(1), 1-11.
+#' Shieh, G. (2020). Power analysis and sample size planning in ANCOVA designs. Psychometrika, 85(1), 101-120.
+#' @importFrom stats uniroot pf df qf contr.sum dt dbeta qtukey 
+#' @export
+#'
+
+
+ANCOVA_analytic <- function(design,
                              mu,
                              n = NULL,
                              sd,
@@ -8,8 +24,7 @@ ANCOVA_analytic <- function (design,
                              beta_level = NULL,
                              label_list = NULL,
                              design_result = NULL,
-                             round_up = TRUE
-) {
+                             round_up = TRUE) {
   if(!is.null(design_result)){
     mu = design_result$mu
     sd = design_result$sd
@@ -33,8 +48,8 @@ ANCOVA_analytic <- function (design,
     }
     
     #Ensure, if single correlation is input, that it is between 0 and 1
-    if (any(r < -1) | any(r > 1.0) ) {
-      stop("Correlation must be greater than -1 and less than 1")
+    if (any(r2 < -1) | any(r2 > 1.0) ) {
+      stop("Coefficient of Determination must be greater than -1 and less than 1")
     }
     
     factor_levels <- as.numeric(strsplit(design, "\\D+")[[1]])
@@ -92,7 +107,7 @@ ANCOVA_analytic <- function (design,
     contrasts(con_df$a) = "contr.sum"
     con_mat = model.matrix(~a,con_df)
     colnames(con_mat) = attr(con_mat, "assign")
-    cmat_a = con_mat[,which(colnames(con_mat)==1)]
+    cmat_a = t(as.matrix(con_mat[,which(colnames(con_mat)==1)]))
     cmats = list(a = cmat_a)
     factorlist = factornames
   } else if(length(factornames) == 2){
@@ -307,7 +322,8 @@ ANCOVA_analytic <- function (design,
   }
   rownames(df_pow)  = NULL
 
-  return(df_pow)
+  return(list(main_result = df_pow,
+              aov_list = pow_res))
   
   
 }

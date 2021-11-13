@@ -14,7 +14,7 @@
 ^build/js$
 ^temp$
 ^.*\.jmo$
-^Validaion$
+^Validation$
 ^NEWS\.Rmd$
 ^jmvpower$   
 ^ANCOVA$
