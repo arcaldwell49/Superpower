@@ -1,22 +1,34 @@
----
-title: "Factorial ANCOVA Validation: Two Way Design"
-output: github_document
----
+Factorial ANCOVA Validation: Two Way Design
+================
 
-```{r setup, include=TRUE}
+``` r
 knitr::opts_chunk$set(echo = TRUE)
 library(simstudy)
 library(data.table)
 library(Superpower)
+```
+
+    ## Registered S3 methods overwritten by 'lme4':
+    ##   method                          from
+    ##   cooks.distance.influence.merMod car 
+    ##   influence.merMod                car 
+    ##   dfbeta.influence.merMod         car 
+    ##   dfbetas.influence.merMod        car
+
+``` r
 library(car)
+```
+
+    ## Loading required package: carData
+
+``` r
 library(testthat)
 set.seed(19256)
 ```
 
 # Simulation 1
 
-```{r }
-
+``` r
 nsim = 5000
 res_2x2a = vector()
 res_2x2b = vector()
@@ -64,15 +76,15 @@ res_2x2ab = append(a["a:b",]$`Pr(>F)`,
                    res_2x2ab)
 
 }
-
-mean(res_2x2a < .05)
-mean(res_2x2b < .05)
-mean(res_2x2ab < .05)
-
 ```
 
-```{r}
+``` r
 des1 = ANOVA_design(design = "2b*2b", n = 20, mu = c(1, 0, 1, 0), sd = 2.5)
+```
+
+![](ANCOVA_twoway_sims_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+
+``` r
 ex1 = ANOVA_exact2(des1, verbose=FALSE)
 
 
@@ -105,13 +117,13 @@ test_that("Simulation 1", {
                tolerance = .01)
 
 })
-
 ```
+
+    ## Test passed 🥳
 
 # Simulation 2
 
-```{r }
-
+``` r
 res_2x3a = vector()
 res_2x3b = vector()
 res_2x3ab = vector()
@@ -181,18 +193,17 @@ res_2x3ab = append(a["a:b",]$`Pr(>F)`,
                    res_2x3ab)
 
 }
-
-mean(res_2x3a < .05)
-mean(res_2x3b < .05)
-mean(res_2x3ab < .05)
-
 ```
 
-```{r}
-
+``` r
 des1 = ANOVA_design(design = "2b*3b", n = 33,
                     mu = c(0,1,2,0,1.5,3), 
                     sd = 1.5)
+```
+
+![](ANCOVA_twoway_sims_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+
+``` r
 ex1 = ANOVA_exact2(des1, verbose=FALSE)
 
 
@@ -240,10 +251,11 @@ test_that("Simulation 2", {
 })
 ```
 
+    ## Test passed 🥇
+
 # Simulation 3
 
-```{r }
-
+``` r
 res_3x3a = vector()
 res_3x3b = vector()
 res_3x3ab = vector()
@@ -314,15 +326,9 @@ res_3x3ab = append(a["a:b",]$`Pr(>F)`,
                    res_3x3ab)
 
 }
-
-mean(res_3x3a < .05)
-mean(res_3x3b < .05)
-mean(res_3x3ab < .05)
-
 ```
 
-```{r}
-
+``` r
 test_that("Simulation 3", {
   
   expect_equal(mean(res_aov < .05), 
@@ -371,3 +377,4 @@ test_that("Simulation 3", {
 })
 ```
 
+    ## Test passed 😀

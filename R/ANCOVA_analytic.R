@@ -15,16 +15,17 @@
 
 
 ANCOVA_analytic <- function(design,
-                             mu,
-                             n = NULL,
-                             sd,
-                             r2 = NULL, 
-                             n_cov, 
-                             alpha_level = Superpower_options("alpha_level"), 
-                             beta_level = NULL,
-                             label_list = NULL,
-                             design_result = NULL,
-                             round_up = TRUE) {
+                            mu,
+                            n = NULL,
+                            sd,
+                            r2 = NULL,
+                            n_cov,
+                            alpha_level = Superpower_options("alpha_level"),
+                            beta_level = NULL,
+                            contrasts = list(),
+                            label_list = NULL,
+                            design_result = NULL,
+                            round_up = TRUE) {
   if(!is.null(design_result)){
     mu = design_result$mu
     sd = design_result$sd
@@ -53,6 +54,9 @@ ANCOVA_analytic <- function(design,
     }
     
     factor_levels <- as.numeric(strsplit(design, "\\D+")[[1]])
+    if(prod(factor_levels) != length(mu)){
+      stop("Length of means does not match design.")
+    }
     labelnames = NULL
     if (is.null(label_list)) {
       label_list = list()
@@ -322,7 +326,7 @@ ANCOVA_analytic <- function(design,
   }
   rownames(df_pow)  = NULL
 
-  return(list(main_result = df_pow,
+  return(list(main_results = df_pow,
               aov_list = pow_res))
   
   
