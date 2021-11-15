@@ -104,7 +104,7 @@ ANCOVA_analytic <- function(design,
     }
   }
   factorlist = list()
-  
+  cons = contrasts
   if(length(factornames) == 1){
     con_df = data.frame(a = 1:length(labelnameslist[[1]]))
     con_df$a = as.factor(con_df$a)
@@ -171,6 +171,7 @@ ANCOVA_analytic <- function(design,
   #cmat = t(contr.sum(length(nvec))) # Contrast matrix
   # Create matrix for Wald statistic (W star; eq 10 from Shieh)
   pow_res = list()
+  con_res = list()
   
   if (!is.null(beta_level)){
     pow = 1 - beta_level
@@ -207,6 +208,29 @@ ANCOVA_analytic <- function(design,
       )
     }
     names(pow_res) = names(cmats)
+    
+    if(length(cons) != 0){
+      for(i1 in 1:length(cons)){
+        cmat = cons[[i1]]
+        res <- eval(p.body)
+        beta_level <- 1-res$pow
+        con_res[[i1]] = list(
+          cmat = cmat,
+          mu = mu, 
+          nvec = nvec, 
+          n_cov = n_cov, 
+          r2 = res$r2, 
+          sd = sd, 
+          alpha_level = res$alpha_level,
+          pow = res$pow,
+          beta_level = beta_level,
+          num_df = res$num_df,
+          den_df = res$den_df,
+          N_tot = res$N_tot
+        )
+      }
+      names(con_res) = names(cons)
+    }
 
   } else if(is.null(r2)) {
     
@@ -233,11 +257,35 @@ ANCOVA_analytic <- function(design,
     }
     names(pow_res) = names(cmats)
     
+    if(length(cons) != 0){
+      for(i1 in 1:length(cons)){
+        cmat = cons[[i1]]
+        r2 <- uniroot(function(r2) eval(p.body)$pow - 
+                        pow, c(1e-10, 1 - 1e-10))$root
+        res <- eval(p.body)
+        beta_level <- 1-res$pow
+        con_res[[i1]] = list(
+          cmat = cmat,
+          mu = mu, 
+          nvec = nvec, 
+          n_cov = n_cov, 
+          r2 = res$r2, 
+          sd = sd, 
+          alpha_level = res$alpha_level,
+          pow = res$pow,
+          beta_level = beta_level,
+          num_df = res$num_df,
+          den_df = res$den_df,
+          N_tot = res$N_tot
+        )
+      }
+      names(con_res) = names(cons)
+    }
+    
   } else if (is.null(alpha_level)) {
     
     for(i1 in 1:length(cmats)){
       cmat = cmats[[i1]]
-
       alpha_level <- uniroot(function(alpha_level) eval(p.body)$pow - 
                                pow, c(1e-10, 1 - 1e-10))$root
       res <- eval(p.body)
@@ -258,6 +306,31 @@ ANCOVA_analytic <- function(design,
       )
     }
     names(pow_res) = names(cmats)
+    
+    if(length(cons) != 0){
+      for(i1 in 1:length(cons)){
+        cmat = cons[[i1]]
+        alpha_level <- uniroot(function(alpha_level) eval(p.body)$pow - 
+                                 pow, c(1e-10, 1 - 1e-10))$root
+        res <- eval(p.body)
+        beta_level <- 1-res$pow
+        con_res[[i1]] = list(
+          cmat = cmat,
+          mu = mu, 
+          nvec = nvec, 
+          n_cov = n_cov, 
+          r2 = res$r2, 
+          sd = sd, 
+          alpha_level = res$alpha_level,
+          pow = res$pow,
+          beta_level = beta_level,
+          num_df = res$num_df,
+          den_df = res$den_df,
+          N_tot = res$N_tot
+        )
+      }
+      names(con_res) = names(cons)
+    }
     
   } else if (is.null(n)){
     
@@ -301,11 +374,54 @@ ANCOVA_analytic <- function(design,
     }
     names(pow_res) = names(cmats)
     
+    if(length(cons) != 0){
+      for(i1 in 1:length(cons)){
+        cmat = cons[[i1]]
+        N_tot <- uniroot(function(N_tot){ eval(p.body2) - pow}, 
+                         c(2*length(mu)+n_cov, 1e+09))$root
+        res <- eval(p.body2)
+        beta_level <- 1-res$pow
+        if(round_up == TRUE && (!(N_tot%%1==0) || !any(res$nvec%%1==0))) {
+          N_tot = length(mu)*ceiling(N_tot / length(mu))
+          
+          res <- eval(p.body2)
+          
+        }
+        con_res[[i1]] = list(
+          cmat = cmat,
+          mu = mu, 
+          nvec = nvec, 
+          n_cov = n_cov, 
+          r2 = res$r2, 
+          sd = sd, 
+          alpha_level = res$alpha_level,
+          pow = res$pow,
+          beta_level = beta_level,
+          num_df = res$num_df,
+          den_df = res$den_df,
+          N_tot = res$N_tot
+        )
+      }
+      names(con_res) = names(cons)
+    }
+    
     
   }else {
     stop("internal error: exactly one of n, r2, beta_level, and alpha_level must be NULL")
   }
   
+  if(length(cons) == 0){
+    con_res = NULL
+    df_con = NULL
+  } else{
+    df_con = data.frame(contrast = character(),
+                        N_tot = integer(),
+                        n_cov = integer(),
+                        r2 = double(),
+                        alpha_level = double(),
+                        beta_level = double(),
+                        power = double())
+  }
   #names(pow_res) = factorlist
   df_pow = data.frame(factor = character(),
                       N_tot = integer(),
