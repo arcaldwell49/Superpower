@@ -13,6 +13,7 @@ ANCOVA_analytic(
   n_cov,
   alpha_level = Superpower_options("alpha_level"),
   beta_level = NULL,
+  contrasts = list(),
   label_list = NULL,
   design_result = NULL,
   round_up = TRUE
@@ -22,12 +23,10 @@ ANCOVA_analytic(
 
 }
 \description{
-Compute power of ANCOVA omnibus tests
+Compute power of ANCOVA omnibus tests and contrasts.
 }
 \section{References}{
 
-Keppel, G. (1991). Design and Analysis A Researcher's Handbook. 3rd Edition. Prentice Hall. Englewood Cliffs, New Jersey. See pages 323 - 324. 
-Shieh, G. (2017). Power and sample size calculations for contrast analysis in ANCOVA. Multivariate behavioral research, 52(1), 1-11.
 Shieh, G. (2020). Power analysis and sample size planning in ANCOVA designs. Psychometrika, 85(1), 101-120.
 }
 

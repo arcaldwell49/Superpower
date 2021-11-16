@@ -1,13 +1,24 @@
 #' Power Calculations for a factorial ANCOVA
 #' 
-#' Compute power of ANCOVA omnibus tests 
+#' Complete power analyses for ANCOVA omnibus tests and contrasts.
+#' 
+#' @param design Output from the ANOVA_design function
+#' @param mu Vector specifying mean for each condition
+#' @param n Sample size in each condition
+#' @param sd Standard deviation for all conditions (or a vector specifying the sd for each condition)
+#' @param r2 Coefficient of Determination of the model with only the covariates
+#' @param n_cov Number of covariates
+#' @param alpha_level Alpha level used to determine statistical significance
+#' @param beta_level Type II error probability (power/100-1)
+#' @param contrasts List of matrices for specific contrasts of interest.
+#' @param label_list An optional list to specify the factor names and condition (recommended, if not used factors and levels are indicated by letters and numbers).
+#' @param design_result = NULL
+#' @param round_up = TRUE
 #' 
 #' @return
 #' @examples
 #' # To be added
 #' @section References:
-#' Keppel, G. (1991). Design and Analysis A Researcher's Handbook. 3rd Edition. Prentice Hall. Englewood Cliffs, New Jersey. See pages 323 - 324. 
-#' Shieh, G. (2017). Power and sample size calculations for contrast analysis in ANCOVA. Multivariate behavioral research, 52(1), 1-11.
 #' Shieh, G. (2020). Power analysis and sample size planning in ANCOVA designs. Psychometrika, 85(1), 101-120.
 #' @importFrom stats uniroot pf df qf contr.sum dt dbeta qtukey 
 #' @export
@@ -172,6 +183,9 @@ ANCOVA_analytic <- function(design,
   # Create matrix for Wald statistic (W star; eq 10 from Shieh)
   pow_res = list()
   con_res = list()
+  if(grepl("w", design)){
+    stop("Design contains a within subject factor. \n This is not supported by this function at this time")
+  }
   
   if (!is.null(beta_level)){
     pow = 1 - beta_level
@@ -410,6 +424,26 @@ ANCOVA_analytic <- function(design,
     stop("internal error: exactly one of n, r2, beta_level, and alpha_level must be NULL")
   }
   
+  #names(pow_res) = factorlist
+  df_pow = data.frame(factor = character(),
+                      N_tot = integer(),
+                      n_cov = integer(),
+                      r2 = double(),
+                      alpha_level = double(),
+                      beta_level = double(),
+                      power = double())
+  
+  for(i1 in 1:length(pow_res)){
+    df_pow[i1,]$factor = factorlist[i1]
+    df_pow[i1,]$N_tot = pow_res[[i1]]$N_tot
+    df_pow[i1,]$n_cov = pow_res[[i1]]$n_cov
+    df_pow[i1,]$r2 = pow_res[[i1]]$r2
+    df_pow[i1,]$alpha_level = pow_res[[i1]]$alpha_level
+    df_pow[i1,]$beta_level = pow_res[[i1]]$beta_level
+    df_pow[i1,]$power = pow_res[[i1]]$pow*100
+  }
+  rownames(df_pow)  = NULL
+  
   if(length(cons) == 0){
     con_res = NULL
     df_con = NULL
@@ -421,29 +455,35 @@ ANCOVA_analytic <- function(design,
                         alpha_level = double(),
                         beta_level = double(),
                         power = double())
+    
+    for(i1 in 1:length(con_res)){
+      df_con[i1,]$contrast = names(con_res)[i1]
+      df_con[i1,]$N_tot = con_res[[i1]]$N_tot
+      df_con[i1,]$n_cov = con_res[[i1]]$n_cov
+      df_con[i1,]$r2 = con_res[[i1]]$r2
+      df_con[i1,]$alpha_level = con_res[[i1]]$alpha_level
+      df_con[i1,]$beta_level = con_res[[i1]]$beta_level
+      df_con[i1,]$power = con_res[[i1]]$pow*100
+    }
+    rownames(df_con)  = NULL
   }
-  #names(pow_res) = factorlist
-  df_pow = data.frame(factor = character(),
-                      N_tot = integer(),
-                      n_cov = integer(),
-                      r2 = double(),
-                      alpha_level = double(),
-                      beta_level = double(),
-                      power = double())
 
-  for(i1 in 1:length(pow_res)){
-    df_pow[i1,]$factor = factorlist[i1]
-    df_pow[i1,]$N_tot = pow_res[[i1]]$N_tot
-    df_pow[i1,]$n_cov = pow_res[[i1]]$n_cov
-    df_pow[i1,]$r2 = pow_res[[i1]]$r2
-    df_pow[i1,]$alpha_level = pow_res[[i1]]$alpha_level
-    df_pow[i1,]$beta_level = pow_res[[i1]]$beta_level
-    df_pow[i1,]$power = pow_res[[i1]]$pow*100
-  }
-  rownames(df_pow)  = NULL
 
-  return(list(main_results = df_pow,
-              aov_list = pow_res))
+  structure(
+    list(
+      main_results = df_pow,
+      aov_list = pow_res,
+      contrast_results = df_con,
+      con_list = con_res,
+      design_params = list(
+        design = design,
+        mu = mu,
+        sd = sd,
+        label_list = label_list
+      )
+    ),
+    class = "ancova_power"
+  )
   
   
 }
