@@ -10,17 +10,18 @@
 #' @param n_cov Number of covariates
 #' @param alpha_level Alpha level used to determine statistical significance
 #' @param beta_level Type II error probability (power/100-1)
-#' @param contrasts List of matrices for specific contrasts of interest.
+#' @param contrasts List of matrices for specific contrasts of interest
 #' @param label_list An optional list to specify the factor names and condition (recommended, if not used factors and levels are indicated by letters and numbers).
-#' @param design_result = NULL
-#' @param round_up = TRUE
+#' @param design_result Output from the ANOVA_design function
+#' @param round_up Logical indicator (default = TRUE) for whether to round up sample size calculations to nearest whole number
 #' 
 #' @return
+#' One, or two, data frames containing the power analysis results from the power analysis for the omnibus ANCOVA or contrast tests.
 #' @examples
 #' # To be added
 #' @section References:
 #' Shieh, G. (2020). Power analysis and sample size planning in ANCOVA designs. Psychometrika, 85(1), 101-120.
-#' @importFrom stats uniroot pf df qf contr.sum dt dbeta qtukey 
+#' @importFrom stats uniroot pf df qf contr.sum dt dbeta qtukey model.matrix terms
 #' @export
 #'
 

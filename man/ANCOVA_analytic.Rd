@@ -19,11 +19,36 @@ ANCOVA_analytic(
   round_up = TRUE
 )
 }
-\value{
+\arguments{
+\item{design}{Output from the ANOVA_design function}
 
+\item{mu}{Vector specifying mean for each condition}
+
+\item{n}{Sample size in each condition}
+
+\item{sd}{Standard deviation for all conditions (or a vector specifying the sd for each condition)}
+
+\item{r2}{Coefficient of Determination of the model with only the covariates}
+
+\item{n_cov}{Number of covariates}
+
+\item{alpha_level}{Alpha level used to determine statistical significance}
+
+\item{beta_level}{Type II error probability (power/100-1)}
+
+\item{contrasts}{List of matrices for specific contrasts of interest}
+
+\item{label_list}{An optional list to specify the factor names and condition (recommended, if not used factors and levels are indicated by letters and numbers).}
+
+\item{design_result}{Output from the ANOVA_design function}
+
+\item{round_up}{Logical indicator (default = TRUE) for whether to round up sample size calculations to nearest whole number}
+}
+\value{
+One, or two, data frames containing the power analysis results from the power analysis for the omnibus ANCOVA or contrast tests.
 }
 \description{
-Compute power of ANCOVA omnibus tests and contrasts.
+Complete power analyses for ANCOVA omnibus tests and contrasts.
 }
 \section{References}{
 
