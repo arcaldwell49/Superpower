@@ -36,4 +36,4 @@ mu_from_design <- function(design, f_list) {
   rowSums(mu)
 }
 
-mu_from_design(design="3b", f_list = list(a=.1))
+
