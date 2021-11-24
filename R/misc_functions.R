@@ -27,11 +27,7 @@ model_matrix_from_design <- function(x) {
   )[, -1]
   
   colnames(design_contrasts) <- attr(terms(design_fomula), "term.labels")
-  rownames(design_contrasts) <- apply(
-    design
-    , 1
-    , function(x) paste(paste0(names(x), x), collapse = "_")
-  )
+  #rownames(design_contrasts) <- apply(design, 1, # function(x) paste(paste0(names(x), x), collapse = "_"))
   
   design_contrasts
 }

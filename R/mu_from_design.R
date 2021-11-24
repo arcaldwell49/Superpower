@@ -1,4 +1,4 @@
-#' Get means from Cohen's f 
+#' Get vector of means from Cohen's f 
 #' 
 #' A function for producing a pattern of means that will produce the Cohen's f values
 #' 
@@ -9,7 +9,7 @@
 #' @export
 #'
 
-mu_from_design <- function(design, f_list) {
+mu_from_design <- function(design, f) {
   label_list = list()
   labelnames = vector()
   factor_levels <- as.numeric(strsplit(design, "\\D+")[[1]])
@@ -30,8 +30,8 @@ mu_from_design <- function(design, f_list) {
   x = label_list
   model_matrix <- model_matrix_from_design(x= label_list)
   
-  model_matrix_subset <- model_matrix[, names(f_list)]
-  mu <- t(t(model_matrix_subset) * unlist(f_list))
+  model_matrix_subset <- model_matrix[, names(f)]
+  mu <- t(t(model_matrix_subset) * unlist(f))
   
   rowSums(mu)
 }

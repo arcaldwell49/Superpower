@@ -487,12 +487,12 @@ ANCOVA_analytic <- function(design,
       df_con[i1,]$beta_level = con_res[[i1]]$beta_level
       df_con[i1,]$power = con_res[[i1]]$pow*100
       
-      con_res2[[i1]] =   structure(list(contrast = con_res[[i1]]$cmat,
-                                        dfs = c(con_res[[i1]]$num_df,
+      con_res2[[i1]] =   structure(list(dfs = c(con_res[[i1]]$num_df,
                                                 con_res[[i1]]$den_df), 
                                         N = con_res[[i1]]$N_tot, 
                                         n = con_res[[i1]]$nvec,
                                         n_cov = con_res[[i1]]$n_cov,
+                                        contrast = con_res[[i1]]$cmat,
                                         mu = con_res[[i1]]$mu,
                                         sd = con_res[[i1]]$sd,
                                         r2 = con_res[[i1]]$r2,
