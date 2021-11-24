@@ -1,6 +1,6 @@
 #' Power Calculations for a factorial ANCOVA
 #' 
-#' Complete power analyses for ANCOVA omnibus tests and contrasts.
+#' Complete power analyses for ANCOVA omnibus tests and contrasts. This funcion does not support within subjects factors.
 #' 
 #' @param design Output from the ANOVA_design function
 #' @param mu Vector specifying mean for each condition
@@ -38,6 +38,10 @@ ANCOVA_analytic <- function(design,
                             label_list = NULL,
                             design_result = NULL,
                             round_up = TRUE) {
+  
+  METHOD <- "Power Calculation for ANCOVA"
+  METHOD2 <- "Power Calculation for ANCOVA contrast"
+  TYPE = "Exact"
   if(!is.null(design_result)){
     mu = design_result$mu
     sd = design_result$sd
@@ -183,7 +187,9 @@ ANCOVA_analytic <- function(design,
   #cmat = t(contr.sum(length(nvec))) # Contrast matrix
   # Create matrix for Wald statistic (W star; eq 10 from Shieh)
   pow_res = list()
+  pow_res2 = list()
   con_res = list()
+  con_res2 = list()
   if(grepl("w", design)){
     stop("Design contains a within subject factor. \n This is not supported by this function at this time")
   }
@@ -424,8 +430,7 @@ ANCOVA_analytic <- function(design,
   }else {
     stop("internal error: exactly one of n, r2, beta_level, and alpha_level must be NULL")
   }
-  
-  #names(pow_res) = factorlist
+
   df_pow = data.frame(factor = character(),
                       N_tot = integer(),
                       n_cov = integer(),
@@ -442,11 +447,27 @@ ANCOVA_analytic <- function(design,
     df_pow[i1,]$alpha_level = pow_res[[i1]]$alpha_level
     df_pow[i1,]$beta_level = pow_res[[i1]]$beta_level
     df_pow[i1,]$power = pow_res[[i1]]$pow*100
+    
+    pow_res2[[i1]] =   structure(list(dfs = c(pow_res[[i1]]$num_df,
+                                              pow_res[[i1]]$den_df), 
+                                      N = pow_res[[i1]]$N_tot, 
+                                      n = pow_res[[i1]]$nvec,
+                                      n_cov = pow_res[[i1]]$n_cov,
+                                      mu = pow_res[[i1]]$mu,
+                                      sd = pow_res[[i1]]$sd,
+                                      r2 = pow_res[[i1]]$r2,
+                                      alpha_level = pow_res[[i1]]$alpha_level, 
+                                      beta_level = pow_res[[i1]]$beta_level,
+                                      power = pow_res[[i1]]$power_final,
+                                      type = TYPE,
+                                      method = METHOD), class = "power.htest")
   }
+  names(pow_res2) = names(pow_res)
   rownames(df_pow)  = NULL
   
   if(length(cons) == 0){
     con_res = NULL
+    con_res2 = NULL
     df_con = NULL
   } else{
     df_con = data.frame(contrast = character(),
@@ -465,7 +486,23 @@ ANCOVA_analytic <- function(design,
       df_con[i1,]$alpha_level = con_res[[i1]]$alpha_level
       df_con[i1,]$beta_level = con_res[[i1]]$beta_level
       df_con[i1,]$power = con_res[[i1]]$pow*100
+      
+      con_res2[[i1]] =   structure(list(contrast = con_res[[i1]]$cmat,
+                                        dfs = c(con_res[[i1]]$num_df,
+                                                con_res[[i1]]$den_df), 
+                                        N = con_res[[i1]]$N_tot, 
+                                        n = con_res[[i1]]$nvec,
+                                        n_cov = con_res[[i1]]$n_cov,
+                                        mu = con_res[[i1]]$mu,
+                                        sd = con_res[[i1]]$sd,
+                                        r2 = con_res[[i1]]$r2,
+                                        alpha_level = con_res[[i1]]$alpha_level, 
+                                        beta_level = con_res[[i1]]$beta_level,
+                                        power = con_res[[i1]]$power_final,
+                                        type = TYPE,
+                                        method = METHOD2), class = "power.htest")
     }
+    names(con_res2) = names(con_res)
     rownames(df_con)  = NULL
   }
 
@@ -473,9 +510,9 @@ ANCOVA_analytic <- function(design,
   structure(
     list(
       main_results = df_pow,
-      aov_list = pow_res,
+      aov_list = pow_res2,
       contrast_results = df_con,
-      con_list = con_res,
+      con_list = con_res2,
       design_params = list(
         design = design,
         mu = mu,
