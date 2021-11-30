@@ -48,7 +48,7 @@ ANCOVA_analytic(
 One, or two, data frames containing the power analysis results from the power analysis for the omnibus ANCOVA or contrast tests.
 }
 \description{
-Complete power analyses for ANCOVA omnibus tests and contrasts.
+Complete power analyses for ANCOVA omnibus tests and contrasts. This funcion does not support within subjects factors.
 }
 \section{References}{
 

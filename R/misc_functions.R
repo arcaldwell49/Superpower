@@ -15,22 +15,7 @@ ci_binom = function(centx,n,conf_level=.95){
   return(res)
 }
 
-model_matrix_from_design <- function(x) {
-  design <- expand.grid(x)
-  design_fomula <- as.formula(paste0("~", paste(names(design), collapse = "*")))
-  
-  design_contrasts <- lapply(x, function(x) "contr.sum")
-  design_contrasts <- model.matrix(
-    design_fomula
-    , data = design
-    , contrasts = design_contrasts
-  )[, -1]
-  
-  colnames(design_contrasts) <- attr(terms(design_fomula), "term.labels")
-  #rownames(design_contrasts) <- apply(design, 1, # function(x) paste(paste0(names(x), x), collapse = "_"))
-  
-  design_contrasts
-}
+
 
 smean.sdl = function (x, mult = 1, na.rm = TRUE) {
   if (na.rm) 
