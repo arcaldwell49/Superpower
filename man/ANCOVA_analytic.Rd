@@ -2,7 +2,7 @@
 % Please edit documentation in R/ANCOVA_analytic.R
 \name{ANCOVA_analytic}
 \alias{ANCOVA_analytic}
-\title{Power Calculations for a factorial ANCOVA}
+\title{Power Calculations for Factorial ANCOVAs}
 \usage{
 ANCOVA_analytic(
   design,
@@ -46,6 +46,8 @@ ANCOVA_analytic(
 }
 \value{
 One, or two, data frames containing the power analysis results from the power analysis for the omnibus ANCOVA or contrast tests.
+In addition, every F-test is included in a list of power.htest results. 
+Lastly, a list containing the design parameters is also included in the results.
 }
 \description{
 Complete power analyses for ANCOVA omnibus tests and contrasts. This funcion does not support within subjects factors.

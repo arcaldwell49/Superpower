@@ -1,4 +1,4 @@
-#' Power Calculations for a factorial ANCOVA
+#' Power Calculations for Factorial ANCOVAs
 #' 
 #' Complete power analyses for ANCOVA omnibus tests and contrasts. This funcion does not support within subjects factors.
 #' 
@@ -17,6 +17,8 @@
 #' 
 #' @return
 #' One, or two, data frames containing the power analysis results from the power analysis for the omnibus ANCOVA or contrast tests.
+#' In addition, every F-test is included in a list of power.htest results. 
+#' Lastly, a list containing the design parameters is also included in the results.
 #' @examples
 #' # To be added
 #' @section References:
