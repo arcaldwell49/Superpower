@@ -10,8 +10,10 @@ output:
     toc: true
 vignette: >
   %\VignetteIndexEntry{Power Calculations for ANCOVA}
-  %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r, include = FALSE}
@@ -31,11 +33,126 @@ Recently, @shieh_ancova demonstrated that most software uses a slightly flawed a
 
 # One-way ANOVA
 
-As @shieh_ancova eloquently points out in their simulations, the method of overestimates power on 
+As @shieh_ancova eloquently points out in their simulations, the method of @cohen_book overestimates power and the problem is exacerbated by having a high number of covariates with high proportion of the variance ($R^2$) explained by the covariates. The problem is worst (30% error between estimated and actual power) in the simulation when there are 10 covariates included in the model when explained variance is approximately 81% ($\rho = 0.9$) [@shieh_ancova see Table 3). while this may not seem like much of issue if you don't expect to encounter this scenario, it still demonstrates the @cohen_book method is inconsistent producing appropriate estimates of power. I believe this is reason enough (when provided with a sustainable and implementable alternative) to abandon the old method of @cohen_book for a newer method that provides exact rather than approximate estimates of power for ANCOVAs.
+
+Thankfully, @shieh_ancova was diligent in his work and demonstrated, showing both the math and simulations, how a new exact method could be utilized. The direct method described in the paper is implemented in the `power_oneway_ancova` function.
+
+We can copy the example from @maxwell_delaney that Shieh also used. In this example there are 3 groups with means (`mu`) of 400, 450, 500 respectively. The error variance is 10000 (`sd = 100`). Rather than simulating dozens of examples, I will demonstrate one scenario below where there are 3 covariates, and the $R^2$ is equal to 0.5 (treatment effect excluded). This is demonstrated in @shieh_ancova,  Table 2.
+
+For `power_oneway_ancova` we can demonstrate both the approximate and exact methods using the `type` argument. We can leave the `n` argument out in order to solve for the sample size required to reach 80% power. Please notice that `round_up` is set to TRUE since we want have a whole number for sample sizes (rather than a fractional sample size).
+
+## @cohen_book Method
+
+```{r}
+power_oneway_ancova(
+  mu = c(400,450,500),
+  n_cov = 3,
+  sd = 100,
+  r2 = .25,
+  alpha_level = .05,
+  #n = c(17,17,17),
+  beta_level = .2,
+  round_up = TRUE,
+  type = "exact"
+)
+```
+
+
+## @shieh_ancova Method
+
+Notice that this method requires 3 more subjects in order to achieve a minimum of 80% power.
+
+```{r}
+power_oneway_ancova(
+  mu = c(400,450,500),
+  n_cov = 3,
+  sd = 100,
+  r2 = .25,
+  alpha_level = .05,
+  #n = c(17,17,17),
+  beta_level = .2,
+  round_up = TRUE,
+  type = "approx"
+)
+```
+
 
 # Extending to factorial ANOVAs
 
+Now, @shieh_ancova mentioned something very interesting at the end of section 3.
+
+> "Although the prescribed application of general linear hypothesis is discussed only from the perspective of a one-way ANCOVA design, the number of groups G may also represent the total number of combined factor levels of a multi-factor ANCOVA design. Hence, using a contrast matrix associated with a specific designated hypothesis, the same concept and process of assessing treatment effects can be readily extended to two-way and higher-order ANCOVA designs." 
+
+Therefore, all that is needed to extend the one-way ANOVA code provided by @shieh_ancova is to provide the appropriate contrast matrix for the main effect or interaction ANOVA-level effect that is desired. `Superpower` accomplishes this with the `ANCOVA_analytic` function which internally uses the `model.matrix` function to form the appropriate contrast matrix.
+
+## ANCOVA_analytic
+
+This function operates similar to the `ANOVA_power` and `ANOVA_exact` functions. However, the `ANCOVA_analytic` function doesn't require the use of `ANOVA_design` first. Please note that unlike the previous function there is no option to apply the approximation from @cohen_book for factorial designs
+
+### Example: 2x3 Design
+
+We can extend the previous scenario with 3 groups to a factorial design with 2 groups across 3 conditions. 
+
+```{r}
+# Run function
+res1 = ANCOVA_analytic(
+  design = "2b*3b",
+  mu = c(400, 450, 500,
+         400, 500, 600),
+  n_cov = 3,
+  sd = 100,
+  r2 = .25,
+  alpha_level = .05,
+  #n = 17,
+  beta_level = .2,
+  round_up = TRUE
+)
+
+# Print main results
+res1
+
+```
+
+The results can also be printed as `power.htest` objects by accessing the individual effects in the `res1` object.
+
+```{r}
+res1$aov_list$a
+
+res1$aov_list$b
+
+res1$aov_list$ab
+```
+
+We can also check the design by using the plot method.
+
+```{r}
+plot(res1)
+```
+
+However, you may want to compare the power of ANOVA to an ANCOVA. In that case you can use the `ANOVA_design` function and pass it onto the `ANCOVA_analytic` function. But, this forces you to set the sample size.
+
+```{r}
+des1 = ANOVA_design(  design = "2b*3b",
+  mu = c(400, 450, 500,
+         400, 500, 600),
+  n = 17,
+  sd = 100)
+
+res2 = ANCOVA_analytic(
+  design_result = des1,
+  n_cov = 3,
+  r2 = .25,
+  alpha_level = .05,
+  round_up = TRUE
+)
+
+res2
+```
+
+
 # Contrasts
+
+Additionally, user specified contrasts can also be used for a power analysis. These can be provided in the `contrasts` argument of the `ANCOVA_analytic` function or supplied directly to the `ANCOVA_contrast` function as an independent test.
 
 ```{r}
 ANCOVA_contrast(cmat = c(-1,1),

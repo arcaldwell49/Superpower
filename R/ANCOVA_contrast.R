@@ -18,7 +18,7 @@
 #' # To be added
 #' @section References:
 #' Shieh, G. (2020). Power analysis and sample size planning in ANCOVA designs. Psychometrika, 85(1), 101-120.
-#' @importFrom stats uniroot pf df qf contr.sum dt dbeta qtukey model.matrix terms
+#' @importFrom stats uniroot pf df qf contr.sum dt dbeta qtukey model.matrix terms optim
 #' @export
 
 ANCOVA_contrast <- function(cmat,
@@ -147,8 +147,10 @@ ANCOVA_contrast <- function(cmat,
                  type)
     })
 
-        N_tot <- uniroot(function(N_tot){ eval(p.body2) - pow}, 
-                         c(2*length(mu)+n_cov, 1e+09))$root
+        N_tot <- optim(par=(2*length(mu)+n_cov),
+                       fn=function(N_tot){ abs(eval(p.body2) - pow)}, 
+                       c(2*length(mu)+n_cov, 1000000000), 
+                       control=list(warn.1d.NelderMead = FALSE))$par
         res <- eval(p.body2)
         beta_level <- 1-res$pow
         if(round_up == TRUE && (!(N_tot%%1==0) || !any(res$nvec%%1==0))) {

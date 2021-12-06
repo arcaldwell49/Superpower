@@ -67,7 +67,8 @@ plot.ancova_power <- function(x,...){
                     mu = x$design_params$mu,
                     sd = x$design_params$sd,
                     r = 0,
-                    label_list = x$design_params$label_list))
+                    label_list = x$design_params$label_list,
+                    plot = FALSE))
   
 }
 

@@ -23,7 +23,7 @@
 #' # To be added
 #' @section References:
 #' Shieh, G. (2020). Power analysis and sample size planning in ANCOVA designs. Psychometrika, 85(1), 101-120.
-#' @importFrom stats uniroot pf df qf contr.sum dt dbeta qtukey model.matrix terms
+#' @importFrom stats uniroot pf df qf contr.sum dt dbeta qtukey model.matrix terms optim
 #' @export
 #'
 
@@ -358,20 +358,22 @@ ANCOVA_analytic <- function(design,
   } else if (is.null(n)){
     
     p.body2 <- quote({
-      pwr_method(mu,
-                 n = rep(N_tot/length(mu), length(mu)),
-                 n_cov,
-                 r2,
-                 sd,
-                 alpha_level,
-                 type)
+      Superpower:::pow_anc_meth(cmat,
+                   mu,
+                   nvec = rep(N_tot / length(mu), length(mu)),
+                   n_cov,
+                   r2,
+                   sd,
+                   alpha_level)
     })
     
     for(i1 in 1:length(cmats)){
       cmat = cmats[[i1]]
       
-      N_tot <- uniroot(function(N_tot){ eval(p.body2) - pow}, 
-                             c(2*length(mu)+n_cov, 1e+09))$root
+      N_tot <- optim(par=(2*length(mu)+n_cov),
+                     fn=function(N_tot){ abs(eval(p.body2)$pow - pow)}, 
+                     c(2*length(mu)+n_cov, 1000000000), 
+                     control=list(warn.1d.NelderMead = FALSE))$par
       res <- eval(p.body2)
       beta_level <- 1-res$pow
       if(round_up == TRUE && (!(N_tot%%1==0) || !any(res$nvec%%1==0))) {
@@ -400,8 +402,10 @@ ANCOVA_analytic <- function(design,
     if(length(cons) != 0){
       for(i1 in 1:length(cons)){
         cmat = cons[[i1]]
-        N_tot <- uniroot(function(N_tot){ eval(p.body2) - pow}, 
-                         c(2*length(mu)+n_cov, 1e+09))$root
+        N_tot <- optim(par=(2*length(mu)+n_cov),
+                       fn=function(N_tot){ abs(eval(p.body2) - pow)}, 
+                       c(2*length(mu)+n_cov, 1000000000), 
+                       control=list(warn.1d.NelderMead = FALSE))$par
         res <- eval(p.body2)
         beta_level <- 1-res$pow
         if(round_up == TRUE && (!(N_tot%%1==0) || !any(res$nvec%%1==0))) {
@@ -460,7 +464,7 @@ ANCOVA_analytic <- function(design,
                                       r2 = pow_res[[i1]]$r2,
                                       alpha_level = pow_res[[i1]]$alpha_level, 
                                       beta_level = pow_res[[i1]]$beta_level,
-                                      power = pow_res[[i1]]$power_final,
+                                      power = pow_res[[i1]]$pow*100,
                                       type = TYPE,
                                       method = METHOD), class = "power.htest")
   }
@@ -500,7 +504,7 @@ ANCOVA_analytic <- function(design,
                                         r2 = con_res[[i1]]$r2,
                                         alpha_level = con_res[[i1]]$alpha_level, 
                                         beta_level = con_res[[i1]]$beta_level,
-                                        power = con_res[[i1]]$power_final,
+                                        power = con_res[[i1]]$pow*100,,
                                         type = TYPE,
                                         method = METHOD2), class = "power.htest")
     }
