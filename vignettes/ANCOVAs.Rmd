@@ -87,7 +87,7 @@ Therefore, all that is needed to extend the one-way ANOVA code provided by @shie
 
 ## ANCOVA_analytic
 
-This function operates similar to the `ANOVA_power` and `ANOVA_exact` functions. However, the `ANCOVA_analytic` function doesn't require the use of `ANOVA_design` first. Please note that unlike the previous function there is no option to apply the approximation from @cohen_book for factorial designs
+This function operates similar to the `ANOVA_power` and `ANOVA_exact` functions. However, the `ANCOVA_analytic` function doesn't require the use of `ANOVA_design` first and relies upon the closed formulas from @shieh_ancova rather than a simulation to calculate statistical power. Please note that unlike the `power_oneway_ancova` function there is no option to apply the approximation from @cohen_book for factorial designs.
 
 ### Example: 2x3 Design
 
@@ -152,9 +152,20 @@ res2
 
 # Contrasts
 
-Additionally, user specified contrasts can also be used for a power analysis. These can be provided in the `contrasts` argument of the `ANCOVA_analytic` function or supplied directly to the `ANCOVA_contrast` function as an independent test.
+Additionally, user specified contrasts can also be used for a power analysis. These can be provided in the `contrasts` argument of the `ANCOVA_analytic` function or supplied directly to the `ANCOVA_contrast` function as an independent test. The `ANCOVA_analytic` function requires that the contrasts matricies are provided as matrices. The contrasts can be accessed in the `con_list` part of the results and can be named (in this case "test").
 
 ```{r}
+
+ANCOVA_analytic(design = "2b",
+                mu = c(0,1),
+                n = 15,
+                contrast = list(test = matrix(c(-1,1),
+                                              nrow = 1)),
+                sd = 1,
+                r2 = .2,
+                n_cov = 1)$con_list$test
+
+# Same result
 ANCOVA_contrast(cmat = c(-1,1),
                 n = 15,
                 mu = c(0,1),
@@ -165,5 +176,7 @@ ANCOVA_contrast(cmat = c(-1,1),
 
 
 # Method
+
+- TO BE ADDED. See @shieh_ancova for the exact mathematical explanation.
 
 # References
