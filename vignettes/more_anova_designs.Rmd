@@ -39,13 +39,13 @@ design <- "3b"
 n <- 50
 mu <- c(24, 26.2, 26.6)
 sd <- 6.4
-labelnames <- c("condition", "control", "cat", "dog") #
+label_list = list("condition" = c("control", "cat", "dog"))
 
 design_result <- ANOVA_design(design = design,
                    n = n, 
                    mu = mu, 
                    sd = sd, 
-                   labelnames = labelnames,
+                   label_list = label_list,
                    plot = TRUE)
 ```
 ```
@@ -111,13 +111,13 @@ design <- "3b"
 n <- 134
 mu <- c(24, 26.2, 26.6)
 sd <- 6.4
-labelnames <- c("condition", "control", "cat", "dog") #
+label_list = list("condition" = c("control", "cat", "dog"))
 
 design_result <- ANOVA_design(design = design,
                    n = n, 
                    mu = mu, 
                    sd = sd, 
-                   labelnames = labelnames,
+                   label_list = label_list,
                    plot = FALSE) #do not print the plot (same as above)
 
 ANOVA_exact2(design_result,
@@ -128,7 +128,7 @@ design_result <- ANOVA_design(design = design,
                    n = n, 
                    mu = mu, 
                    sd = sd, 
-                   labelnames = labelnames,
+                   label_list = label_list,
                    plot = FALSE) #do not print the plot (same as above)
 
 ANOVA_exact2(design_result,
@@ -139,7 +139,7 @@ design_result <- ANOVA_design(design = design,
                    n = n, 
                    mu = mu, 
                    sd = sd, 
-                   labelnames = labelnames,
+                   label_list = label_list,
                    plot = FALSE) #do not print the plot (same as above)
 
 ANOVA_exact2(design_result,
@@ -205,14 +205,14 @@ ES <- f2/(f2+1)
 ES
 mu <- mu_from_ES(K = K, ES = ES)
 design = paste(K,"w",sep="")
-labelnames <- c("speed", "fast", "slow")
+label_list <- list("speed" =c("fast", "slow"))
 
 design_result <- ANOVA_design(design = design,
                               n = n, 
                               mu = mu, 
                               sd = sd, 
                               r = r, 
-                              labelnames = labelnames,
+                              label_list = label_list,
                               plot = TRUE)
 
 ANOVA_exact2(design_result,
@@ -235,14 +235,14 @@ ES <- f2/(f2+1)
 ES
 mu <- mu_from_ES(K = K, ES = ES)
 design = paste(K,"w",sep="")
-labelnames <- c("speed", "fast", "slow")
+label_list <- list("speed" = c("fast", "slow"))
 
 design_result <- ANOVA_design(design = design,
                               n = n, 
                               mu = mu, 
                               sd = sd, 
                               r = r, 
-                              labelnames = labelnames,
+                              label_list = label_list,
                               plot = TRUE)
 
 ANOVA_exact2(design_result,
@@ -298,14 +298,14 @@ ES
 mu <- mu_from_ES(K = K, ES = ES)
 sqrt(sum((mu-mean(mu))^2)/length(mu))/sd #Cohen, 1988, formula 8.2.1 and 8.2.2
 design = paste(K,"w",sep="")
-labelnames <- c("speed", "fast", "medium", "slow")
+label_list <- list("speed" = c("fast", "medium", "slow"))
 
 design_result <- ANOVA_design(design = design,
                               n = n, 
                               mu = mu, 
                               sd = sd, 
                               r = r, 
-                              labelnames = labelnames,
+                              label_list = label_list,
                               plot = TRUE)
 power_result = ANOVA_power(design_result,
                            nsims = 250)
@@ -394,8 +394,8 @@ design_result_cross_80 <- ANOVA_design(design = "2b*2b",
                                        n = 80, 
                                        mu = c(1, 0, 0, 1), 
                                        sd = 2, 
-                                       labelnames = c("condition", "cheerful", "sad", 
-                                                      "voice", "human", "robot"))
+                                       label_list = list("condition" = c("cheerful","sad"), 
+                                                      "voice" = c("human", "robot")))
 
 plot(design_result_cross_80)
 # 
@@ -403,7 +403,12 @@ power_result_cross_80 <- ANOVA_exact(design_result_cross_80, alpha_level = 0.05,
 
 
 # To save time compiling this vignette, we ran these simulations once, and stored them
-design_result_cross_40 <- ANOVA_design(design = "2b*2b", n = 40, mu = c(1, 0, 0, 1), sd = 2, labelnames = c("condition", "cheerful", "sad", "voice", "human", "robot"), plot = FALSE)
+design_result_cross_40 <- ANOVA_design(design = "2b*2b",
+                                       n = 40, 
+                                       mu = c(1, 0, 0, 1), 
+                                       sd = 2, 
+                                       label_list = list("condition" = c("cheerful", "sad"), 
+                                                                                                            "voice" = c("human", "robot")), plot = FALSE)
 # 
 power_result_cross_40 <- ANOVA_exact(design_result_cross_40, alpha_level = 0.05, verbose = FALSE)
 
@@ -431,8 +436,8 @@ design_result_ordinal <- ANOVA_design(design = "2b*2b",
                                       n = 160, 
                                       mu = c(1, 0, 0, 0), 
                                       sd = 2, 
-                                      labelnames = c("condition", "cheerful", "sad",
-                                                     "voice", "human", "robot"))
+                                      label_list = list("condition" = c("cheerful", "sad"),
+                                                     "voice" = c("human", "robot")))
 # 
 power_result_ordinal <- ANOVA_power(design_result_ordinal, 
                                     alpha_level = 0.05, 
@@ -467,8 +472,8 @@ design_result <-ANOVA_design(design = "2b*2b",
                              n = 40,
                              mu = c(2, 0, 0, 0),
                              sd = 2,
-                             labelnames = c("condition", "cheerful", "sad",
-                                            "voice", "human", "robot"))
+                             label_list = list("condition" = c("cheerful", "sad"),
+                                            "voice" = c( "human", "robot")))
 #Analytic solution
 power_twoway_between(design_result)$power_A
 power_twoway_between(design_result)$power_B
@@ -480,9 +485,11 @@ design_result <- ANOVA_design(design = "2b*2b*2b",
                               n = 20, 
                               mu = c(4, 0, 0, 0, 0, 0, 0, 0), 
                               sd = 2,
-                              labelnames = c("condition", "cheerful", "sad", 
-                                             "voice", "human", "robot", 
-                                             "factor_c", "c1", "c2"))
+                              label_list = list(
+                                "condition" = c("cheerful", "sad"),
+                                "voice" = c("human", "robot"),
+                                "factor_c" = c("c1", "c2")
+                              ))
 power_threeway_between(design_result)$power_ABC
 power_threeway_between(design_result)$Cohen_f_ABC
 
@@ -504,15 +511,15 @@ n <- 20
 mu <- c(20, 20, 20, 20, 20, 20, 20, 20, 25) 
 # Enter means in the order that matches the labels below.
 sd <- 5
-labelnames <- c("Factor_A", "a1", "a2", "a3", 
-                "Factor_B", "b1", "b2", "b3") #
+label_list <- list("Factor_A" = c("a1", "a2", "a3"), 
+                "Factor_B" = c("b1", "b2", "b3")) #
 # the label names should be in the order of the means specified above.
 
 design_result <- ANOVA_design(design = design,
                    n = n, 
                    mu = mu, 
                    sd = sd, 
-                   labelnames = labelnames)
+                   label_list = label_list)
 plot(design_result)
 
 res = ANOVA_exact2(design_result, 
@@ -575,13 +582,14 @@ r <- c(
   )
 
 design = "2w*2w"
-labelnames = c("A", "a1", "a2", "B", "b1", "b2")
+label_list = list("A" =c( "a1", "a2"),
+               "B" = c("b1", "b2"))
 design_result <- ANOVA_design(design = design,
                               n = n, 
                               mu = mu, 
                               sd = sd, 
                               r = r, 
-                              labelnames = labelnames,
+                              label_list = label_list,
                               plot = TRUE)
 
 power_result_vig_4 = ANOVA_power(design_result,

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Compute standardized alpha level based on unstandardized alpha level and the number of observations N. — alpha_standardized • Superpower</title>
+<title>Power Calculations for Factorial ANCOVAs — ANCOVA_analytic • Superpower</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Compute standardized alpha level based on unstandardized alpha level and the number of observations N. — alpha_standardized" />
-<meta property="og:description" content="Compute standardized alpha level based on unstandardized alpha level and the number of observations N." />
+<meta property="og:title" content="Power Calculations for Factorial ANCOVAs — ANCOVA_analytic" />
+<meta property="og:description" content="Complete power analyses for ANCOVA omnibus tests and contrasts. This funcion does not support within subjects factors." />
 
 
 
@@ -135,50 +135,97 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Compute standardized alpha level based on unstandardized alpha level and the number of observations N.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/arcaldwell49/Superpower/blob/master/R/alpha_standardized.R'><code>R/alpha_standardized.R</code></a></small>
-    <div class="hidden name"><code>alpha_standardized.Rd</code></div>
+    <h1>Power Calculations for Factorial ANCOVAs</h1>
+    <small class="dont-index">Source: <a href='https://github.com/arcaldwell49/Superpower/blob/master/R/ANCOVA_analytic.R'><code>R/ANCOVA_analytic.R</code></a></small>
+    <div class="hidden name"><code>ANCOVA_analytic.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Compute standardized alpha level based on unstandardized alpha level and the number of observations N.</p>
+    <p>Complete power analyses for ANCOVA omnibus tests and contrasts. This funcion does not support within subjects factors.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>alpha_standardized</span><span class='op'>(</span><span class='va'>alpha</span>, <span class='va'>N</span>, standardize_N <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>ANCOVA_analytic</span><span class='op'>(</span>
+  <span class='va'>design</span>,
+  <span class='va'>mu</span>,
+  n <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>sd</span>,
+  r2 <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>n_cov</span>,
+  alpha_level <span class='op'>=</span> <span class='fu'><a href='Superpower_options.html'>Superpower_options</a></span><span class='op'>(</span><span class='st'>"alpha_level"</span><span class='op'>)</span>,
+  beta_level <span class='op'>=</span> <span class='cn'>NULL</span>,
+  contrasts <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='op'>)</span>,
+  label_list <span class='op'>=</span> <span class='cn'>NULL</span>,
+  design_result <span class='op'>=</span> <span class='cn'>NULL</span>,
+  round_up <span class='op'>=</span> <span class='cn'>TRUE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>alpha</th>
-      <td><p>The unstandardized alpha level (e.g., 0.05), independent of the sample size.</p></td>
+      <th>design</th>
+      <td><p>Output from the ANOVA_design function</p></td>
     </tr>
     <tr>
-      <th>N</th>
-      <td><p>The number of observations (e.g., the sample size) in the dataset</p></td>
+      <th>mu</th>
+      <td><p>Vector specifying mean for each condition</p></td>
     </tr>
     <tr>
-      <th>standardize_N</th>
-      <td><p>The nuber of observations (e.g., the sample size) you want to use to standardize the alpha level for. Defaults to 100 (base on Good, 1982).</p></td>
+      <th>n</th>
+      <td><p>Sample size in each condition</p></td>
+    </tr>
+    <tr>
+      <th>sd</th>
+      <td><p>Standard deviation for all conditions (or a vector specifying the sd for each condition)</p></td>
+    </tr>
+    <tr>
+      <th>r2</th>
+      <td><p>Coefficient of Determination of the model with only the covariates</p></td>
+    </tr>
+    <tr>
+      <th>n_cov</th>
+      <td><p>Number of covariates</p></td>
+    </tr>
+    <tr>
+      <th>alpha_level</th>
+      <td><p>Alpha level used to determine statistical significance</p></td>
+    </tr>
+    <tr>
+      <th>beta_level</th>
+      <td><p>Type II error probability (power/100-1)</p></td>
+    </tr>
+    <tr>
+      <th>contrasts</th>
+      <td><p>List of matrices for specific contrasts of interest</p></td>
+    </tr>
+    <tr>
+      <th>label_list</th>
+      <td><p>An optional list to specify the factor names and condition (recommended, if not used factors and levels are indicated by letters and numbers).</p></td>
+    </tr>
+    <tr>
+      <th>design_result</th>
+      <td><p>Output from the ANOVA_design function</p></td>
+    </tr>
+    <tr>
+      <th>round_up</th>
+      <td><p>Logical indicator (default = TRUE) for whether to round up sample size calculations to nearest whole number</p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>One, or two, data frames containing the power analysis results from the power analysis for the omnibus ANCOVA or contrast tests.
+In addition, every F-test is included in a list of power.htest results. 
+Lastly, a list containing the design parameters is also included in the results.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     
 
-<p>Good, I. J. (1982). C140. Standardized tail-area probabilities. Journal of Statistical Computation and Simulation, 16(1), 65–66. &lt;https://doi.org/10.1080/00949658208810607&gt;</p>
+<p>Shieh, G. (2020). Power analysis and sample size planning in ANCOVA designs. Psychometrika, 85(1), 101-120.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## Check it yields .05 for N = 100:</span>
-<span class='fu'>alpha_standardized</span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>0.05</span>, N <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.05</div><div class='input'><span class='co'>## Check it yields .05 for N = 200:</span>
-<span class='fu'>alpha_standardized</span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>0.07071068</span>, N <span class='op'>=</span> <span class='fl'>200</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.05</div><div class='input'><span class='co'>## Which alpha should we use with N = 200?</span>
-<span class='fu'>alpha_standardized</span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>0.05</span>, N <span class='op'>=</span> <span class='fl'>200</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.03535534</div><div class='input'><span class='co'>## You can change the standardization N, repeating the example above:</span>
-<span class='fu'>alpha_standardized</span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>0.05</span>, N <span class='op'>=</span> <span class='fl'>100</span>, standardize_N <span class='op'>=</span> <span class='fl'>200</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.07071068</div></pre>
+    <pre class="examples"><div class='input'><span class='co'># To be added</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

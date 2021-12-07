@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Superpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -93,6 +93,9 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/ANCOVAs.html">Power Calculations for ANCOVA</a>
+    </li>
     <li>
       <a href="../articles/compromise_power.html">Introduction to Justifying Alpha Levels</a>
     </li>
@@ -135,12 +138,22 @@
       <small>Source: <a href='https://github.com/arcaldwell49/Superpower/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="superpower-012--rex-splode" class="section level1">
-<h1 class="page-header" data-toc-text="0.1.2">
-<a href="#superpower-012--rex-splode" class="anchor"></a>Superpower 0.1.2 – “Rex Splode”<small> Unreleased </small>
+    <div id="superpower-020--doctor-fate" class="section level1">
+<h1 class="page-header" data-toc-text="0.2.0">
+<a href="#superpower-020--doctor-fate" class="anchor"></a>Superpower 0.2.0 – “Doctor Fate”<small> Unreleased </small>
 </h1>
 <ul>
-<li>Minor fixes to keep Superpower on CRAN</li>
+<li>Added power_oneway_ancova &amp; power_con_ancova to allow for a basic power analysis of an analysis of covariance (ANCOVA) for one-way, between group designs.</li>
+<li>Added ANCOVA_analytic and ANCOVA_contrast which allow for power analyses for factorial designs and user specified contrasts.</li>
+<li>Added the label_list argument to ANOVA_design and ANCOVA_analytic functions. Now labels can be assigned to factors and levels in a more sane fashion using named lists.</li>
+</ul>
+</div>
+    <div id="superpower-012--rex-splode" class="section level1">
+<h1 class="page-header" data-toc-text="0.1.2">
+<a href="#superpower-012--rex-splode" class="anchor"></a>Superpower 0.1.2 – “Rex Splode”<small> 2021-05-25 </small>
+</h1>
+<ul>
+<li>Minor fixes to power_standardized_alpha to keep Superpower on CRAN</li>
 </ul>
 </div>
     <div id="superpower-011--black-canary" class="section level1">

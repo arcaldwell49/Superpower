@@ -197,7 +197,7 @@ hljs.initHighlightingOnLoad();
 <!-- badges: end -->
 
 <p>The goal of <code>Superpower</code> is to easily simulate factorial designs and empirically calculate power using a simulation approach. 
-This app is intended to be utilized for prospective (a priori) power analysis. In addition to this site we have written a short <a href="https://aaroncaldwell.us/SuperpowerBook/">book</a> documenting a wide range of applications of this package and how to perform power analysis outside this R package using custom code.</p>
+This package and its functions are intended to be utilized for prospective (a priori) power analysis. In addition to this site we have written a short <a href="https://aaroncaldwell.us/SuperpowerBook/">book</a> documenting a wide range of applications of this package and how to perform power analysis outside this R package using custom code.</p>
 
 <h2>Installation</h2>
 
@@ -211,13 +211,16 @@ This app is intended to be utilized for prospective (a priori) power analysis. I
 <pre><code class="r">install.packages(&quot;Superpower&quot;)
 </code></pre>
 
-<h2>Other simulation packages</h2>
+<h2>Other Simulation &amp; Power Analysis Packages</h2>
 
-<p>We started this project to create a simple way to do ANOVA power calculations that the average experimental scientist can use. However, there are many cases that an ANOVA may not be appropriate. Therefore, we suggest using other packages such as <code>simr</code> which allows for linear and generalized mixed models. Custom code can also be written and for such specialized simulations we highly recommend the <code>simstudy</code> R package.</p>
+<p>We started this project to create a simple way to do ANOVA power calculations that the average experimental scientist can use. However, there are many cases that an ANOVA may not be appropriate. Therefore, we suggest using other packages such as <code>simr</code> which allows for linear and generalized mixed models. Custom code can also be written and for such specialized simulations we highly recommend the <code>simstudy</code> R package. For sequential analyses and adaptive designs the <code>rpact</code> package will also be very helpful.</p>
 
 <ul>
 <li><a href="https://www.rdatagen.net/page/simstudy/">simstudy</a>: Simulation of Study Data</li>
+<li><a href="https://debruine.github.io/faux/">faux</a>: Simulate data with a specified structure.</li>
 <li><a href="https://github.com/pitakakariki/simr">simr</a>: Power Analysis of Generalised Linear Mixed Models by Simulation</li>
+<li><a href="https://www.rpact.org/">rpact</a>: Confirmatory Adaptive Clinical Trial Design, Simulation, and Analysis</li>
+<li><a href="https://github.com/heliosdrm/pwr">pwr</a>: Basic functions for power analysis</li>
 </ul>
 
 </body>

@@ -71,5 +71,5 @@ Varying the sd or r (e.g., entering multiple values) violates assumptions of hom
 ## 'voice', with names for levels of "cheerful", "sad", and "human", "robot"
 ANOVA_design(design = "2w*2w", n = 40, mu = c(1, 0, 1, 0), sd = 2, r = 0.8,
       label_list= list(condition = c("cheerful", "sad"), 
-      voice = c("human", "robot"))
+      voice = c("human", "robot")))
 }

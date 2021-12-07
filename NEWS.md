@@ -1,11 +1,22 @@
 NEWS
 ================
 
-Updated Mon May 24 2021
+Updated Tue Dec 07 2021
+
+# Superpower 0.2.0 – “Doctor Fate”
+
+-   Added power\_oneway\_ancova & power\_con\_ancova to allow for a
+    basic power analysis of an analysis of covariance (ANCOVA) for
+    one-way, between group designs.
+-   Added ANCOVA\_analytic and ANCOVA\_contrast which allow for power
+    analyses for factorial designs and user specified contrasts.
+-   Added the label\_list argument to ANOVA\_design and ANCOVA\_analytic
+    functions. Now labels can be assigned to factors and levels in a
+    more sane fashion using named lists.
 
 # Superpower 0.1.2 – “Rex Splode”
 
--   Minor fixes to keep Superpower on CRAN
+-   Minor fixes to power\_standardized\_alpha to keep Superpower on CRAN
 
 # Superpower 0.1.1 – “Black Canary”
 

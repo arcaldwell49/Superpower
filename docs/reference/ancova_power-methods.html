@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Compute standardized alpha level based on unstandardized alpha level and the number of observations N. — alpha_standardized • Superpower</title>
+<title>Methods for ancova_power ojbects — ancova_power-methods • Superpower</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Compute standardized alpha level based on unstandardized alpha level and the number of observations N. — alpha_standardized" />
-<meta property="og:description" content="Compute standardized alpha level based on unstandardized alpha level and the number of observations N." />
+<meta property="og:title" content="Methods for ancova_power ojbects — ancova_power-methods" />
+<meta property="og:description" content="Methods defined for objects returned from the ANCOVA_analytic function." />
 
 
 
@@ -135,50 +135,44 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Compute standardized alpha level based on unstandardized alpha level and the number of observations N.</h1>
-    <small class="dont-index">Source: <a href='https://github.com/arcaldwell49/Superpower/blob/master/R/alpha_standardized.R'><code>R/alpha_standardized.R</code></a></small>
-    <div class="hidden name"><code>alpha_standardized.Rd</code></div>
+    <h1>Methods for ancova_power ojbects</h1>
+    <small class="dont-index">Source: <a href='https://github.com/arcaldwell49/Superpower/blob/master/R/methods.ancova_power.R'><code>R/methods.ancova_power.R</code></a></small>
+    <div class="hidden name"><code>ancova_power-methods.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Compute standardized alpha level based on unstandardized alpha level and the number of observations N.</p>
+    <p>Methods defined for objects returned from the ANCOVA_analytic function.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>alpha_standardized</span><span class='op'>(</span><span class='va'>alpha</span>, <span class='va'>N</span>, standardize_N <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='co'># S3 method for ancova_power</span>
+<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
+
+<span class='co'># S3 method for ancova_power</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>alpha</th>
-      <td><p>The unstandardized alpha level (e.g., 0.05), independent of the sample size.</p></td>
+      <th>x</th>
+      <td><p>object of class <code>ancova_power</code> as returned from one of the simulation functions in Superpower.</p></td>
     </tr>
     <tr>
-      <th>N</th>
-      <td><p>The number of observations (e.g., the sample size) in the dataset</p></td>
-    </tr>
-    <tr>
-      <th>standardize_N</th>
-      <td><p>The nuber of observations (e.g., the sample size) you want to use to standardize the alpha level for. Defaults to 100 (base on Good, 1982).</p></td>
+      <th>...</th>
+      <td><p>further arguments passed through, see description of return value</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     
+<dl>
+  <dt><code>print</code></dt><dd><p>Prints short summary of the simulation result</p></dd>
+  <dt><code>plot</code></dt><dd><p>Returns a meansplot of from the defined design</p></dd>
 
-<p>Good, I. J. (1982). C140. Standardized tail-area probabilities. Journal of Statistical Computation and Simulation, 16(1), 65–66. &lt;https://doi.org/10.1080/00949658208810607&gt;</p>
+</dl>
 
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'>## Check it yields .05 for N = 100:</span>
-<span class='fu'>alpha_standardized</span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>0.05</span>, N <span class='op'>=</span> <span class='fl'>100</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.05</div><div class='input'><span class='co'>## Check it yields .05 for N = 200:</span>
-<span class='fu'>alpha_standardized</span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>0.07071068</span>, N <span class='op'>=</span> <span class='fl'>200</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.05</div><div class='input'><span class='co'>## Which alpha should we use with N = 200?</span>
-<span class='fu'>alpha_standardized</span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>0.05</span>, N <span class='op'>=</span> <span class='fl'>200</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.03535534</div><div class='input'><span class='co'>## You can change the standardization N, repeating the example above:</span>
-<span class='fu'>alpha_standardized</span><span class='op'>(</span>alpha <span class='op'>=</span> <span class='fl'>0.05</span>, N <span class='op'>=</span> <span class='fl'>100</span>, standardize_N <span class='op'>=</span> <span class='fl'>200</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 0.07071068</div></pre>
+
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Superpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -54,6 +54,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/ANCOVAs.html">Power Calculations for ANCOVA</a>
+    </li>
+    <li>
       <a href="../articles/compromise_power.html">Introduction to Justifying Alpha Levels</a>
     </li>
     <li>
@@ -88,13 +91,13 @@
 
       
 
-      </header><script src="intro_to_superpower_files/header-attrs-2.7/header-attrs.js"></script><div class="row">
+      </header><script src="intro_to_superpower_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to Superpower</h1>
                         <h4 class="author">Daniel Lakens &amp; Aaron R. Caldwell</h4>
             
-            <h4 class="date">2021-05-24</h4>
+            <h4 class="date">2021-12-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/arcaldwell49/Superpower/blob/master/vignettes/intro_to_superpower.Rmd"><code>vignettes/intro_to_superpower.Rmd</code></a></small>
       <div class="hidden name"><code>intro_to_superpower.Rmd</code></div>
@@ -109,7 +112,7 @@
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install the developmental version of Superpower from <a href="https://github.com/arcaldwell49/Superpower">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"arcaldwell49/Superpower"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"arcaldwell49/Superpower"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="superpower_options" class="section level2">
 <h2 class="hasAnchor">
@@ -152,7 +155,7 @@
 <div id="anova_design-function" class="section level2">
 <h2 class="hasAnchor">
 <a href="#anova_design-function" class="anchor"></a>ANOVA_design function</h2>
-<p>Currently the ANOVA_design function can create designs up three factors, for both within, between, and mixed designs. It requires the following input: design, n, mu, sd, r, and optionally allows you to set labelnames.</p>
+<p>Currently the ANOVA_design function can create designs up three factors, for both within, between, and mixed designs. It requires the following input: design, n, mu, sd, r, and optionally allows you to set label_list.</p>
 <ol style="list-style-type: decimal">
 <li>
 <code>design</code>: string that specifies the design (see below).</li>
@@ -165,7 +168,7 @@
 <li>
 <code>r</code>: the correlation for within designs (or 0 for between designs).</li>
 <li>
-<code>labelnames</code>: This is an optional vector of words that indicates factor names and level names (see below).</li>
+<code>label_list</code>: This is an optional named list of words that indicates factor names and level names (see below).</li>
 <li>A final optional setting is to specify if you want to output a plot or not (plot = TRUE or FALSE)</li>
 </ol>
 <div id="specifying-the-design-using-design" class="section level3">
@@ -178,8 +181,8 @@
 <a href="#specifying-the-means-using-mu" class="anchor"></a>Specifying the means using ‘mu’</h3>
 <p>Note that for each cell in the design, a mean must be provided. Thus, for a "2b*3w" design, 6 means need to be entered.</p>
 <p>Means need to be entered in the correct order. ANOVA_design outputs a plot so you can check if you entered all means as you intended. Always carefully check if the plot that is generated matches your expectations.</p>
-<p>The general principle is that the code generates factors, indicated by the factor names you entered in the labelnames variable, (i.e., <em>condition</em> and <em>time</em>). Levels are indicated by factor names and levels (e.g., control_time1, control_time2, control_time3, etc).</p>
-<p>If your design has just one factor, just enter the means in the same order as the labelnames (see below). For more factors, note the general pattern in the example below. Means are entered in the following order for a 3 factors design (each with 2 levels):</p>
+<p>The general principle is that the code generates factors, indicated by the factor names you entered in the label_list variable, (i.e., <em>condition</em> and <em>time</em>). Levels are indicated by factor names and levels (e.g., control_time1, control_time2, control_time3, etc).</p>
+<p>If your design has just one factor, just enter the means in the same order as the label_list (see below). For more factors, note the general pattern in the example below. Means are entered in the following order for a 3 factors design (each with 2 levels):</p>
 <ol style="list-style-type: decimal">
 <li>a1 b1 c1</li>
 <li>a1 b1 c2</li>
@@ -228,7 +231,7 @@
 <div id="specifying-label-names" class="section level3">
 <h3 class="hasAnchor">
 <a href="#specifying-label-names" class="anchor"></a>Specifying label names</h3>
-<p>To make sure the plots and tables with simulation results are easy to interpret, it really helps to name all factors and levels. You can enter the labels in the ‘labelnames’ variable. You can also choose not to specify names. Then all factors are indicated by letters (a, b, c) and all levels by numbers (a1, a2, a3).</p>
+<p>To make sure the plots and tables with simulation results are easy to interpret, it really helps to name all factors and levels. You can enter the labels in the ‘label_list’ variable. You can also choose not to specify names. Then all factors are indicated by letters (a, b, c) and all levels by numbers (a1, a2, a3).</p>
 <p>For the 2x3 design we have been using as an example, where there are 2 factors (condition and time of measurement), the first with 2 levels (placebo vs. medicine) and the second with three levels (time1, time2, and time3) we would enter the labels as follows:</p>
 <p>c(“condition”, “placebo”, “medicine”, “time”, “time1”, “time2”, “time3”)</p>
 <p>As you can see, you follow the order of the design (<code>2b*3w</code>), and first write the <strong>FACTOR</strong> label (condition) followed by the levels of that factor (placebo and medicine). Then you write the second factor name (time) followed by the three labels for each <strong>LEVEL</strong> (time1, time2, time3). <strong>Do not use spaces in the names (so not “time 1” but “time1” or “time_1”).</strong></p>
@@ -353,7 +356,7 @@
 ## a1_b2  0.91  1.00  0.94  0.95
 ## a2_b1  0.92  0.94  1.00  0.96
 ## a2_b2  0.93  0.95  0.96  1.00</code></pre>
-<p>Note that we did not specify the labelnames, and thus they are automatically created.</p>
+<p>Note that we did not specify the label_list, and thus they are automatically created.</p>
 </div>
 </div>
 <div id="specifying-the-sample-size" class="section level3">
@@ -428,7 +431,7 @@
                    mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1.03</span>, <span class="fl">1.41</span>, <span class="fl">0.98</span>, <span class="fl">1.01</span><span class="op">)</span>, 
                    sd <span class="op">=</span> <span class="fl">1.03</span>, 
                    r <span class="op">=</span> <span class="fl">0.8</span>, 
-                   labelnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"voice"</span>, <span class="st">"human"</span>, <span class="st">"robot"</span>, <span class="st">"emotion"</span>, <span class="st">"cheerful"</span>, <span class="st">"sad"</span><span class="op">)</span>,
+                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"voice"</span>  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"human"</span>, <span class="st">"robot"</span><span class="op">)</span>,                      <span class="st">"emotion"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span> <span class="st">"cheerful"</span>, <span class="st">"sad"</span><span class="op">)</span><span class="op">)</span>,
                    plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="intro_to_superpower_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
@@ -481,13 +484,13 @@
 <span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">100</span>
 <span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span>
 <span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">6.4</span>
-<span class="va">labelnames</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"condition"</span>, <span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span> <span class="co">#</span>
+<span class="va">label_list</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span> <span class="co">#</span>
 
 <span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,
                               n <span class="op">=</span> <span class="va">n</span>,
                               mu <span class="op">=</span> <span class="va">mu</span>, 
                               sd <span class="op">=</span> <span class="va">sd</span>, 
-                              labelnames <span class="op">=</span> <span class="va">labelnames</span><span class="op">)</span></code></pre></div>
+                              label_list <span class="op">=</span> <span class="va">label_list</span><span class="op">)</span></code></pre></div>
 <p><img src="intro_to_superpower_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">power_result_vig_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_power.html">ANOVA_power</a></span><span class="op">(</span><span class="va">design_result</span>, 
@@ -534,7 +537,7 @@
                    n <span class="op">=</span> <span class="fl">100</span>, 
                    mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span>, 
                    sd <span class="op">=</span> <span class="fl">6.4</span>, 
-                   labelnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"condition"</span>, <span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span>,
+                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span>,
                    plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="intro_to_superpower_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
@@ -548,7 +551,7 @@
                    n <span class="op">=</span> <span class="fl">150</span>, 
                    mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span>, 
                    sd <span class="op">=</span> <span class="fl">6.4</span>, 
-                   labelnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"condition"</span>, <span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span>,
+                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span>,
                    plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact</a></span><span class="op">(</span><span class="va">design_result</span>,
@@ -561,7 +564,7 @@
                    n <span class="op">=</span> <span class="fl">175</span>, 
                    mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span>, 
                    sd <span class="op">=</span> <span class="fl">6.4</span>, 
-                   labelnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"condition"</span>, <span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span>,
+                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span>,
                    plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact</a></span><span class="op">(</span><span class="va">design_result</span>,
@@ -574,7 +577,7 @@
                    n <span class="op">=</span> <span class="fl">180</span>, 
                    mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span>, 
                    sd <span class="op">=</span> <span class="fl">6.4</span>, 
-                   labelnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"condition"</span>, <span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span>,
+                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span>,
                    plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact</a></span><span class="op">(</span><span class="va">design_result</span>,

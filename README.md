@@ -38,7 +38,7 @@ devtools::install_github("arcaldwell49/Superpower")
 Currently the ANOVA\_design function can create designs up three
 factors, for both within, between, and mixed designs. It requires the
 following input: design, n, mu, sd, r, and optionally allows you to set
-labelnames.
+label\_list.
 
 1.  design: string that specifies the design (see below).
 2.  n: the sample size for each between subject condition.
@@ -46,7 +46,7 @@ labelnames.
 4.  sd: the population standard deviation. Assumes homogeneity of
     variances (only one standard deviation can be provided).
 5.  r: the correlation for within designs (or 0 for between designs).
-6.  labelnames: This is an optional vector of words that indicates
+6.  label\_list: This is an optional named list of words that indicates
     factor names and level names (see below).
 7.  A final optional setting is to specify if you want to output a plot
     or not (plot = TRUE or FALSE)
@@ -78,12 +78,12 @@ plot so you can check if you entered all means as you intended. Always
 carefully check if the plot that is generated matches your expectations.
 
 The general principle is that the code generates factors, indicated by
-the factor names you entered in the labelnames variable, (i.e.,
+the factor names you entered in the label\_list variable, (i.e.,
 *condition* and *time*). Levels are indicated by factor names and levels
 (e.g., control\_time1, control\_time2, control\_time3, etc).
 
 If your design has just one factor, just enter the means in the same
-order as the labelnames (see below). For more factors, note the general
+order as the label\_list (see below). For more factors, note the general
 pattern in the example below. Means are entered in the following order
 for a 3 factors design (each with 2 levels):
 
@@ -112,7 +112,7 @@ works.
 
 To make sure the plots and tables with simulation results are easy to
 interpret, it really helps to name all factors and levels. You can enter
-the labels in the ‘labelnames’ variable. You can also choose not to
+the labels in the ‘label\_list’ variable. You can also choose not to
 specify names. Then all factors are indicated by letters (a, b, c) and
 all levels by numbers (a1, a2, a3).
 
@@ -413,7 +413,9 @@ design_result <- ANOVA_design(design = "2b*2w",
                    mu = c(1.03, 1.41, 0.98, 1.01), 
                    sd = 1.03, 
                    r = 0.8, 
-                   labelnames = c("voice", "human", "robot", "emotion", "cheerful", "sad"))
+                   label_list = list("voice" = c( "human", "robot"),
+                                  "emotion" = c( "cheerful", "sad"))
+)
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
@@ -485,13 +487,13 @@ design <- "2b"
 n <- 100
 mu <- c(24, 26.2)
 sd <- 6.4
-labelnames <- c("condition", "control", "pet") #
+label_list1 <- list("condition" =c ("control", "pet") )
 
 design_result <- ANOVA_design(design = design,
                               n = n,
                               mu = mu, 
                               sd = sd, 
-                              labelnames = labelnames)
+                              label_list = label_list1)
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-9-1.png)<!-- -->
@@ -575,7 +577,7 @@ design_result <- ANOVA_design(design = "2b",
                    n = 100, 
                    mu = c(24, 26.2), 
                    sd = 6.4, 
-                   labelnames = c("condition", "control", "pet"))
+                   label_list = list("condition"= c("control", "pet")))
 ```
 
 ![](README_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
@@ -601,7 +603,7 @@ design_result <- ANOVA_design(design = "2b",
                    n = 150, 
                    mu = c(24, 26.2), 
                    sd = 6.4, 
-                   labelnames = c("condition", "control", "pet"),
+                   label_list = list("condition"= c("control", "pet")),
                    plot = FALSE)
 
 ANOVA_exact(design_result)$main_results$power
@@ -624,7 +626,7 @@ design_result <- ANOVA_design(design = "2b",
                    n = 175, 
                    mu = c(24, 26.2), 
                    sd = 6.4, 
-                   labelnames = c("condition", "control", "pet"),
+                   label_list = list("condition"= c("control", "pet")),
                    plot = FALSE)
 
 ANOVA_exact(design_result)$main_results$power
@@ -647,7 +649,7 @@ design_result <- ANOVA_design(design = "2b",
                    n = 180, 
                    mu = c(24, 26.2), 
                    sd = 6.4, 
-                   labelnames = c("condition", "control", "pet"),
+                   label_list = list("condition"= c("control", "pet")),
                    plot = FALSE)
 
 ANOVA_exact(design_result)$main_results$power
@@ -712,7 +714,7 @@ design_result <- ANOVA_design(design = "2b",
                    n = 180, 
                    mu = c(24, 26), 
                    sd = 6.4, 
-                   labelnames = c("condition", "control", "pet"),
+                   label_list = list("condition"= c("control", "pet")),
                    plot = FALSE)
 
 plot_power(design_result, max_n = 250, 
@@ -736,7 +738,7 @@ design_result <- ANOVA_design(design = "2b",
                    n = 180, 
                    mu = c(24, 26), 
                    sd = 6.8, 
-                   labelnames = c("condition", "control", "pet"),
+                   label_list = list("condition"= c("control", "pet")),
                    plot = FALSE)
 
 plot_power(design_result, min_n = 10, max_n = 250, 
