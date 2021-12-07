@@ -42,6 +42,18 @@ ANCOVA_contrast <- function(cmat,
     stop("cmat must match the length of mu")
   }
   
+  #Ensure, if single correlation is input, that it is between 0 and 1
+  if(!is.null(r2)){
+    if ((r2 <= 0) | r2 >= 1 ) {
+      stop("Coefficient of Determination must be greater than -1 and less than 1")
+    }
+  }
+  
+  #Ensure sd is greater than 0
+  if (any(sd <= 0) || length(sd) != 1) {
+    stop("Standard deviation (sd) is less than or equal to zero; input a single value greater than zero")
+  }
+  
   if( missing(mu) ||  missing(sd) || missing(n_cov)){
     stop("mu, sd, and n_cov are missing and must be provided")
   }
@@ -56,21 +68,23 @@ ANCOVA_contrast <- function(cmat,
     if(length(nvec) != length(mu)){
       stop("Length of N and mu do not match!")
     }
+  } else {
+    nvec = NULL
   }
   
   if (!is.null(beta_level)){
     pow = 1 - beta_level
   } 
   
-  p.body = quote({pow_anc_meth(
-    cmat = cmat,
-    mu = mu, 
-    nvec = nvec, 
-    n_cov = n_cov, 
-    r2 = r2, 
-    sd = sd, 
-    alpha_level = alpha_level
-  )})
+  p.body = quote({
+    pow_anc_meth(cmat,
+                 mu,
+                 nvec,
+                 n_cov,
+                 r2,
+                 sd,
+                 alpha_level)
+  })
   
   if (is.null(beta_level)){
         res <- eval(p.body)
@@ -93,9 +107,20 @@ ANCOVA_contrast <- function(cmat,
 
     
   } else if(is.null(r2)) {
+    
+    r2 = optim(
+      par = .5,
+      fn = function(r2) {
+        abs(eval(p.body)$pow - pow)
+      },
+      #c(.001, .999),
+      upper = .999,
+      lower = .001,
+      method = "Brent"
+    )$par
 
-        r2 <- uniroot(function(r2) eval(p.body)$pow - 
-                        pow, c(1e-10, 1 - 1e-10))$root
+        #r2 <- uniroot(function(r2) eval(p.body)$pow - 
+         #               pow, c(1e-10, 1 - 1e-10))$root
         res <- eval(p.body)
         beta_level <- 1-res$pow
         con_res = list(
@@ -138,17 +163,17 @@ ANCOVA_contrast <- function(cmat,
   } else if (is.null(n)){
     
     p.body2 <- quote({
-      pwr_method(mu,
-                 n = rep(N_tot/length(mu), length(mu)),
-                 n_cov,
-                 r2,
-                 sd,
-                 alpha_level,
-                 type)
+      pow_anc_meth(cmat,
+                   mu,
+                   nvec = rep(N_tot / length(mu), length(mu)),
+                   n_cov,
+                   r2,
+                   sd,
+                   alpha_level)
     })
 
         N_tot <- optim(par=(2*length(mu)+n_cov),
-                       fn=function(N_tot){ abs(eval(p.body2) - pow)}, 
+                       fn=function(N_tot){ abs(eval(p.body2)$pow - pow)}, 
                        c(2*length(mu)+n_cov, 1000000000), 
                        control=list(warn.1d.NelderMead = FALSE))$par
         res <- eval(p.body2)
@@ -191,7 +216,7 @@ ANCOVA_contrast <- function(cmat,
                  r2 = con_res$r2,
                  alpha_level = con_res$alpha_level, 
                  beta_level = con_res$beta_level,
-                 power = con_res$pow,
+                 power = con_res$pow*100,
                  type = TYPE,
                  method = METHOD), 
             class = "power.htest")

@@ -67,9 +67,12 @@ ANCOVA_analytic <- function(design,
     }
     
     #Ensure, if single correlation is input, that it is between 0 and 1
-    if (any(r2 < -1) | any(r2 > 1.0) ) {
-      stop("Coefficient of Determination must be greater than -1 and less than 1")
+    if(!is.null(r2)){
+      if ((r2 <= 0) | r2 >= 1 ) {
+        stop("Coefficient of Determination must be greater than -1 and less than 1")
+      }
     }
+
     
     factor_levels <- as.numeric(strsplit(design, "\\D+")[[1]])
     if(prod(factor_levels) != length(mu)){
@@ -113,13 +116,17 @@ ANCOVA_analytic <- function(design,
   n_grp = length(mu)
   
   if(!is.null(n)){
-    if(length(n==1)){
+    if(length(n)==1){
       nvec = rep(n,length(mu))
-    } else {nvec = n}
+    } else {
+      nvec = n
+      }
     
     if(length(nvec) != length(mu)){
-      stop("Length of N and mu do not match!")
+      stop("Length of n and mu do not match")
     }
+  } else {
+    nvec = NULL
   }
   factorlist = list()
   cons = contrasts
@@ -200,14 +207,15 @@ ANCOVA_analytic <- function(design,
     pow = 1 - beta_level
   } 
   
-  p.body = quote({pow_anc_meth(
-    cmat = cmat,
-    mu = mu, 
-    nvec = nvec, 
-    n_cov = n_cov, 
-    r2 = r2, 
-    sd = sd, 
-    alpha_level = alpha_level
+  p.body = quote({
+    pow_anc_meth(
+    cmat,
+    mu, 
+    nvec, 
+    n_cov, 
+    r2, 
+    sd, 
+     alpha_level
   )})
   
   if (is.null(beta_level)){
@@ -259,20 +267,28 @@ ANCOVA_analytic <- function(design,
     
     for(i1 in 1:length(cmats)){
       cmat = cmats[[i1]]
-      r2 <- uniroot(function(r2) eval(p.body)$pow - 
-                                          pow, c(1e-10, 1 - 1e-10))$root
+      
+      r2 = optim(par=.5,
+                 fn=function(r2){ abs(eval(p.body)$pow - pow)}, 
+                 #c(.001, .999), 
+                 upper = .999,
+                 lower = .001,
+                 method= "Brent")$par
+      # Uniroot produces error
+      #r2 <- uniroot(function(r2) eval(p.body)$pow - 
+      #                                    pow, c(1e-10, 1 - 1e-10))$root
       res <- eval(p.body) 
       beta_level <- 1-res$pow
       pow_res[[i1]] = list(
         cmat = cmat,
         mu = mu, 
-        nvec = nvec, 
+        nvec = res$nvec, 
         n_cov = n_cov, 
-        r2 = r2, 
+        r2 = res$r2, 
         sd = sd, 
-        alpha_level = alpha_level,
-        pow = pow,
-        beta_level = beta_level,
+        alpha_level = res$alpha_level,
+        pow = res$pow,
+        beta_level = res$beta_level,
         num_df = res$num_df,
         den_df = res$den_df,
         N_tot = res$N_tot
@@ -358,7 +374,7 @@ ANCOVA_analytic <- function(design,
   } else if (is.null(n)){
     
     p.body2 <- quote({
-      Superpower:::pow_anc_meth(cmat,
+      pow_anc_meth(cmat,
                    mu,
                    nvec = rep(N_tot / length(mu), length(mu)),
                    n_cov,
@@ -403,7 +419,7 @@ ANCOVA_analytic <- function(design,
       for(i1 in 1:length(cons)){
         cmat = cons[[i1]]
         N_tot <- optim(par=(2*length(mu)+n_cov),
-                       fn=function(N_tot){ abs(eval(p.body2) - pow)}, 
+                       fn=function(N_tot){ abs(eval(p.body2)$pow - pow)}, 
                        c(2*length(mu)+n_cov, 1000000000), 
                        control=list(warn.1d.NelderMead = FALSE))$par
         res <- eval(p.body2)
@@ -504,7 +520,7 @@ ANCOVA_analytic <- function(design,
                                         r2 = con_res[[i1]]$r2,
                                         alpha_level = con_res[[i1]]$alpha_level, 
                                         beta_level = con_res[[i1]]$beta_level,
-                                        power = con_res[[i1]]$pow*100,,
+                                        power = con_res[[i1]]$pow*100,
                                         type = TYPE,
                                         method = METHOD2), class = "power.htest")
     }
