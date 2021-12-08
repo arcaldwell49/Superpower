@@ -249,7 +249,8 @@ design_result <- ANOVA_design(design = "2b*2w",
                    mu = c(1.03, 1.41, 0.98, 1.01), 
                    sd = 1.03, 
                    r = 0.8, 
-                   label_list = list("voice"  = c("human", "robot"),                      "emotion" = c( "cheerful", "sad")),
+                   label_list = list("voice"  = c("human", "robot"),
+                                     "emotion" = c( "cheerful", "sad")),
                    plot = TRUE)
 ```
 

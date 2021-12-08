@@ -53,7 +53,7 @@ power_oneway_ancova(
   #n = c(17,17,17),
   beta_level = .2,
   round_up = TRUE,
-  type = "exact"
+  type = "approx"
 )
 ```
 
@@ -72,7 +72,7 @@ power_oneway_ancova(
   #n = c(17,17,17),
   beta_level = .2,
   round_up = TRUE,
-  type = "approx"
+  type = "exact"
 )
 ```
 

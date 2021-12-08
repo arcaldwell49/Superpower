@@ -3,7 +3,7 @@ NEWS
 
 Updated Tue Dec 07 2021
 
-# Superpower 0.2.0 – “Doctor Fate”
+# Superpower 0.2.0 – “Green Lantern”
 
 -   Added power\_oneway\_ancova & power\_con\_ancova to allow for a
     basic power analysis of an analysis of covariance (ANCOVA) for
@@ -29,7 +29,7 @@ Updated Tue Dec 07 2021
 -   Added confint method for ANOVA\_power produced objects
     -   Calculates confidence level for binomial proportion (\# of
         results that are below alpha level) confidence intervals
-        (Wilson, 1927).
+        (Wilson, 1927)).
 -   Minor changes to Shiny apps to fix glitches.
 
 # Superpower 0.1.0
