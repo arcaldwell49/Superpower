@@ -50,7 +50,7 @@ In addition, every F-test (aov_list and con_list) is included in a list of power
 Lastly, a (design_param) list containing the design parameters is also included in the results.
 }
 \description{
-Complete power analyses for ANCOVA omnibus tests and contrasts. This funcion does not support within subjects factors.
+Complete power analyses for ANCOVA omnibus tests and contrasts. This function does not support within subjects factors.
 }
 \section{References}{
 

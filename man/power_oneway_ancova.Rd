@@ -25,7 +25,7 @@ power_oneway_ancova(
 
 \item{r2}{Coefficient of determination (r^2) of the combined covariates.}
 
-\item{sd}{Standard deviation for all conditions (residual SD without covariate adjustement).}
+\item{sd}{Standard deviation for all conditions (residual SD without covariate adjustment).}
 
 \item{alpha_level}{Alpha level used to determine statistical significance.}
 
@@ -49,7 +49,7 @@ power = Power of test (1-beta_level\*100%),
 type = Method (Shieh or Keppel) for estimating power
 }
 \description{
-Compute power of ANCOVA omnibus test (power_oneway_ancova) or contrast (power_onecon_ancova) for one-way (single factor), between subjects designs.
+Compute power of ANCOVA omnibus test (power_oneway_ancova) or contrast (power_oneway_ancova) for one-way (single factor), between subjects designs.
 }
 \section{References}{
 

@@ -1,12 +1,12 @@
 #' Power Calculations for a one-way ANCOVA
 #' 
-#' Compute power of ANCOVA omnibus test (power_oneway_ancova) or contrast (power_onecon_ancova) for one-way (single factor), between subjects designs.
+#' Compute power of ANCOVA omnibus test (power_oneway_ancova) or contrast (power_oneway_ancova) for one-way (single factor), between subjects designs.
 #' 
 #' @param n Sample size in each condition.
 #' @param mu Vector specifying mean for each condition.
 #' @param n_cov Number of covariates.
 #' @param r2 Coefficient of determination (r^2) of the combined covariates.
-#' @param sd Standard deviation for all conditions (residual SD without covariate adjustement).
+#' @param sd Standard deviation for all conditions (residual SD without covariate adjustment).
 #' @param alpha_level Alpha level used to determine statistical significance. 
 #' @param beta_level Type II error probability (power/100-1)
 #' @param round_up Logical indicator for whether to round up the sample size(s) to a whole number. Default is TRUE.

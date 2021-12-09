@@ -1,4 +1,4 @@
-#' Methods for ancova_power ojbects
+#' Methods for ancova_power objects
 #' 
 #' Methods defined for objects returned from the ANCOVA_analytic function.
 #' 

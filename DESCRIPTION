@@ -46,6 +46,8 @@ Suggests:
     pwr,
     testthat,
     covr,
-    jmvcore
+    jmvcore,
+    spelling
 VignetteBuilder:
     knitr
+Language: en-US

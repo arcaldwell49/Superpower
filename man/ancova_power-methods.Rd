@@ -4,7 +4,7 @@
 \alias{ancova_power-methods}
 \alias{print.ancova_power}
 \alias{plot.ancova_power}
-\title{Methods for ancova_power ojbects}
+\title{Methods for ancova_power objects}
 \usage{
 \method{print}{ancova_power}(x, ...)
 

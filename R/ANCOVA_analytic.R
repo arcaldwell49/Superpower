@@ -1,6 +1,6 @@
 #' Power Calculations for Factorial ANCOVAs
 #' 
-#' Complete power analyses for ANCOVA omnibus tests and contrasts. This funcion does not support within subjects factors.
+#' Complete power analyses for ANCOVA omnibus tests and contrasts. This function does not support within subjects factors.
 #' 
 #' @param design Output from the ANOVA_design function
 #' @param mu Vector specifying mean for each condition

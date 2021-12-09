@@ -5,7 +5,7 @@
 #' @param sd standard deviation for all conditions (or a vector specifying the sd for each condition)
 #' @param r Correlation between dependent variables (single value or matrix)
 #' @param label_list An optional list to specify the factor names and condition (recommended, if not used factors and levels are indicated by letters and numbers).
-#' @param labelnames Optional vector to specifying factor and condition names. This parameter is deprecated and will be overriden by input from label_list. 
+#' @param labelnames Optional vector to specifying factor and condition names. This parameter is deprecated and will be overridden by input from label_list. 
 #' @param plot Should means plot be printed (defaults to TRUE)
 #' @return Returns single list with simulated data, design, design list, factor names, formulas for ANOVA, means, sd, correlation, sample size per condition, correlation matrix, covariance matrix, design string, labelnames, labelnameslist, factor names, meansplot
 #' 

@@ -28,7 +28,7 @@ ANOVA_design(
 
 \item{label_list}{An optional list to specify the factor names and condition (recommended, if not used factors and levels are indicated by letters and numbers).}
 
-\item{labelnames}{Optional vector to specifying factor and condition names. This parameter is deprecated and will be overriden by input from label_list.}
+\item{labelnames}{Optional vector to specifying factor and condition names. This parameter is deprecated and will be overridden by input from label_list.}
 
 \item{plot}{Should means plot be printed (defaults to TRUE)}
 }

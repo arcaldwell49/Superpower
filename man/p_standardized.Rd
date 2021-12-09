@@ -11,7 +11,7 @@ p_standardized(p, N, standardize_N = 100)
 
 \item{N}{The number of observations (e.g., the sample size) in the dataset}
 
-\item{standardize_N}{The nuber of observations (e.g., the sample size) you want to use to standardize the alpha level for. Defaults to 100 (base on Good, 1982).}
+\item{standardize_N}{The number of observations (e.g., the sample size) you want to use to standardize the alpha level for. Defaults to 100 (base on Good, 1982).}
 }
 \description{
 Compute standardized alpha level based on unstandardized alpha level and the number of observations N.
