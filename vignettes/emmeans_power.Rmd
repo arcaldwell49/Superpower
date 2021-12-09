@@ -49,7 +49,8 @@ design_result <- ANOVA_design(
   mu = c(0.3, 0, 0.5, 0.3, 0, 0),
   sd = 2,
   r = 0.8, 
-  labelnames = c("condition", "cheerful", "sad", "voice", "human", "robot", "cartoon")
+  label_list = list("condition" = c("cheerful", "sad"),  
+                    "voice" = c("human", "robot", "cartoon"))
 )
 
 exact_result <- ANOVA_exact(

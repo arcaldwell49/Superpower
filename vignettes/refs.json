@@ -1,0 +1,10 @@
+[{"id":"shieh_ancova","author":[{"family":"Shieh","given":"G."}],
+"title":"Power analysis and sample size planning in ANCOVA designs",
+"volume":"85","type":"article-journal",
+"container-title":"Psychometrika",
+"issue":"1","language":"sv",
+"issued":{"date-parts":[[2020]]},
+"page":"101–120",
+"URL":"https://doi.org/10.1007/s11336-019-09692-3","DOI":"10.1007/s11336-019-09692-3"},
+{"id":"cohen_book","author":[{"family":"Cohen","given":"J."}],"title":"Statistical Power Analysis for the Behavioral Sciences","edition":"2nd","note":"Routledge.","language":"en","type":"book","issued":{"date-parts":[[1988]]},"URL":"https://doi.org/10.4324/9780203771587","DOI":"10.4324/9780203771587"},
+{"id":"maxwell_delaney","author":[{"family":"Maxwell","given":"S.E."},{"family":"Delaney","given":"H.D."}],"title":"Designing experiments and analyzing data: A model comparison perspective","edition":"2nd","publisher":"Lawrence Erlbaum Associates","language":"en","type":"book","issued":{"date-parts":[[2004]]},"publisher-place":"Mahwah, NJ"}]

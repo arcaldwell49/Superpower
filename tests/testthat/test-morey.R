@@ -60,6 +60,7 @@ test_that("no error messages ttest", {
                           type = "two.sample",
                           alternative = "one.sided",
                           alpha_level = c(.01,.05,.1))
+  expect_equal(class(test)[1], "gg")
 })
 
 # Error messages ftest
@@ -104,5 +105,7 @@ test_that("No error messages ftest",{
                           den_df = c(20,33),
                           alpha_level = .055,
                           liberal_lambda = TRUE)
+  
+  expect_equal(class(test)[1], "gg")
   
 })

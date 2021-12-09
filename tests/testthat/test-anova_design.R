@@ -434,4 +434,6 @@ test_that("Other 3 way designs",{
   d <- ANOVA_design("2w*2w*2b", n = 100, mu = 1:8, sd = 2, r = .65, plot = FALSE)
   
   d <- ANOVA_design("2w*9b", n = 100, mu = 1:18, sd = 2, r = .65, plot = FALSE)
+  
+  expect_equal(d$r, 0.65)
 })

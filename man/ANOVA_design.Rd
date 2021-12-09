@@ -10,6 +10,7 @@ ANOVA_design(
   mu,
   sd,
   r = 0,
+  label_list = NULL,
   labelnames = NULL,
   plot = Superpower_options("plot")
 )
@@ -25,7 +26,9 @@ ANOVA_design(
 
 \item{r}{Correlation between dependent variables (single value or matrix)}
 
-\item{labelnames}{Optional vector to specifying factor and condition names (recommended, if not used factors and levels are indicated by letters and numbers)}
+\item{label_list}{An optional list to specify the factor names and condition (recommended, if not used factors and levels are indicated by letters and numbers).}
+
+\item{labelnames}{Optional vector to specifying factor and condition names. This parameter is deprecated and will be overridden by input from label_list.}
 
 \item{plot}{Should means plot be printed (defaults to TRUE)}
 }
@@ -67,5 +70,6 @@ Varying the sd or r (e.g., entering multiple values) violates assumptions of hom
 ## with a mean pattern of 1, 0, 1, 0, conditions labeled 'condition' and
 ## 'voice', with names for levels of "cheerful", "sad", and "human", "robot"
 ANOVA_design(design = "2w*2w", n = 40, mu = c(1, 0, 1, 0), sd = 2, r = 0.8,
-      labelnames = c("condition", "cheerful", "sad", "voice", "human", "robot"))
+      label_list= list(condition = c("cheerful", "sad"), 
+      voice = c("human", "robot")))
 }

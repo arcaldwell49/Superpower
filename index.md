@@ -1,7 +1,7 @@
 # Superpower 
 
-<img src="Superpower2.PNG" title="plot of chunk hex" alt="plot of chunk hex" width="17%" />
-<img src="authors.png" title="plot of chunk authors" alt="plot of chunk authors" width="25%" />
+<img src="Sticker/Superpower2.PNG" title="plot of chunk hex" alt="plot of chunk hex" width="17%" />
+<img src="Sticker/authors.png" title="plot of chunk authors" alt="plot of chunk authors" width="25%" />
 
 <!-- rmarkdown v1 -->
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -15,7 +15,6 @@
 
 The goal of `Superpower` is to easily simulate factorial designs and empirically calculate power using a simulation approach. 
 This package and its functions are intended to be utilized for prospective (a priori) power analysis. In addition to this site we have written a short [book](https://aaroncaldwell.us/SuperpowerBook/) documenting a wide range of applications of this package and how to perform power analysis outside this R package using custom code.
-
 
 ## Installation
 
@@ -33,12 +32,15 @@ install.packages("Superpower")
 ```
 
 
-## Other simulation packages
+## Other Simulation & Power Analysis Packages
 
-We started this project to create a simple way to do ANOVA power calculations that the average experimental scientist can use. However, there are many cases that an ANOVA may not be appropriate. Therefore, we suggest using other packages such as `simr` which allows for linear and generalized mixed models. Custom code can also be written and for such specialized simulations we highly recommend the `simstudy` R package.
+We started this project to create a simple way to do ANOVA power calculations that the average experimental scientist can use. However, there are many cases that an ANOVA may not be appropriate. Therefore, we suggest using other packages such as `simr` which allows for linear and generalized mixed models. Custom code can also be written and for such specialized simulations we highly recommend the `simstudy` R package. For sequential analyses and adaptive designs the `rpact` package will also be very helpful.
 
 * [simstudy](https://www.rdatagen.net/page/simstudy/): Simulation of Study Data
+* [faux](https://debruine.github.io/faux/): Simulate data with a specified structure.
 * [simr](https://github.com/pitakakariki/simr): Power Analysis of Generalised Linear Mixed Models by Simulation
+* [rpact](https://www.rpact.org/): Confirmatory Adaptive Clinical Trial Design, Simulation, and Analysis
+* [pwr](https://github.com/heliosdrm/pwr): Basic functions for power analysis
 
 
 

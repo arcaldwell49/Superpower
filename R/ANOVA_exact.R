@@ -43,7 +43,6 @@
 #' @importFrom afex aov_car
 #' @importFrom graphics pairs
 #' @importFrom dplyr mutate
-#' @import Hmisc 
 #' @import emmeans
 #' @import ggplot2
 
@@ -362,7 +361,7 @@ ANOVA_exact <- function(design_result,
   meansplot2 = meansplot +
     geom_jitter(position = position_jitter(0.2)) +
     stat_summary(
-      fun.data = "mean_sdl",
+      fun.data = "smean.sdl",
       fun.args = list(mult = 1),
       geom = "crossbar",
       color = "red"
@@ -766,7 +765,7 @@ ANOVA_exact2 <- function(design_result,
   
   meansplot2 = meansplot +
     stat_summary(
-      fun.data = "mean_sdl",
+      fun.data = "smean.sdl",
       fun.args = list(mult = 1),
       geom = "crossbar",
       color = "red"

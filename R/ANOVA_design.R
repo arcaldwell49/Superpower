@@ -4,7 +4,8 @@
 #' @param mu Vector specifying mean for each condition
 #' @param sd standard deviation for all conditions (or a vector specifying the sd for each condition)
 #' @param r Correlation between dependent variables (single value or matrix)
-#' @param labelnames Optional vector to specifying factor and condition names (recommended, if not used factors and levels are indicated by letters and numbers)
+#' @param label_list An optional list to specify the factor names and condition (recommended, if not used factors and levels are indicated by letters and numbers).
+#' @param labelnames Optional vector to specifying factor and condition names. This parameter is deprecated and will be overridden by input from label_list. 
 #' @param plot Should means plot be printed (defaults to TRUE)
 #' @return Returns single list with simulated data, design, design list, factor names, formulas for ANOVA, means, sd, correlation, sample size per condition, correlation matrix, covariance matrix, design string, labelnames, labelnameslist, factor names, meansplot
 #' 
@@ -35,7 +36,8 @@
 #' ## with a mean pattern of 1, 0, 1, 0, conditions labeled 'condition' and
 #' ## 'voice', with names for levels of "cheerful", "sad", and "human", "robot"
 #' ANOVA_design(design = "2w*2w", n = 40, mu = c(1, 0, 1, 0), sd = 2, r = 0.8,
-#'       labelnames = c("condition", "cheerful", "sad", "voice", "human", "robot"))
+#'       label_list= list(condition = c("cheerful", "sad"), 
+#'       voice = c("human", "robot")))
 #' @section Warnings:
 #' Varying the sd or r (e.g., entering multiple values) violates assumptions of homoscedascity and sphericity respectively
 #' @importFrom stats pnorm pt qnorm qt as.formula median
@@ -48,9 +50,10 @@
 #' @export
 #'
 
-ANOVA_design <- function(design, n, mu, sd, r = 0, 
-                                   labelnames = NULL, 
-                                   plot = Superpower_options("plot")){
+ANOVA_design <- function(design, n, mu, sd, r = 0,
+                         label_list = NULL,
+                         labelnames = NULL,
+                         plot = Superpower_options("plot")){
   
   #Check String for an acceptable digits and factor (w or b)
   if (grepl("^(\\d{1,3}(w|b)\\*){0,2}\\d{1,3}(w|b)$", design, ignore.case = FALSE, perl = TRUE) == FALSE) {
@@ -78,6 +81,15 @@ ANOVA_design <- function(design, n, mu, sd, r = 0,
   #If labelnames are not provided, they are generated.
   #Store factor levels (used many times in the script, calculate once)
   factor_levels <- as.numeric(strsplit(design, "\\D+")[[1]])
+  
+  if(!is.null(label_list)){
+
+    labelnames = vector()
+    for(i in 1:length(label_list)){
+      labelnames = append(labelnames, names(label_list)[i])
+      labelnames = append(labelnames, label_list[[i]])
+    }
+  }
   
   if (is.null(labelnames)) {
     for (i1 in 1:length(factor_levels)){

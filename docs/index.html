@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">Superpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -54,6 +54,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="articles/ANCOVAs.html">Power Calculations for ANCOVA</a>
+    </li>
+    <li>
       <a href="articles/compromise_power.html">Introduction to Justifying Alpha Levels</a>
     </li>
     <li>
@@ -93,7 +96,7 @@
 <div id="superpower" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#superpower" class="anchor"></a>Superpower</h1></div>
-<p><img src="Superpower2.PNG" title="plot of chunk hex" alt="plot of chunk hex" width="17%"><img src="authors.png" title="plot of chunk authors" alt="plot of chunk authors" width="25%"></p>
+<p><img src="Sticker/Superpower2.PNG" title="plot of chunk hex" alt="plot of chunk hex" width="17%"><img src="Sticker/authors.png" title="plot of chunk authors" alt="plot of chunk authors" width="25%"></p>
 <!-- rmarkdown v1 -->
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <!-- badges: start -->
@@ -104,20 +107,26 @@
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install the most recent version of <code>Superpower</code> from <a href="https://github.com/arcaldwell49/Superpower">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"arcaldwell49/Superpower"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"arcaldwell49/Superpower"</span><span class="op">)</span></code></pre></div>
 <p>Or you can install the stable version of Superpower from <a href="https://CRAN.R-project.org">CRAN</a> with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"Superpower"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="other-simulation-packages" class="section level2">
+<div id="other-simulation--power-analysis-packages" class="section level2">
 <h2 class="hasAnchor">
-<a href="#other-simulation-packages" class="anchor"></a>Other simulation packages</h2>
-<p>We started this project to create a simple way to do ANOVA power calculations that the average experimental scientist can use. However, there are many cases that an ANOVA may not be appropriate. Therefore, we suggest using other packages such as <code>simr</code> which allows for linear and generalized mixed models. Custom code can also be written and for such specialized simulations we highly recommend the <code>simstudy</code> R package.</p>
+<a href="#other-simulation--power-analysis-packages" class="anchor"></a>Other Simulation &amp; Power Analysis Packages</h2>
+<p>We started this project to create a simple way to do ANOVA power calculations that the average experimental scientist can use. However, there are many cases that an ANOVA may not be appropriate. Therefore, we suggest using other packages such as <code>simr</code> which allows for linear and generalized mixed models. Custom code can also be written and for such specialized simulations we highly recommend the <code>simstudy</code> R package. For sequential analyses and adaptive designs the <code>rpact</code> package will also be very helpful.</p>
 <ul>
 <li>
 <a href="https://www.rdatagen.net/page/simstudy/">simstudy</a>: Simulation of Study Data</li>
 <li>
+<a href="https://debruine.github.io/faux/">faux</a>: Simulate data with a specified structure.</li>
+<li>
 <a href="https://github.com/pitakakariki/simr">simr</a>: Power Analysis of Generalised Linear Mixed Models by Simulation</li>
+<li>
+<a href="https://www.rpact.org/">rpact</a>: Confirmatory Adaptive Clinical Trial Design, Simulation, and Analysis</li>
+<li>
+<a href="https://github.com/heliosdrm/pwr">pwr</a>: Basic functions for power analysis</li>
 </ul>
 </div>
 </div>

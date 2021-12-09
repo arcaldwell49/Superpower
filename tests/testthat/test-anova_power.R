@@ -9,6 +9,7 @@ hush=function(code){
 
 # error messages
 test_that("error messages", {
+  Superpower_options(verbose = FALSE)
   design <- ANOVA_design(design = "2w", n = 10, mu = c(0, 0), sd = 1, plot = FALSE)
 
   expect_error(ANOVA_power(), "argument \"design_result\" is missing, with no default")
@@ -89,6 +90,7 @@ test_that("error messages", {
 
 #2w
 test_that("2w", {
+  skip_on_cran()
   design <- ANOVA_design(design = "2w", n = 100, mu = c(0, 0.25), sd = 1, r = 0.5, plot = FALSE)
   set.seed(86753)
   p <- ANOVA_power(design, nsims = 50, verbose = FALSE)

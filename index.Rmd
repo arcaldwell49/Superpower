@@ -42,12 +42,15 @@ install.packages("Superpower")
 ```
 
 
-## Other simulation packages
+## Other Simulation & Power Analysis Packages
 
-We started this project to create a simple way to do ANOVA power calculations that the average experimental scientist can use. However, there are many cases that an ANOVA may not be appropriate. Therefore, we suggest using other packages such as `simr` which allows for linear and generalized mixed models. Custom code can also be written and for such specialized simulations we highly recommend the `simstudy` R package.
+We started this project to create a simple way to do ANOVA power calculations that the average experimental scientist can use. However, there are many cases that an ANOVA may not be appropriate. Therefore, we suggest using other packages such as `simr` which allows for linear and generalized mixed models. Custom code can also be written and for such specialized simulations we highly recommend the `simstudy` R package. For sequential analyses and adaptive designs the `rpact` package will also be very helpful.
 
 * [simstudy](https://www.rdatagen.net/page/simstudy/): Simulation of Study Data
+* [faux](https://debruine.github.io/faux/): Simulate data with a specified structure.
 * [simr](https://github.com/pitakakariki/simr): Power Analysis of Generalised Linear Mixed Models by Simulation
+* [rpact](https://www.rpact.org/): Confirmatory Adaptive Clinical Trial Design, Simulation, and Analysis
+* [pwr](https://github.com/heliosdrm/pwr): Basic functions for power analysis
 
 
 

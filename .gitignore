@@ -11,3 +11,5 @@ temp
 inst/doc
 
 .DS_Store
+NUL
+tests/testthat/Rplots.pdf
