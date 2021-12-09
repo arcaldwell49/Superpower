@@ -5,7 +5,7 @@ output: github_document
 
 Updated `r format(Sys.time(), "%a %b %d %Y")`
 
-# Superpower 0.2.0 -- "Doctor Fate"
+# Superpower 0.2.0 -- "Green Lantern"
 - Added power_oneway_ancova & power_con_ancova to allow for a basic power analysis of an analysis of covariance (ANCOVA) for one-way, between group designs.
 - Added ANCOVA_analytic and ANCOVA_contrast which allow for power analyses for factorial designs and user specified contrasts.
 - Added the label_list argument to ANOVA_design and ANCOVA_analytic functions. Now labels can be assigned to factors and levels in a more sane fashion using named lists.
