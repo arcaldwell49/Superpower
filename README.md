@@ -1,8 +1,8 @@
 Superpower
 ================
 
-![Sticker](https://raw.githubusercontent.com/arcaldwell49/Superpower/master/Sticker/Superpower2.PNG)
-![authors\_image](https://raw.githubusercontent.com/arcaldwell49/Superpower/master/Sticker/authors.png)
+<img src=https://raw.githubusercontent.com/arcaldwell49/Superpower/master/Sticker/Superpower2_v2.PNG alt="sticker" width="200"/>
+<img src=https://raw.githubusercontent.com/arcaldwell49/Superpower/master/Sticker/authors.png alt="authors" width="200"/>
 
 [![R-CMD-check](https://github.com/arcaldwell49/Superpower/workflows/R-CMD-check/badge.svg)](https://github.com/arcaldwell49/Superpower/actions)
 [![codecov](https://codecov.io/gh/arcaldwell49/Superpower/branch/master/graph/badge.svg)](https://codecov.io/gh/arcaldwell49/Superpower)

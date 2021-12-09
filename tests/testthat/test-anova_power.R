@@ -117,7 +117,8 @@ test_that("2w", {
 # 2w*2w
 test_that("2w*2w", {
   skip_on_cran()
-  skip_on_travis()
+  #skip_on_travis()
+  skip_on_ci() 
   design <- ANOVA_design(design = "2w*2w", n = 40, mu = c(1, 0, 1, 0), sd = 2, r = 0.8,
                          labelnames = c("condition", "cheerful", "sad", "voice", "human", "robot"),
                          plot = FALSE)
@@ -145,7 +146,7 @@ test_that("2w*2w", {
       "p_condition_sad_voice_human_condition_sad_voice_robot"
     )
   )
-
+  
   expect_equal(p$main_results$power, comp$main_results$power, tolerance = .05)
   expect_equal(p$pc_results$power, comp$pc_results$power, tolerance = .05)
   expect_equal(p$main_results$effect_size, comp$main_results$effect_size, tolerance = .05)
@@ -157,7 +158,7 @@ test_that("2w*2w", {
 #2b long simulation
 test_that("2b long", {
   skip_on_cran()
-  skip_on_travis()
+  skip_on_ci()
 design <- ANOVA_design(design = "2b",
                        n = 100,
                        mu = c(24, 26.2),
@@ -190,7 +191,7 @@ expect_equal(pe$main_results$power/100, p2, tolerance = .02)
 #3 way between
 test_that("3 way between long", {
   skip_on_cran()
-  skip_on_travis()
+  skip_on_ci()
 
   labelnames <- c("Size", "b", "s", "Color", "g", "r",
                   "Load", "pres", "abs") #
@@ -229,7 +230,7 @@ test_that("3 way between long", {
 #2 way mixed
 test_that("2x2 mixed long", {
   skip_on_cran()
-  skip_on_travis()
+  skip_on_ci()
 
   mu <- c(-0.25, 0.25, 0.25, -0.25)
   n <- 23
