@@ -16,11 +16,23 @@
 #' @param round_up Logical indicator (default = TRUE) for whether to round up sample size calculations to nearest whole number
 #' 
 #' @return
-#' One, or two, data frames containing the power analysis results from the power analysis for the omnibus ANCOVA or contrast tests.
-#' In addition, every F-test is included in a list of power.htest results. 
-#' Lastly, a list containing the design parameters is also included in the results.
+#' One, or two, data frames containing the power analysis results from the power analysis for the omnibus ANCOVA (main_results) or contrast tests (contrast_results).
+#' In addition, every F-test (aov_list and con_list) is included in a list of power.htest results. 
+#' Lastly, a (design_param) list containing the design parameters is also included in the results.
 #' @examples
-#' # To be added
+#' # Simple 2x3 ANCOVA
+#' 
+#' ANCOVA_analytic(
+#' design = "2b*3b",
+#' mu = c(400, 450, 500,
+#'       400, 500, 600),
+#' n_cov = 3,
+#' sd = 100,
+#' r2 = .25,
+#' alpha_level = .05,
+#' beta_level = .2,
+#' round_up = TRUE
+#' )
 #' @section References:
 #' Shieh, G. (2020). Power analysis and sample size planning in ANCOVA designs. Psychometrika, 85(1), 101-120.
 #' @importFrom stats uniroot pf df qf contr.sum dt dbeta qtukey model.matrix terms optim contrasts

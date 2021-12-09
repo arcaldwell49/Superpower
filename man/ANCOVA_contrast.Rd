@@ -39,7 +39,7 @@ ANCOVA_contrast(
 Object of class "power.htest", a list of the arguments (including the computed one) augmented with method and note elements.
 }
 \description{
-Complete power analyses for specific ANCOVA contrasts. This funcion does not support within subjects factors.
+Complete power analyses for specific ANCOVA contrasts. This function does not support within subjects factors.
 }
 \section{References}{
 
@@ -47,5 +47,10 @@ Shieh, G. (2020). Power analysis and sample size planning in ANCOVA designs. Psy
 }
 
 \examples{
-# To be added
+ANCOVA_contrast(cmat = c(-1,1),
+n = 15,
+mu = c(0,1),
+sd = 1,
+r2 = .2,
+n_cov = 1)
 }

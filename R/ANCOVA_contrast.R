@@ -1,6 +1,6 @@
 #' Power Calculations for ANCOVA Contrasts
 #' 
-#' Complete power analyses for specific ANCOVA contrasts. This funcion does not support within subjects factors.
+#' Complete power analyses for specific ANCOVA contrasts. This function does not support within subjects factors.
 #' 
 #' @param cmat Matrix of the specific contrasts of interest
 #' @param mu Vector specifying mean for each condition
@@ -15,7 +15,12 @@
 #' @return
 #' Object of class "power.htest", a list of the arguments (including the computed one) augmented with method and note elements.
 #' @examples
-#' # To be added
+#' ANCOVA_contrast(cmat = c(-1,1),
+#' n = 15,
+#' mu = c(0,1),
+#' sd = 1,
+#' r2 = .2,
+#' n_cov = 1)
 #' @section References:
 #' Shieh, G. (2020). Power analysis and sample size planning in ANCOVA designs. Psychometrika, 85(1), 101-120.
 #' @importFrom stats uniroot pf df qf contr.sum dt dbeta qtukey model.matrix terms optim
