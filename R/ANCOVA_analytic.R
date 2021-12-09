@@ -10,7 +10,7 @@
 #' @param n_cov Number of covariates
 #' @param alpha_level Alpha level used to determine statistical significance
 #' @param beta_level Type II error probability (power/100-1)
-#' @param contrasts List of matrices for specific contrasts of interest
+#' @param cmats List of matrices for specific contrasts of interest
 #' @param label_list An optional list to specify the factor names and condition (recommended, if not used factors and levels are indicated by letters and numbers).
 #' @param design_result Output from the ANOVA_design function
 #' @param round_up Logical indicator (default = TRUE) for whether to round up sample size calculations to nearest whole number
@@ -23,7 +23,7 @@
 #' # To be added
 #' @section References:
 #' Shieh, G. (2020). Power analysis and sample size planning in ANCOVA designs. Psychometrika, 85(1), 101-120.
-#' @importFrom stats uniroot pf df qf contr.sum dt dbeta qtukey model.matrix terms optim
+#' @importFrom stats uniroot pf df qf contr.sum dt dbeta qtukey model.matrix terms optim contrasts
 #' @export
 #'
 
@@ -36,7 +36,7 @@ ANCOVA_analytic <- function(design,
                             n_cov,
                             alpha_level = Superpower_options("alpha_level"),
                             beta_level = NULL,
-                            contrasts = list(),
+                            cmats = list(),
                             label_list = NULL,
                             design_result = NULL,
                             round_up = TRUE) {
@@ -129,7 +129,7 @@ ANCOVA_analytic <- function(design,
     nvec = NULL
   }
   factorlist = list()
-  cons = contrasts
+  cons = cmats
   if(length(factornames) == 1){
     con_df = data.frame(a = 1:length(labelnameslist[[1]]))
     con_df$a = as.factor(con_df$a)

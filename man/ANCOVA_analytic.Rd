@@ -13,7 +13,7 @@ ANCOVA_analytic(
   n_cov,
   alpha_level = Superpower_options("alpha_level"),
   beta_level = NULL,
-  contrasts = list(),
+  cmats = list(),
   label_list = NULL,
   design_result = NULL,
   round_up = TRUE
@@ -36,7 +36,7 @@ ANCOVA_analytic(
 
 \item{beta_level}{Type II error probability (power/100-1)}
 
-\item{contrasts}{List of matrices for specific contrasts of interest}
+\item{cmats}{List of matrices for specific contrasts of interest}
 
 \item{label_list}{An optional list to specify the factor names and condition (recommended, if not used factors and levels are indicated by letters and numbers).}
 

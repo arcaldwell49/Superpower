@@ -152,14 +152,14 @@ res2
 
 # Contrasts
 
-Additionally, user specified contrasts can also be used for a power analysis. These can be provided in the `contrasts` argument of the `ANCOVA_analytic` function or supplied directly to the `ANCOVA_contrast` function as an independent test. The `ANCOVA_analytic` function requires that the contrasts matricies are provided as matrices. The contrasts can be accessed in the `con_list` part of the results and can be named (in this case "test").
+Additionally, user specified contrasts can also be used for a power analysis. These can be provided in the `cmats` argument of the `ANCOVA_analytic` function or supplied directly to the `ANCOVA_contrast` function as an independent test. The `ANCOVA_analytic` function requires that the contrasts matricies are provided as matrices. The contrasts can be accessed in the `con_list` part of the results and can be named (in this case "test").
 
 ```{r}
 
 ANCOVA_analytic(design = "2b",
                 mu = c(0,1),
                 n = 15,
-                contrast = list(test = matrix(c(-1,1),
+                cmats = list(test = matrix(c(-1,1),
                                               nrow = 1)),
                 sd = 1,
                 r2 = .2,
