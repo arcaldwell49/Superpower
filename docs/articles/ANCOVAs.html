@@ -97,7 +97,7 @@
       <h1 data-toc-skip>Power Calculations for ANCOVA</h1>
                         <h4 class="author">Aaron R. Caldwell</h4>
             
-            <h4 class="date">07 December, 2021</h4>
+            <h4 class="date">13 December, 2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/arcaldwell49/Superpower/blob/master/vignettes/ANCOVAs.Rmd"><code>vignettes/ANCOVAs.Rmd</code></a></small>
       <div class="hidden name"><code>ANCOVAs.Rmd</code></div>
@@ -133,37 +133,6 @@
   <span class="co">#n = c(17,17,17),</span>
   beta_level <span class="op">=</span> <span class="fl">.2</span>,
   round_up <span class="op">=</span> <span class="cn">TRUE</span>,
-  type <span class="op">=</span> <span class="st">"exact"</span>
-<span class="op">)</span></code></pre></div>
-<pre><code>#&gt; 
-#&gt;      Power Calculation for 1-way ANCOVA 
-#&gt; 
-#&gt;             dfs = 2, 45
-#&gt;               N = 51
-#&gt;               n = 17, 17, 17
-#&gt;           n_cov = 3
-#&gt;              mu = 400, 450, 500
-#&gt;              sd = 100
-#&gt;              r2 = 0.25
-#&gt;     alpha_level = 0.05
-#&gt;      beta_level = 0.1878274
-#&gt;           power = 81.21726
-#&gt;            type = exact</code></pre>
-</div>
-<div id="shieh_ancova-method" class="section level2">
-<h2 class="hasAnchor">
-<a href="#shieh_ancova-method" class="anchor"></a><span class="citation"><a href="#ref-shieh_ancova" role="doc-biblioref">Shieh</a> (<a href="#ref-shieh_ancova" role="doc-biblioref">2020</a>)</span> Method</h2>
-<p>Notice that this method requires 3 more subjects in order to achieve a minimum of 80% power.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/power_oneway_ancova.html">power_oneway_ancova</a></span><span class="op">(</span>
-  mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">400</span>,<span class="fl">450</span>,<span class="fl">500</span><span class="op">)</span>,
-  n_cov <span class="op">=</span> <span class="fl">3</span>,
-  sd <span class="op">=</span> <span class="fl">100</span>,
-  r2 <span class="op">=</span> <span class="fl">.25</span>,
-  alpha_level <span class="op">=</span> <span class="fl">.05</span>,
-  <span class="co">#n = c(17,17,17),</span>
-  beta_level <span class="op">=</span> <span class="fl">.2</span>,
-  round_up <span class="op">=</span> <span class="cn">TRUE</span>,
   type <span class="op">=</span> <span class="st">"approx"</span>
 <span class="op">)</span></code></pre></div>
 <pre><code>#&gt; 
@@ -180,6 +149,37 @@
 #&gt;      beta_level = 0.1877374
 #&gt;           power = 81.22626
 #&gt;            type = approx</code></pre>
+</div>
+<div id="shieh_ancova-method" class="section level2">
+<h2 class="hasAnchor">
+<a href="#shieh_ancova-method" class="anchor"></a><span class="citation"><a href="#ref-shieh_ancova" role="doc-biblioref">Shieh</a> (<a href="#ref-shieh_ancova" role="doc-biblioref">2020</a>)</span> Method</h2>
+<p>Notice that this method requires 3 more subjects in order to achieve a minimum of 80% power.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/power_oneway_ancova.html">power_oneway_ancova</a></span><span class="op">(</span>
+  mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">400</span>,<span class="fl">450</span>,<span class="fl">500</span><span class="op">)</span>,
+  n_cov <span class="op">=</span> <span class="fl">3</span>,
+  sd <span class="op">=</span> <span class="fl">100</span>,
+  r2 <span class="op">=</span> <span class="fl">.25</span>,
+  alpha_level <span class="op">=</span> <span class="fl">.05</span>,
+  <span class="co">#n = c(17,17,17),</span>
+  beta_level <span class="op">=</span> <span class="fl">.2</span>,
+  round_up <span class="op">=</span> <span class="cn">TRUE</span>,
+  type <span class="op">=</span> <span class="st">"exact"</span>
+<span class="op">)</span></code></pre></div>
+<pre><code>#&gt; 
+#&gt;      Power Calculation for 1-way ANCOVA 
+#&gt; 
+#&gt;             dfs = 2, 45
+#&gt;               N = 51
+#&gt;               n = 17, 17, 17
+#&gt;           n_cov = 3
+#&gt;              mu = 400, 450, 500
+#&gt;              sd = 100
+#&gt;              r2 = 0.25
+#&gt;     alpha_level = 0.05
+#&gt;      beta_level = 0.1878274
+#&gt;           power = 81.21726
+#&gt;            type = exact</code></pre>
 </div>
 </div>
 <div id="extending-to-factorial-anovas" class="section level1">
@@ -302,12 +302,12 @@
 <div id="contrasts" class="section level1">
 <h1 class="hasAnchor">
 <a href="#contrasts" class="anchor"></a>Contrasts</h1>
-<p>Additionally, user specified contrasts can also be used for a power analysis. These can be provided in the <code>contrasts</code> argument of the <code>ANCOVA_analytic</code> function or supplied directly to the <code>ANCOVA_contrast</code> function as an independent test. The <code>ANCOVA_analytic</code> function requires that the contrasts matricies are provided as matrices. The contrasts can be accessed in the <code>con_list</code> part of the results and can be named (in this case “test”).</p>
+<p>Additionally, user specified contrasts can also be used for a power analysis. These can be provided in the <code>cmats</code> argument of the <code>ANCOVA_analytic</code> function or supplied directly to the <code>ANCOVA_contrast</code> function as an independent test. The <code>ANCOVA_analytic</code> function requires that the contrasts matricies are provided as matrices. The contrasts can be accessed in the <code>con_list</code> part of the results and can be named (in this case “test”).</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/ANCOVA_analytic.html">ANCOVA_analytic</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b"</span>,
                 mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>,
                 n <span class="op">=</span> <span class="fl">15</span>,
-                contrast <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>test <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>,
+                cmats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>test <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>,
                                               nrow <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,
                 sd <span class="op">=</span> <span class="fl">1</span>,
                 r2 <span class="op">=</span> <span class="fl">.2</span>,

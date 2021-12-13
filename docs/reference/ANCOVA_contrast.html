@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Power Calculations for ANCOVA Contrasts — ANCOVA_contrast" />
-<meta property="og:description" content="Complete power analyses for specific ANCOVA contrasts. This funcion does not support within subjects factors." />
+<meta property="og:description" content="Complete power analyses for specific ANCOVA contrasts. This function does not support within subjects factors." />
 
 
 
@@ -141,7 +141,7 @@
     </div>
 
     <div class="ref-description">
-    <p>Complete power analyses for specific ANCOVA contrasts. This funcion does not support within subjects factors.</p>
+    <p>Complete power analyses for specific ANCOVA contrasts. This function does not support within subjects factors.</p>
     </div>
 
     <pre class="usage"><span class='fu'>ANCOVA_contrast</span><span class='op'>(</span>
@@ -207,8 +207,28 @@
 <p>Shieh, G. (2020). Power analysis and sample size planning in ANCOVA designs. Psychometrika, 85(1), 101-120.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># To be added</span>
-</div></pre>
+    <pre class="examples"><div class='input'><span class='fu'>ANCOVA_contrast</span><span class='op'>(</span>cmat <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>1</span>,<span class='fl'>1</span><span class='op'>)</span>,
+n <span class='op'>=</span> <span class='fl'>15</span>,
+mu <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>,<span class='fl'>1</span><span class='op'>)</span>,
+sd <span class='op'>=</span> <span class='fl'>1</span>,
+r2 <span class='op'>=</span> <span class='fl'>.2</span>,
+n_cov <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 
+#&gt;      Power Calculation for ANCOVA contrast 
+#&gt; 
+#&gt;             dfs = 1, 27
+#&gt;               N = 30
+#&gt;               n = 15, 15
+#&gt;           n_cov = 1
+#&gt;        contrast = -1, 1
+#&gt;              mu = 0, 1
+#&gt;              sd = 1
+#&gt;              r2 = 0.2
+#&gt;     alpha_level = 0.05
+#&gt;      beta_level = 0.1744293
+#&gt;           power = 82.55707
+#&gt;            type = Exact
+#&gt; </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
