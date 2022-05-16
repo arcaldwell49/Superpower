@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,23 +33,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">Superpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -76,7 +72,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/arcaldwell49/Superpower/">
+  <a href="https://github.com/arcaldwell49/Superpower/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -93,40 +89,57 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="superpower" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#superpower" class="anchor"></a>Superpower</h1></div>
-<p><img src="Sticker/Superpower2.PNG" title="plot of chunk hex" alt="plot of chunk hex" width="17%"><img src="Sticker/authors.png" title="plot of chunk authors" alt="plot of chunk authors" width="25%"></p>
-<!-- rmarkdown v1 -->
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+<div class="section level1">
+<div class="page-header"><h1 id="superpower">Superpower<a class="anchor" aria-label="anchor" href="#superpower"></a>
+</h1></div>
+<p><img src="reference/figures/Superpower2.PNG" title="plot of chunk hex" alt="plot of chunk hex" width="17%"><img src="reference/figures/authors.png" title="plot of chunk authors" alt="plot of chunk authors" width="25%"></p>
 <!-- badges: start -->
-<p><a href="https://travis-ci.com/arcaldwell49/superpower"><img src="https://travis-ci.com/arcaldwell49/superpower.svg?branch=master" alt="Build Status"></a> <a href="https://codecov.io/gh/arcaldwell49/Superpower"><img src="https://codecov.io/gh/arcaldwell49/Superpower/branch/master/graph/badge.svg" alt="codecov"></a> <a href="https://doi.org/10.31234/osf.io/baxsf"><img src="https://img.shields.io/badge/doi-10.31234/osf.io/baxsf-yellow.svg"></a> <!-- badges: end --></p>
-<p>The goal of <code>Superpower</code> is to easily simulate factorial designs and empirically calculate power using a simulation approach. This package and its functions are intended to be utilized for prospective (a priori) power analysis. In addition to this site we have written a short <a href="https://aaroncaldwell.us/SuperpowerBook/">book</a> documenting a wide range of applications of this package and how to perform power analysis outside this R package using custom code.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install the most recent version of <code>Superpower</code> from <a href="https://github.com/arcaldwell49/Superpower">GitHub</a> with:</p>
+
+<p>The goal of <code>Superpower</code> is to easily simulate factorial designs and empirically calculate power using a simulation approach. This package and its functions are intended to be utilized for prospective (a priori) power analysis. In addition to this site we have written a short <a href="https://aaroncaldwell.us/SuperpowerBook/" class="external-link">book</a> documenting a wide range of applications of this package and how to perform power analysis outside this R package using custom code.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
+<p>You can install the most recent version of <code>Superpower</code> from <a href="https://github.com/arcaldwell49/Superpower" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"arcaldwell49/Superpower"</span><span class="op">)</span></code></pre></div>
-<p>Or you can install the stable version of Superpower from <a href="https://CRAN.R-project.org">CRAN</a> with:</p>
+<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"arcaldwell49/Superpower"</span><span class="op">)</span></code></pre></div>
+<p>Or you can install the stable version of Superpower from <a href="https://CRAN.R-project.org" class="external-link">CRAN</a> with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"Superpower"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"Superpower"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="other-simulation--power-analysis-packages" class="section level2">
-<h2 class="hasAnchor">
-<a href="#other-simulation--power-analysis-packages" class="anchor"></a>Other Simulation &amp; Power Analysis Packages</h2>
+<div class="section level2">
+<h2 id="citation">Citation<a class="anchor" aria-label="anchor" href="#citation"></a>
+</h2>
+<p>If you use <code>Superpower</code>, please consider citing the following:</p>
+<p>Lakens, D., &amp; Caldwell, A. R. (2021). Simulation-Based Power Analysis for Factorial Analysis of Variance Designs. <em>Advances in Methods and Practices in Psychological Science</em>, 4(1), 251524592095150. <a href="https://doi.org/10.1177/2515245920951503" class="external-link uri">https://doi.org/10.1177/2515245920951503</a></p>
+<pre><code>A BibTeX entry for LaTeX users is
+
+  @Article{,
+    doi = {10.1177/2515245920951503},
+    url = {https://doi.org/10.1177/2515245920951503},
+    year = {2021},
+    volume = {4},
+    number = {1},
+    pages = {251524592095150},
+    author = {Daniel Lakens and Aaron Caldwell},
+    title = {Simulation-Based Power Analysis for Factorial Analysis of Variance Designs},
+    journal = {Advances in Methods and Practices in Psychological Science},
+  }</code></pre>
+</div>
+<div class="section level2">
+<h2 id="other-simulation--power-analysis-packages">Other Simulation &amp; Power Analysis Packages<a class="anchor" aria-label="anchor" href="#other-simulation--power-analysis-packages"></a>
+</h2>
 <p>We started this project to create a simple way to do ANOVA power calculations that the average experimental scientist can use. However, there are many cases that an ANOVA may not be appropriate. Therefore, we suggest using other packages such as <code>simr</code> which allows for linear and generalized mixed models. Custom code can also be written and for such specialized simulations we highly recommend the <code>simstudy</code> R package. For sequential analyses and adaptive designs the <code>rpact</code> package will also be very helpful.</p>
 <ul>
 <li>
-<a href="https://www.rdatagen.net/page/simstudy/">simstudy</a>: Simulation of Study Data</li>
+<a href="https://www.rdatagen.net/page/simstudy/" class="external-link">simstudy</a>: Simulation of Study Data</li>
 <li>
-<a href="https://debruine.github.io/faux/">faux</a>: Simulate data with a specified structure.</li>
+<a href="https://debruine.github.io/faux/" class="external-link">faux</a>: Simulate data with a specified structure.</li>
 <li>
-<a href="https://github.com/pitakakariki/simr">simr</a>: Power Analysis of Generalised Linear Mixed Models by Simulation</li>
+<a href="https://github.com/pitakakariki/simr" class="external-link">simr</a>: Power Analysis of Generalised Linear Mixed Models by Simulation</li>
 <li>
-<a href="https://www.rpact.org/">rpact</a>: Confirmatory Adaptive Clinical Trial Design, Simulation, and Analysis</li>
+<a href="https://www.rpact.org/" class="external-link">rpact</a>: Confirmatory Adaptive Clinical Trial Design, Simulation, and Analysis</li>
 <li>
-<a href="https://github.com/heliosdrm/pwr">pwr</a>: Basic functions for power analysis</li>
+<a href="https://github.com/heliosdrm/pwr" class="external-link">pwr</a>: Basic functions for power analysis</li>
 </ul>
 </div>
 </div>
@@ -134,35 +147,46 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=Superpower">https://​cloud.r-project.org/​package=Superpower</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/arcaldwell49/Superpower/">https://​github.com/​arcaldwell49/​Superpower/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/arcaldwell49/Superpower/issues">https://​github.com/​arcaldwell49/​Superpower/​issues</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=Superpower" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/arcaldwell49/Superpower/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/arcaldwell49/Superpower/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
+
+
 <div class="citation">
-<h2>Citation</h2>
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html">Citing Superpower</a></li>
+<li><a href="authors.html#citation">Citing Superpower</a></li>
 </ul>
 </div>
+
 <div class="developers">
-<h2>Developers</h2>
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
 <li>Aaron Caldwell <br><small class="roles"> Author, maintainer </small>  </li>
 <li>Daniel Lakens <br><small class="roles"> Author </small>  </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="authors.html">More about authors...</a></li>
+</ul>
+</div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://github.com/arcaldwell49/Superpower/actions" class="external-link"><img src="https://github.com/arcaldwell49/Superpower/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
+<li><a href="https://CRAN.R-project.org/package=Superpower" class="external-link"><img src="https://www.r-pkg.org/badges/version/Superpower" alt="CRAN status"></a></li>
+<li><a href="https://app.codecov.io/gh/arcaldwell49/Superpower" class="external-link"><img src="https://codecov.io/gh/arcaldwell49/Superpower/branch/master/graph/badge.svg" alt="codecov"></a></li>
+<li><a href="https://doi.org/10.31234/osf.io/baxsf" class="external-link"><img src="https://img.shields.io/badge/doi-10.31234/osf.io/baxsf-yellow.svg"></a></li>
 </ul>
 </div>
 
@@ -171,11 +195,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Aaron Caldwell, Daniel Lakens.</p>
+  <p></p>
+<p>Developed by Aaron Caldwell, Daniel Lakens.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>
@@ -183,6 +209,8 @@
 
   
 
+
+  
 
   </body>
 </html>

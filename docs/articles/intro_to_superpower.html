@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,23 +33,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Superpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -76,7 +72,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/arcaldwell49/Superpower/">
+  <a href="https://github.com/arcaldwell49/Superpower/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -91,98 +87,144 @@
 
       
 
-      </header><script src="intro_to_superpower_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Introduction to Superpower</h1>
-                        <h4 class="author">Daniel Lakens &amp; Aaron R. Caldwell</h4>
+                        <h4 data-toc-skip class="author">Daniel Lakens
+&amp; Aaron R. Caldwell</h4>
             
-            <h4 class="date">2021-12-13</h4>
+            <h4 data-toc-skip class="date">2022-05-16</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/arcaldwell49/Superpower/blob/master/vignettes/intro_to_superpower.Rmd"><code>vignettes/intro_to_superpower.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/arcaldwell49/Superpower/blob/HEAD/vignettes/intro_to_superpower.Rmd" class="external-link"><code>vignettes/intro_to_superpower.Rmd</code></a></small>
       <div class="hidden name"><code>intro_to_superpower.Rmd</code></div>
 
     </div>
 
     
     
-<p>The goal of Superpower is to easily simulate single factor and factorial designs and empirically calculate power using a simulation approach. Currently, the package can only calculate power for ANOVAs. This app is intended to be utilized for prospective (a priori) power analysis. This vignette gives a brief overview of the package’s capability. If you would like to see more information on this package please see our online <a href="https://aaroncaldwell.us/SuperpowerBook/">book</a></p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
-<p>You can install the developmental version of Superpower from <a href="https://github.com/arcaldwell49/Superpower">GitHub</a> with:</p>
+<p>The goal of Superpower is to easily simulate single factor and
+factorial designs and empirically calculate power using a simulation
+approach. Currently, the package can only calculate power for ANOVAs.
+This app is intended to be utilized for prospective (a priori) power
+analysis. This vignette gives a brief overview of the package’s
+capability. If you would like to see more information on this package
+please see our online <a href="https://aaroncaldwell.us/SuperpowerBook/" class="external-link">book</a></p>
+<div class="section level3">
+<h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h3>
+<p>You can install the developmental version of Superpower from <a href="https://github.com/arcaldwell49/Superpower" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"arcaldwell49/Superpower"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"arcaldwell49/Superpower"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="superpower_options" class="section level2">
-<h2 class="hasAnchor">
-<a href="#superpower_options" class="anchor"></a>Superpower_options</h2>
-<p>Some functions have overlapping arguments (e.g., verbose and plot), and many users may want consistency in these arguments as they use these functions in their workflow. In order to see the options, all one has to do is call on the Superpower_options() function.</p>
+<div class="section level3">
+<h3 id="superpower_options">Superpower_options<a class="anchor" aria-label="anchor" href="#superpower_options"></a>
+</h3>
+<p>Some functions have overlapping arguments (e.g., verbose and plot),
+and many users may want consistency in these arguments as they use these
+functions in their workflow. In order to see the options, all one has to
+do is call on the Superpower_options() function.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
-<pre><code>## $alpha_level
-## [1] 0.05
-## 
-## $contrast_type
-## [1] "pairwise"
-## 
-## $correction
-## [1] "none"
-## 
-## $emm
-## [1] FALSE
-## 
-## $emm_model
-## [1] "multivariate"
-## 
-## $liberal_lambda
-## [1] FALSE
-## 
-## $plot
-## [1] TRUE
-## 
-## $verbose
-## [1] TRUE</code></pre>
-<p>The global option can be set by the user by calling on the individual arguments. Let’s use the verbose argument as an example.</p>
+<pre><code><span class="co">## $alpha_level</span>
+<span class="co">## [1] 0.05</span>
+<span class="co">## </span>
+<span class="co">## $contrast_type</span>
+<span class="co">## [1] "pairwise"</span>
+<span class="co">## </span>
+<span class="co">## $correction</span>
+<span class="co">## [1] "none"</span>
+<span class="co">## </span>
+<span class="co">## $emm</span>
+<span class="co">## [1] FALSE</span>
+<span class="co">## </span>
+<span class="co">## $emm_model</span>
+<span class="co">## [1] "multivariate"</span>
+<span class="co">## </span>
+<span class="co">## $liberal_lambda</span>
+<span class="co">## [1] FALSE</span>
+<span class="co">## </span>
+<span class="co">## $plot</span>
+<span class="co">## [1] TRUE</span>
+<span class="co">## </span>
+<span class="co">## $verbose</span>
+<span class="co">## [1] TRUE</span></code></pre>
+<p>The global option can be set by the user by calling on the individual
+arguments. Let’s use the verbose argument as an example.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"verbose"</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] TRUE</code></pre>
+<pre><code><span class="co">## [1] TRUE</span></code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"verbose"</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> 
 <span class="fu"><a href="../reference/Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"verbose"</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] FALSE</code></pre>
+<pre><code><span class="co">## [1] FALSE</span></code></pre>
 </div>
-<div id="anova_design-function" class="section level2">
-<h2 class="hasAnchor">
-<a href="#anova_design-function" class="anchor"></a>ANOVA_design function</h2>
-<p>Currently the ANOVA_design function can create designs up three factors, for both within, between, and mixed designs. It requires the following input: design, n, mu, sd, r, and optionally allows you to set label_list.</p>
+<div class="section level3">
+<h3 id="anova_design-function">ANOVA_design function<a class="anchor" aria-label="anchor" href="#anova_design-function"></a>
+</h3>
+<p>Currently the ANOVA_design function can create designs up three
+factors, for both within, between, and mixed designs. It requires the
+following input: design, n, mu, sd, r, and optionally allows you to set
+label_list.</p>
 <ol style="list-style-type: decimal">
 <li>
-<code>design</code>: string that specifies the design (see below).</li>
+<code>design</code>: string that specifies the design (see
+below).</li>
 <li>
-<code>n</code>: the sample size for each between subject condition.</li>
+<code>n</code>: the sample size for each between subject
+condition.</li>
 <li>
 <code>mu</code>: a vector with the means for each condition.</li>
 <li>
-<code>sd</code>: the population standard deviation. Assumes homogeneity of variances (only one standard deviation can be provided).</li>
+<code>sd</code>: the population standard deviation. Assumes
+homogeneity of variances (only one standard deviation can be
+provided).</li>
 <li>
-<code>r</code>: the correlation for within designs (or 0 for between designs).</li>
+<code>r</code>: the correlation for within designs (or 0 for between
+designs).</li>
 <li>
-<code>label_list</code>: This is an optional named list of words that indicates factor names and level names (see below).</li>
-<li>A final optional setting is to specify if you want to output a plot or not (plot = TRUE or FALSE)</li>
+<code>label_list</code>: This is an optional named list of words
+that indicates factor names and level names (see below).</li>
+<li>A final optional setting is to specify if you want to output a plot
+or not (plot = TRUE or FALSE)</li>
 </ol>
-<div id="specifying-the-design-using-design" class="section level3">
-<h3 class="hasAnchor">
-<a href="#specifying-the-design-using-design" class="anchor"></a>Specifying the design using ‘design’</h3>
-<p>‘design’ is used to specify the design. Every factor is specified with a number, indicating the number of levels of the factor, and a letter, b or w, to indicate whether the factor is manipulated between or within participants. For example, a <code>2b</code> design has two between-participant groups. A <code>12w</code> design has one factor with 12 levels, all manipulated within-participants. A "2b*3w" is a design with two factors (a 2b factor and a 3w factor), the first of which has 2 between participant levels (2b), and the second of which has 3 within participants levels (3w). <strong>If there are multiple factors (the functions take up to three different factors) separate factors with a * (asterisk)</strong>. An example of a <code>2b*3w</code> design is a group of people in one condition who get a drug, and a group of people in another condition who get a placebo, and we measure their health before they take the pill, one day after they take the pill, and a week after they take the pill.</p>
+<div class="section level4">
+<h4 id="specifying-the-design-using-design">Specifying the design using ‘design’<a class="anchor" aria-label="anchor" href="#specifying-the-design-using-design"></a>
+</h4>
+<p>‘design’ is used to specify the design. Every factor is specified
+with a number, indicating the number of levels of the factor, and a
+letter, b or w, to indicate whether the factor is manipulated between or
+within participants. For example, a <code>2b</code> design has two
+between-participant groups. A <code>12w</code> design has one factor
+with 12 levels, all manipulated within-participants. A “2b*3w” is a
+design with two factors (a 2b factor and a 3w factor), the first of
+which has 2 between participant levels (2b), and the second of which has
+3 within participants levels (3w). <strong>If there are multiple factors
+(the functions take up to three different factors) separate factors with
+a * (asterisk)</strong>. An example of a <code>2b*3w</code> design is a
+group of people in one condition who get a drug, and a group of people
+in another condition who get a placebo, and we measure their health
+before they take the pill, one day after they take the pill, and a week
+after they take the pill.</p>
 </div>
-<div id="specifying-the-means-using-mu" class="section level3">
-<h3 class="hasAnchor">
-<a href="#specifying-the-means-using-mu" class="anchor"></a>Specifying the means using ‘mu’</h3>
-<p>Note that for each cell in the design, a mean must be provided. Thus, for a "2b*3w" design, 6 means need to be entered.</p>
-<p>Means need to be entered in the correct order. ANOVA_design outputs a plot so you can check if you entered all means as you intended. Always carefully check if the plot that is generated matches your expectations.</p>
-<p>The general principle is that the code generates factors, indicated by the factor names you entered in the label_list variable, (i.e., <em>condition</em> and <em>time</em>). Levels are indicated by factor names and levels (e.g., control_time1, control_time2, control_time3, etc).</p>
-<p>If your design has just one factor, just enter the means in the same order as the label_list (see below). For more factors, note the general pattern in the example below. Means are entered in the following order for a 3 factors design (each with 2 levels):</p>
+<div class="section level4">
+<h4 id="specifying-the-means-using-mu">Specifying the means using ‘mu’<a class="anchor" aria-label="anchor" href="#specifying-the-means-using-mu"></a>
+</h4>
+<p>Note that for each cell in the design, a mean must be provided. Thus,
+for a “2b*3w” design, 6 means need to be entered.</p>
+<p>Means need to be entered in the correct order. ANOVA_design outputs a
+plot so you can check if you entered all means as you intended. Always
+carefully check if the plot that is generated matches your
+expectations.</p>
+<p>The general principle is that the code generates factors, indicated
+by the factor names you entered in the label_list variable, (i.e.,
+<em>condition</em> and <em>time</em>). Levels are indicated by factor
+names and levels (e.g., control_time1, control_time2, control_time3,
+etc).</p>
+<p>If your design has just one factor, just enter the means in the same
+order as the label_list (see below). For more factors, note the general
+pattern in the example below. Means are entered in the following order
+for a 3 factors design (each with 2 levels):</p>
 <ol style="list-style-type: decimal">
 <li>a1 b1 c1</li>
 <li>a1 b1 c2</li>
@@ -193,76 +235,103 @@
 <li>a2 b2 c1</li>
 <li>a2 b2 c2</li>
 </ol>
-<p>So if you enter the means 1, 2, 3, 4, 5, 6, 7, 8 the first 4 means correspond to level 1 of factor 1, the second 4 means correspond to level 2 of factor 1. Within the first 4 means, the first 2 correspond to level 1 of factor 2, and within those 2 means, the first corresponds to level 1 of factor 3.</p>
-<p>The plot below visualizes means from 1 to 8 being entered in a vector: <code>mu = c(1, 2, 3, 4, 5, 6, 7, 8)</code> so you can see how the basic ordering works.</p>
-<pre><code>## The design is specified as: 2b*2w*2b
-## Summary of means (mu) and standard deviations (SD)
-##   mu SD  a  b  c
-## 1  1  1 a1 b1 c1
-## 2  2  1 a1 b1 c2
-## 3  3  1 a1 b2 c1
-## 4  4  1 a1 b2 c2
-## 5  5  1 a2 b1 c1
-## 6  6  1 a2 b1 c2
-## 7  7  1 a2 b2 c1
-## 8  8  1 a2 b2 c2
-## 
-## Correlation Matrix
-##          a1_b1_c1 a1_b1_c2 a1_b2_c1 a1_b2_c2 a2_b1_c1 a2_b1_c2 a2_b2_c1
-## a1_b1_c1      1.0      0.0      0.9      0.0      0.0      0.0      0.0
-## a1_b1_c2      0.0      1.0      0.0      0.9      0.0      0.0      0.0
-## a1_b2_c1      0.9      0.0      1.0      0.0      0.0      0.0      0.0
-## a1_b2_c2      0.0      0.9      0.0      1.0      0.0      0.0      0.0
-## a2_b1_c1      0.0      0.0      0.0      0.0      1.0      0.0      0.9
-## a2_b1_c2      0.0      0.0      0.0      0.0      0.0      1.0      0.0
-## a2_b2_c1      0.0      0.0      0.0      0.0      0.9      0.0      1.0
-## a2_b2_c2      0.0      0.0      0.0      0.0      0.0      0.9      0.0
-##          a2_b2_c2
-## a1_b1_c1      0.0
-## a1_b1_c2      0.0
-## a1_b2_c1      0.0
-## a1_b2_c2      0.0
-## a2_b1_c1      0.0
-## a2_b1_c2      0.9
-## a2_b2_c1      0.0
-## a2_b2_c2      1.0</code></pre>
+<p>So if you enter the means 1, 2, 3, 4, 5, 6, 7, 8 the first 4 means
+correspond to level 1 of factor 1, the second 4 means correspond to
+level 2 of factor 1. Within the first 4 means, the first 2 correspond to
+level 1 of factor 2, and within those 2 means, the first corresponds to
+level 1 of factor 3.</p>
+<p>The plot below visualizes means from 1 to 8 being entered in a
+vector: <code>mu = c(1, 2, 3, 4, 5, 6, 7, 8)</code> so you can see how
+the basic ordering works.</p>
+<pre><code><span class="co">## The design is specified as: 2b*2w*2b</span>
+<span class="co">## Summary of means (mu) and standard deviations (SD)</span>
+<span class="co">##   mu SD  a  b  c</span>
+<span class="co">## 1  1  1 a1 b1 c1</span>
+<span class="co">## 2  2  1 a1 b1 c2</span>
+<span class="co">## 3  3  1 a1 b2 c1</span>
+<span class="co">## 4  4  1 a1 b2 c2</span>
+<span class="co">## 5  5  1 a2 b1 c1</span>
+<span class="co">## 6  6  1 a2 b1 c2</span>
+<span class="co">## 7  7  1 a2 b2 c1</span>
+<span class="co">## 8  8  1 a2 b2 c2</span>
+<span class="co">## </span>
+<span class="co">## Correlation Matrix</span>
+<span class="co">##          a1_b1_c1 a1_b1_c2 a1_b2_c1 a1_b2_c2 a2_b1_c1 a2_b1_c2 a2_b2_c1</span>
+<span class="co">## a1_b1_c1      1.0      0.0      0.9      0.0      0.0      0.0      0.0</span>
+<span class="co">## a1_b1_c2      0.0      1.0      0.0      0.9      0.0      0.0      0.0</span>
+<span class="co">## a1_b2_c1      0.9      0.0      1.0      0.0      0.0      0.0      0.0</span>
+<span class="co">## a1_b2_c2      0.0      0.9      0.0      1.0      0.0      0.0      0.0</span>
+<span class="co">## a2_b1_c1      0.0      0.0      0.0      0.0      1.0      0.0      0.9</span>
+<span class="co">## a2_b1_c2      0.0      0.0      0.0      0.0      0.0      1.0      0.0</span>
+<span class="co">## a2_b2_c1      0.0      0.0      0.0      0.0      0.9      0.0      1.0</span>
+<span class="co">## a2_b2_c2      0.0      0.0      0.0      0.0      0.0      0.9      0.0</span>
+<span class="co">##          a2_b2_c2</span>
+<span class="co">## a1_b1_c1      0.0</span>
+<span class="co">## a1_b1_c2      0.0</span>
+<span class="co">## a1_b2_c1      0.0</span>
+<span class="co">## a1_b2_c2      0.0</span>
+<span class="co">## a2_b1_c1      0.0</span>
+<span class="co">## a2_b1_c2      0.9</span>
+<span class="co">## a2_b2_c1      0.0</span>
+<span class="co">## a2_b2_c2      1.0</span></code></pre>
 <p><img src="intro_to_superpower_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
 </div>
-<div id="specifying-label-names" class="section level3">
-<h3 class="hasAnchor">
-<a href="#specifying-label-names" class="anchor"></a>Specifying label names</h3>
-<p>To make sure the plots and tables with simulation results are easy to interpret, it really helps to name all factors and levels. You can enter the labels in the ‘label_list’ variable. You can also choose not to specify names. Then all factors are indicated by letters (a, b, c) and all levels by numbers (a1, a2, a3).</p>
-<p>For the 2x3 design we have been using as an example, where there are 2 factors (condition and time of measurement), the first with 2 levels (placebo vs. medicine) and the second with three levels (time1, time2, and time3) we would enter the labels as follows:</p>
-<p>c(“condition”, “placebo”, “medicine”, “time”, “time1”, “time2”, “time3”)</p>
-<p>As you can see, you follow the order of the design (<code>2b*3w</code>), and first write the <strong>FACTOR</strong> label (condition) followed by the levels of that factor (placebo and medicine). Then you write the second factor name (time) followed by the three labels for each <strong>LEVEL</strong> (time1, time2, time3). <strong>Do not use spaces in the names (so not “time 1” but “time1” or “time_1”).</strong></p>
+<div class="section level4">
+<h4 id="specifying-label-names">Specifying label names<a class="anchor" aria-label="anchor" href="#specifying-label-names"></a>
+</h4>
+<p>To make sure the plots and tables with simulation results are easy to
+interpret, it really helps to name all factors and levels. You can enter
+the labels in the ‘label_list’ variable. You can also choose not to
+specify names. Then all factors are indicated by letters (a, b, c) and
+all levels by numbers (a1, a2, a3).</p>
+<p>For the 2x3 design we have been using as an example, where there are
+2 factors (condition and time of measurement), the first with 2 levels
+(placebo vs. medicine) and the second with three levels (time1, time2,
+and time3) we would enter the labels as follows:</p>
+<p>c(“condition”, “placebo”, “medicine”, “time”, “time1”, “time2”,
+“time3”)</p>
+<p>As you can see, you follow the order of the design
+(<code>2b*3w</code>), and first write the <strong>FACTOR</strong> label
+(condition) followed by the levels of that factor (placebo and
+medicine). Then you write the second factor name (time) followed by the
+three labels for each <strong>LEVEL</strong> (time1, time2, time3).
+<strong>Do not use spaces in the names (so not “time 1” but “time1” or
+“time_1”).</strong></p>
 <p>Some examples:</p>
 <ol style="list-style-type: decimal">
 <li>One within factor (time with 2 levels), 2w:</li>
 </ol>
 <ul>
-<li><code><a href="https://rdrr.io/r/base/c.html">c("time", "morning", "evening")</a></code></li>
+<li><code>c("time", "morning", "evening")</code></li>
 </ul>
 <ol start="2" style="list-style-type: decimal">
-<li>Two between factors (time and group, each with 2 levels), 2b*2b:</li>
+<li>Two between factors (time and group, each with 2 levels),
+2b*2b:</li>
 </ol>
 <ul>
-<li><code><a href="https://rdrr.io/r/base/c.html">c("time", "morning", "evening", "group", "control", "experimental")</a></code></li>
+<li><code>c("time", "morning", "evening", "group", "control", "experimental")</code></li>
 </ul>
 <ol start="3" style="list-style-type: decimal">
-<li>Two between factors (time and group, first with 4 levels, second with 2 levels), 4b*2b:</li>
+<li>Two between factors (time and group, first with 4 levels, second
+with 2 levels), 4b*2b:</li>
 </ol>
 <ul>
-<li><code><a href="https://rdrr.io/r/base/c.html">c("time", "morning", "afternoon" ,"evening", "night", "group", "control", "experimental")</a></code></li>
+<li><code>c("time", "morning", "afternoon" ,"evening", "night", "group", "control", "experimental")</code></li>
 </ul>
 </div>
-<div id="specifying-the-correlation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#specifying-the-correlation" class="anchor"></a>Specifying the correlation</h3>
-<p>Depending on whether factors are manipulated within or between, variables are correlated, or not. You can set the correlation for within-participant factors. You can either assume all factors have the same correlation (e.g., r = 0.7), or enter the correlations for each pair of observations separately by specifying a correlation matrix.</p>
-<div id="specifying-the-correlation-matrix-" class="section level4">
-<h4 class="hasAnchor">
-<a href="#specifying-the-correlation-matrix-" class="anchor"></a>Specifying the correlation matrix.</h4>
-<p>In a 2x2 within-participant design, with factors A and B, each with 2 levels, there are 6 possible comparisons that can be made.</p>
+<div class="section level4">
+<h4 id="specifying-the-correlation">Specifying the correlation<a class="anchor" aria-label="anchor" href="#specifying-the-correlation"></a>
+</h4>
+<p>Depending on whether factors are manipulated within or between,
+variables are correlated, or not. You can set the correlation for
+within-participant factors. You can either assume all factors have the
+same correlation (e.g., r = 0.7), or enter the correlations for each
+pair of observations separately by specifying a correlation matrix.</p>
+<div class="section level5">
+<h5 id="specifying-the-correlation-matrix-">Specifying the correlation matrix.<a class="anchor" aria-label="anchor" href="#specifying-the-correlation-matrix-"></a>
+</h5>
+<p>In a 2x2 within-participant design, with factors A and B, each with 2
+levels, there are 6 possible comparisons that can be made.</p>
 <ol style="list-style-type: decimal">
 <li>A1 vs. A2</li>
 <li>A1 vs. B1</li>
@@ -271,16 +340,36 @@
 <li>A2 vs. B2</li>
 <li>B1 vs. B2</li>
 </ol>
-<p>The number of possible comparisons is the product of the levels of all factors squared minus the product of all factors, divided by two. For a 2x2 design where each factor has two levels, this is:</p>
+<p>The number of possible comparisons is the product of the levels of
+all factors squared minus the product of all factors, divided by two.
+For a 2x2 design where each factor has two levels, this is:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="fl">2</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">-</span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span></code></pre></div>
-<pre><code>## [1] 6</code></pre>
-<p>The number of possible comparisons increases rapidly when adding factors and levels for each factor. For example, for a 2x2x4 design it is:</p>
+<pre><code><span class="co">## [1] 6</span></code></pre>
+<p>The number of possible comparisons increases rapidly when adding
+factors and levels for each factor. For example, for a 2x2x4 design it
+is:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="fl">2</span><span class="op">*</span><span class="fl">4</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">-</span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="fl">2</span><span class="op">*</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span></code></pre></div>
-<pre><code>## [1] 120</code></pre>
-<p>Each of these comparisons can have their own correlation if the factor is manipulated within subjects (if the factor is manipulated between subjects the correlation is 0). These correlations determine the covariance matrix. Potvin and Schutz (2000) surveyed statistical tools for power analysis and conclude that most software packages are limited to one factor repeated measure designs and do not provide power calculations for within designs with multiple factor (which is still true for software such as G*Power). Furthermore, software solutions which were available at the time (DATASIM by Bradley, Russel, &amp; Reeve, 1996) required researchers to assume correlations were of the same magnitude for all within factors, which is not always realistic. If you do not want to assume equal correlations for all paired comparisons, you can specify the correlation for each possible comparison.</p>
-<p>The order in which the correlations are entered in the vector should match the covariance matrix. The order for a 2x2 design is given in the 6 item list above. The general pattern is that the matrix is filled from top to bottom, and left to right, illustrated by the increasing correlations in the table below.</p>
+<pre><code><span class="co">## [1] 120</span></code></pre>
+<p>Each of these comparisons can have their own correlation if the
+factor is manipulated within subjects (if the factor is manipulated
+between subjects the correlation is 0). These correlations determine the
+covariance matrix. Potvin and Schutz (2000) surveyed statistical tools
+for power analysis and conclude that most software packages are limited
+to one factor repeated measure designs and do not provide power
+calculations for within designs with multiple factor (which is still
+true for software such as G*Power). Furthermore, software solutions
+which were available at the time (DATASIM by Bradley, Russel, &amp;
+Reeve, 1996) required researchers to assume correlations were of the
+same magnitude for all within factors, which is not always realistic. If
+you do not want to assume equal correlations for all paired comparisons,
+you can specify the correlation for each possible comparison.</p>
+<p>The order in which the correlations are entered in the vector should
+match the covariance matrix. The order for a 2x2 design is given in the
+6 item list above. The general pattern is that the matrix is filled from
+top to bottom, and left to right, illustrated by the increasing
+correlations in the table below.</p>
 <table class="table">
 <thead><tr class="header">
 <th align="left">Factor</th>
@@ -320,119 +409,225 @@
 </tr>
 </tbody>
 </table>
-<p>The diagonal is generated dynamically (and all conditions are perfectly correlated with themselves).</p>
+<p>The diagonal is generated dynamically (and all conditions are
+perfectly correlated with themselves).</p>
 <p>We would enter this correlation matrix as:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2w*2w"</span>,
                               n <span class="op">=</span> <span class="fl">80</span>,
-                              mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1.1</span>, <span class="fl">1.2</span>, <span class="fl">1.3</span>, <span class="fl">1.4</span><span class="op">)</span>,
+                              mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.1</span>, <span class="fl">1.2</span>, <span class="fl">1.3</span>, <span class="fl">1.4</span><span class="op">)</span>,
                               sd <span class="op">=</span> <span class="fl">2</span>,
-                              <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.91</span>, <span class="fl">0.92</span>, <span class="fl">0.93</span>, <span class="fl">0.94</span>, <span class="fl">0.95</span>, <span class="fl">0.96</span><span class="op">)</span>,
+                              <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.91</span>, <span class="fl">0.92</span>, <span class="fl">0.93</span>, <span class="fl">0.94</span>, <span class="fl">0.95</span>, <span class="fl">0.96</span><span class="op">)</span>,
                               plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="va">design_result</span></code></pre></div>
-<pre><code>## The design is specified as: 2w*2w
-## Summary of means (mu) and standard deviations (SD)
-##    mu SD  a  b
-## 1 1.1  2 a1 b1
-## 2 1.2  2 a1 b2
-## 3 1.3  2 a2 b1
-## 4 1.4  2 a2 b2
-## 
-## Correlation Matrix
-##       a1_b1 a1_b2 a2_b1 a2_b2
-## a1_b1  1.00  0.91  0.92  0.93
-## a1_b2  0.91  1.00  0.94  0.95
-## a2_b1  0.92  0.94  1.00  0.96
-## a2_b2  0.93  0.95  0.96  1.00</code></pre>
+<pre><code><span class="co">## The design is specified as: 2w*2w</span>
+<span class="co">## Summary of means (mu) and standard deviations (SD)</span>
+<span class="co">##    mu SD  a  b</span>
+<span class="co">## 1 1.1  2 a1 b1</span>
+<span class="co">## 2 1.2  2 a1 b2</span>
+<span class="co">## 3 1.3  2 a2 b1</span>
+<span class="co">## 4 1.4  2 a2 b2</span>
+<span class="co">## </span>
+<span class="co">## Correlation Matrix</span>
+<span class="co">##       a1_b1 a1_b2 a2_b1 a2_b2</span>
+<span class="co">## a1_b1  1.00  0.91  0.92  0.93</span>
+<span class="co">## a1_b2  0.91  1.00  0.94  0.95</span>
+<span class="co">## a2_b1  0.92  0.94  1.00  0.96</span>
+<span class="co">## a2_b2  0.93  0.95  0.96  1.00</span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">design_result</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">design_result</span><span class="op">)</span></code></pre></div>
 <p><img src="intro_to_superpower_files/figure-html/unnamed-chunk-6-1.png" width="480"></p>
-<p>We can check the correlation matrix by asking for it from the design_result object to check if it was entered the way we wanted:</p>
+<p>We can check the correlation matrix by asking for it from the
+design_result object to check if it was entered the way we wanted:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">design_result</span><span class="op">$</span><span class="va">cor_mat</span></code></pre></div>
-<pre><code>##       a1_b1 a1_b2 a2_b1 a2_b2
-## a1_b1  1.00  0.91  0.92  0.93
-## a1_b2  0.91  1.00  0.94  0.95
-## a2_b1  0.92  0.94  1.00  0.96
-## a2_b2  0.93  0.95  0.96  1.00</code></pre>
-<p>Note that we did not specify the label_list, and thus they are automatically created.</p>
+<pre><code><span class="co">##       a1_b1 a1_b2 a2_b1 a2_b2</span>
+<span class="co">## a1_b1  1.00  0.91  0.92  0.93</span>
+<span class="co">## a1_b2  0.91  1.00  0.94  0.95</span>
+<span class="co">## a2_b1  0.92  0.94  1.00  0.96</span>
+<span class="co">## a2_b2  0.93  0.95  0.96  1.00</span></code></pre>
+<p>Note that we did not specify the label_list, and thus they are
+automatically created.</p>
 </div>
 </div>
-<div id="specifying-the-sample-size" class="section level3">
-<h3 class="hasAnchor">
-<a href="#specifying-the-sample-size" class="anchor"></a>Specifying the sample size</h3>
-<p>You can set the sample size <strong>per condition</strong> by setting a value for n. The assumption is that you will collect equal sample sizes in all conditions [expanding Superpower to allow different sample sizes in each group is a planned future option].</p>
+<div class="section level4">
+<h4 id="specifying-the-sample-size">Specifying the sample size<a class="anchor" aria-label="anchor" href="#specifying-the-sample-size"></a>
+</h4>
+<p>You can set the sample size <strong>per condition</strong> by setting
+a value for n. The assumption is that you will collect equal sample
+sizes in all conditions [expanding Superpower to allow different sample
+sizes in each group is a planned future option].</p>
 </div>
-<div id="specifying-the-standard-deviation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#specifying-the-standard-deviation" class="anchor"></a>Specifying the standard deviation</h3>
-<p>You can set the common standard deviation by setting a value of sd. Superpower allows you to perform calculations under the assumption of homogeneity of variances (the standard deviation is the same across conditions), or you can <em>violate this assumption</em> by entering a vector of standard deviations (one for each condition). If multiple standard deviations are entered then we <strong>highly recommend</strong> that a null design is also simulated to see the impact of this assumption violation on type 1 error. Also, please note that there is always some uncertainty in which values you can expect in the study you are planning. It is therefore useful to perform sensitivity analyses (e.g., running the simulation with the expected standard deviation, but also with more conservative or even worst-case-scenario values).</p>
+<div class="section level4">
+<h4 id="specifying-the-standard-deviation">Specifying the standard deviation<a class="anchor" aria-label="anchor" href="#specifying-the-standard-deviation"></a>
+</h4>
+<p>You can set the common standard deviation by setting a value of sd.
+Superpower allows you to perform calculations under the assumption of
+homogeneity of variances (the standard deviation is the same across
+conditions), or you can <em>violate this assumption</em> by entering a
+vector of standard deviations (one for each condition). If multiple
+standard deviations are entered then we <strong>highly
+recommend</strong> that a null design is also simulated to see the
+impact of this assumption violation on type 1 error. Also, please note
+that there is always some uncertainty in which values you can expect in
+the study you are planning. It is therefore useful to perform
+sensitivity analyses (e.g., running the simulation with the expected
+standard deviation, but also with more conservative or even
+worst-case-scenario values).</p>
 </div>
 </div>
-<div id="simulation-based-power-calculations" class="section level1">
-<h1 class="hasAnchor">
-<a href="#simulation-based-power-calculations" class="anchor"></a>Simulation-Based Power Calculations</h1>
-<p>There are two ways to calculate the statistical power of a factorial design based on simulations. The first is to repeatedly simulate data for each condition based on the means, sample size, standard deviation, and correlation, under specific statistical assumptions (i.e., normally distributed). The <code>ANOVA_power</code> function allows you to perform power analyses based on repeatedly simulating normally distributed data. A second approach is to simulate a dataset that has <em>exactly</em> the desired properties - every cell of the design has n datapoints that have the desired mean and standard deviation, and correlation between groups (for a within design). By performing an ANOVA on this dataset, we can calculate the required statistics from the ANOVA result used to calculate the statistical power. The <code>ANOVA_exact</code> function allows you to calculate power based on this approach. The <code>ANOVA_power</code> function is a bit more flexible (e.g., we can use different ways to correct for multiple comparisons, or in future versions of the package allow you to simulate more realistic datasets that are not normally distributed), but the <code>ANOVA_exact</code> function is much faster (and takes seconds, instead of minutes or hours for a large number of simulations).</p>
-<div id="the-anova_power-function" class="section level2">
-<h2 class="hasAnchor">
-<a href="#the-anova_power-function" class="anchor"></a>The ANOVA_power function</h2>
-<p>The ANOVA_power function takes the result from the ANOVA_design function, and simulates data nsims times using a specified alpha level. As output, it provides a table for the ANOVA results, and the results for all independent comparisons.</p>
-<p>It requires the following input: ANOVA_design, alpha_level, p_adjust, nsims, seed, and verbose.</p>
+<div class="section level2">
+<h2 id="simulation-based-power-calculations">Simulation-Based Power Calculations<a class="anchor" aria-label="anchor" href="#simulation-based-power-calculations"></a>
+</h2>
+<p>There are two ways to calculate the statistical power of a factorial
+design based on simulations. The first is to repeatedly simulate data
+for each condition based on the means, sample size, standard deviation,
+and correlation, under specific statistical assumptions (i.e., normally
+distributed). The <code>ANOVA_power</code> function allows you to
+perform power analyses based on repeatedly simulating normally
+distributed data. A second approach is to simulate a dataset that has
+<em>exactly</em> the desired properties - every cell of the design has n
+datapoints that have the desired mean and standard deviation, and
+correlation between groups (for a within design). By performing an ANOVA
+on this dataset, we can calculate the required statistics from the ANOVA
+result used to calculate the statistical power. The
+<code>ANOVA_exact</code> function allows you to calculate power based on
+this approach. The <code>ANOVA_power</code> function is a bit more
+flexible (e.g., we can use different ways to correct for multiple
+comparisons, or in future versions of the package allow you to simulate
+more realistic datasets that are not normally distributed), but the
+<code>ANOVA_exact</code> function is much faster (and takes seconds,
+instead of minutes or hours for a large number of simulations).</p>
+<div class="section level3">
+<h3 id="the-anova_power-function">The ANOVA_power function<a class="anchor" aria-label="anchor" href="#the-anova_power-function"></a>
+</h3>
+<p>The ANOVA_power function takes the result from the ANOVA_design
+function, and simulates data nsims times using a specified alpha level.
+As output, it provides a table for the ANOVA results, and the results
+for all independent comparisons.</p>
+<p>It requires the following input: ANOVA_design, alpha_level, p_adjust,
+nsims, seed, and verbose.</p>
 <ol style="list-style-type: decimal">
 <li>
-<code>design_result</code>: Output from the ANOVA_design function saved as an object</li>
+<code>design_result</code>: Output from the ANOVA_design function
+saved as an object</li>
 <li>
-<code>alpha_level</code>: Alpha level used to determine statistical significance</li>
+<code>alpha_level</code>: Alpha level used to determine statistical
+significance</li>
 <li>
-<code>p_adjust</code>: Correction for multiple comparisons for exploratory ANOVA/MANOVA using the <a href="https://www.rdocumentation.org/packages/stats/versions/3.5.3/topics/p.adjust">p.adjust</a> function</li>
+<code>p_adjust</code>: Correction for multiple comparisons for
+exploratory ANOVA/MANOVA using the <a href="https://www.rdocumentation.org/packages/stats/versions/3.5.3/topics/p.adjust" class="external-link">p.adjust</a>
+function</li>
 <li>
 <code>nsims</code>: number of simulations to perform</li>
 <li>
 <code>seed</code>: Set seed for reproducible results</li>
 <li>
-<code>verbose</code>: Set to FALSE to not print results (default = TRUE)</li>
+<code>verbose</code>: Set to FALSE to not print results (default =
+TRUE)</li>
 </ol>
 <p>With the following optional input:</p>
 <ol style="list-style-type: decimal">
 <li>
-<code>contrast_type</code>: This input will determine the contrast type for the emmeans comparisons. The default is “pairwise”. Possible input is limited to “pairwise”, “revpairwise”, “eff”, “consec”, “poly”, “del.eff”, “trt.vs.ctrl”, “trt.vs.ctrl1”, “trt.vs.ctrlk”, and “mean_chg”. See help(“contrast-methods”) with the <code>emmeans</code> package loaded for more information.</li>
+<code>contrast_type</code>: This input will determine the contrast
+type for the emmeans comparisons. The default is “pairwise”. Possible
+input is limited to “pairwise”, “revpairwise”, “eff”, “consec”, “poly”,
+“del.eff”, “trt.vs.ctrl”, “trt.vs.ctrl1”, “trt.vs.ctrlk”, and
+“mean_chg”. See help(“contrast-methods”) with the <code>emmeans</code>
+package loaded for more information.</li>
 <li>
-<code>emm_model</code>: emmeans accepts univariate and multivariate models. This will only make a difference if a within-subjects factor is included in the design. Setting this option to “multivariate” will result in the “multivariate” model being selected for the emmeans comparisons. <em>This is generally recommended if you are interested in the estimated marginal means (e.g., pairwise comparisons)</em>.</li>
+<code>emm_model</code>: emmeans accepts univariate and multivariate
+models. This will only make a difference if a within-subjects factor is
+included in the design. Setting this option to “multivariate” will
+result in the “multivariate” model being selected for the emmeans
+comparisons. <em>This is generally recommended if you are interested in
+the estimated marginal means (e.g., pairwise comparisons)</em>.</li>
 <li>
-<code>emm_comp</code>: This selects the factors to be included for the emmeans. The default is to take the <code>frml2</code> object from the results of <code>ANOVA_design</code>, and with the default <code>contrast_type</code> = “pairwise”, results in <em>all</em> the pairwise comparisons being performed. The simple effects can also be performed by including | in the emm_comp formula. For example, with two factors (e.g., a and b) <code>emm_comp = "a+b"</code> results in all pairwise comparisons being performed while <code>emm_comp = "a|b"</code> will result in pairwise comparisons across all levels of a <strong>within</strong> each level of b.</li>
+<code>emm_comp</code>: This selects the factors to be included for
+the emmeans. The default is to take the <code>frml2</code> object from
+the results of <code>ANOVA_design</code>, and with the default
+<code>contrast_type</code> = “pairwise”, results in <em>all</em> the
+pairwise comparisons being performed. The simple effects can also be
+performed by including | in the emm_comp formula. For example, with two
+factors (e.g., a and b) <code>emm_comp = "a+b"</code> results in all
+pairwise comparisons being performed while <code>emm_comp = "a|b"</code>
+will result in pairwise comparisons across all levels of a
+<strong>within</strong> each level of b.</li>
 <li>
-<code>emm_p_adjust</code>: adjustment for multiple comparisons. Note: <strong>this feature only works with</strong> <code>ANOVA_power</code>. Currently, this feature includes the Tukey (“tukey”), Scheffe (“scheffe”), Sidak (“sidak”), and Dunnett (“dunnettx”) adjustments in addition to all of the options for <code>p_adjust</code>.</li>
+<code>emm_p_adjust</code>: adjustment for multiple comparisons.
+Note: <strong>this feature only works with</strong>
+<code>ANOVA_power</code>. Currently, this feature includes the Tukey
+(“tukey”), Scheffe (“scheffe”), Sidak (“sidak”), and Dunnett
+(“dunnettx”) adjustments in addition to all of the options for
+<code>p_adjust</code>.</li>
 </ol>
-<p>Simulations typically take some time. Larger numbers of simulations yield more accurate results, but also take a long time. We recommend testing the set up with 100 simulations, and run 1000 if the set-up is correct (or 10000 if you are getting a coffee, or 100.000 if you are about accuracy to digits behind the decimal).</p>
+<p>Simulations typically take some time. Larger numbers of simulations
+yield more accurate results, but also take a long time. We recommend
+testing the set up with 100 simulations, and run 1000 if the set-up is
+correct (or 10000 if you are getting a coffee, or 100.000 if you are
+about accuracy to digits behind the decimal).</p>
 </div>
-<div id="the-anova_exact-function" class="section level2">
-<h2 class="hasAnchor">
-<a href="#the-anova_exact-function" class="anchor"></a>The ANOVA_exact function</h2>
-<p>The ANOVA_exact function takes the result from the ANOVA_design function, and simulates one dataset that exactly matches the desired properties (using the <code>mvrnorm</code> function from the <code>MASS</code> package, using the setting <code>empirical = TRUE</code>). This dataset is used to perform a single ANOVA, and the results are used to compute power (thanks to Chris Aberson for inspiring this approach). <em>Important Note:</em> the original function ANOVA_exact was limited by the sample size; now we have ANOVA_exact2 that has a similar internal process as ANOVA_exact. However, ANOVA_exact2 calculates the effect sizes separately from the simulation which allows us to extend the range of sample sizes that are covered, and provides a more accurate estimate of power.</p>
-<p>ANOVA_exact requires the following input: ANOVA_design, alpha_level, and verbose.</p>
+<div class="section level3">
+<h3 id="the-anova_exact-function">The ANOVA_exact function<a class="anchor" aria-label="anchor" href="#the-anova_exact-function"></a>
+</h3>
+<p>The ANOVA_exact function takes the result from the ANOVA_design
+function, and simulates one dataset that exactly matches the desired
+properties (using the <code>mvrnorm</code> function from the
+<code>MASS</code> package, using the setting
+<code>empirical = TRUE</code>). This dataset is used to perform a single
+ANOVA, and the results are used to compute power (thanks to Chris
+Aberson for inspiring this approach). <em>Important Note:</em> the
+original function ANOVA_exact was limited by the sample size; now we
+have ANOVA_exact2 that has a similar internal process as ANOVA_exact.
+However, ANOVA_exact2 calculates the effect sizes separately from the
+simulation which allows us to extend the range of sample sizes that are
+covered, and provides a more accurate estimate of power.</p>
+<p>ANOVA_exact requires the following input: ANOVA_design, alpha_level,
+and verbose.</p>
 <ol style="list-style-type: decimal">
 <li>
-<code>design_result</code>: Output from the ANOVA_design function saved as an object</li>
+<code>design_result</code>: Output from the ANOVA_design function
+saved as an object</li>
 <li>
-<code>alpha_level</code>: Alpha level used to determine statistical significance</li>
+<code>alpha_level</code>: Alpha level used to determine statistical
+significance</li>
 <li>
-<code>verbose</code>: Set to FALSE to not print results (default = TRUE)</li>
+<code>verbose</code>: Set to FALSE to not print results (default =
+TRUE)</li>
 </ol>
-<p>Compared to the ANOVA_power function, the ANOVA_exact approach is much faster (it requires simulating only a single dataset). Currently the only difference is that ANOVA_exact does not allow you to examine the consequences of correcting for multiple comparisons (there is no <code>p_adjust</code> option), and ANOVA_exact does not work for sample sizes that are less than the product of the factor levels (e.g., "2b*2b" design would need to have a minimum <code>n</code> of 5). If you are dealing with small sample sizes then you will need to use the ANOVA_exact2 function.</p>
+<p>Compared to the ANOVA_power function, the ANOVA_exact approach is
+much faster (it requires simulating only a single dataset). Currently
+the only difference is that ANOVA_exact does not allow you to examine
+the consequences of correcting for multiple comparisons (there is no
+<code>p_adjust</code> option), and ANOVA_exact does not work for sample
+sizes that are less than the product of the factor levels (e.g., “2b*2b”
+design would need to have a minimum <code>n</code> of 5). If you are
+dealing with small sample sizes then you will need to use the
+ANOVA_exact2 function.</p>
 </div>
-<div id="an-example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#an-example" class="anchor"></a>An Example</h2>
-<p>Imagine you plan to perform a study in which participants interact with an artificial voice assistant that sounds either like a human or like a robot, and who sounds either cheerful or sad. In the example below, 1000 simulations for a 2*2 mixed design (first factor, voice, is manipulated between participants, the second factor, emotion, is manipulated within participants) are performed. The sample size is 40 in each between subject condition (so 80 participants in total), the assumed population standard deviation is 1.03, the correlation for the within factors is 0.8, and the means are 1.03, 1.21, 0.98, 1.01. No correction for multiple comparisons is applied. The alpha level used as a significance threshold is set to 0.01 for this simulation.</p>
+<div class="section level3">
+<h3 id="an-example">An Example<a class="anchor" aria-label="anchor" href="#an-example"></a>
+</h3>
+<p>Imagine you plan to perform a study in which participants interact
+with an artificial voice assistant that sounds either like a human or
+like a robot, and who sounds either cheerful or sad. In the example
+below, 1000 simulations for a 2*2 mixed design (first factor, voice, is
+manipulated between participants, the second factor, emotion, is
+manipulated within participants) are performed. The sample size is 40 in
+each between subject condition (so 80 participants in total), the
+assumed population standard deviation is 1.03, the correlation for the
+within factors is 0.8, and the means are 1.03, 1.21, 0.98, 1.01. No
+correction for multiple comparisons is applied. The alpha level used as
+a significance threshold is set to 0.01 for this simulation.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b*2w"</span>,
                    n <span class="op">=</span> <span class="fl">40</span>, 
-                   mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1.03</span>, <span class="fl">1.41</span>, <span class="fl">0.98</span>, <span class="fl">1.01</span><span class="op">)</span>, 
+                   mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.03</span>, <span class="fl">1.41</span>, <span class="fl">0.98</span>, <span class="fl">1.01</span><span class="op">)</span>, 
                    sd <span class="op">=</span> <span class="fl">1.03</span>, 
                    r <span class="op">=</span> <span class="fl">0.8</span>, 
-                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"voice"</span>  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"human"</span>, <span class="st">"robot"</span><span class="op">)</span>,
-                                     <span class="st">"emotion"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span> <span class="st">"cheerful"</span>, <span class="st">"sad"</span><span class="op">)</span><span class="op">)</span>,
+                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"voice"</span>  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"human"</span>, <span class="st">"robot"</span><span class="op">)</span>,
+                                     <span class="st">"emotion"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="st">"cheerful"</span>, <span class="st">"sad"</span><span class="op">)</span><span class="op">)</span>,
                    plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="intro_to_superpower_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
@@ -440,9 +635,16 @@
                                   alpha <span class="op">=</span> <span class="fl">0.05</span>, 
                                   nsims <span class="op">=</span> <span class="va">nsims</span>, 
                                   seed <span class="op">=</span> <span class="fl">1234</span><span class="op">)</span></code></pre></div>
-<p>The result for the power simulation is printed, and has two sections (which can be suppressed by setting verbose = FALSE). The first table provides power (from 0 to 100%) and effect sizes (partial eta-squared) for the ANOVA result. We see the results for the main effects of factor voice, emotion, and the voice*emotion interaction. In addition, since we are taking a random sample of 250 simulations we can calculate a confidence interval of the results with the <code>confint</code> method.</p>
+<p>The result for the power simulation is printed, and has two sections
+(which can be suppressed by setting verbose = FALSE). The first table
+provides power (from 0 to 100%) and effect sizes (partial eta-squared)
+for the ANOVA result. We see the results for the main effects of factor
+voice, emotion, and the voice*emotion interaction. In addition, since we
+are taking a random sample of 250 simulations we can calculate a
+confidence interval of the results with the <code>confint</code>
+method.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">power_result_vig_1</span>, level <span class="op">=</span> <span class="fl">.98</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">power_result_vig_1</span>, level <span class="op">=</span> <span class="fl">.98</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left"></th>
@@ -471,21 +673,53 @@
 </tr>
 </tbody>
 </table>
-<p>The result for the power simulation reveal power is highest for the main effect of emotion. Remember that this is the within-subjects factor, and the means are highly correlated (0.8) - so we have high power for within comparisons. Power is lower for the interaction, and very low for the main effect of voice.</p>
-<p>An ANOVA is typically followed up with contrasts. A statistical hypothesis often predicts not just an interaction, but also the shape of an interaction. For example, when looking at the plot of our design above, we might be specifically interested in comparing the independent effect for the cheerful vs sad human voice assistant, and the difference for sad voice when they are robotic or human. The second table provides the power for <em>t</em>-tests for all comparisons, and the effect sizes (Cohen’s d for between-subject contrasts, and Cohen’s <span class="math inline">\(d_z\)</span> for within-subject contrasts, see <a href="https://www.frontiersin.org/articles/10.3389/fpsyg.2013.00863/full">Lakens, 2013</a>).</p>
-<p>Power is relatively high for the differences between within-participant conditions, and power is very low for the minor differences among the three similar means (1.03, 0.98, 1.01). In addition to the two tables, the ANOVA_power function returns the raw simulation data (all <em>p</em>-values and effect sizes for each simulation, see simulation_result$sim_data) and a plot showing the <em>p</em>-value distributions for all tests in the ANOVA.</p>
+<p>The result for the power simulation reveal power is highest for the
+main effect of emotion. Remember that this is the within-subjects
+factor, and the means are highly correlated (0.8) - so we have high
+power for within comparisons. Power is lower for the interaction, and
+very low for the main effect of voice.</p>
+<p>An ANOVA is typically followed up with contrasts. A statistical
+hypothesis often predicts not just an interaction, but also the shape of
+an interaction. For example, when looking at the plot of our design
+above, we might be specifically interested in comparing the independent
+effect for the cheerful vs sad human voice assistant, and the difference
+for sad voice when they are robotic or human. The second table provides
+the power for <em>t</em>-tests for all comparisons, and the effect sizes
+(Cohen’s d for between-subject contrasts, and Cohen’s <span class="math inline">\(d_z\)</span> for within-subject contrasts, see <a href="https://www.frontiersin.org/articles/10.3389/fpsyg.2013.00863/full" class="external-link">Lakens,
+2013</a>).</p>
+<p>Power is relatively high for the differences between
+within-participant conditions, and power is very low for the minor
+differences among the three similar means (1.03, 0.98, 1.01). In
+addition to the two tables, the ANOVA_power function returns the raw
+simulation data (all <em>p</em>-values and effect sizes for each
+simulation, see simulation_result$sim_data) and a plot showing the
+<em>p</em>-value distributions for all tests in the ANOVA.</p>
 <p><img src="sim_data/vig_1_plot.png"></p>
 </div>
-<div id="power-in-a-two-group-one-way-anova" class="section level2">
-<h2 class="hasAnchor">
-<a href="#power-in-a-two-group-one-way-anova" class="anchor"></a>Power in a Two Group One-Way ANOVA</h2>
-<p>Imagine we aim to design a study to test the hypothesis that giving people a pet to take care of will increase their life satisfaction. We have a control condition, and a condition where people get a pet, and randomly assign participants to either condition. We can simulate a One-Way ANOVA with a specified alpha, sample size, and effect size, on see which statistical power we would have for the ANOVA. We expect pets to increase life-satisfaction compared to the control condition. Based on work by Pavot and Diener (1993) we believe that we can expect responses on the life-satisfaction scale to have a mean of approximately 24 in our population, with a standard deviation of 6.4. We expect having a pet increases life satisfaction with approximately 2.2 scale points for participants who get a pet. We plan to collect data from 200 participants in total, with 100 participants in each condition. We examine the statistical power our design would have to detect the differences we predict.</p>
+<div class="section level3">
+<h3 id="power-in-a-two-group-one-way-anova">Power in a Two Group One-Way ANOVA<a class="anchor" aria-label="anchor" href="#power-in-a-two-group-one-way-anova"></a>
+</h3>
+<p>Imagine we aim to design a study to test the hypothesis that giving
+people a pet to take care of will increase their life satisfaction. We
+have a control condition, and a condition where people get a pet, and
+randomly assign participants to either condition. We can simulate a
+One-Way ANOVA with a specified alpha, sample size, and effect size, on
+see which statistical power we would have for the ANOVA. We expect pets
+to increase life-satisfaction compared to the control condition. Based
+on work by Pavot and Diener (1993) we believe that we can expect
+responses on the life-satisfaction scale to have a mean of approximately
+24 in our population, with a standard deviation of 6.4. We expect having
+a pet increases life satisfaction with approximately 2.2 scale points
+for participants who get a pet. We plan to collect data from 200
+participants in total, with 100 participants in each condition. We
+examine the statistical power our design would have to detect the
+differences we predict.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">design</span> <span class="op">&lt;-</span> <span class="st">"2b"</span>
 <span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">100</span>
-<span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span>
+<span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span>
 <span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">6.4</span>
-<span class="va">label_list</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span> <span class="co">#</span>
+<span class="va">label_list</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span> <span class="co">#</span>
 
 <span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,
                               n <span class="op">=</span> <span class="va">n</span>,
@@ -499,7 +733,7 @@
                                   seed <span class="op">=</span> <span class="fl">1234</span><span class="op">)</span>
 <span class="co">#Note we do not specify any correlation in the ANOVA_design function (default r = 0), nor do we specify an alpha in the ANOVA_power function (default is 0.05)</span>
 
-<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">power_result_vig_2</span>, level <span class="op">=</span> <span class="fl">.98</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">power_result_vig_2</span>, level <span class="op">=</span> <span class="fl">.98</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left"></th>
@@ -514,134 +748,226 @@
 <td align="right">74.22211</td>
 </tr></tbody>
 </table>
-<p>The result shows that we have exactly the same power for the ANOVA, as we have for the <em>t</em>-test. This is because when there are only two groups, these tests are mathematically identical. In a study with 100 participants per condition, we would have quite low power (around 67.7%). An ANOVA with 2 groups is identical to a <em>t</em>-test. For our example, Cohen’s d (the standardized mean difference) is 2.2/6.4, or d = 0.34375 for the difference between the control condition and having pets, which we can use to easily compute the expected power for these simple comparisons using the pwr package.</p>
+<p>The result shows that we have exactly the same power for the ANOVA,
+as we have for the <em>t</em>-test. This is because when there are only
+two groups, these tests are mathematically identical. In a study with
+100 participants per condition, we would have quite low power (around
+67.7%). An ANOVA with 2 groups is identical to a <em>t</em>-test. For
+our example, Cohen’s d (the standardized mean difference) is 2.2/6.4, or
+d = 0.34375 for the difference between the control condition and having
+pets, which we can use to easily compute the expected power for these
+simple comparisons using the pwr package.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/heliosdrm/pwr">pwr</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html">pwr.t.test</a></span><span class="op">(</span>d <span class="op">=</span> <span class="fl">2.2</span><span class="op">/</span><span class="fl">6.4</span>,
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/heliosdrm/pwr" class="external-link">pwr</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html" class="external-link">pwr.t.test</a></span><span class="op">(</span>d <span class="op">=</span> <span class="fl">2.2</span><span class="op">/</span><span class="fl">6.4</span>,
            n <span class="op">=</span> <span class="fl">100</span>,
            sig.level <span class="op">=</span> <span class="fl">0.05</span>,
            type <span class="op">=</span> <span class="st">"two.sample"</span>,
            alternative <span class="op">=</span> <span class="st">"two.sided"</span><span class="op">)</span><span class="op">$</span><span class="va">power</span></code></pre></div>
-<pre><code>## [1] 0.6768572</code></pre>
-<p>We can also directly compute Cohen’s f from Cohen’s d for two groups, as Cohen (1988) describes, because f = <span class="math inline">\(\frac{1}{2}d\)</span>. So f = 0.5*0.34375 = 0.171875. And indeed, power analysis using the pwr package yields the same result using the pwr.anova.test as the power.t.test.</p>
+<pre><code><span class="co">## [1] 0.6768572</span></code></pre>
+<p>We can also directly compute Cohen’s f from Cohen’s d for two groups,
+as Cohen (1988) describes, because f = <span class="math inline">\(\frac{1}{2}d\)</span>. So f = 0.5*0.34375 =
+0.171875. And indeed, power analysis using the pwr package yields the
+same result using the pwr.anova.test as the power.t.test.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.anova.test.html">pwr.anova.test</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span>,
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.anova.test.html" class="external-link">pwr.anova.test</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span>,
                k <span class="op">=</span> <span class="fl">2</span>,
                f <span class="op">=</span> <span class="fl">0.171875</span>,
                sig.level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span><span class="op">$</span><span class="va">power</span></code></pre></div>
-<pre><code>## [1] 0.6768572</code></pre>
-<p>This analysis tells us that running the study with 100 participants in each condition is quite likely to <em>not</em> yield a significant test result, even if our expected pattern of differences is true. This is clearly not optimal. If we perform a study, we would like to get informative results - which means we should be likely to detect effect we expect or care about, if these effects exist, and not find effects, if they are absent.</p>
-<p>How many participants do we need for sufficient power? Given the expected difference and standard deviation, d = 0.34375, and f = 0.171875, we can increase the number of participants and run the simulation until we are content. The desired power depends on the cost of a Type 2 error. Cohen recommended to aim for 80% power, or a Type 2 error rate of 20%. I personally find a 20% Type 2 error rate too high, and not balanced enough compared to a much stricter Type 1 error rate (often by default 5%, although you should justify your alpha, for example by <a href="http://daniellakens.blogspot.com/2018/12/testing-whether-observed-data-should.html">reducing it as a function of the sample size</a>, or by <a href="http://daniellakens.blogspot.com/2019/05/justifying-your-alpha-by-minimizing-or.html">balancing error rates</a>). Let’s say we want to aim for 90% power.</p>
-<p>Especially when you are increasing the sample size in your design to figure out how many participants you would need, it is much more efficient to use the <code>ANOVA_exact</code> function. You can see in the code below that we slowly increase the sample size and find that 180 participants give a bit more than 90% power.</p>
+<pre><code><span class="co">## [1] 0.6768572</span></code></pre>
+<p>This analysis tells us that running the study with 100 participants
+in each condition is quite likely to <em>not</em> yield a significant
+test result, even if our expected pattern of differences is true. This
+is clearly not optimal. If we perform a study, we would like to get
+informative results - which means we should be likely to detect effect
+we expect or care about, if these effects exist, and not find effects,
+if they are absent.</p>
+<p>How many participants do we need for sufficient power? Given the
+expected difference and standard deviation, d = 0.34375, and f =
+0.171875, we can increase the number of participants and run the
+simulation until we are content. The desired power depends on the cost
+of a Type 2 error. Cohen recommended to aim for 80% power, or a Type 2
+error rate of 20%. I personally find a 20% Type 2 error rate too high,
+and not balanced enough compared to a much stricter Type 1 error rate
+(often by default 5%, although you should justify your alpha, for
+example by <a href="http://daniellakens.blogspot.com/2018/12/testing-whether-observed-data-should.html" class="external-link">reducing
+it as a function of the sample size</a>, or by <a href="http://daniellakens.blogspot.com/2019/05/justifying-your-alpha-by-minimizing-or.html" class="external-link">balancing
+error rates</a>). Let’s say we want to aim for 90% power.</p>
+<p>Especially when you are increasing the sample size in your design to
+figure out how many participants you would need, it is much more
+efficient to use the <code>ANOVA_exact</code> function. You can see in
+the code below that we slowly increase the sample size and find that 180
+participants give a bit more than 90% power.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b"</span>,
                    n <span class="op">=</span> <span class="fl">100</span>, 
-                   mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span>, 
+                   mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span>, 
                    sd <span class="op">=</span> <span class="fl">6.4</span>, 
-                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span>,
+                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span>,
                    plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="intro_to_superpower_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact</a></span><span class="op">(</span><span class="va">design_result</span>,
             verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span><span class="va">main_results</span><span class="op">$</span><span class="va">power</span></code></pre></div>
-<pre><code>## [1] 67.68572</code></pre>
+<pre><code><span class="co">## [1] 67.68572</span></code></pre>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># power of 67.7 is a bit low. Let's increase it a bit to n = 150 to see if we are closer to our goal of 90% power.</span>
 
 <span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b"</span>,
                    n <span class="op">=</span> <span class="fl">150</span>, 
-                   mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span>, 
+                   mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span>, 
                    sd <span class="op">=</span> <span class="fl">6.4</span>, 
-                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span>,
+                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span>,
                    plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact</a></span><span class="op">(</span><span class="va">design_result</span>,
             verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span><span class="va">main_results</span><span class="op">$</span><span class="va">power</span></code></pre></div>
-<pre><code>## [1] 84.3127</code></pre>
+<pre><code><span class="co">## [1] 84.3127</span></code></pre>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Close, but not there yet. Let's try n = 175 </span>
 
 <span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b"</span>,
                    n <span class="op">=</span> <span class="fl">175</span>, 
-                   mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span>, 
+                   mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span>, 
                    sd <span class="op">=</span> <span class="fl">6.4</span>, 
-                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span>,
+                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span>,
                    plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact</a></span><span class="op">(</span><span class="va">design_result</span>,
             verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span><span class="va">main_results</span><span class="op">$</span><span class="va">power</span></code></pre></div>
-<pre><code>## [1] 89.37347</code></pre>
+<pre><code><span class="co">## [1] 89.37347</span></code></pre>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co">#Very close. Let's add a few more and try n = 180</span>
 
 <span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b"</span>,
                    n <span class="op">=</span> <span class="fl">180</span>, 
-                   mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span>, 
+                   mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span>, 
                    sd <span class="op">=</span> <span class="fl">6.4</span>, 
-                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span>,
+                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span>,
                    plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact</a></span><span class="op">(</span><span class="va">design_result</span>,
             verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span><span class="va">main_results</span><span class="op">$</span><span class="va">power</span></code></pre></div>
-<pre><code>## [1] 90.18863</code></pre>
+<pre><code><span class="co">## [1] 90.18863</span></code></pre>
 </div>
 </div>
-<div id="plotting-power" class="section level1">
-<h1 class="hasAnchor">
-<a href="#plotting-power" class="anchor"></a>Plotting Power</h1>
-<div id="the-plot_power-function" class="section level2">
-<h2 class="hasAnchor">
-<a href="#the-plot_power-function" class="anchor"></a>The plot_power function</h2>
-<p>Simulation based power analyses require you to increase to sample size until power is high enough to reach your desired Type 2 error rate. To facilitate this trial and error process you can use the <code>plot_power</code> function to plot the power across a range of sample sizes to produce a power curve.</p>
-<p>plot_power requires the following input: ANOVA_design, max_n, and plot.</p>
+<div class="section level2">
+<h2 id="plotting-power">Plotting Power<a class="anchor" aria-label="anchor" href="#plotting-power"></a>
+</h2>
+<div class="section level3">
+<h3 id="the-plot_power-function">The plot_power function<a class="anchor" aria-label="anchor" href="#the-plot_power-function"></a>
+</h3>
+<p>Simulation based power analyses require you to increase to sample
+size until power is high enough to reach your desired Type 2 error rate.
+To facilitate this trial and error process you can use the
+<code>plot_power</code> function to plot the power across a range of
+sample sizes to produce a power curve.</p>
+<p>plot_power requires the following input: ANOVA_design, max_n, and
+plot.</p>
 <ol style="list-style-type: decimal">
 <li>
-<code>design_result</code>: Output from the ANOVA_design function saved as an object</li>
+<code>design_result</code>: Output from the ANOVA_design function
+saved as an object</li>
 <li>
-<code>min_n</code>: The minimum sample size you want to plot in the power curve</li>
+<code>min_n</code>: The minimum sample size you want to plot in the
+power curve</li>
 <li>
-<code>max_n</code>: The maximum sample size you want to plot in the power curve</li>
+<code>max_n</code>: The maximum sample size you want to plot in the
+power curve</li>
 <li>
-<code>plot</code>: Set to FALSE to not print the plot (default = <code>TRUE</code>)</li>
+<code>plot</code>: Set to FALSE to not print the plot (default =
+<code>TRUE</code>)</li>
 </ol>
 <p>With the following optional input:</p>
 <ol style="list-style-type: decimal">
 <li>
-<code>emm</code>: tell the function to run emmeans or not; default is set to <code>FALSE</code>.</li>
+<code>emm</code>: tell the function to run emmeans or not; default
+is set to <code>FALSE</code>.</li>
 <li>
-<code>contrast_type</code>: This input will determine the contrast type for the emmeans comparisons. The default is “pairwise”. Possible input is limited to “pairwise”, “revpairwise”, “eff”, “consec”, “poly”, “del.eff”, “trt.vs.ctrl”, “trt.vs.ctrl1”, “trt.vs.ctrlk”, and “mean_chg”. See help(“contrast-methods”) with the <code>emmeans</code> package loaded for more information.</li>
+<code>contrast_type</code>: This input will determine the contrast
+type for the emmeans comparisons. The default is “pairwise”. Possible
+input is limited to “pairwise”, “revpairwise”, “eff”, “consec”, “poly”,
+“del.eff”, “trt.vs.ctrl”, “trt.vs.ctrl1”, “trt.vs.ctrlk”, and
+“mean_chg”. See help(“contrast-methods”) with the <code>emmeans</code>
+package loaded for more information.</li>
 <li>
-<code>emm_model</code>: emmeans accepts univariate and multivariate models. This will only make a difference if a within-subjects factor is included in the design. Setting this option to “multivariate” will result in the “multivariate” model being selected for the emmeans comparisons. <em>This is generally recommended if you are interested in the estimated marginal means</em>.</li>
+<code>emm_model</code>: emmeans accepts univariate and multivariate
+models. This will only make a difference if a within-subjects factor is
+included in the design. Setting this option to “multivariate” will
+result in the “multivariate” model being selected for the emmeans
+comparisons. <em>This is generally recommended if you are interested in
+the estimated marginal means</em>.</li>
 <li>
-<code>emm_comp</code>: This selects the factors to be included for the emmeans. The default is to take the <code>frml2</code> object from the results of <code>ANOVA_design</code>, and with the default <code>contrast_type = "pairwise"</code>, results in <em>all</em> the pairwise comparisons being performed. The simple effects can also be performed by including | in the emm_comp formula. For example, with two factors (e.g., a and b) <code>emm_comp = "a+b"</code> results in all pairwise comparisons being performed while <code>emm_comp = "a|b"</code> will result in pairwise comparisons across all levels of a <strong>within</strong> each level of b.</li>
+<code>emm_comp</code>: This selects the factors to be included for
+the emmeans. The default is to take the <code>frml2</code> object from
+the results of <code>ANOVA_design</code>, and with the default
+<code>contrast_type = "pairwise"</code>, results in <em>all</em> the
+pairwise comparisons being performed. The simple effects can also be
+performed by including | in the emm_comp formula. For example, with two
+factors (e.g., a and b) <code>emm_comp = "a+b"</code> results in all
+pairwise comparisons being performed while <code>emm_comp = "a|b"</code>
+will result in pairwise comparisons across all levels of a
+<strong>within</strong> each level of b.</li>
 </ol>
-<p>The <code>plot_power</code> functions simulates power up to a sample size of <code>max_n</code> using the <code>ANOVA_exact</code> function. Although it is relatively fast, with large sample size to can take some time to produce. In the figure below we can easily see that, assuming the true pattern of means and standard deviations represents our expected pattern of means and standard deviations, we have 80% power around 135 participants per condition, 90% power around 180 participants per condition, and 95% power around 225 participants per condition.</p>
+<p>The <code>plot_power</code> functions simulates power up to a sample
+size of <code>max_n</code> using the <code>ANOVA_exact</code> function.
+Although it is relatively fast, with large sample size to can take some
+time to produce. In the figure below we can easily see that, assuming
+the true pattern of means and standard deviations represents our
+expected pattern of means and standard deviations, we have 80% power
+around 135 participants per condition, 90% power around 180 participants
+per condition, and 95% power around 225 participants per condition.</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/plot_power.html">plot_power</a></span><span class="op">(</span><span class="va">design_result</span>, min_n <span class="op">=</span> <span class="fl">10</span>, max_n <span class="op">=</span> <span class="fl">250</span><span class="op">)</span></code></pre></div>
 <p><img src="intro_to_superpower_files/figure-html/unnamed-chunk-16-1.png" width="672"></p>
-<p>Because the true pattern of means is always unknown, it is sensible to examine the power across a range of scenarios.</p>
-<p>As these different plots can make clear, your study never really has a known statistical power. Because the true effect size (i.e., the pattern of means and standard deviations) is unknown, the true power of your study is unknown. A study has 90% power <em>assuming a specific effect size</em>, but if the effect size is different than what you expected, the true power can be either higher or lower. We should therefore always talk about the ‘expected’ power when we do an a-priori power analysis, and provide a good justification for our expectations (i.e., for the pattern of means, standard deviations, and correlations for within designs).</p>
+<p>Because the true pattern of means is always unknown, it is sensible
+to examine the power across a range of scenarios.</p>
+<p>As these different plots can make clear, your study never really has
+a known statistical power. Because the true effect size (i.e., the
+pattern of means and standard deviations) is unknown, the true power of
+your study is unknown. A study has 90% power <em>assuming a specific
+effect size</em>, but if the effect size is different than what you
+expected, the true power can be either higher or lower. We should
+therefore always talk about the ‘expected’ power when we do an a-priori
+power analysis, and provide a good justification for our expectations
+(i.e., for the pattern of means, standard deviations, and correlations
+for within designs).</p>
 </div>
-<div id="power-sensitivity-relationship-morey-plots" class="section level2">
-<h2 class="hasAnchor">
-<a href="#power-sensitivity-relationship-morey-plots" class="anchor"></a>Power-Sensitivity Relationship: Morey Plots</h2>
-<p>There is a direct relationship between standardized effect sizes and statistical power. Sometimes it may be useful to see the relationship between the effect size and power. That is where the <code>morey_plot</code> functions come in handy. In essence, you can plot statistical power (y-axis) as a function of effect size (x-axis; Cohen’s <em>f</em> or Cohen’s <em>d</em>). In addition, multiple sample sizes (facets) and alpha levels (color). For a <em>t</em>-test, the type of test (paired, one-sample, or two-sample) and alternative hypothesis (one.sided or two.sided) can be provided.</p>
+<div class="section level3">
+<h3 id="power-sensitivity-relationship-morey-plots">Power-Sensitivity Relationship: Morey Plots<a class="anchor" aria-label="anchor" href="#power-sensitivity-relationship-morey-plots"></a>
+</h3>
+<p>There is a direct relationship between standardized effect sizes and
+statistical power. Sometimes it may be useful to see the relationship
+between the effect size and power. That is where the
+<code>morey_plot</code> functions come in handy. In essence, you can
+plot statistical power (y-axis) as a function of effect size (x-axis;
+Cohen’s <em>f</em> or Cohen’s <em>d</em>). In addition, multiple sample
+sizes (facets) and alpha levels (color). For a <em>t</em>-test, the type
+of test (paired, one-sample, or two-sample) and alternative hypothesis
+(one.sided or two.sided) can be provided.</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/morey_plot.ttest.html">morey_plot.ttest</a></span><span class="op">(</span>
-  es <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">.1</span>, <span class="fl">.5</span>, <span class="fl">.01</span><span class="op">)</span>,
-  n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span>,
-  alpha_level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.05</span>, <span class="fl">.075</span><span class="op">)</span>,
+<code class="sourceCode R"><span class="fu"><a href="../reference/morey_plot.html">morey_plot.ttest</a></span><span class="op">(</span>
+  es <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">.1</span>, <span class="fl">.5</span>, <span class="fl">.01</span><span class="op">)</span>,
+  n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span>,
+  alpha_level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.05</span>, <span class="fl">.075</span><span class="op">)</span>,
   type <span class="op">=</span> <span class="st">"paired"</span>,
   alternative <span class="op">=</span> <span class="st">"one.sided"</span>
 <span class="op">)</span></code></pre></div>
 <p><img src="intro_to_superpower_files/figure-html/morey1-1.png" width="672"></p>
-<p>For the <em>F</em>-test, the options are a little different. First, instead of sample size, the numerator and denominator degrees of freedom must be provided (multiple values can be provided for either or both). Second, the effect size is now in the form of Cohen’s <em>f</em>. Third, there is no type or alternative argument. Lastly, there is the option to set the non-centrality argument to a “liberal” lambda; this has a minuscule effect on power but I suggest that the liberal_lambda argument be set to FALSE.</p>
+<p>For the <em>F</em>-test, the options are a little different. First,
+instead of sample size, the numerator and denominator degrees of freedom
+must be provided (multiple values can be provided for either or both).
+Second, the effect size is now in the form of Cohen’s <em>f</em>. Third,
+there is no type or alternative argument. Lastly, there is the option to
+set the non-centrality argument to a “liberal” lambda; this has a
+minuscule effect on power but I suggest that the liberal_lambda argument
+be set to FALSE.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/morey_plot.ttest.html">morey_plot.ftest</a></span><span class="op">(</span>
-  es <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">.1</span>, <span class="fl">.5</span>, <span class="fl">.01</span><span class="op">)</span>,
-  num_df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,
-  den_df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">20</span>,<span class="fl">30</span><span class="op">)</span>,
-  alpha_level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">.05</span>, <span class="fl">.075</span><span class="op">)</span>,
+<code class="sourceCode R"><span class="fu"><a href="../reference/morey_plot.html">morey_plot.ftest</a></span><span class="op">(</span>
+  es <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">.1</span>, <span class="fl">.5</span>, <span class="fl">.01</span><span class="op">)</span>,
+  num_df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,
+  den_df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>,<span class="fl">30</span><span class="op">)</span>,
+  alpha_level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.05</span>, <span class="fl">.075</span><span class="op">)</span>,
   liberal_lambda <span class="op">=</span> <span class="cn">FALSE</span>
 <span class="op">)</span></code></pre></div>
 <p><img src="intro_to_superpower_files/figure-html/morey2-1.png" width="672"></p>
@@ -660,11 +986,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Aaron Caldwell, Daniel Lakens.</p>
+  <p></p>
+<p>Developed by Aaron Caldwell, Daniel Lakens.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>
@@ -672,6 +1000,8 @@
 
   
 
+
+  
 
   </body>
 </html>

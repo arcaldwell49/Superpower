@@ -1,14 +1,12 @@
 # Superpower 
 
-<img src="Sticker/Superpower2.PNG" title="plot of chunk hex" alt="plot of chunk hex" width="17%" />
-<img src="Sticker/authors.png" title="plot of chunk authors" alt="plot of chunk authors" width="25%" />
-
-<!-- rmarkdown v1 -->
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+<img src="man/figures/Superpower2.PNG" title="plot of chunk hex" alt="plot of chunk hex" width="17%" />
+<img src="man/figures/authors.png" title="plot of chunk authors" alt="plot of chunk authors" width="25%" />
 
 <!-- badges: start -->
-[![Build Status](https://travis-ci.com/arcaldwell49/superpower.svg?branch=master)](https://travis-ci.com/arcaldwell49/superpower)
-[![codecov](https://codecov.io/gh/arcaldwell49/Superpower/branch/master/graph/badge.svg)](https://codecov.io/gh/arcaldwell49/Superpower)
+  [![R build status](https://github.com/arcaldwell49/Superpower/workflows/R-CMD-check/badge.svg)](https://github.com/arcaldwell49/Superpower/actions)
+[![CRAN status](https://www.r-pkg.org/badges/version/Superpower)](https://CRAN.R-project.org/package=Superpower)
+[![codecov](https://codecov.io/gh/arcaldwell49/Superpower/branch/master/graph/badge.svg)](https://app.codecov.io/gh/arcaldwell49/Superpower)
 [![](https://img.shields.io/badge/doi-10.31234/osf.io/baxsf-yellow.svg)](https://doi.org/10.31234/osf.io/baxsf)
 <!-- badges: end -->
 
@@ -31,6 +29,29 @@ Or you can install the stable version of Superpower from [CRAN](https://CRAN.R-p
 install.packages("Superpower")
 ```
 
+## Citation
+
+If you use `Superpower`, please consider citing the following:
+
+Lakens, D., & Caldwell, A. R. (2021). Simulation-Based Power Analysis for Factorial Analysis of
+  Variance Designs. *Advances in Methods and Practices in Psychological Science*, 4(1),
+  251524592095150. https://doi.org/10.1177/2515245920951503
+
+```
+A BibTeX entry for LaTeX users is
+
+  @Article{,
+    doi = {10.1177/2515245920951503},
+    url = {https://doi.org/10.1177/2515245920951503},
+    year = {2021},
+    volume = {4},
+    number = {1},
+    pages = {251524592095150},
+    author = {Daniel Lakens and Aaron Caldwell},
+    title = {Simulation-Based Power Analysis for Factorial Analysis of Variance Designs},
+    journal = {Advances in Methods and Practices in Psychological Science},
+  }
+```
 
 ## Other Simulation & Power Analysis Packages
 

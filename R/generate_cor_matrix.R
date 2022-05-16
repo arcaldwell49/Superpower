@@ -12,7 +12,7 @@ generate_cor_matrix  <- function(vars = 3, cors = 0, mu = 0, sd = 1) {
   }
   
   # correlation matrix
-  if (class(cors) == "numeric" & length(cors) == 1) {
+  if (inherits(cors, "numeric") & length(cors) == 1) {
     if (cors >=-1 & cors <=1) {
       cors = rep(cors, vars*(vars-1)/2)
     } else {
@@ -20,7 +20,7 @@ generate_cor_matrix  <- function(vars = 3, cors = 0, mu = 0, sd = 1) {
     }
   }
   
-  if (class(cors) == "matrix") {
+  if (inherits(cors,  "matrix")) {
     if (!is.numeric(cors)) {
       stop("cors matrix not numeric")
     } else if (dim(cors)[1] != vars || dim(cors)[2] != vars) {

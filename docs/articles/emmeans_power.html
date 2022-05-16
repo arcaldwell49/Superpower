@@ -19,6 +19,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -31,23 +33,17 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Superpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -76,7 +72,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/arcaldwell49/Superpower/">
+  <a href="https://github.com/arcaldwell49/Superpower/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -91,15 +87,17 @@
 
       
 
-      </header><script src="emmeans_power_files/header-attrs-2.11/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Power calculations for <code>emmeans</code> analyses</h1>
-                        <h4 class="author">Frederik Aust</h4>
+      <h1 data-toc-skip>Power calculations for <code>emmeans</code>
+analyses</h1>
+                        <h4 data-toc-skip class="author">Frederik
+Aust</h4>
             
-            <h4 class="date">13 December, 2021</h4>
+            <h4 data-toc-skip class="date">16 May, 2022</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/arcaldwell49/Superpower/blob/master/vignettes/emmeans_power.Rmd"><code>vignettes/emmeans_power.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/arcaldwell49/Superpower/blob/HEAD/vignettes/emmeans_power.Rmd" class="external-link"><code>vignettes/emmeans_power.Rmd</code></a></small>
       <div class="hidden name"><code>emmeans_power.Rmd</code></div>
 
     </div>
@@ -107,28 +105,47 @@
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://aaroncaldwell.us/SuperpowerBook/">"Superpower"</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/rvlenth/emmeans">"emmeans"</a></span><span class="op">)</span></code></pre></div>
-<p>When conducting exact ANOVA power analyses with <code>Superpower</code> it is possible to calculate the power for both the omnibus <span class="math inline">\(F\)</span>-tests and planned contrasts or post-hoc comparisons. It is possible to use this approach to calculate power for standard contrasts, such as pairwise contrasts between cells. Here I provide a brief overview of how the output of <code><a href="../reference/ANOVA_exact.html">ANOVA_exact()</a></code> can be used to perform power analyses for tailored planned contrasts and follow-up tests.</p>
-<div id="a-note-of-caution" class="section level1">
-<h1 class="hasAnchor">
-<a href="#a-note-of-caution" class="anchor"></a>A note of caution</h1>
-<p>All power analyses for <code>emmeans</code>-objects are based on the <span class="math inline">\(F\)</span>- and <span class="math inline">\(t\)</span>-values from the analyses of the dataset simulated by <code><a href="../reference/ANOVA_exact.html">ANOVA_exact()</a></code> assuming two-sided testing. Thus, the <code><a href="../reference/emmeans_power.html">emmeans_power()</a></code> does not honor adjustments of the testing procedure due to either one-sided testing (including two one-sided tests) or corrections for multiple comparisons via the <code>adjust</code> option in <code>emmeans</code>. As noted below, for the Bonferroni-adjustment this limitation can be overcome by manually adjusting <code>alpha_level</code>.</p>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://aaroncaldwell.us/SuperpowerBook/" class="external-link">"Superpower"</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/rvlenth/emmeans" class="external-link">"emmeans"</a></span><span class="op">)</span></code></pre></div>
+<p>When conducting exact ANOVA power analyses with
+<code>Superpower</code> it is possible to calculate the power for both
+the omnibus <span class="math inline">\(F\)</span>-tests and planned
+contrasts or post-hoc comparisons. It is possible to use this approach
+to calculate power for standard contrasts, such as pairwise contrasts
+between cells. Here I provide a brief overview of how the output of
+<code><a href="../reference/ANOVA_exact.html">ANOVA_exact()</a></code> can be used to perform power analyses for
+tailored planned contrasts and follow-up tests.</p>
+<div class="section level2">
+<h2 id="a-note-of-caution">A note of caution<a class="anchor" aria-label="anchor" href="#a-note-of-caution"></a>
+</h2>
+<p>All power analyses for <code>emmeans</code>-objects are based on the
+<span class="math inline">\(F\)</span>- and <span class="math inline">\(t\)</span>-values from the analyses of the dataset
+simulated by <code><a href="../reference/ANOVA_exact.html">ANOVA_exact()</a></code> assuming two-sided testing.
+Thus, the <code><a href="../reference/emmeans_power.html">emmeans_power()</a></code> does not honor adjustments of the
+testing procedure due to either one-sided testing (including two
+one-sided tests) or corrections for multiple comparisons via the
+<code>adjust</code> option in <code>emmeans</code>. As noted below, for
+the Bonferroni-adjustment this limitation can be overcome by manually
+adjusting <code>alpha_level</code>.</p>
 </div>
-<div id="post-hoc-pairwise-comparisons" class="section level1">
-<h1 class="hasAnchor">
-<a href="#post-hoc-pairwise-comparisons" class="anchor"></a>Post hoc pairwise comparisons</h1>
-<p>First, we will set up a 2 <span class="math inline">\(\times\)</span> 3 repeated measures design. When calling <code><a href="../reference/ANOVA_exact.html">ANOVA_exact()</a></code> pairwise comparisons of expected marginal means are added by setting <code>emm = TRUE</code> and <code>contrast_type = "pairwise"</code> (default).</p>
+<div class="section level2">
+<h2 id="post-hoc-pairwise-comparisons">Post hoc pairwise comparisons<a class="anchor" aria-label="anchor" href="#post-hoc-pairwise-comparisons"></a>
+</h2>
+<p>First, we will set up a 2 <span class="math inline">\(\times\)</span>
+3 repeated measures design. When calling <code><a href="../reference/ANOVA_exact.html">ANOVA_exact()</a></code>
+pairwise comparisons of expected marginal means are added by setting
+<code>emm = TRUE</code> and <code>contrast_type = "pairwise"</code>
+(default).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Set up a within design with 2 factors, each with 2 and 3 levels</span>
 <span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>
   design <span class="op">=</span> <span class="st">"2w*3w"</span>,
   n <span class="op">=</span> <span class="fl">40</span>,
-  mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="fl">0</span>, <span class="fl">0.5</span>, <span class="fl">0.3</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,
+  mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="fl">0</span>, <span class="fl">0.5</span>, <span class="fl">0.3</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>,
   sd <span class="op">=</span> <span class="fl">2</span>,
   r <span class="op">=</span> <span class="fl">0.8</span>, 
-  label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"cheerful"</span>, <span class="st">"sad"</span><span class="op">)</span>,  
-                    <span class="st">"voice"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"human"</span>, <span class="st">"robot"</span>, <span class="st">"cartoon"</span><span class="op">)</span><span class="op">)</span>
+  label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cheerful"</span>, <span class="st">"sad"</span><span class="op">)</span>,  
+                    <span class="st">"voice"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"human"</span>, <span class="st">"robot"</span>, <span class="st">"cartoon"</span><span class="op">)</span><span class="op">)</span>
 <span class="op">)</span></code></pre></div>
 <p><img src="emmeans_power_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -139,38 +156,56 @@
   emm <span class="op">=</span> <span class="cn">TRUE</span>,
   contrast_type <span class="op">=</span> <span class="st">"pairwise"</span>
 <span class="op">)</span></code></pre></div>
-<p>The result contains the power calculations for both the omnibus <span class="math inline">\(F\)</span>-tests and pairwise post-hoc comparisons.</p>
+<p>The result contains the power calculations for both the omnibus <span class="math inline">\(F\)</span>-tests and pairwise post-hoc
+comparisons.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">exact_result</span><span class="op">$</span><span class="va">main_results</span></code></pre></div>
-<pre><code>#&gt;                    power partial_eta_squared   cohen_f non_centrality
-#&gt; condition       29.08380          0.05070994 0.2311251       2.083333
-#&gt; voice           50.12584          0.06212425 0.2573700       5.166667
-#&gt; condition:voice 41.62968          0.05070994 0.2311251       4.166667</code></pre>
+<pre><code><span class="co">#&gt;                    power partial_eta_squared   cohen_f non_centrality</span>
+<span class="co">#&gt; condition       29.08380          0.05070994 0.2311251       2.083333</span>
+<span class="co">#&gt; voice           50.12584          0.06212425 0.2573700       5.166667</span>
+<span class="co">#&gt; condition:voice 41.62968          0.05070994 0.2311251       4.166667</span></code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">exact_result</span><span class="op">$</span><span class="va">emm_results</span><span class="op">)</span></code></pre></div>
-<pre><code>#&gt;                                                            contrast    power
-#&gt; 1    condition_cheerful voice_cartoon - condition_sad voice_cartoon 68.37160
-#&gt; 2 condition_cheerful voice_cartoon - condition_cheerful voice_human 16.41134
-#&gt; 3      condition_cheerful voice_cartoon - condition_sad voice_human 16.41134
-#&gt; 4 condition_cheerful voice_cartoon - condition_cheerful voice_robot 68.37160
-#&gt; 5      condition_cheerful voice_cartoon - condition_sad voice_robot 68.37160
-#&gt; 6      condition_sad voice_cartoon - condition_cheerful voice_human 30.99652
-#&gt;   partial_eta_squared   cohen_f non_centrality
-#&gt; 1          0.13812155 0.4003204           6.25
-#&gt; 2          0.02500000 0.1601282           1.00
-#&gt; 3          0.02500000 0.1601282           1.00
-#&gt; 4          0.13812155 0.4003204           6.25
-#&gt; 5          0.13812155 0.4003204           6.25
-#&gt; 6          0.05454545 0.2401922           2.25</code></pre>
-<p>The output also contains the <code>emmeans</code>-object on which these power calculations are based. By manipulating this object it is possible to tailor the power analyses to the contrasts desired for the planned study. That is, based on the dataset simulated with <code><a href="../reference/ANOVA_exact.html">ANOVA_exact()</a></code> we can write out the analysis code for <code>emmeans</code>-contrasts, just as we would if we were to analyze the empirical data, and use the output to perform the corresponding power analysis.</p>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">exact_result</span><span class="op">$</span><span class="va">emm_results</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">#&gt;                                                            contrast    power</span>
+<span class="co">#&gt; 1    condition_cheerful voice_cartoon - condition_sad voice_cartoon 68.37160</span>
+<span class="co">#&gt; 2 condition_cheerful voice_cartoon - condition_cheerful voice_human 16.41134</span>
+<span class="co">#&gt; 3      condition_cheerful voice_cartoon - condition_sad voice_human 16.41134</span>
+<span class="co">#&gt; 4 condition_cheerful voice_cartoon - condition_cheerful voice_robot 68.37160</span>
+<span class="co">#&gt; 5      condition_cheerful voice_cartoon - condition_sad voice_robot 68.37160</span>
+<span class="co">#&gt; 6      condition_sad voice_cartoon - condition_cheerful voice_human 30.99652</span>
+<span class="co">#&gt;   partial_eta_squared   cohen_f non_centrality</span>
+<span class="co">#&gt; 1          0.13812155 0.4003204           6.25</span>
+<span class="co">#&gt; 2          0.02500000 0.1601282           1.00</span>
+<span class="co">#&gt; 3          0.02500000 0.1601282           1.00</span>
+<span class="co">#&gt; 4          0.13812155 0.4003204           6.25</span>
+<span class="co">#&gt; 5          0.13812155 0.4003204           6.25</span>
+<span class="co">#&gt; 6          0.05454545 0.2401922           2.25</span></code></pre>
+<p>The output also contains the <code>emmeans</code>-object on which
+these power calculations are based. By manipulating this object it is
+possible to tailor the power analyses to the contrasts desired for the
+planned study. That is, based on the dataset simulated with
+<code><a href="../reference/ANOVA_exact.html">ANOVA_exact()</a></code> we can write out the analysis code for
+<code>emmeans</code>-contrasts, just as we would if we were to analyze
+the empirical data, and use the output to perform the corresponding
+power analysis.</p>
 </div>
-<div id="customized-emmeans-contrasts" class="section level1">
-<h1 class="hasAnchor">
-<a href="#customized-emmeans-contrasts" class="anchor"></a>Customized <code>emmeans</code> contrasts</h1>
-<p>The <code>emmeans</code> reference grid and contrasts are included in the output of <code><a href="../reference/ANOVA_exact.html">ANOVA_exact()</a></code>.</p>
+<div class="section level2">
+<h2 id="customized-emmeans-contrasts">Customized <code>emmeans</code> contrasts<a class="anchor" aria-label="anchor" href="#customized-emmeans-contrasts"></a>
+</h2>
+<p>The <code>emmeans</code> reference grid and contrasts are included in
+the output of <code><a href="../reference/ANOVA_exact.html">ANOVA_exact()</a></code>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">exact_result</span><span class="op">$</span><span class="va">emmeans</span><span class="op">$</span><span class="va">emmeans</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">exact_result</span><span class="op">$</span><span class="va">emmeans</span><span class="op">$</span><span class="va">emmeans</span><span class="op">)</span></code></pre></div>
 <table class="table">
+<colgroup>
+<col width="26%">
+<col width="19%">
+<col width="9%">
+<col width="13%">
+<col width="4%">
+<col width="13%">
+<col width="12%">
+</colgroup>
 <thead><tr class="header">
 <th align="left">condition</th>
 <th align="left">voice</th>
@@ -238,7 +273,7 @@
 </tbody>
 </table>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">exact_result</span><span class="op">$</span><span class="va">emmeans</span><span class="op">$</span><span class="va">contrasts</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">exact_result</span><span class="op">$</span><span class="va">emmeans</span><span class="op">$</span><span class="va">contrasts</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="66%">
@@ -258,7 +293,8 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left">condition_cheerful voice_cartoon - condition_sad voice_cartoon</td>
+<td align="left">condition_cheerful voice_cartoon - condition_sad
+voice_cartoon</td>
 <td align="right">0.5</td>
 <td align="right">0.2</td>
 <td align="right">39</td>
@@ -266,7 +302,8 @@
 <td align="right">0.0167338</td>
 </tr>
 <tr class="even">
-<td align="left">condition_cheerful voice_cartoon - condition_cheerful voice_human</td>
+<td align="left">condition_cheerful voice_cartoon - condition_cheerful
+voice_human</td>
 <td align="right">0.2</td>
 <td align="right">0.2</td>
 <td align="right">39</td>
@@ -274,7 +311,8 @@
 <td align="right">0.3234749</td>
 </tr>
 <tr class="odd">
-<td align="left">condition_cheerful voice_cartoon - condition_sad voice_human</td>
+<td align="left">condition_cheerful voice_cartoon - condition_sad
+voice_human</td>
 <td align="right">0.2</td>
 <td align="right">0.2</td>
 <td align="right">39</td>
@@ -282,7 +320,8 @@
 <td align="right">0.3234749</td>
 </tr>
 <tr class="even">
-<td align="left">condition_cheerful voice_cartoon - condition_cheerful voice_robot</td>
+<td align="left">condition_cheerful voice_cartoon - condition_cheerful
+voice_robot</td>
 <td align="right">0.5</td>
 <td align="right">0.2</td>
 <td align="right">39</td>
@@ -290,7 +329,8 @@
 <td align="right">0.0167338</td>
 </tr>
 <tr class="odd">
-<td align="left">condition_cheerful voice_cartoon - condition_sad voice_robot</td>
+<td align="left">condition_cheerful voice_cartoon - condition_sad
+voice_robot</td>
 <td align="right">0.5</td>
 <td align="right">0.2</td>
 <td align="right">39</td>
@@ -298,7 +338,8 @@
 <td align="right">0.0167338</td>
 </tr>
 <tr class="even">
-<td align="left">condition_sad voice_cartoon - condition_cheerful voice_human</td>
+<td align="left">condition_sad voice_cartoon - condition_cheerful
+voice_human</td>
 <td align="right">-0.3</td>
 <td align="right">0.2</td>
 <td align="right">39</td>
@@ -306,7 +347,8 @@
 <td align="right">0.1416670</td>
 </tr>
 <tr class="odd">
-<td align="left">condition_sad voice_cartoon - condition_sad voice_human</td>
+<td align="left">condition_sad voice_cartoon - condition_sad
+voice_human</td>
 <td align="right">-0.3</td>
 <td align="right">0.2</td>
 <td align="right">39</td>
@@ -314,7 +356,8 @@
 <td align="right">0.1416670</td>
 </tr>
 <tr class="even">
-<td align="left">condition_sad voice_cartoon - condition_cheerful voice_robot</td>
+<td align="left">condition_sad voice_cartoon - condition_cheerful
+voice_robot</td>
 <td align="right">0.0</td>
 <td align="right">0.2</td>
 <td align="right">39</td>
@@ -322,7 +365,8 @@
 <td align="right">1.0000000</td>
 </tr>
 <tr class="odd">
-<td align="left">condition_sad voice_cartoon - condition_sad voice_robot</td>
+<td align="left">condition_sad voice_cartoon - condition_sad
+voice_robot</td>
 <td align="right">0.0</td>
 <td align="right">0.2</td>
 <td align="right">39</td>
@@ -330,7 +374,8 @@
 <td align="right">1.0000000</td>
 </tr>
 <tr class="even">
-<td align="left">condition_cheerful voice_human - condition_sad voice_human</td>
+<td align="left">condition_cheerful voice_human - condition_sad
+voice_human</td>
 <td align="right">0.0</td>
 <td align="right">0.2</td>
 <td align="right">39</td>
@@ -338,7 +383,8 @@
 <td align="right">1.0000000</td>
 </tr>
 <tr class="odd">
-<td align="left">condition_cheerful voice_human - condition_cheerful voice_robot</td>
+<td align="left">condition_cheerful voice_human - condition_cheerful
+voice_robot</td>
 <td align="right">0.3</td>
 <td align="right">0.2</td>
 <td align="right">39</td>
@@ -346,7 +392,8 @@
 <td align="right">0.1416670</td>
 </tr>
 <tr class="even">
-<td align="left">condition_cheerful voice_human - condition_sad voice_robot</td>
+<td align="left">condition_cheerful voice_human - condition_sad
+voice_robot</td>
 <td align="right">0.3</td>
 <td align="right">0.2</td>
 <td align="right">39</td>
@@ -354,7 +401,8 @@
 <td align="right">0.1416670</td>
 </tr>
 <tr class="odd">
-<td align="left">condition_sad voice_human - condition_cheerful voice_robot</td>
+<td align="left">condition_sad voice_human - condition_cheerful
+voice_robot</td>
 <td align="right">0.3</td>
 <td align="right">0.2</td>
 <td align="right">39</td>
@@ -362,7 +410,8 @@
 <td align="right">0.1416670</td>
 </tr>
 <tr class="even">
-<td align="left">condition_sad voice_human - condition_sad voice_robot</td>
+<td align="left">condition_sad voice_human - condition_sad
+voice_robot</td>
 <td align="right">0.3</td>
 <td align="right">0.2</td>
 <td align="right">39</td>
@@ -370,7 +419,8 @@
 <td align="right">0.1416670</td>
 </tr>
 <tr class="odd">
-<td align="left">condition_cheerful voice_robot - condition_sad voice_robot</td>
+<td align="left">condition_cheerful voice_robot - condition_sad
+voice_robot</td>
 <td align="right">0.0</td>
 <td align="right">0.2</td>
 <td align="right">39</td>
@@ -379,124 +429,146 @@
 </tr>
 </tbody>
 </table>
-<p>By using <code><a href="../reference/emmeans_power.html">emmeans_power()</a></code> on the contrasts, we can reproduce the results of the previous power analysis for the pairwise comparisons.</p>
+<p>By using <code><a href="../reference/emmeans_power.html">emmeans_power()</a></code> on the contrasts, we can
+reproduce the results of the previous power analysis for the pairwise
+comparisons.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/emmeans_power.html">emmeans_power</a></span><span class="op">(</span><span class="va">exact_result</span><span class="op">$</span><span class="va">emmeans</span><span class="op">$</span><span class="va">contrasts</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>#&gt;                                                            contrast    power
-#&gt; 1    condition_cheerful voice_cartoon - condition_sad voice_cartoon 68.37160
-#&gt; 2 condition_cheerful voice_cartoon - condition_cheerful voice_human 16.41134
-#&gt; 3      condition_cheerful voice_cartoon - condition_sad voice_human 16.41134
-#&gt; 4 condition_cheerful voice_cartoon - condition_cheerful voice_robot 68.37160
-#&gt; 5      condition_cheerful voice_cartoon - condition_sad voice_robot 68.37160
-#&gt; 6      condition_sad voice_cartoon - condition_cheerful voice_human 30.99652
-#&gt;   partial_eta_squared   cohen_f non_centrality
-#&gt; 1          0.13812155 0.4003204           6.25
-#&gt; 2          0.02500000 0.1601282           1.00
-#&gt; 3          0.02500000 0.1601282           1.00
-#&gt; 4          0.13812155 0.4003204           6.25
-#&gt; 5          0.13812155 0.4003204           6.25
-#&gt; 6          0.05454545 0.2401922           2.25</code></pre>
-<p>Now, we can manipulate the <code>emmeans</code> reference grid to perform additional power analyses. In the following example, we calculate the power for the contrasts between sad and cheerful condition for each voice.</p>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/emmeans_power.html">emmeans_power</a></span><span class="op">(</span><span class="va">exact_result</span><span class="op">$</span><span class="va">emmeans</span><span class="op">$</span><span class="va">contrasts</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">#&gt;                                                            contrast    power</span>
+<span class="co">#&gt; 1    condition_cheerful voice_cartoon - condition_sad voice_cartoon 68.37160</span>
+<span class="co">#&gt; 2 condition_cheerful voice_cartoon - condition_cheerful voice_human 16.41134</span>
+<span class="co">#&gt; 3      condition_cheerful voice_cartoon - condition_sad voice_human 16.41134</span>
+<span class="co">#&gt; 4 condition_cheerful voice_cartoon - condition_cheerful voice_robot 68.37160</span>
+<span class="co">#&gt; 5      condition_cheerful voice_cartoon - condition_sad voice_robot 68.37160</span>
+<span class="co">#&gt; 6      condition_sad voice_cartoon - condition_cheerful voice_human 30.99652</span>
+<span class="co">#&gt;   partial_eta_squared   cohen_f non_centrality</span>
+<span class="co">#&gt; 1          0.13812155 0.4003204           6.25</span>
+<span class="co">#&gt; 2          0.02500000 0.1601282           1.00</span>
+<span class="co">#&gt; 3          0.02500000 0.1601282           1.00</span>
+<span class="co">#&gt; 4          0.13812155 0.4003204           6.25</span>
+<span class="co">#&gt; 5          0.13812155 0.4003204           6.25</span>
+<span class="co">#&gt; 6          0.05454545 0.2401922           2.25</span></code></pre>
+<p>Now, we can manipulate the <code>emmeans</code> reference grid to
+perform additional power analyses. In the following example, we
+calculate the power for the contrasts between sad and cheerful condition
+for each voice.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">simple_condition_effects</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html">emmeans</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">simple_condition_effects</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/emmeans.html" class="external-link">emmeans</a></span><span class="op">(</span>
   <span class="va">exact_result</span><span class="op">$</span><span class="va">emmeans</span><span class="op">$</span><span class="va">emmeans</span>,
   specs <span class="op">=</span> <span class="op">~</span> <span class="va">condition</span> <span class="op">|</span> <span class="va">voice</span>
 <span class="op">)</span>
 
-<span class="fu"><a href="../reference/emmeans_power.html">emmeans_power</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span><span class="op">(</span><span class="va">simple_condition_effects</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>#&gt;                             contrast         voice   power partial_eta_squared
-#&gt; 1 condition_cheerful - condition_sad voice_cartoon 68.3716        1.381215e-01
-#&gt; 2 condition_cheerful - condition_sad   voice_human  5.0000        1.975313e-33
-#&gt; 3 condition_cheerful - condition_sad   voice_robot  5.0000        7.901251e-34
-#&gt;        cohen_f non_centrality
-#&gt; 1 4.003204e-01   6.250000e+00
-#&gt; 2 4.444449e-17   7.703720e-32
-#&gt; 3 2.810916e-17   3.081488e-32</code></pre>
-<p>We may also calculate the power for testing all condition means against an arbitrary constant.</p>
+<span class="fu"><a href="../reference/emmeans_power.html">emmeans_power</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html" class="external-link">pairs</a></span><span class="op">(</span><span class="va">simple_condition_effects</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">#&gt;                             contrast         voice   power partial_eta_squared</span>
+<span class="co">#&gt; 1 condition_cheerful - condition_sad voice_cartoon 68.3716        1.381215e-01</span>
+<span class="co">#&gt; 2 condition_cheerful - condition_sad   voice_human  5.0000        7.901251e-33</span>
+<span class="co">#&gt; 3 condition_cheerful - condition_sad   voice_robot  5.0000        1.975313e-34</span>
+<span class="co">#&gt;        cohen_f non_centrality</span>
+<span class="co">#&gt; 1 4.003204e-01   6.250000e+00</span>
+<span class="co">#&gt; 2 8.888898e-17   3.081488e-31</span>
+<span class="co">#&gt; 3 1.405458e-17   7.703720e-33</span></code></pre>
+<p>We may also calculate the power for testing all condition means
+against an arbitrary constant.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/emmeans_power.html">emmeans_power</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/summary.emmGrid.html">test</a></span><span class="op">(</span><span class="va">simple_condition_effects</span>, null <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>#&gt;            condition         voice     power partial_eta_squared      cohen_f
-#&gt; 1 condition_cheerful voice_cartoon  5.000000        3.160500e-33 5.621833e-17
-#&gt; 2      condition_sad voice_cartoon 33.831141        6.024096e-02 2.531848e-01
-#&gt; 3 condition_cheerful   voice_human  9.462673        1.015228e-02 1.012739e-01
-#&gt; 4      condition_sad   voice_human  9.462673        1.015228e-02 1.012739e-01
-#&gt; 5 condition_cheerful   voice_robot 33.831141        6.024096e-02 2.531848e-01
-#&gt; 6      condition_sad   voice_robot 33.831141        6.024096e-02 2.531848e-01
-#&gt;   non_centrality
-#&gt; 1   1.232595e-31
-#&gt; 2   2.500000e+00
-#&gt; 3   4.000000e-01
-#&gt; 4   4.000000e-01
-#&gt; 5   2.500000e+00
-#&gt; 6   2.500000e+00</code></pre>
-<p>Finally, we can calculate the power for custom contrasts between any linear combination of conditions.</p>
+<code class="sourceCode R"><span class="fu"><a href="../reference/emmeans_power.html">emmeans_power</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/summary.emmGrid.html" class="external-link">test</a></span><span class="op">(</span><span class="va">simple_condition_effects</span>, null <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">#&gt;            condition         voice     power partial_eta_squared      cohen_f</span>
+<span class="co">#&gt; 1 condition_cheerful voice_cartoon  5.000000        7.901251e-34 2.810916e-17</span>
+<span class="co">#&gt; 2      condition_sad voice_cartoon 33.831141        6.024096e-02 2.531848e-01</span>
+<span class="co">#&gt; 3 condition_cheerful   voice_human  9.462673        1.015228e-02 1.012739e-01</span>
+<span class="co">#&gt; 4      condition_sad   voice_human  9.462673        1.015228e-02 1.012739e-01</span>
+<span class="co">#&gt; 5 condition_cheerful   voice_robot 33.831141        6.024096e-02 2.531848e-01</span>
+<span class="co">#&gt; 6      condition_sad   voice_robot 33.831141        6.024096e-02 2.531848e-01</span>
+<span class="co">#&gt;   non_centrality</span>
+<span class="co">#&gt; 1   3.081488e-32</span>
+<span class="co">#&gt; 2   2.500000e+00</span>
+<span class="co">#&gt; 3   4.000000e-01</span>
+<span class="co">#&gt; 4   4.000000e-01</span>
+<span class="co">#&gt; 5   2.500000e+00</span>
+<span class="co">#&gt; 6   2.500000e+00</span></code></pre>
+<p>Finally, we can calculate the power for custom contrasts between any
+linear combination of conditions.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">custom_contrast</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/contrast.html">contrast</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">custom_contrast</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/contrast.html" class="external-link">contrast</a></span><span class="op">(</span>
   <span class="va">exact_result</span><span class="op">$</span><span class="va">emmeans</span><span class="op">$</span><span class="va">emmeans</span>,
-  <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>robot_vs_sad_human <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.5</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>robot_vs_sad_human <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.5</span><span class="op">)</span><span class="op">)</span>
 <span class="op">)</span>
 
 <span class="fu"><a href="../reference/emmeans_power.html">emmeans_power</a></span><span class="op">(</span><span class="va">custom_contrast</span><span class="op">)</span></code></pre></div>
-<pre><code>#&gt;             contrast    power partial_eta_squared   cohen_f non_centrality
-#&gt; 1 robot_vs_sad_human 39.34971          0.07142857 0.2773501              3</code></pre>
-<p>Although <code><a href="../reference/emmeans_power.html">emmeans_power()</a></code> currently ignores adjustments for multiple comparisons, it is possible to calculate the power for Bonferroni-corrected tests by adjusting <code>alpha_level</code>.</p>
+<pre><code><span class="co">#&gt;             contrast    power partial_eta_squared   cohen_f non_centrality</span>
+<span class="co">#&gt; 1 robot_vs_sad_human 39.34971          0.07142857 0.2773501              3</span></code></pre>
+<p>Although <code><a href="../reference/emmeans_power.html">emmeans_power()</a></code> currently ignores adjustments
+for multiple comparisons, it is possible to calculate the power for
+Bonferroni-corrected tests by adjusting <code>alpha_level</code>.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">n_contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html">as.data.frame</a></span><span class="op">(</span><span class="va">simple_condition_effects</span><span class="op">)</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">n_contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">simple_condition_effects</span><span class="op">)</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/emmeans_power.html">emmeans_power</a></span><span class="op">(</span>
-  <span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span><span class="op">(</span><span class="va">simple_condition_effects</span><span class="op">)</span>,
+  <span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html" class="external-link">pairs</a></span><span class="op">(</span><span class="va">simple_condition_effects</span><span class="op">)</span>,
   alpha_level <span class="op">=</span> <span class="fl">0.05</span> <span class="op">/</span> <span class="va">n_contrasts</span>
 <span class="op">)</span></code></pre></div>
-<pre><code>#&gt;                             contrast         voice      power
-#&gt; 1 condition_cheerful - condition_sad voice_cartoon 40.1555499
-#&gt; 2 condition_cheerful - condition_sad   voice_human  0.8333333
-#&gt; 3 condition_cheerful - condition_sad   voice_robot  0.8333333
-#&gt;   partial_eta_squared      cohen_f non_centrality
-#&gt; 1        1.381215e-01 4.003204e-01   6.250000e+00
-#&gt; 2        1.975313e-33 4.444449e-17   7.703720e-32
-#&gt; 3        7.901251e-34 2.810916e-17   3.081488e-32</code></pre>
-<p>Similarly, if we want to calculate power for a one-sided test, we can doubling <code>alpha_level</code>.</p>
+<pre><code><span class="co">#&gt;                             contrast         voice      power</span>
+<span class="co">#&gt; 1 condition_cheerful - condition_sad voice_cartoon 40.1555499</span>
+<span class="co">#&gt; 2 condition_cheerful - condition_sad   voice_human  0.8333333</span>
+<span class="co">#&gt; 3 condition_cheerful - condition_sad   voice_robot  0.8333333</span>
+<span class="co">#&gt;   partial_eta_squared      cohen_f non_centrality</span>
+<span class="co">#&gt; 1        1.381215e-01 4.003204e-01   6.250000e+00</span>
+<span class="co">#&gt; 2        7.901251e-33 8.888898e-17   3.081488e-31</span>
+<span class="co">#&gt; 3        1.975313e-34 1.405458e-17   7.703720e-33</span></code></pre>
+<p>Similarly, if we want to calculate power for a one-sided test, we can
+doubling <code>alpha_level</code>.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/emmeans_power.html">emmeans_power</a></span><span class="op">(</span>
-  <span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span><span class="op">(</span><span class="va">simple_condition_effects</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,
+  <span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html" class="external-link">pairs</a></span><span class="op">(</span><span class="va">simple_condition_effects</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,
   alpha_level <span class="op">=</span> <span class="fl">2</span> <span class="op">*</span> <span class="fl">0.05</span>
 <span class="op">)</span></code></pre></div>
-<pre><code>#&gt;                             contrast         voice    power partial_eta_squared
-#&gt; 1 condition_cheerful - condition_sad voice_cartoon 79.14507           0.1381215
-#&gt;     cohen_f non_centrality
-#&gt; 1 0.4003204           6.25</code></pre>
-<p>Note, that because power is calculated from the squared <span class="math inline">\(t\)</span>-value, power is only calculated correctly if the alternative hypothesis is true in the simulated dataset. That is, the difference of the condition means is consistent with the tested directional hypothesis.</p>
-<div id="equivalence-and-non-superiority-inferiority-tests" class="section level2">
-<h2 class="hasAnchor">
-<a href="#equivalence-and-non-superiority-inferiority-tests" class="anchor"></a>Equivalence and non-superiority/-inferiority tests</h2>
-<p>Because <code>emmeans</code> can perform equivalence, non-superiority, and -inferiority tests, <code><a href="../reference/emmeans_power.html">emmeans_power()</a></code> can calculate the corresponding power for these tests.</p>
+<pre><code><span class="co">#&gt;                             contrast         voice    power partial_eta_squared</span>
+<span class="co">#&gt; 1 condition_cheerful - condition_sad voice_cartoon 79.14507           0.1381215</span>
+<span class="co">#&gt;     cohen_f non_centrality</span>
+<span class="co">#&gt; 1 0.4003204           6.25</span></code></pre>
+<p>Note, that because power is calculated from the squared <span class="math inline">\(t\)</span>-value, power is only calculated
+correctly if the alternative hypothesis is true in the simulated
+dataset. That is, the difference of the condition means is consistent
+with the tested directional hypothesis.</p>
+<div class="section level3">
+<h3 id="equivalence-and-non-superiority-inferiority-tests">Equivalence and non-superiority/-inferiority tests<a class="anchor" aria-label="anchor" href="#equivalence-and-non-superiority-inferiority-tests"></a>
+</h3>
+<p>Because <code>emmeans</code> can perform equivalence,
+non-superiority, and -inferiority tests, <code><a href="../reference/emmeans_power.html">emmeans_power()</a></code>
+can calculate the corresponding power for these tests.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/emmeans_power.html">emmeans_power</a></span><span class="op">(</span>
-  <span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html">pairs</a></span><span class="op">(</span><span class="va">simple_condition_effects</span>, side <span class="op">=</span> <span class="st">"equivalence"</span>, delta <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>
+  <span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html" class="external-link">pairs</a></span><span class="op">(</span><span class="va">simple_condition_effects</span>, side <span class="op">=</span> <span class="st">"equivalence"</span>, delta <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>
 <span class="op">)</span></code></pre></div>
-<pre><code>#&gt;                             contrast       voice    power partial_eta_squared
-#&gt; 2 condition_cheerful - condition_sad voice_human 30.99652          0.05454545
-#&gt;     cohen_f non_centrality
-#&gt; 2 0.2401922           2.25</code></pre>
-<p>Note, that because power is calculated from the squared <span class="math inline">\(t\)</span>-value, power is only calculated correctly if the alternative hypothesis is true in the simulated dataset. That is, the difference between the condition means is consistent with the tested directional hypothesis (smaller than <code>delta</code>).</p>
+<pre><code><span class="co">#&gt;                             contrast       voice    power partial_eta_squared</span>
+<span class="co">#&gt; 2 condition_cheerful - condition_sad voice_human 30.99652          0.05454545</span>
+<span class="co">#&gt;     cohen_f non_centrality</span>
+<span class="co">#&gt; 2 0.2401922           2.25</span></code></pre>
+<p>Note, that because power is calculated from the squared <span class="math inline">\(t\)</span>-value, power is only calculated
+correctly if the alternative hypothesis is true in the simulated
+dataset. That is, the difference between the condition means is
+consistent with the tested directional hypothesis (smaller than
+<code>delta</code>).</p>
 </div>
-<div id="joint-tests" class="section level2">
-<h2 class="hasAnchor">
-<a href="#joint-tests" class="anchor"></a>Joint tests</h2>
-<p>Another useful application of <code><a href="../reference/emmeans_power.html">emmeans_power()</a></code> is to joint tests. Lets assume we plan to test the main effect of voice for each of the two conditions separately using <code><a href="https://rdrr.io/pkg/emmeans/man/joint_tests.html">joint_tests()</a></code>. We can then calculate the power for each Bonferroni-corrected <span class="math inline">\(F\)</span>-test as follows.</p>
+<div class="section level3">
+<h3 id="joint-tests">Joint tests<a class="anchor" aria-label="anchor" href="#joint-tests"></a>
+</h3>
+<p>Another useful application of <code><a href="../reference/emmeans_power.html">emmeans_power()</a></code> is to
+joint tests. Lets assume we plan to test the main effect of voice for
+each of the two conditions separately using <code><a href="https://rdrr.io/pkg/emmeans/man/joint_tests.html" class="external-link">joint_tests()</a></code>.
+We can then calculate the power for each Bonferroni-corrected <span class="math inline">\(F\)</span>-test as follows.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">voice_by_condition</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/joint_tests.html">joint_tests</a></span><span class="op">(</span>
+<code class="sourceCode R"><span class="va">voice_by_condition</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/joint_tests.html" class="external-link">joint_tests</a></span><span class="op">(</span>
   <span class="va">exact_result</span><span class="op">$</span><span class="va">emmeans</span><span class="op">$</span><span class="va">emmeans</span>,
   by <span class="op">=</span> <span class="st">"condition"</span>
 <span class="op">)</span>
 
 <span class="fu"><a href="../reference/emmeans_power.html">emmeans_power</a></span><span class="op">(</span><span class="va">voice_by_condition</span>, alpha_level <span class="op">=</span> <span class="fl">0.05</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
-<pre><code>#&gt;   model term          condition    power partial_eta_squared   cohen_f
-#&gt; 1      voice condition_cheerful 21.80102          0.07510613 0.2849651
-#&gt; 3      voice      condition_sad 10.39583          0.03703704 0.1961161
-#&gt;   non_centrality
-#&gt; 1          3.167
-#&gt; 3          1.500</code></pre>
+<pre><code><span class="co">#&gt;   model term          condition    power partial_eta_squared   cohen_f</span>
+<span class="co">#&gt; 1      voice condition_cheerful 21.80102          0.07510613 0.2849651</span>
+<span class="co">#&gt; 3      voice      condition_sad 10.39583          0.03703704 0.1961161</span>
+<span class="co">#&gt;   non_centrality</span>
+<span class="co">#&gt; 1          3.167</span>
+<span class="co">#&gt; 3          1.500</span></code></pre>
 </div>
 </div>
   </div>
@@ -512,11 +584,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Aaron Caldwell, Daniel Lakens.</p>
+  <p></p>
+<p>Developed by Aaron Caldwell, Daniel Lakens.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>
@@ -524,6 +598,8 @@
 
   
 
+
+  
 
   </body>
 </html>

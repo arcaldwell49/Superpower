@@ -31,9 +31,9 @@ library("Superpower")
 
 Recently, @shieh_ancova demonstrated that most software uses a slightly flawed approach to estimating power for ANCOVAs, and focused on one-way ANOVA designs to compare his method to the method first mentioned by @cohen_book.
 
-# One-way ANOVA
+# One-way ANCOVA
 
-As @shieh_ancova eloquently points out in their simulations, the method of @cohen_book overestimates power and the problem is exacerbated by having a high number of covariates with high proportion of the variance ($R^2$) explained by the covariates. The problem is worst (30% error between estimated and actual power) in the simulation when there are 10 covariates included in the model when explained variance is approximately 81% ($\rho = 0.9$) [@shieh_ancova see Table 3). while this may not seem like much of issue if you don't expect to encounter this scenario, it still demonstrates the @cohen_book method is inconsistent producing appropriate estimates of power. I believe this is reason enough (when provided with a sustainable and implementable alternative) to abandon the old method of @cohen_book for a newer method that provides exact rather than approximate estimates of power for ANCOVAs.
+As @shieh_ancova eloquently points out in their simulations, the method of @cohen_book overestimates power and the problem is exacerbated by having a high number of covariates with high proportion of the variance ($R^2$) explained by the covariates. The problem is worst (30% error between estimated and actual power) in the simulation when there are 10 covariates included in the model when explained variance is approximately 81% ($\rho = 0.9$) [@shieh_ancova see Table 3). While this may not seem like much of issue if you don't expect to encounter this scenario, it still demonstrates the @cohen_book method is inconsistent in producing appropriate estimates of power. I believe this is reason enough (when provided with a sustainable and implementable alternative) to abandon the old method of @cohen_book for a newer method that provides exact, rather than approximate, estimates of power for ANCOVA.
 
 Thankfully, @shieh_ancova was diligent in his work and demonstrated, showing both the math and simulations, how a new exact method could be utilized. The direct method described in the paper is implemented in the `power_oneway_ancova` function.
 
@@ -152,7 +152,7 @@ res2
 
 # Contrasts
 
-Additionally, user specified contrasts can also be used for a power analysis. These can be provided in the `cmats` argument of the `ANCOVA_analytic` function or supplied directly to the `ANCOVA_contrast` function as an independent test. The `ANCOVA_analytic` function requires that the contrasts matricies are provided as matrices. The contrasts can be accessed in the `con_list` part of the results and can be named (in this case "test").
+User specified contrasts can also be used for a power analysis. These can be provided in the `cmats` argument of the `ANCOVA_analytic` function or supplied directly to the `ANCOVA_contrast` function as an independent test. The `ANCOVA_analytic` function requires that the contrasts matrices are provided as matrices (i.e., `as.matrix`). The contrasts can be accessed in the `con_list` part of the results and can be named (in this case "test").
 
 ```{r}
 
@@ -173,10 +173,5 @@ ANCOVA_contrast(cmat = c(-1,1),
                 r2 = .2,
                 n_cov = 1)
 ```
-
-
-# Method
-
-- TO BE ADDED. See @shieh_ancova for the exact mathematical explanation.
 
 # References
