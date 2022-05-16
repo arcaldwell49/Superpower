@@ -4,18 +4,21 @@ Superpower
 <img src=https://raw.githubusercontent.com/arcaldwell49/Superpower/master/Sticker/Superpower2_v2.PNG alt="sticker" width="200"/>
 <img src=https://raw.githubusercontent.com/arcaldwell49/Superpower/master/Sticker/authors.png alt="authors" width="200"/>
 
-[![R-CMD-check](https://github.com/arcaldwell49/Superpower/workflows/R-CMD-check/badge.svg)](https://github.com/arcaldwell49/Superpower/actions)
-[![codecov](https://codecov.io/gh/arcaldwell49/Superpower/branch/master/graph/badge.svg)](https://codecov.io/gh/arcaldwell49/Superpower)
+[![R build
+status](https://github.com/arcaldwell49/Superpower/workflows/R-CMD-check/badge.svg)](https://github.com/arcaldwell49/Superpower/actions)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/Superpower)](https://CRAN.R-project.org/package=Superpower)
+[![codecov](https://codecov.io/gh/arcaldwell49/Superpower/branch/master/graph/badge.svg)](https://app.codecov.io/gh/arcaldwell49/Superpower)
 [![](https://img.shields.io/badge/doi-10.31234/osf.io/baxsf-yellow.svg)](https://doi.org/10.31234/osf.io/baxsf)
 
 ## Table of Contents
 
--   [ANOVA\_design Function](#anova_design-function)
+-   [ANOVA_design Function](#anova_design-function)
 -   [Simulation-based power
     calculations](#simulation-based-power-calculations)
--   [ANOVA\_power Function](#the-anova_power-function)
--   [ANOVA\_exact Function](#the-anova_exact-function)
--   [The plot\_power function](#the-plot_power-function)
+-   [ANOVA_power Function](#the-anova_power-function)
+-   [ANOVA_exact Function](#the-anova_exact-function)
+-   [The plot_power function](#the-plot_power-function)
 
 The goal of `Superpower` is to easily simulate factorial designs and
 empirically calculate power using a simulation approach. This app is
@@ -33,12 +36,12 @@ You can install the released version of `Superpower` from
 devtools::install_github("arcaldwell49/Superpower")
 ```
 
-## ANOVA\_design function
+## ANOVA_design function
 
-Currently the ANOVA\_design function can create designs up three
-factors, for both within, between, and mixed designs. It requires the
-following input: design, n, mu, sd, r, and optionally allows you to set
-label\_list.
+Currently the ANOVA_design function can create designs up three factors,
+for both within, between, and mixed designs. It requires the following
+input: design, n, mu, sd, r, and optionally allows you to set
+label_list.
 
 1.  design: string that specifies the design (see below).
 2.  n: the sample size for each between subject condition.
@@ -46,7 +49,7 @@ label\_list.
 4.  sd: the population standard deviation. Assumes homogeneity of
     variances (only one standard deviation can be provided).
 5.  r: the correlation for within designs (or 0 for between designs).
-6.  label\_list: This is an optional named list of words that indicates
+6.  label_list: This is an optional named list of words that indicates
     factor names and level names (see below).
 7.  A final optional setting is to specify if you want to output a plot
     or not (plot = TRUE or FALSE)
@@ -58,7 +61,7 @@ number, indicating the number of levels of the factor, and a letter, b
 or w, to indicate whether the factor is manipulated between or within
 participants. For example, a `2b` design has two between-participant
 groups. A `12w` design has one factor with 12 levels, all manipulated
-within-participants. A "2b\*3w" is a design with two factors (a 2b
+within-participants. A “2b\*3w” is a design with two factors (a 2b
 factor and a 3w factor), the first of which has 2 between participant
 levels (2b), and the second of which has 3 within participants levels
 (3w). **If there are multiple factors (the functions take up to three
@@ -71,19 +74,19 @@ take the pill, and a week after they take the pill.
 ### Specifying the means using ‘mu’
 
 Note that for each cell in the design, a mean must be provided. Thus,
-for a "2b\*3w" design, 6 means need to be entered.
+for a “2b\*3w” design, 6 means need to be entered.
 
-Means need to be entered in the correct order. ANOVA\_design outputs a
+Means need to be entered in the correct order. ANOVA_design outputs a
 plot so you can check if you entered all means as you intended. Always
 carefully check if the plot that is generated matches your expectations.
 
 The general principle is that the code generates factors, indicated by
-the factor names you entered in the label\_list variable, (i.e.,
+the factor names you entered in the label_list variable, (i.e.,
 *condition* and *time*). Levels are indicated by factor names and levels
-(e.g., control\_time1, control\_time2, control\_time3, etc).
+(e.g., control_time1, control_time2, control_time3, etc).
 
 If your design has just one factor, just enter the means in the same
-order as the label\_list (see below). For more factors, note the general
+order as the label_list (see below). For more factors, note the general
 pattern in the example below. Means are entered in the following order
 for a 3 factors design (each with 2 levels):
 
@@ -112,7 +115,7 @@ works.
 
 To make sure the plots and tables with simulation results are easy to
 interpret, it really helps to name all factors and levels. You can enter
-the labels in the ‘label\_list’ variable. You can also choose not to
+the labels in the ‘label_list’ variable. You can also choose not to
 specify names. Then all factors are indicated by letters (a, b, c) and
 all levels by numbers (a1, a2, a3).
 
@@ -128,7 +131,7 @@ As you can see, you follow the order of the design, and first write the
 (placebo and medicine). Then you write the second factor name (time)
 followed by the three labels for each **LEVEL** (time1, time2, time3).
 **Do not use spaces in the names (so not “time 1” but “time1” or
-“time\_1”).**
+“time_1”).**
 
 Some examples:
 
@@ -204,12 +207,12 @@ match the covariance matrix. The order for a 2x2 design is given in the
 top to bottom, and left to right, illustrated by the increasing
 correlations in the table below.
 
-| Factor | a1\_b1 | a1\_b2 | a2\_b1 | a2\_b2 |
-|:-------|--------|--------|--------|--------|
-| a1\_b1 | 1.00   | 0.91   | 0.92   | 0.93   |
-| a1\_b2 | 0.91   | 1.00   | 0.94   | 0.95   |
-| a2\_b1 | 0.92   | 0.94   | 1.00   | 0.96   |
-| a2\_b2 | 0.93   | 0.95   | 0.96   | 1.00   |
+| Factor | a1_b1 | a1_b2 | a2_b1 | a2_b2 |
+|:-------|-------|-------|-------|-------|
+| a1_b1  | 1.00  | 0.91  | 0.92  | 0.93  |
+| a1_b2  | 0.91  | 1.00  | 0.94  | 0.95  |
+| a2_b1  | 0.92  | 0.94  | 1.00  | 0.96  |
+| a2_b2  | 0.93  | 0.95  | 0.96  | 1.00  |
 
 The diagonal is generated dynamically (and all conditions are perfectly
 correlated with themselves).
@@ -227,7 +230,7 @@ design_result <- ANOVA_design(design = "2w*2w",
 ![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
 
 We can check the correlation matrix by asking for it from the
-design\_result object to check if it was entered the way we wanted:
+design_result object to check if it was entered the way we wanted:
 
 ``` r
 design_result$cor_mat
@@ -297,17 +300,17 @@ simulate more realistic datasets that are not normally distributed), but
 the `ANOVA_exact` function is much faster (and takes seconds, instead of
 minutes or hours for a large number of simulations).
 
-## The ANOVA\_power function
+## The ANOVA_power function
 
-The ANOVA\_power function takes the result from the ANOVA\_design
+The ANOVA_power function takes the result from the ANOVA_design
 function, and simulates data nsims times using a specified alpha level.
 As output, it provides a table for the ANOVA results, and the results
 for all independent comparisons.
 
-It requires the following input: ANOVA\_design, alpha\_level, p\_adjust,
+It requires the following input: ANOVA_design, alpha_level, p_adjust,
 nsims, seed, and verbose.
 
-1.  `design_result`: Output from the ANOVA\_design function saved as an
+1.  `design_result`: Output from the ANOVA_design function saved as an
     object
 2.  `alpha_level`: Alpha level used to determine statistical
     significance
@@ -324,29 +327,29 @@ testing the set up with 100 simulations, and run 1000 if the set-up is
 correct (or 10000 if you are getting a coffee, or 100.000 if you are
 about accuracy to digits behind the decimal).
 
-## The ANOVA\_exact function
+## The ANOVA_exact function
 
-The ANOVA\_exact function takes the result from the ANOVA\_design
+The ANOVA_exact function takes the result from the ANOVA_design
 function, and simulates one dataset that exactly matches the desired
 properties (using the `mvrnorm` function from the `MASS` package, using
 the setting `empirical = TRUE`). This dataset is used to perform a
 single ANOVA, and the results are used to compute power (thanks to Chris
 Aberson for inspiring this approach).
 
-ANOVA\_exact requires the following input: ANOVA\_design, alpha\_level,
-and verbose.
+ANOVA_exact requires the following input: ANOVA_design, alpha_level, and
+verbose.
 
-1.  `design_result`: Output from the ANOVA\_design function saved as an
+1.  `design_result`: Output from the ANOVA_design function saved as an
     object
 2.  `alpha_level`: Alpha level used to determine statistical
     significance
 3.  `verbose`: Set to FALSE to not print results (default = TRUE)
 
-Compared to the ANOVA\_power function, the ANOVA\_exact approach is much
+Compared to the ANOVA_power function, the ANOVA_exact approach is much
 faster (it requires simulating only a single dataset). Currently the
-only difference is that ANOVA\_exact does not allow you to examine the
+only difference is that ANOVA_exact does not allow you to examine the
 consequences of correcting for multiple comparisons (there is no
-`p_adjust` option), and that ANOVA\_exact does not work for sample sizes
+`p_adjust` option), and that ANOVA_exact does not work for sample sizes
 smaller than the product of the factor-levels(e.g., `2b*2w` would
 require at least n=4). It is not possible to simulate a dataset with
 exactly the desired properties for very small sample sizes.
@@ -370,7 +373,7 @@ settings can also be made:
     emmeans comparisons. The default is “pairwise”. Possible input is
     limited to “pairwise”, “revpairwise”, “eff”, “consec”, “poly”,
     “del.eff”, “trt.vs.ctrl”, “trt.vs.ctrl1”, “trt.vs.ctrlk”, and
-    “mean\_chg”. See help(“contrast-methods”) with the `emmeans` package
+    “mean_chg”. See help(“contrast-methods”) with the `emmeans` package
     loaded for more information.
 2.  `emm_model`: emmeans accepts univariate and multivariate models.
     This will only make a difference if a within-subjects factor is
@@ -382,8 +385,8 @@ settings can also be made:
     The default is to take the `frml2` object from the results of
     `ANOVA_design`, and with the default `contrast_type` = “pairwise”,
     results in *all* the pairwise comparisons being performed. The
-    simple effects can also be performed by including \| in the
-    emm\_comp formula. For example, with two factors (e.g., a and b)
+    simple effects can also be performed by including \| in the emm_comp
+    formula. For example, with two factors (e.g., a and b)
     `emm_comp = "a+b"` results in all pairwise comparisons being
     performed while `emm_comp = "a|b"` will result in pairwise
     comparisons across all levels of a **within** each level of b.
@@ -450,17 +453,18 @@ above, we might be specifically interested in comparing the independent
 effect for the cheerful vs sad human voice assistant, and the difference
 for sad voice when they are robotic or human. The second table provides
 the power for *t*-tests for all comparisons, and the effect sizes
-(Cohen’s d for between-subject contrasts, and Cohen’s *d*<sub>*z*</sub>
+(Cohen’s d for between-subject contrasts, and Cohen’s
+![d_z](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;d_z "d_z")
 for within-subject contrasts, see [Lakens,
 2013](https://www.frontiersin.org/articles/10.3389/fpsyg.2013.00863/full)).
 
 Power is relatively high for the differences between within-participant
 conditions, and power is very low for the minor differences among the
 three similar means (1.03, 0.98, 1.01). In addition to the two tables,
-the ANOVA\_power function returns the raw simulation data (all
-*p*-values and effect sizes for each simulation, see
-simulation\_result$sim\_data) and a plot showing the *p*-value
-distributions for all tests in the ANOVA.
+the ANOVA_power function returns the raw simulation data (all *p*-values
+and effect sizes for each simulation, see simulation_result$sim_data)
+and a plot showing the *p*-value distributions for all tests in the
+ANOVA.
 
 ![](vignettes/sim_data/vig_1_plot.png)
 
@@ -531,9 +535,11 @@ pwr.t.test(d = 2.2/6.4,
     ## [1] 0.6768572
 
 We can also directly compute Cohen’s f from Cohen’s d for two groups, as
-Cohen (1988) describes, because f = $\\frac{1}{2}d$. So f = 0.5\*0.34375
-= 0.171875. And indeed, power analysis using the pwr package yields the
-same result using the pwr.anova.test as the power.t.test.
+Cohen (1988) describes, because f =
+![\\frac{1}{2}d](https://latex.codecogs.com/png.image?%5Cdpi%7B110%7D&space;%5Cbg_white&space;%5Cfrac%7B1%7D%7B2%7Dd "\frac{1}{2}d").
+So f = 0.5\*0.34375 = 0.171875. And indeed, power analysis using the pwr
+package yields the same result using the pwr.anova.test as the
+power.t.test.
 
 ``` r
 pwr.anova.test(n = 100,
@@ -665,7 +671,7 @@ ANOVA_exact(design_result)$main_results$power
 
     ## [1] 90.18863
 
-## The plot\_power function
+## The plot_power function
 
 Simulation based power analyses require you to increase to sample size
 until power is high enough to reach your desired Type 2 error rate. To
@@ -673,13 +679,12 @@ facilitate this trial and error process you can use the `plot_power`
 function to plot the power across a range of sample sizes to produce a
 power curve.
 
-plot\_power requires the following input: ANOVA\_design, max\_n, and
-plot.
+plot_power requires the following input: ANOVA_design, max_n, and plot.
 
-1.  design\_result: Output from the ANOVA\_design function saved as an
+1.  design_result: Output from the ANOVA_design function saved as an
     object
-2.  min\_n: The minimum sample size you want to plot in the power curve
-3.  max\_n: The maximum sample size you want to plot in the power curve
+2.  min_n: The minimum sample size you want to plot in the power curve
+3.  max_n: The maximum sample size you want to plot in the power curve
 4.  plot: Set to FALSE to not print the plot (default = FALSE)
 
 The `plot_power` functions simulates power up to a sample size of
