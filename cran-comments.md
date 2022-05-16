@@ -1,6 +1,6 @@
 ## Test environments
-* local OS X install, R version 4.0.2 
-* ubuntu 16.04.6 (on travis-ci), R 4.0.2
+* local OS X install, R version 4.2.0 
+* ubuntu, Windows, and MacOS on GitHub Actions
 
 ## R CMD check results
 
@@ -10,6 +10,5 @@
 
 ## Other Comments
 
-* This is an "emergency" patch to resolve errors produced on linux devel tests.
 * Author names in the DESCRIPTION are correctly spelled (i.e., Lakens and Caldwell)
 

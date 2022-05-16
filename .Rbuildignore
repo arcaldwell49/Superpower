@@ -38,3 +38,4 @@
 ^index\.md$
 ^index\.html$
 ^\.github$
+^CRAN-SUBMISSION$
