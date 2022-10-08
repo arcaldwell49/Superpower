@@ -1,6 +1,8 @@
 # Morey Power Sensitivity Plots
 #
+# rsconnect::deployApp(here::here("Shiny","morey_plots"))
 
+# libraries -----
 library(shiny)
 library(shinyjs)
 library(shinydashboard)
@@ -10,7 +12,7 @@ library(kableExtra)
 library(DT)
 library(tidyverse)
 library(shinyMatrix)
-
+# functions ------
 Superpower_options(verbose = FALSE,
                    plot = FALSE)
 
@@ -25,6 +27,7 @@ render_dt = function(data, server = TRUE, ...) {
     renderDT(data, selection = 'none', server = server, ...)
 }
 
+# UI -----
 # Define UI for application
 ui <- dashboardPage(
     dashboardHeader(title = "Morey Plots"),
@@ -236,6 +239,7 @@ ui <- dashboardPage(
 ###############################################################################
 ###############################################################################
 
+# Server ------
 # Define server logic
 server <- function(input, output, session) {
 

@@ -1,7 +1,8 @@
 # JustifieR
 # ANOVA_compromise function Shiny app
 #
-
+# rsconnect::deployApp(here::here("Shiny","Justify"))
+# Libraries ----
 library(shiny)
 library(shinyjs)
 library(shinyMatrix)
@@ -12,6 +13,7 @@ library(rmarkdown)
 library(knitr)
 library(kableExtra)
 
+# Functions -----
 label_function <- function(design, labelnames = NULL) {
   #If labelnames are not provided, they are generated.
   #Store factor levels (used many times in the script, calculate once)
@@ -93,6 +95,7 @@ Superpower_options(emm = TRUE,
                    verbose = FALSE,
                    plot = FALSE)
 
+# UI ------
 # Define UI for application
 ui <- dashboardPage(
   dashboardHeader(title = "ANOVA_compromise"),
@@ -288,6 +291,7 @@ ui <- dashboardPage(
 ###############################################################################
 ###############################################################################
 
+# Server ------
 # Define server logic
 server <- function(input, output, session) {
 

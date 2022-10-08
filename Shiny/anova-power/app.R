@@ -1,7 +1,9 @@
 # ANOVA_power app
 # simulation function Shiny app
 #
+# rsconnect::deployApp(here::here("Shiny","anova-power"))
 
+# libraries ------
 library(shiny)
 library(shinyMatrix)
 library(shinyjs)
@@ -18,6 +20,7 @@ library(MASS)
 library(magrittr)
 library(dplyr)
 
+# Functions -----
 Superpower_options(emm = TRUE,
                    verbose = FALSE,
                    plot = FALSE)
@@ -211,7 +214,7 @@ shiny_power <- function(design_result,
   
   #Run MANOVA if within subject factor is included; otherwise ignored
   if (run_manova == TRUE) {
-    manova_result <- Superpower:::Anova_mlm_table(aov_result$Anova) #
+    manova_result <- Superpower:::Anova_mlm_table(aov_result$Anova) # ::: shiny context
   }
   ###############
   # 5. Set up dataframe for simulation results
@@ -619,6 +622,7 @@ label_function <- function(design, labelnames = NULL) {
   paste(design_list)
 }
 
+# UI ------
 # Define UI for application
 ui <- dashboardPage(
   dashboardHeader(title = "ANOVA_power"),
@@ -869,6 +873,7 @@ skin = "purple")
 ###############################################################################
 ###############################################################################
 
+# Server ------
 # Define server logic
 server <- function(input, output, session) {
 

@@ -1,7 +1,11 @@
 # ANOVA_exact
 # Exact function Shiny app
 #
+# Deploy ---
 
+# rsconnect::deployApp(here::here("Shiny","anova-exact"))
+
+# Packages -----
 library(shiny)
 library(shinyjs)
 library(shinyMatrix)
@@ -12,6 +16,7 @@ library(rmarkdown)
 library(knitr)
 library(kableExtra)
 
+# functions ----
 label_function <- function(design, labelnames = NULL) {
   #If labelnames are not provided, they are generated.
   #Store factor levels (used many times in the script, calculate once)
@@ -93,6 +98,7 @@ Superpower_options(emm = TRUE,
                    verbose = FALSE,
                    plot = FALSE)
 
+# UI -----
 # Define UI for application
 ui <- dashboardPage(
   dashboardHeader(title = "ANOVA_exact"),
@@ -338,6 +344,7 @@ ui <- dashboardPage(
 ###############################################################################
 ###############################################################################
 
+# Server -----
 # Define server logic
 server <- function(input, output, session) {
 
