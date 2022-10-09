@@ -15,7 +15,8 @@ library(ggplot2)
 library(rmarkdown)
 library(knitr)
 library(kableExtra)
-
+library(scales)
+library(pander)
 # functions ----
 label_function <- function(design, labelnames = NULL) {
   #If labelnames are not provided, they are generated.
@@ -789,7 +790,8 @@ des_string = reactive({
                      cor_mat = values$design_result$cor_mat,
                      sigmatrix = values$design_result$sigmatrix,
                      alpha_level = values$power_result$alpha_level,
-                     input_emm = input$emm)
+                     input_emm = input$emm,
+                     session = sessionInfo())
 
       # Knit the document, passing in the `params` list, and eval it in a
       # child of the global environment (this isolates the code in the document
