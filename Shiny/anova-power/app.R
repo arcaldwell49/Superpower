@@ -645,7 +645,7 @@ ui <- dashboardPage(
                 status = "primary",
                 solidHeader = TRUE,
                 collapsible = FALSE,
-                h5("Please cite as: Lakens, D., & Caldwell, A. R. (2019). Simulation-Based Power-Analysis for Factorial ANOVA Designs. https://doi.org/10.31234/osf.io/baxsf"),
+                h5("Please cite as: Lakens D, Caldwell AR. Simulation-Based Power Analysis for Factorial Analysis of Variance Designs. Advances in Methods and Practices in Psychological Science. 2021;4(1). doi:10.1177/2515245920951503"),
                 h5("This Shiny app is for performing Monte Carlo simuations of factorial experimental designs in order to estimate power for an ANOVA and follow-up pairwise comparisons.
                    This app allows you to violate the assumptions of homoscedascity and sphecity (for repeated measures). Also, the simulations take a considerable amount of time to run.
                    If you don't need/want to violate these assumptions please use the ANOVA_exact app."),
