@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Superpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
       </span>
     </div>
 
@@ -75,31 +75,42 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">power_standardized_alpha</span><span class="op">(</span>
-  <span class="va">power_function</span>,
-  alpha <span class="op">=</span> <span class="fl">0.05</span>,
-  power <span class="op">=</span> <span class="fl">0.8</span>,
-  standardize_N <span class="op">=</span> <span class="fl">100</span>,
-  verbose <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"verbose"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">power_standardized_alpha</span><span class="op">(</span></span>
+<span>  <span class="va">power_function</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span>  power <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span>  standardize_N <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"verbose"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>power_function</dt>
 <dd><p>Function that outputs the power, calculated with an analytic function.</p></dd>
+
+
 <dt>alpha</dt>
 <dd><p>The unstandardized alpha level (e.g., 0.05), independent of the sample size.</p></dd>
+
+
 <dt>power</dt>
 <dd><p>The desired power, i.e., the outcome of the power calculation you would like to achieve.</p></dd>
+
+
 <dt>standardize_N</dt>
 <dd><p>The sample size you want to use to standardize the alpha level for. Defaults to 100 (based on Good, 1982).</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>Set to FALSE to not print results (default = TRUE)</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>List of 3 objects: a_stan = standardized alpha, N = sample size, and objective = for the weighted combined error rate.</p>
+    
+
+<p>List of 3 objects: a_stan = standardized alpha, N = sample size, and objective = for the weighted combined error rate.</p>
     </div>
     <div id="references">
     <h2>References</h2>
@@ -110,14 +121,14 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># \donttest{</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">power_standardized_alpha</span><span class="op">(</span>power_function <span class="op">=</span> <span class="st">"pwr::pwr.t.test(d = 0.3,</span>
-<span class="r-in">n = x, sig.level = a_stan, type = 'two.sample',</span>
-<span class="r-in">alternative = 'two.sided')$power"</span>, power <span class="op">=</span> <span class="fl">0.9</span>, alpha <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">power_standardized_alpha</span><span class="op">(</span>power_function <span class="op">=</span> <span class="st">"pwr::pwr.t.test(d = 0.3,</span></span></span>
+<span class="r-in"><span><span class="st">n = x, sig.level = a_stan, type = 'two.sample',</span></span></span>
+<span class="r-in"><span><span class="st">alternative = 'two.sided')$power"</span>, power <span class="op">=</span> <span class="fl">0.9</span>, alpha <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "The standardized alpha is0.0307147558416976"</span>
-<span class="r-in"><span class="va">res</span><span class="op">$</span><span class="va">N</span></span>
+<span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">N</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 265</span>
-<span class="r-in"><span class="co"># }</span></span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -132,7 +143,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

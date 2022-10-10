@@ -19,7 +19,7 @@ library(reshape2)
 library(MASS)
 library(magrittr)
 library(dplyr)
-
+library(pander)
 # Functions -----
 Superpower_options(emm = TRUE,
                    verbose = FALSE,
@@ -655,7 +655,7 @@ ui <- dashboardPage(
                    Once you click Submit Design the design details will appear and you can continue onto the power analysis."),
                 h3("Power Simulation Tab"),
                 h5("In this tab, you will setup the Monte Carlo simulation. You will have to specify a correction for multiple comparisons (default=none) and the alpha level (default=.05).
-                   If you have repeated measures you will need to specify the sphericity correction (default=none)."),
+                   If you have repeated measures, you will need to specify the sphericity correction (default=none)."),
                 h3("Download your Simulation"),
                 h5("Once your simulation is completed a button a button will appear on the sidebar to download a PDF")
               ),              
@@ -665,7 +665,7 @@ ui <- dashboardPage(
                 solidHeader = TRUE,
                 collapsible = FALSE,
                 strong("Current updates to Superpower's Power Shiny App"),
-                h5("Confidence intervals for simulation results now provided"))),
+                h5("Updated and streamlined design input. App now has an interactive menu for design and factor labels."))),
       # Design content
       tabItem(tabName = "design_tab",
               fluidRow(
@@ -675,20 +675,105 @@ ui <- dashboardPage(
                   strong("Specify the factorial design below"), br(),
                   "*Must be specified to continue*",
 
-                  h5("Add numbers that specify the number of levels in the factors (e.g., 2 for a factor with 2 levels). Add a 'w' after the number for within factors, or 'b' for between factors. Seperate factors with an asterisks. Thus '2b*3w' is a design with two factors, the first of which has 2 between levels, and the second of which has 3 within levels."),
-
-                  textInput(inputId = "design", label = "Design Input",
-                            value = "2b*2w"),
+                  h5("Add numbers that specify the number of levels in the 
+                     factors and the type of factor (i.e., between or within)"),
+                  selectInput("DesignLevel", "Factors in ANOVA",
+                              c("One-way" = 1,
+                                "Two-way" = 2,
+                                "Three-way" = 3
+                              ),
+                              selected = 2),
+                  wellPanel(h4("Factor 1 (a)"),
+                            fluidRow(
+                              
+                              column(5,
+                                     numericInput(inputId = "fct1lvl", label = "# of Levels",
+                                                  min = 2,
+                                                  step = 1,
+                                                  value = 2)),
+                              column(7,
+                                     selectInput("fct1type", "Factor Type",
+                                                 c("Between" = "b",
+                                                   "Within" = "w"
+                                                 ))))),
+                  conditionalPanel(condition = "input.DesignLevel != 1",
+                                   
+                                   wellPanel(h4("Factor 2 (b)"),
+                                             fluidRow(
+                                               
+                                               column(5,
+                                                      numericInput(inputId = "fct2lvl", label = "# of Levels",
+                                                                   min = 2,
+                                                                   step = 1,
+                                                                   value = 2)),
+                                               column(7,
+                                                      selectInput("fct2type", "Factor Type",
+                                                                  c("Between" = "b",
+                                                                    "Within" = "w"
+                                                                  )))))),
+                  conditionalPanel(condition = "input.DesignLevel == 3",
+                                   
+                                   wellPanel(h4("Factor 3 (c)"),
+                                             fluidRow(
+                                               
+                                               column(5,
+                                                      numericInput(inputId = "fct3lvl", label = "# of Levels",
+                                                                   min = 2,
+                                                                   step = 1,
+                                                                   value = 2)),
+                                               column(7,
+                                                      selectInput("fct3type", "Factor Type",
+                                                                  c("Between" = "b",
+                                                                    "Within" = "w"
+                                                                  )))))),
+                  #textInput(inputId = "design", label = "Design Input",
+                  #          value = "2b*2w"),
                   
                   selectInput("labelChoice", "Would you like to enter factor and level names?",
                               c("No" = "no" ,
                                 "Yes" = "yes" )),
                   
                   conditionalPanel(condition = "input.labelChoice == 'yes'",
-                                   h5("Specify one word for each factor (e.g., AGE and SPEED) and the level of each factor (e.g., old and yound for a factor age with 2 levels)."),
+                                   #h5("Specify one word for each factor (e.g., AGE and SPEED) and the level of each factor (e.g., old and yound for a factor age with 2 levels)."),
                                    
-                                   textInput("labelnames", label = "Factor & level labels",
-                                             value = "AGE,old,young,SPEED,fast,slow")),
+                                   #textInput("labelnames", label = "Factor & level labels",
+                                   #          value = "AGE,old,young,SPEED,fast,slow"),
+                                   wellPanel(h4("Factor 1 (a) names & labels"),
+                                             fluidRow(
+                                               
+                                               column(5,
+                                                      textInput(inputId = "fct1names", 
+                                                                label = "Factor Name",
+                                                                value = "A")),
+                                               column(7,
+                                                      uiOutput("aMatrix")))),
+                                   conditionalPanel(condition = "input.DesignLevel != 1",
+                                                    
+                                                    wellPanel(h4("Factor 2 (b) names & labels"),
+                                                              fluidRow(
+                                                                
+                                                                column(5,
+                                                                       textInput(inputId = "fct2names", 
+                                                                                 label = "Factor Name",
+                                                                                 value = "B")),
+                                                                column(7,
+                                                                       uiOutput("bMatrix"))))),
+                                   conditionalPanel(condition = "input.DesignLevel == 3",
+                                                    
+                                                    wellPanel(h4("Factor 3 (c)  names & labels"),
+                                                              fluidRow(
+                                                                column(
+                                                                  5,
+                                                                  textInput(
+                                                                    inputId = "fct3name",
+                                                                    label = "Factor Name",
+                                                                    value = "C"
+                                                                  )
+                                                                ),
+                                                                column(7,
+                                                                       uiOutput("cMatrix"))
+                                                              ))),
+                                   ),
 
                   #h5("Specify one word for each factor (e.g., AGE and SPEED) and the level of each factor (e.g., old and yound for a factor age with 2 levels)."),
                   #uiOutput("labelnames"),
@@ -737,14 +822,16 @@ ui <- dashboardPage(
                                    
                                    uiOutput("rMatrix"))),
 
-                  h5("Note that for each cell in the design, a mean must be provided. Thus, for a '2b*3w' design, 6 means need to be entered. Means need to be entered in the correct order. The app provides a plot so you can check if you entered means correctly."),
+                  h5("Note that for each cell in the design, a mean must be provided. The app provides a plot so you can check if you entered means correctly."),
 
                   strong("Means for Each Cell in the Design"),
                   
                   uiOutput("muMatrix"),
 
                   #Button to initiate the design
-                  h5("Click the button below to set up the design - Check the output to see if the design is as you intended, then you can run the simulation on the next tab."),
+                  h5("Click the button below to set up the design - 
+                     Check the output to see if the design is as you intended, 
+                     then you can run the simulation on the next tab."),
                   actionButton("designBut","Set-Up Design",
                                icon = icon("check-square"))
 
@@ -876,21 +963,48 @@ server <- function(input, output, session) {
                            label_list = 0,
                            emm_output = 0)
   
+  ## design string ----
+  des_string = reactive({
+    des_string = 1
+    if(input$DesignLevel == 1){
+      # fct1lvl
+      # fct1type
+      des_string = paste0(as.numeric(input$fct1lvl),
+                          as.character(input$fct1type))
+    } else if(input$DesignLevel == 2){
+      des_string = paste0(as.numeric(input$fct1lvl),
+                          as.character(input$fct1type),
+                          "*",
+                          as.numeric(input$fct2lvl),
+                          as.character(input$fct2type))
+    } else {
+      des_string = paste0(as.numeric(input$fct1lvl),
+                          as.character(input$fct1type),
+                          "*",
+                          as.numeric(input$fct2lvl),
+                          as.character(input$fct2type),
+                          "*",
+                          as.numeric(input$fct3lvl),
+                          as.character(input$fct3type))
+    }
+    return(des_string)
+  })
+  
 values$label_list <- reactive({  
   
-  design_labels <- ANOVA_design(design = input$design,
+  design_labels <- ANOVA_design(design = des_string(),
                                 n = prod(
                                   as.numeric(
                                     unlist(
                                       regmatches
-                                      (input$design,
+                                      (des_string(),
                                         gregexpr("[[:digit:]]+",
-                                                 input$design))))),
+                                                 des_string()))))),
                                 r = .5,
                                 sd = as.numeric(matrix(c(1), 1, 
-                                                       prod(as.numeric(strsplit(input$design, "\\D+")[[1]])))),
+                                                       prod(as.numeric(strsplit(des_string(), "\\D+")[[1]])))),
                                 mu = as.numeric(matrix(c(1), 1, 
-                                                       prod(as.numeric(strsplit(input$design, "\\D+")[[1]])))))
+                                                       prod(as.numeric(strsplit(des_string(), "\\D+")[[1]])))))
   colnames(design_labels$sigmatrix)
 
 })
@@ -900,36 +1014,72 @@ values$label_list <- reactive({
  output$sdMatrix <-  renderUI({matrixInput(
    "sdMatrix",
    value = matrix(c(1), 1, 
-                  prod(as.numeric(strsplit(input$design, "\\D+")[[1]])),
+                  prod(as.numeric(strsplit(des_string(), "\\D+")[[1]])),
                   dimnames = list(c("sd"),
-                                  c(label_function(input$design)))),
+                                  c(label_function(des_string())))),
    rows = list(names = TRUE),
    cols = list(names = TRUE),
-   copy = TRUE,
-   paste = TRUE
+   copy = FALSE,
+   paste = FALSE
  )
  })
  
  output$muMatrix <-  renderUI({matrixInput(
    "muMatrix",
    value = matrix(c(1), 1, 
-                  prod(as.numeric(strsplit(input$design, "\\D+")[[1]])),
+                  prod(as.numeric(strsplit(des_string(), "\\D+")[[1]])),
                   dimnames = list(c("mu"),
-                                  c(label_function(input$design)))),
+                                  c(label_function(des_string())))),
    rows = list(names = TRUE),
    cols = list(names = TRUE),
-   copy = TRUE,
-   paste = TRUE
+   copy = FALSE,
+   paste =FALSE
+ )
+ })
+ 
+ output$aMatrix <-  renderUI({matrixInput(
+   "aMatrix",
+   label = "Level Labels",
+   value = matrix(seq(1,as.numeric(input$fct1lvl),1), 1, 
+                  as.numeric(input$fct1lvl)),
+   rows = list(names = FALSE),
+   cols = list(names = FALSE),
+   copy = FALSE,
+   paste = FALSE
+ )
+ })
+ 
+ output$bMatrix <-  renderUI({matrixInput(
+   "bMatrix",
+   label = "Level Labels",
+   value = matrix(seq(1,as.numeric(input$fct2lvl),1), 1, 
+                  as.numeric(input$fct2lvl)),
+   rows = list(names = FALSE),
+   cols = list(names = FALSE),
+   copy = FALSE,
+   paste = FALSE
+ )
+ })
+ 
+ output$cMatrix <-  renderUI({matrixInput(
+   "cMatrix",
+   label = "Level Labels",
+   value = matrix(seq(1,as.numeric(input$fct3lvl),1), 1, 
+                  as.numeric(input$fct3lvl)),
+   rows = list(names = FALSE),
+   cols = list(names = FALSE),
+   copy = FALSE,
+   paste = FALSE
  )
  })
  
  output$rMatrix <-  renderUI({matrixInput(
    "rMatrix",
-   value = matrix(diag(prod(as.numeric(strsplit(input$design, "\\D+")[[1]]))), 
-                  prod(as.numeric(strsplit(input$design, "\\D+")[[1]])), 
-                  prod(as.numeric(strsplit(input$design, "\\D+")[[1]])),
-                  dimnames = list(c(label_function(input$design)),
-                                  c(label_function(input$design)))) ,
+   value = matrix(diag(prod(as.numeric(strsplit(des_string(), "\\D+")[[1]]))), 
+                  prod(as.numeric(strsplit(des_string(), "\\D+")[[1]])), 
+                  prod(as.numeric(strsplit(des_string(), "\\D+")[[1]])),
+                  dimnames = list(c(label_function(des_string())),
+                                  c(label_function(des_string())))) ,
    rows = list(names = TRUE),
    cols = list(names = TRUE),
    class = "numeric",
@@ -939,7 +1089,7 @@ values$label_list <- reactive({
  })
 
 
- output$corr_display = reactive(grepl("w",as.character(input$design)))
+ output$corr_display = reactive(grepl("w",as.character(des_string())))
  outputOptions(output, "corr_display", suspendWhenHidden = FALSE)
  
  output$sample_size <- renderUI({
@@ -949,18 +1099,18 @@ values$label_list <- reactive({
                   as.numeric(
                     unlist(
                       regmatches
-                      (input$design,
+                      (des_string(),
                         gregexpr("[[:digit:]]+",
-                                 input$design))))),
+                                 des_string()))))),
                 max = 1000, value = 80, step = 1)
  })
  
  output$sample_size2 <-  renderUI({matrixInput(
    "sample_size2",
    value = matrix(c(1), 1, 
-                  prod(as.numeric(strsplit(input$design, "\\D+")[[1]])),
+                  prod(as.numeric(strsplit(des_string(), "\\D+")[[1]])),
                   dimnames = list(c("n"),
-                                  c(label_function(input$design)))),
+                                  c(label_function(des_string())))),
    rows = list(names = TRUE),
    cols = list(names = TRUE),
    copy = TRUE,
@@ -975,38 +1125,83 @@ values$label_list <- reactive({
  #              as.numeric(
  #                unlist(
  #                  regmatches
- #                  (input$design,
+ #                  (des_string(),
  #                    gregexpr("[[:digit:]]+",
- #                             input$design))))),
+ #                             des_string()))))),
  #            max = 1000, value = 80)
  #})
 
-
+ ## label list -----
+ ll_list = reactive({
+   ll_list = 1
+   if(input$DesignLevel == 1){
+     # fct1lvl
+     # fct1type
+     fct1 = input$fct1names
+     fct2 = input$fct2names
+     fct3 = input$fct3names
+     ll_list = setNames(list(input$aMatrix),
+                        c(fct1))
+   } else if(input$DesignLevel == 2){
+     fct1 = input$fct1names
+     fct2 = input$fct2names
+     fct3 = input$fct3names
+     ll_list = setNames(list(input$aMatrix,
+                             input$bMatrix),
+                        c(fct1,
+                          fct2))
+   } else {
+     fct1 = input$fct1names
+     fct2 = input$fct2names
+     fct3 = input$fct3names
+     ll_list = setNames(list(input$aMatrix,
+                             input$bMatrix,
+                             input$cMatrix),
+                        c(fct1,
+                          fct2,
+                          fct3))
+   }
+   return(ll_list)
+ })
 
   observeEvent(input$designBut, {
 
-    values$design_result <- suppressWarnings(ANOVA_design(design = as.character(input$design),
-                                                                      n = if(input$nChoice =="yes"){
-                                                                        as.numeric(input$sample_size2)
-                                                                      }
-                                                                        else{as.numeric(input$sample_size)},
-                                                                      mu = as.numeric(input$muMatrix),
-                                                                      labelnames = if (input$labelChoice == "yes"){
-                                                                        as.vector(unlist(strsplit(gsub("[[:space:]]", "",input$labelnames), ",")))
-                                                                        }else{
-                                                                          NULL
-                                                                        },
-                                                                      sd = if(input$sdChoice == "yes"){
-                                                                        as.numeric(input$sdMatrix)
-                                                                      }else{
-                                                                        as.numeric(input$sd_common)
-                                                                      },
-                                                                      r = if(input$rChoice == "yes"){
-                                                                        as.numeric(Matrix::forceSymmetric(input$rMatrix, uplo="U"))
-                                                                      }else{
-                                                                        as.numeric(input$r_common)
-                                                                      },
-                                                                      plot = FALSE))
+    values$design_result <- suppressWarnings(
+      ANOVA_design(
+        design = as.character(des_string()),
+        n = if (input$nChoice ==
+                "yes") {
+          as.numeric(input$sample_size2)
+        }
+        else{
+          as.numeric(input$sample_size)
+        },
+        mu = as.numeric(input$muMatrix),
+        #labelnames = if (input$labelChoice == "yes") {
+        #  as.vector(unlist(strsplit(
+        #    gsub("[[:space:]]", "", input$labelnames), ","
+        #  )))
+        #} else{
+        #  NULL
+        #},
+        label_list = if (input$labelChoice == "yes") {
+          ll_list()
+        } else{
+          NULL
+        },
+        sd = if (input$sdChoice == "yes") {
+          as.numeric(input$sdMatrix)
+        } else{
+          as.numeric(input$sd_common)
+        },
+        r = if (input$rChoice == "yes") {
+          as.numeric(Matrix::forceSymmetric(input$rMatrix, uplo = "U"))
+        } else{
+          as.numeric(input$r_common)
+        },
+        plot = FALSE
+      )
+    )
     values$emm_output <- as.character(values$design_result$frml2)[2] 
     updateTextInput(session, "emm_comp", value = values$emm_output)
     
@@ -1123,7 +1318,8 @@ values$label_list <- reactive({
                      manova = values$power_result$manova_result,
                      emm_p_adjust = input$emm_p_adjust,
                      emm = input$emm,
-                     emm_model = input$emm_model)
+                     emm_model = input$emm_model,
+                     session = sessionInfo())
 
       # Knit the document, passing in the `params` list, and eval it in a
       # child of the global environment (this isolates the code in the document

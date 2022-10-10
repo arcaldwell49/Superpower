@@ -1,6 +1,6 @@
 Package: Superpower
 Title: Simulation-Based Power Analysis for Factorial Designs
-Version: 0.2.0
+Version: 0.2.1
 Authors@R: c(person(given = "Aaron",
            family = "Caldwell",
            role = c("aut", "cre"),

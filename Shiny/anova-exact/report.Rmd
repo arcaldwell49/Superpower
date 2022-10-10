@@ -37,7 +37,7 @@ valr = function(x){
 
 Below are the results from a power analysis using an exact simulation of a factorial design wherein the data are sampled from an empirical distribution. If you encounter any problems please visit our GitHub page (https://github.com/arcaldwell49/Superpower) to the raise the issue.
 
-# Design
+# Study Design
 
 `r paste(params$design)`
 

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Superpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
       </span>
     </div>
 
@@ -75,46 +75,70 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ANOVA_compromise</span><span class="op">(</span>
-  <span class="va">design_result</span>,
-  correction <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"correction"</span><span class="op">)</span>,
-  emm <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"emm"</span><span class="op">)</span>,
-  emm_model <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"emm_model"</span><span class="op">)</span>,
-  contrast_type <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"contrast_type"</span><span class="op">)</span>,
-  <span class="va">emm_comp</span>,
-  costT1T2 <span class="op">=</span> <span class="fl">1</span>,
-  priorH1H0 <span class="op">=</span> <span class="fl">1</span>,
-  error <span class="op">=</span> <span class="st">"minimal"</span>,
-  liberal_lambda <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"liberal_lambda"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ANOVA_compromise</span><span class="op">(</span></span>
+<span>  <span class="va">design_result</span>,</span>
+<span>  correction <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"correction"</span><span class="op">)</span>,</span>
+<span>  emm <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"emm"</span><span class="op">)</span>,</span>
+<span>  emm_model <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"emm_model"</span><span class="op">)</span>,</span>
+<span>  contrast_type <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"contrast_type"</span><span class="op">)</span>,</span>
+<span>  <span class="va">emm_comp</span>,</span>
+<span>  costT1T2 <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  priorH1H0 <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  error <span class="op">=</span> <span class="st">"minimal"</span>,</span>
+<span>  liberal_lambda <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"liberal_lambda"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>design_result</dt>
 <dd><p>Output from the ANOVA_design function</p></dd>
+
+
 <dt>correction</dt>
 <dd><p>Set a correction of violations of sphericity. This can be set to "none", "GG" Greenhouse-Geisser, and "HF" Huynh-Feldt</p></dd>
+
+
 <dt>emm</dt>
 <dd><p>Set to FALSE to not perform analysis of estimated marginal means</p></dd>
+
+
 <dt>emm_model</dt>
 <dd><p>Set model type ("multivariate", or "univariate") for estimated marginal means</p></dd>
+
+
 <dt>contrast_type</dt>
 <dd><p>Select the type of comparison for the estimated marginal means. Default is pairwise. See ?emmeans::`contrast-methods` for more details on acceptable methods.</p></dd>
+
+
 <dt>emm_comp</dt>
 <dd><p>Set the comparisons for estimated marginal means comparisons. This is a factor name (a), combination of factor names (a+b), or for simple effects a | sign is needed (a|b)</p></dd>
+
+
 <dt>costT1T2</dt>
 <dd><p>Relative cost of Type 1 errors vs. Type 2 errors.</p></dd>
+
+
 <dt>priorH1H0</dt>
 <dd><p>How much more likely a-priori is H1 than H0? Default is 1: equally likely.</p></dd>
+
+
 <dt>error</dt>
 <dd><p>Either "minimal" to minimize error rates, or "balance" to balance error rates.</p></dd>
+
+
 <dt>liberal_lambda</dt>
 <dd><p>Logical indicator of whether to use the liberal (cohen_f^2\*(num_df+den_df)) or conservative (cohen_f^2\*den_df) calculation of the noncentrality (lambda) parameter estimate. Default is FALSE.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Returns dataframe with simulation data (power and effect sizes!), optimal alpha level, obtained beta error rate (1-power/100), and objective (see below for details). If NA is obtained in a alpha/beta/objective columns this indicates there is no effect for this particular comparison. Also returns alpha-beta compromise plots for all comparisons. Note: Cohen's f = sqrt(pes/1-pes) and the noncentrality parameter is = f^2*df(error)</p><dl><dt><code>"aov_comp"</code></dt>
+    
+
+<p>Returns dataframe with simulation data (power and effect sizes!), optimal alpha level, obtained beta error rate (1-power/100), and objective (see below for details). If NA is obtained in a alpha/beta/objective columns this indicates there is no effect for this particular comparison. Also returns alpha-beta compromise plots for all comparisons. Note: Cohen's f = sqrt(pes/1-pes) and the noncentrality parameter is = f^2*df(error)</p>
+
+
+<dl><dt><code>"aov_comp"</code></dt>
 <dd><p>A dataframe of ANOVA-level results.</p></dd>
 
   <dt><code>"aov_plotlist"</code></dt>
@@ -147,14 +171,14 @@ objective = value that is the result of the minimization, either 0 (for balance)
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"3b*2w"</span>,</span>
-<span class="r-in">n <span class="op">=</span> <span class="fl">6</span>,</span>
-<span class="r-in">mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span>,</span>
-<span class="r-in">sd <span class="op">=</span> <span class="fl">3</span>,</span>
-<span class="r-in">plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">example</span> <span class="op">=</span> <span class="fu">ANOVA_compromise</span><span class="op">(</span><span class="va">design_result</span>,emm <span class="op">=</span> <span class="cn">TRUE</span>,emm_comp <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"3b*2w"</span>,</span></span>
+<span class="r-in"><span>n <span class="op">=</span> <span class="fl">6</span>,</span></span>
+<span class="r-in"><span>mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>sd <span class="op">=</span> <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">example</span> <span class="op">=</span> <span class="fu">ANOVA_compromise</span><span class="op">(</span><span class="va">design_result</span>,emm <span class="op">=</span> <span class="cn">TRUE</span>,emm_comp <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -169,7 +193,7 @@ objective = value that is the result of the minimization, either 0 (for balance)
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

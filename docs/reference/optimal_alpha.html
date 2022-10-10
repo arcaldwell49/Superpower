@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Superpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
       </span>
     </div>
 
@@ -75,31 +75,42 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">optimal_alpha</span><span class="op">(</span>
-  <span class="va">power_function</span>,
-  costT1T2 <span class="op">=</span> <span class="fl">1</span>,
-  priorH1H0 <span class="op">=</span> <span class="fl">1</span>,
-  error <span class="op">=</span> <span class="st">"minimal"</span>,
-  plot <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"plot"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">optimal_alpha</span><span class="op">(</span></span>
+<span>  <span class="va">power_function</span>,</span>
+<span>  costT1T2 <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  priorH1H0 <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  error <span class="op">=</span> <span class="st">"minimal"</span>,</span>
+<span>  plot <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"plot"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>power_function</dt>
 <dd><p>Function that outputs the power, calculated with an analytic function.</p></dd>
+
+
 <dt>costT1T2</dt>
 <dd><p>Relative cost of Type 1 errors vs. Type 2 errors.</p></dd>
+
+
 <dt>priorH1H0</dt>
 <dd><p>How much more likely a-priori is H1 than H0?</p></dd>
+
+
 <dt>error</dt>
 <dd><p>Either "minimal" to minimize error rates, or "balance" to balance error rate</p></dd>
+
+
 <dt>plot</dt>
 <dd><p>When set to TRUE, automatically outputs a plot of alpha (x-axis) and beta (y-axis) error rates</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>alpha = alpha or Type 1 error that minimizes or balances combined error rates
+    
+
+<p>alpha = alpha or Type 1 error that minimizes or balances combined error rates
 beta = beta or Type 2 error that minimizes or balances combined error rates
 objective = value that is the result of the minimization, either 0 (for balance) or the combined weighted error rates
 plot =</p>
@@ -113,14 +124,14 @@ plot =</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## Optimize power for a independent t-test, smallest effect of interest</span></span>
-<span class="r-in"><span class="co">## d = 0.5, 100 participants per condition</span></span>
-<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">optimal_alpha</span><span class="op">(</span>power_function <span class="op">=</span> <span class="st">"pwr::pwr.t.test(d = 0.5, n = 100,</span>
-<span class="r-in">sig.level = x, type = 'two.sample', alternative = 'two.sided')$power"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Optimize power for a independent t-test, smallest effect of interest</span></span></span>
+<span class="r-in"><span><span class="co">## d = 0.5, 100 participants per condition</span></span></span>
+<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">optimal_alpha</span><span class="op">(</span>power_function <span class="op">=</span> <span class="st">"pwr::pwr.t.test(d = 0.5, n = 100,</span></span></span>
+<span class="r-in"><span><span class="st">sig.level = x, type = 'two.sample', alternative = 'two.sided')$power"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="optimal_alpha-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="va">res</span><span class="op">$</span><span class="va">alpha</span></span>
+<span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">alpha</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.05101728</span>
-<span class="r-in"><span class="va">res</span><span class="op">$</span><span class="va">beta</span></span>
+<span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">beta</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.05853977</span>
 </code></pre></div>
     </div>
@@ -136,7 +147,7 @@ plot =</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

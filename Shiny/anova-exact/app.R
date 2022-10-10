@@ -137,7 +137,10 @@ ui <- dashboardPage(
                 h3("Exact Power Tab"),
                 h5("In this tab, you will setup an *exact* simulation. All you can do at this stage is set the alpha level (default=.05) and decide the estimated marinal means analysis (optional)"),
                 h3("Power curve Tab"),
-                h5("In this tab, you can find your desired power (default = 90%) power across a range of sample sizes. All you need to do is set a minimum and maximum sample size. This tab will also allow you to download csv files including the power of ANOVA and estimated marginal means across a range of sample sizes."),
+                h5("In this tab, you can \"find\" your desired power (default = 90%) power across a range of sample sizes. 
+                   All you need to do is set a minimum and maximum sample size. 
+                   This tab will also allow you to download csv files 
+                   of the power curve results."),
                 h3("Download your Simulation"),
                 h5("Once your simulation is completed a button a button will appear on the sidebar to download a PDF")
               ),              
@@ -147,7 +150,7 @@ ui <- dashboardPage(
                 solidHeader = TRUE,
                 collapsible = FALSE,
                 strong("Current updates to Superpower's Exact Shiny App"),
-                h5("App uses the updated ANOVA_exact2 function. There are no longer sample size limitations for the function")
+                h5("Updated and streamlined design input. App now has an interactive menu for design and factor labels.")
               )),
       tabItem(tabName = "design_tab",
               fluidRow(
@@ -216,9 +219,9 @@ ui <- dashboardPage(
                   conditionalPanel(condition = "input.labelChoice == 'yes'",
                   h5("Specify one word for each factor (e.g., AGE and SPEED) and the level of each factor (e.g., old and yound for a factor age with 2 levels)."),
                   ## Label input ----
-                  textInput("labelnames", label = "Factor & level labels",
-                            value = "AGE,old,young,SPEED,fast,slow"),
-                  textOutput(outputId="test1"),
+                  #textInput("labelnames", label = "Factor & level labels",
+                  #          value = "AGE,old,young,SPEED,fast,slow"),
+                  #textOutput(outputId="test1"),
                   wellPanel(h4("Factor 1 (a) names & labels"),
                             fluidRow(
                               
@@ -530,18 +533,6 @@ des_string = reactive({
   output$bMatrix <-  renderUI({matrixInput(
     "bMatrix",
     label = "Level Labels",
-    value = matrix(seq(1,as.numeric(input$fct1lvl),1), 1, 
-                   as.numeric(input$fct1lvl)),
-    rows = list(names = FALSE),
-    cols = list(names = FALSE),
-    copy = FALSE,
-    paste = FALSE
-  )
-  })
-  
-  output$bMatrix <-  renderUI({matrixInput(
-    "bMatrix",
-    label = "Level Labels",
     value = matrix(seq(1,as.numeric(input$fct2lvl),1), 1, 
                    as.numeric(input$fct2lvl)),
     rows = list(names = FALSE),
@@ -595,6 +586,7 @@ des_string = reactive({
     }
     return(ll_list)
   })
+  
   output$test1 <- renderPrint({print(ll_list())})
   #Produce ANOVA design
   observeEvent(input$designBut, {values$design_result <- ANOVA_design(design = as.character(des_string() ),
