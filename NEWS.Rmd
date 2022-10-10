@@ -5,6 +5,11 @@ output: github_document
 
 Updated `r format(Sys.time(), "%a %b %d %Y")`
 
+# Superpower 0.2.1 -- "Jade"
+- Minor fix to the plot_power function
+- Major updates to the Shiny apps
+  - Changes design input to a more friendly UI
+
 # Superpower 0.2.0 -- "Green Lantern"
 - Added power_oneway_ancova & power_con_ancova to allow for a basic power analysis of an analysis of covariance (ANCOVA) for one-way, between group designs.
 - Added ANCOVA_analytic and ANCOVA_contrast which allow for power analyses for factorial designs and user specified contrasts.

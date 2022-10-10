@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Superpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
       </span>
     </div>
 
@@ -75,43 +75,62 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ANCOVA_contrast</span><span class="op">(</span>
-  <span class="va">cmat</span>,
-  <span class="va">mu</span>,
-  n <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">sd</span>,
-  r2 <span class="op">=</span> <span class="cn">NULL</span>,
-  <span class="va">n_cov</span>,
-  alpha_level <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"alpha_level"</span><span class="op">)</span>,
-  beta_level <span class="op">=</span> <span class="cn">NULL</span>,
-  round_up <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ANCOVA_contrast</span><span class="op">(</span></span>
+<span>  <span class="va">cmat</span>,</span>
+<span>  <span class="va">mu</span>,</span>
+<span>  n <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">sd</span>,</span>
+<span>  r2 <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">n_cov</span>,</span>
+<span>  alpha_level <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"alpha_level"</span><span class="op">)</span>,</span>
+<span>  beta_level <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  round_up <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>cmat</dt>
 <dd><p>Matrix of the specific contrasts of interest</p></dd>
+
+
 <dt>mu</dt>
 <dd><p>Vector specifying mean for each condition</p></dd>
+
+
 <dt>n</dt>
 <dd><p>Sample size in each condition</p></dd>
+
+
 <dt>sd</dt>
 <dd><p>Standard deviation for all conditions (or a vector specifying the sd for each condition)</p></dd>
+
+
 <dt>r2</dt>
 <dd><p>Coefficient of Determination of the model with only the covariates</p></dd>
+
+
 <dt>n_cov</dt>
 <dd><p>Number of covariates</p></dd>
+
+
 <dt>alpha_level</dt>
 <dd><p>Alpha level used to determine statistical significance</p></dd>
+
+
 <dt>beta_level</dt>
 <dd><p>Type II error probability (power/100-1)</p></dd>
+
+
 <dt>round_up</dt>
 <dd><p>Logical indicator (default = TRUE) for whether to round up sample size calculations to nearest whole number</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Object of class "power.htest", a list of the arguments (including the computed one) augmented with method and note elements.</p>
+    
+
+<p>Object of class "power.htest", a list of the arguments (including the computed one) augmented with method and note elements.</p>
     </div>
     <div id="references">
     <h2>References</h2>
@@ -122,12 +141,12 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu">ANCOVA_contrast</span><span class="op">(</span>cmat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>,</span>
-<span class="r-in">n <span class="op">=</span> <span class="fl">15</span>,</span>
-<span class="r-in">mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>,</span>
-<span class="r-in">sd <span class="op">=</span> <span class="fl">1</span>,</span>
-<span class="r-in">r2 <span class="op">=</span> <span class="fl">.2</span>,</span>
-<span class="r-in">n_cov <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">ANCOVA_contrast</span><span class="op">(</span>cmat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>n <span class="op">=</span> <span class="fl">15</span>,</span></span>
+<span class="r-in"><span>mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>sd <span class="op">=</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>r2 <span class="op">=</span> <span class="fl">.2</span>,</span></span>
+<span class="r-in"><span>n_cov <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      Power Calculation for ANCOVA contrast </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -158,7 +177,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

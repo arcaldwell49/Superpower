@@ -337,9 +337,9 @@ plot_power <- function(design_result,
     plot_data_emm <- suppressMessages(melt(power_df_emm, id = c('n')))
     
     #create data frame for annotation for desired power for emmeans
-    annotate_df_emm <- as.data.frame(matrix(0, ncol = 4, nrow = length(levels(exact_result$emm_results$contrast)))) #three rows, for N, power, and variable label
+    annotate_df_emm <- as.data.frame(matrix(0, ncol = 4, nrow = length((exact_result$emm_results$contrast)))) #three rows, for N, power, and variable label
     colnames(annotate_df_emm) <- c("n", "power", "variable", "label") # add columns names
-    annotate_df_emm$variable <- as.factor(levels(exact_result$emm_results$contrast)) #add variable label names
+    annotate_df_emm$variable <- as.factor((exact_result$emm_results$contrast)) #add variable label names
     emm_n = annotate_df_emm
     
     i<-1

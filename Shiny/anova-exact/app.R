@@ -15,7 +15,8 @@ library(ggplot2)
 library(rmarkdown)
 library(knitr)
 library(kableExtra)
-
+library(scales)
+library(pander)
 # functions ----
 label_function <- function(design, labelnames = NULL) {
   #If labelnames are not provided, they are generated.
@@ -35,9 +36,9 @@ label_function <- function(design, labelnames = NULL) {
     stop("Variable 'design' does not match the length of the labelnames")
   }
   
-  ###############
+
   # 1. Specify Design and Simulation----
-  ###############
+
   # String used to specify the design
   # Add numbers for each factor with 2 levels, e.g., 2 for a factor with 2 levels
   # Add a 'w' after the number for within factors, and a 'b' for between factors
@@ -53,9 +54,9 @@ label_function <- function(design, labelnames = NULL) {
     stop("Each factor can only have between 2 and 99 levels")
   }
   
-  ###############
+
   # 2. Create Factors and Design ----
-  ###############
+
   
   #Count number of factors in design
   factors <- length(factor_levels)
@@ -96,7 +97,8 @@ label_function <- function(design, labelnames = NULL) {
 
 Superpower_options(emm = TRUE,
                    verbose = FALSE,
-                   plot = FALSE)
+                   plot = FALSE,
+                   liberal_labmda = FALSE)
 
 # UI -----
 # Define UI for application
@@ -118,24 +120,27 @@ ui <- dashboardPage(
     useShinyjs(),
 
     tabItems(
-      # Design content
+      ## info page content -----
       tabItem(tabName = "info_tab",
               box(
                 title = "Using this App",
                 status = "danger",
                 solidHeader = TRUE,
                 collapsible = FALSE,
-                h5("Please cite as: Lakens, D., & Caldwell, A. R. (2019). Simulation-Based Power-Analysis for Factorial ANOVA Designs. https://doi.org/10.31234/osf.io/baxsf"),
+                h5("Please cite as: Lakens D, Caldwell AR. Simulation-Based Power Analysis for Factorial Analysis of Variance Designs. Advances in Methods and Practices in Psychological Science. 2021;4(1). doi:10.1177/2515245920951503"),
                 h5("This Shiny app is for performing 'exact' simuations of factorial experimental designs in order to estimate power for an ANOVA and follow-up pairwise comparisons.
                  This app will not allow you to vary the standard deviations or the correlations in within-subjects designs.
                  If you do need/want to violate these assumptions please use the ANOVA_power app."),
                 a("Click here for the other app", href = "http://shiny.ieis.tue.nl/anova_power/"),
                 h3("The Design Tab"),
-                h5("You must start with the Design tab in order to perform a power analysis. At this stage you must establish the parameters of the design (sample size, standard deviation, etc). *Please note the sample size must be greater than the product of the cells \n For example, 2b*2w = 4 and requires a sample size of at least 5 per cell. If this is entered incorrectly, then the \'Submit Design\' button will be disabled. \n Once you click \'Submit Design\' the design details will appear and you can continue onto the power analysis."),
+                h5("You must start with the Design tab in order to perform a power analysis. At this stage you must establish the parameters of the design (sample size, standard deviation, etc). \n Once you click \'Submit Design\' the design details will appear and you can continue onto the Exact Power tab."),
                 h3("Exact Power Tab"),
                 h5("In this tab, you will setup an *exact* simulation. All you can do at this stage is set the alpha level (default=.05) and decide the estimated marinal means analysis (optional)"),
                 h3("Power curve Tab"),
-                h5("In this tab, you can find your desired power (default = 90%) power across a range of sample sizes. All you need to do is set a minimum and maximum sample size. This tab will also allow you to download csv files including the power of ANOVA and estimated marginal means across a range of sample sizes."),
+                h5("In this tab, you can \"find\" your desired power (default = 90%) power across a range of sample sizes. 
+                   All you need to do is set a minimum and maximum sample size. 
+                   This tab will also allow you to download csv files 
+                   of the power curve results."),
                 h3("Download your Simulation"),
                 h5("Once your simulation is completed a button a button will appear on the sidebar to download a PDF")
               ),              
@@ -145,7 +150,7 @@ ui <- dashboardPage(
                 solidHeader = TRUE,
                 collapsible = FALSE,
                 strong("Current updates to Superpower's Exact Shiny App"),
-                h5("App uses the updated ANOVA_exact2 function. There are no longer sample size limtations for the function")
+                h5("Updated and streamlined design input. App now has an interactive menu for design and factor labels.")
               )),
       tabItem(tabName = "design_tab",
               fluidRow(
@@ -154,10 +159,58 @@ ui <- dashboardPage(
                   strong("Specify the factorial design below"), br(),
                   "*Must be specified to continue*",
 
-                  h5("Add numbers for each factor that specify the number of levels in the factors (e.g., 2 for a factor with 2 levels). Add a 'w' after the number for within factors, and a 'b' for between factors. Seperate factors with a * (asterisks). Thus '2b*3w' is a design with two factors, the first of which has 2 between levels, and the second of which has 3 within levels."),
-
-                  textInput(inputId = "design", label = "Design Input",
-                            value = "2b*2w"),
+                  h5("Select the type of ANOVA, and then selct the number and types of factors below."),
+                  selectInput("DesignLevel", "Factors in ANOVA",
+                              c("One-way" = 1,
+                                "Two-way" = 2,
+                                "Three-way" = 3
+                              ),
+                              selected = 2),
+                  wellPanel(h4("Factor 1 (a)"),
+                            fluidRow(
+                              
+                              column(5,
+                                     numericInput(inputId = "fct1lvl", label = "# of Levels",
+                                                  min = 2,
+                                                  step = 1,
+                                                  value = 2)),
+                              column(7,
+                                     selectInput("fct1type", "Factor Type",
+                                                 c("Between" = "b",
+                                                   "Within" = "w"
+                                                 ))))),
+                  conditionalPanel(condition = "input.DesignLevel != 1",
+                                   
+                                   wellPanel(h4("Factor 2 (b)"),
+                                   fluidRow(
+                                   
+                                   column(5,
+                                   numericInput(inputId = "fct2lvl", label = "# of Levels",
+                                                min = 2,
+                                                step = 1,
+                                                value = 2)),
+                                   column(7,
+                                          selectInput("fct2type", "Factor Type",
+                                                      c("Between" = "b",
+                                                        "Within" = "w"
+                                                      )))))),
+                  conditionalPanel(condition = "input.DesignLevel == 3",
+                                   
+                                   wellPanel(h4("Factor 3 (c)"),
+                                             fluidRow(
+                                               
+                                               column(5,
+                                                      numericInput(inputId = "fct3lvl", label = "# of Levels",
+                                                                   min = 2,
+                                                                   step = 1,
+                                                                   value = 2)),
+                                               column(7,
+                                                      selectInput("fct3type", "Factor Type",
+                                                                  c("Between" = "b",
+                                                                    "Within" = "w"
+                                                                  )))))),
+                  #textInput(inputId = "design", label = "Design Input",
+                  #          value = "2b*2w"),
                   
                   selectInput("labelChoice", "Would you like to enter factor and level names?",
                               c("No" = "no",
@@ -165,28 +218,67 @@ ui <- dashboardPage(
                                 )),
                   conditionalPanel(condition = "input.labelChoice == 'yes'",
                   h5("Specify one word for each factor (e.g., AGE and SPEED) and the level of each factor (e.g., old and yound for a factor age with 2 levels)."),
+                  ## Label input ----
+                  #textInput("labelnames", label = "Factor & level labels",
+                  #          value = "AGE,old,young,SPEED,fast,slow"),
+                  #textOutput(outputId="test1"),
+                  wellPanel(h4("Factor 1 (a) names & labels"),
+                            fluidRow(
+                              
+                              column(5,
+                                     textInput(inputId = "fct1names", 
+                                               label = "Factor Name",
+                                               value = "A")),
+                              column(7,
+                                     uiOutput("aMatrix")))),
+                  conditionalPanel(condition = "input.DesignLevel != 1",
+                                   
+                                   wellPanel(h4("Factor 2 (b) names & labels"),
+                                             fluidRow(
+                                               
+                                               column(5,
+                                                      textInput(inputId = "fct2names", 
+                                                                   label = "Factor Name",
+                                                                   value = "B")),
+                                               column(7,
+                                                      uiOutput("bMatrix"))))),
+                  conditionalPanel(condition = "input.DesignLevel == 3",
+                                   
+                                   wellPanel(h4("Factor 3 (c)  names & labels"),
+                                             fluidRow(
+                                               column(
+                                                 5,
+                                                 textInput(
+                                                   inputId = "fct3name",
+                                                   label = "Factor Name",
+                                                   value = "C"
+                                                 )
+                                               ),
+                                               column(7,
+                                                      uiOutput("cMatrix"))
+                                             ))), ), 
+                  
+                  wellPanel(
+                    fluidRow(
+                  column(6,uiOutput("sample_size")),
 
-                  textInput("labelnames", label = "Factor & level labels",
-                            value = "AGE,old,young,SPEED,fast,slow")),
-
-                  uiOutput("sample_size"),
-
-                  numericInput(inputId = "sd", label = "Common Standard Deviation",
+                  column(6,numericInput(inputId = "sd", label = "Standard Deviation",
                             min = 0,
                             step = .01,
-                            value = 1.03),
+                            value = 1.03)),
                   conditionalPanel(condition = "output.corr_display == true",
-                  h5("Specify the correlation for within-subjects factors."),
+                  #h5("Specify the correlation for within-subjects factors."),
 
                   #sliderInput("r",
                   #            label = "Common Correlation among Within-Subjects Factors",
                   #            min = 0, max = 1, value = 0.87),
-                  numericInput("r", label = "Common Correlation among Within-Subjects Factors", value = .87, 
+                  numericInput("r", label = "Correlation among Within-Subjects Factors", value = .87, 
                                min = .0000000000000000000000000000000001, 
                                max = 1,
-                               step = .001)),
+                               step = .001))
+                  )),
 
-                  h5("Note that for each cell in the design, a mean must be provided. Thus, for a '2b*3w' design, 6 means need to be entered. Means need to be entered in the correct order. The app provides a plot so you can check if you entered means correctly. The general principle has designated factors (i.e., AGE and SPEED) and levels (e.g., old, young)."),
+                  h5("Note that for each cell in the design, a mean must be provided. Means need to be entered in the correct order. The app provides a plot so you can check if you entered means correctly."),
 
                   #textInput("mu", label = "Vector of Means",
                   #          value = "1.03, 1.21, 0.98, 1.01"),
@@ -333,37 +425,57 @@ ui <- dashboardPage(
   ) #end dashboardBody
 )
 
-
-###############################################################################
-###############################################################################
-###############################################################################
-###############################################################################
-###############################################################################
-###############################################################################
-###############################################################################
-###############################################################################
-###############################################################################
-
 # Server -----
 # Define server logic
 server <- function(input, output, session) {
-
   #Create set of reactive values
   values <- reactiveValues(design_result = 0,
                            power_result = 0,
                            power_curve = 0,
-                           emm_output = 0)
-  observe({
-    shinyjs::toggleState("designBut", input$sample_size >= (prod(
-      as.numeric(
-        unlist(
-          regmatches
-          (input$design,
-            gregexpr("[[:digit:]]+",
-                     input$design))))) + 1))
-  })
+                           emm_output = 0,
+                           des_string = 1)
+  #observe({
+  #  des_string = input$DesignLevel
+  #})
+  #des_log = reactive({input$DesignLevel})
+## design string ----
+des_string = reactive({
+  des_string = 1
+  if(input$DesignLevel == 1){
+    # fct1lvl
+    # fct1type
+    des_string = paste0(as.numeric(input$fct1lvl),
+                        as.character(input$fct1type))
+  } else if(input$DesignLevel == 2){
+    des_string = paste0(as.numeric(input$fct1lvl),
+                        as.character(input$fct1type),
+                        "*",
+                        as.numeric(input$fct2lvl),
+                        as.character(input$fct2type))
+  } else {
+    des_string = paste0(as.numeric(input$fct1lvl),
+                        as.character(input$fct1type),
+                        "*",
+                        as.numeric(input$fct2lvl),
+                        as.character(input$fct2type),
+                        "*",
+                        as.numeric(input$fct3lvl),
+                        as.character(input$fct3type))
+  }
+  return(des_string)
+})
   
-  output$corr_display = reactive(grepl("w",as.character(input$design)))
+  #observe({
+  #  shinyjs::toggleState("designBut", input$sample_size >= (prod(
+  #    as.numeric(
+  #      unlist(
+  #        regmatches
+  #        (des_string(),
+  #          gregexpr("[[:digit:]]+",
+  #                   des_string()))))) + 1))
+  #})
+  
+  output$corr_display = reactive(grepl("w",as.character(des_string() )))
   outputOptions(output, "corr_display", suspendWhenHidden = FALSE)
   
   output$sample_size <- renderUI({
@@ -373,12 +485,13 @@ server <- function(input, output, session) {
                    as.numeric(
                      unlist(
                        regmatches
-                       (input$design,
+                       (des_string(),
                          gregexpr("[[:digit:]]+",
-                                  input$design))))) + 1),
+                                  des_string() ))))) + 1),
                  max = 1000, value = 80, step = 1)
   })
   
+
   #Old sample size dynamic input
   #output$sample_size <- renderUI({sliderInput("sample_size",
   #            label = "Sample Size per Cell",
@@ -391,27 +504,100 @@ server <- function(input, output, session) {
   #                             input$design))))),
   #            max = 1000, value = 80)
   #})
-  
+  ## Matrices ----
   output$muMatrix <-  renderUI({matrixInput(
     "muMatrix",
     value = matrix(c(1), 1, 
-                   prod(as.numeric(strsplit(input$design, "\\D+")[[1]])),
+                   prod(as.numeric(strsplit(des_string(), "\\D+")[[1]])),
                    dimnames = list(c("mu"),
-                                   c(label_function(input$design)))),
+                                   c(label_function(des_string())))),
     rows = list(names = TRUE),
     cols = list(names = TRUE),
-    copy = TRUE,
-    paste = TRUE
+    copy = FALSE,
+    paste = FALSE
   )
   })
   
+  output$aMatrix <-  renderUI({matrixInput(
+    "aMatrix",
+    label = "Level Labels",
+    value = matrix(seq(1,as.numeric(input$fct1lvl),1), 1, 
+                   as.numeric(input$fct1lvl)),
+    rows = list(names = FALSE),
+    cols = list(names = FALSE),
+    copy = FALSE,
+    paste = FALSE
+  )
+  })
+  
+  output$bMatrix <-  renderUI({matrixInput(
+    "bMatrix",
+    label = "Level Labels",
+    value = matrix(seq(1,as.numeric(input$fct2lvl),1), 1, 
+                   as.numeric(input$fct2lvl)),
+    rows = list(names = FALSE),
+    cols = list(names = FALSE),
+    copy = FALSE,
+    paste = FALSE
+  )
+  })
+  
+  output$cMatrix <-  renderUI({matrixInput(
+    "cMatrix",
+    label = "Level Labels",
+    value = matrix(seq(1,as.numeric(input$fct3lvl),1), 1, 
+                   as.numeric(input$fct3lvl)),
+    rows = list(names = FALSE),
+    cols = list(names = FALSE),
+    copy = FALSE,
+    paste = FALSE
+  )
+  })
+  
+  ## label list -----
+  ll_list = reactive({
+    ll_list = 1
+    if(input$DesignLevel == 1){
+      # fct1lvl
+      # fct1type
+      fct1 = input$fct1names
+      fct2 = input$fct2names
+      fct3 = input$fct3names
+      ll_list = setNames(list(input$aMatrix),
+                         c(fct1))
+    } else if(input$DesignLevel == 2){
+      fct1 = input$fct1names
+      fct2 = input$fct2names
+      fct3 = input$fct3names
+      ll_list = setNames(list(input$aMatrix,
+                              input$bMatrix),
+                         c(fct1,
+                           fct2))
+    } else {
+      fct1 = input$fct1names
+      fct2 = input$fct2names
+      fct3 = input$fct3names
+      ll_list = setNames(list(input$aMatrix,
+                              input$bMatrix,
+                              input$cMatrix),
+                         c(fct1,
+                           fct2,
+                           fct3))
+    }
+    return(ll_list)
+  })
+  
+  output$test1 <- renderPrint({print(ll_list())})
   #Produce ANOVA design
-  observeEvent(input$designBut, {values$design_result <- ANOVA_design(design = as.character(input$design),
+  observeEvent(input$designBut, {values$design_result <- ANOVA_design(design = as.character(des_string() ),
                                                                       n = as.numeric(input$sample_size),
                                                                       mu = as.numeric(input$muMatrix),
-                                                                      labelnames = if (input$labelChoice == "yes") {
-                                                                        as.vector(unlist(strsplit(gsub("[[:space:]]", "",input$labelnames), ",")))
-                                                                      }else{
+                                                                      #labelnames = if (input$labelChoice == "yes") {
+                                                                      #  as.vector(unlist(strsplit(gsub("[[:space:]]", "",input$labelnames), ",")))
+                                                                      #}else{
+                                                                      #  NULL
+                                                                      #},
+                                                                      label_list = if (input$labelChoice == "yes") {ll_list()} else{
                                                                         NULL
                                                                       },
                                                                       sd = as.numeric(input$sd),
@@ -441,14 +627,16 @@ server <- function(input, output, session) {
           "
           ",
           "Sample size per cell n = ", values$design_result$n,
-          "\n",
-          ifelse(values$design_result$n < (prod(
-            as.numeric(
-              unlist(
-                regmatches
-                (input$design,
-                  gregexpr("[[:digit:]]+",
-                           input$design)))))+1), "WARNING: Sample Size must be greater than the product of the cells \n For example, 2b*2w = 4 and requires a sample size of at least 5 per cell", ""))
+          "\n"#,
+          #ifelse(values$design_result$n < (prod(
+          #  as.numeric(
+          #    unlist(
+          #      regmatches
+          #      (des_string(),
+          #        gregexpr("[[:digit:]]+",
+          #                 des_string()
+          #                 )))))+1), "WARNING: Sample Size must be greater than the product of the cells \n For example, 2b*2w = 4 and requires a sample size of at least 5 per cell", "")
+          )
   })
 
   #Output of correlation and standard deviation matrix
@@ -594,7 +782,8 @@ server <- function(input, output, session) {
                      cor_mat = values$design_result$cor_mat,
                      sigmatrix = values$design_result$sigmatrix,
                      alpha_level = values$power_result$alpha_level,
-                     input_emm = input$emm)
+                     input_emm = input$emm,
+                     session = sessionInfo())
 
       # Knit the document, passing in the `params` list, and eval it in a
       # child of the global environment (this isolates the code in the document
@@ -609,12 +798,7 @@ server <- function(input, output, session) {
 
 }
 
-###############################################################################
-###############################################################################
-###############################################################################
-###############################################################################
-###############################################################################
-
+# Serve ------
 # Run the application
 shinyApp(ui = ui, server = server)
 

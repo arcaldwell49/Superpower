@@ -1,5 +1,5 @@
 ---
-title: "Exact Simulation Results"
+title: "Power Analysis Results: Exact Simulation"
 subtitle: "Shiny App developed by Dani&euml;l Lakens and Aaron Caldwell"
 output: pdf_document
 
@@ -16,17 +16,28 @@ params:
   alpha_level: NA
   tableEMM: NA
   input_emm: NA
+  session: NA
 ---
 
 
 ```{r setup, warning=FALSE, message=FALSE, echo=FALSE}
 options(knitr.table.format = 'markdown')
+library(dplyr)
+library(scales)
+
+valr = function(x){
+  val = ifelse(x == 0,
+               0.0000,
+               ifelse(x > 0.0001,
+                      round(x,4),"<0.0001"))
+  return(val)
+}
 ```
 
 
-Below are the results from a power analysis using an exact simulation of a factorial design wherein the data are sampled from an empircal distribution. If you encounter any problems please visit our GitHub page (https://github.com/arcaldwell49/Superpower) to the raise the issue.
+Below are the results from a power analysis using an exact simulation of a factorial design wherein the data are sampled from an empirical distribution. If you encounter any problems please visit our GitHub page (https://github.com/arcaldwell49/Superpower) to the raise the issue.
 
-**Study Design**
+# Study Design
 
 `r paste(params$design)`
 
@@ -38,17 +49,23 @@ The sample size was **`r params$n`** *per cell*.
 
 **Correlation Matrix**
 ```{r echo = FALSE}
-knitr::kable(params$cor_mat)
+knitr::kable(params$cor_mat |>
+               as.data.frame() |>
+               mutate_if(is.numeric, valr)) 
 ```
 
 **Variance-Covariance Matrix**
 ```{r echo = FALSE}
-knitr::kable(params$sigmatrix)
+knitr::kable(params$sigmatrix |>
+               as.data.frame() |>
+               mutate_if(is.numeric, valr)) 
 ```
 
 ```{r, results='asis', echo=FALSE}
 cat("\\newpage")
 ```
+
+# Visual
 
 Plot of the design with mean and standard deviation.
 
@@ -61,12 +78,15 @@ params$means_plot
 cat("\\newpage")
 ```
 
+# ANOVA
 Power for this specific design, with an alpha of `r params$alpha_level`, is included below.
 
 **ANOVA Power (%) and Effect Sizes (Partial Eta Squared)**
 
 ```{r echo = FALSE}
-knitr::kable(params$tableMain)
+knitr::kable(params$tableMain|>
+               as.data.frame() |>
+               mutate_if(is.numeric, valr))
 
 ```
 
@@ -76,7 +96,9 @@ If estimated marginal means were selected, the results are included below.
 
 ```{r echo = FALSE}
 if(params$input_emm == "yes"){
-knitr::kable(params$tableEMM)
+knitr::kable(params$tableEMM|>
+               as.data.frame() |>
+               mutate_if(is.numeric, valr))
 }
 ```
 
@@ -84,14 +106,27 @@ knitr::kable(params$tableEMM)
 cat("\\newpage")
 ```
 
-**Multiple Comparisons,*t*-test, Power (%) and Effect Sizes (Cohen's d~z~)**
+# Multiple Comparisons
+**t*-test, Power (%) and Effect Sizes (Cohen's d~z~)**
 
 Below are the power analysis results if all pairwise comparisons are completed via *t*-tests
 
 ```{r echo = FALSE}
-knitr::kable(params$tablePC)
+knitr::kable(params$tablePC|>
+               as.data.frame() |>
+               mutate_if(is.numeric, valr))
 ```
 
+```{r, results='asis', echo=FALSE}
+cat("\\newpage")
+```
 
+# Details
 
+Printed session information from R.
+
+```{r, echo = FALSE}
+#params$session$R.version$version.string
+pander::pander(params$session)
+```
 

@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Superpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.1</span>
       </span>
     </div>
 
@@ -75,55 +75,85 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">plot_power</span><span class="op">(</span>
-  <span class="va">design_result</span>,
-  alpha_level <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"alpha_level"</span><span class="op">)</span>,
-  min_n <span class="op">=</span> <span class="fl">7</span>,
-  max_n <span class="op">=</span> <span class="fl">100</span>,
-  desired_power <span class="op">=</span> <span class="fl">90</span>,
-  plot <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"plot"</span><span class="op">)</span>,
-  emm <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"emm"</span><span class="op">)</span>,
-  emm_model <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"emm_model"</span><span class="op">)</span>,
-  contrast_type <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"contrast_type"</span><span class="op">)</span>,
-  <span class="va">emm_comp</span>,
-  verbose <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"verbose"</span><span class="op">)</span>,
-  exact2 <span class="op">=</span> <span class="cn">FALSE</span>,
-  liberal_lambda <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"liberal_lambda"</span><span class="op">)</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_power</span><span class="op">(</span></span>
+<span>  <span class="va">design_result</span>,</span>
+<span>  alpha_level <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"alpha_level"</span><span class="op">)</span>,</span>
+<span>  min_n <span class="op">=</span> <span class="fl">7</span>,</span>
+<span>  max_n <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  desired_power <span class="op">=</span> <span class="fl">90</span>,</span>
+<span>  plot <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"plot"</span><span class="op">)</span>,</span>
+<span>  emm <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"emm"</span><span class="op">)</span>,</span>
+<span>  emm_model <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"emm_model"</span><span class="op">)</span>,</span>
+<span>  contrast_type <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"contrast_type"</span><span class="op">)</span>,</span>
+<span>  <span class="va">emm_comp</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"verbose"</span><span class="op">)</span>,</span>
+<span>  exact2 <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  liberal_lambda <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"liberal_lambda"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>design_result</dt>
 <dd><p>Output from the ANOVA_design function</p></dd>
+
+
 <dt>alpha_level</dt>
 <dd><p>Alpha level used to determine statistical significance</p></dd>
+
+
 <dt>min_n</dt>
 <dd><p>Minimum sample size in power curve. Cannot be less than or equal to the product of factors. E.g., if design = "2b*2b" then min_n must be at least 5 (2\*2+1=5)</p></dd>
+
+
 <dt>max_n</dt>
 <dd><p>Maximum sample size in power curve.</p></dd>
+
+
 <dt>desired_power</dt>
 <dd><p>Desired power (e.g., 80, 90). N per group will be highlighted to achieve this desired power in the plot. Defaults to 90.</p></dd>
+
+
 <dt>plot</dt>
 <dd><p>Should power plot be printed automatically (defaults to TRUE)</p></dd>
+
+
 <dt>emm</dt>
 <dd><p>Set to FALSE to not perform analysis of estimated marginal means</p></dd>
+
+
 <dt>emm_model</dt>
 <dd><p>Set model type ("multivariate", or "univariate") for estimated marginal means</p></dd>
+
+
 <dt>contrast_type</dt>
 <dd><p>Select the type of comparison for the estimated marginal means</p></dd>
+
+
 <dt>emm_comp</dt>
 <dd><p>Set the comparisons for estimated marginal means comparisons. This is a factor name (a), combination of factor names (a+b), or for simple effects a | sign is needed (a|b)</p></dd>
+
+
 <dt>verbose</dt>
 <dd><p>Set to FALSE to not print results (default = TRUE)</p></dd>
+
+
 <dt>exact2</dt>
 <dd><p>Logical indicator for which <code>ANOVA_exact</code> function (<code>ANOVA_exact</code> or <code>ANOVA_exact2</code>) to use in the plots. Default is FALSE which uses <code>ANOVA_exact</code> which has sample size limitations.</p></dd>
+
+
 <dt>liberal_lambda</dt>
 <dd><p>Logical indicator of whether to use the liberal (cohen_f^2\*(num_df+den_df)) or conservative (cohen_f^2\*den_df) calculation of the noncentrality (lambda) parameter estimate. Default is FALSE.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>Returns plot with power curves for the ANOVA, and a dataframe with the summary data.</p><dl><dt><code>"plot_ANOVA"</code></dt>
+    
+
+<p>Returns plot with power curves for the ANOVA, and a dataframe with the summary data.</p>
+
+
+<dl><dt><code>"plot_ANOVA"</code></dt>
 <dd><p>Plot of power curves from ANOVA results.</p></dd>
 
   <dt><code>"plot_MANOVA"</code></dt>
@@ -171,16 +201,16 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
-<span class="r-in"><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"3b"</span>,</span>
-<span class="r-in">                             n <span class="op">=</span> <span class="fl">20</span>,</span>
-<span class="r-in">                             mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0.3</span><span class="op">)</span>,</span>
-<span class="r-in">                             sd <span class="op">=</span> <span class="fl">1</span>,</span>
-<span class="r-in">                             labelnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"condition"</span>,</span>
-<span class="r-in">                             <span class="st">"cheerful"</span>, <span class="st">"neutral"</span>, <span class="st">"sad"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="fu">plot_power</span><span class="op">(</span><span class="va">design_result</span>, min_n <span class="op">=</span> <span class="fl">50</span>, max_n <span class="op">=</span> <span class="fl">70</span>, desired_power <span class="op">=</span> <span class="fl">90</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">}</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"3b"</span>,</span></span>
+<span class="r-in"><span>                             n <span class="op">=</span> <span class="fl">20</span>,</span></span>
+<span class="r-in"><span>                             mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">0</span>,<span class="fl">0.3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>                             sd <span class="op">=</span> <span class="fl">1</span>,</span></span>
+<span class="r-in"><span>                             labelnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"condition"</span>,</span></span>
+<span class="r-in"><span>                             <span class="st">"cheerful"</span>, <span class="st">"neutral"</span>, <span class="st">"sad"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">plot_power</span><span class="op">(</span><span class="va">design_result</span>, min_n <span class="op">=</span> <span class="fl">50</span>, max_n <span class="op">=</span> <span class="fl">70</span>, desired_power <span class="op">=</span> <span class="fl">90</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -195,7 +225,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

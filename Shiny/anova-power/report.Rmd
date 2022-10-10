@@ -1,5 +1,5 @@
 ---
-title: "Monte Carlo Simulation Results"
+title: "Power Analysis Results: Monte Carlo Simulation Result"
 subtitle: "Shiny App developed by Dani&euml;l Lakens and Aaron Caldwell"
 output: pdf_document
 date: '`r format(Sys.time(), "%B %d, %Y")`'
@@ -21,18 +21,29 @@ params:
   emm_p_adjust: NA
   emm: NA
   emm_model: NA
+  session: NA
 
 
 ---
 
 ```{r setup, warning=FALSE, message=FALSE, echo=FALSE}
 options(knitr.table.format = 'markdown')
+library(dplyr)
+library(scales)
+
+valr = function(x){
+  val = ifelse(x == 0,
+               0.0000,
+               ifelse(x > 0.0001,
+                      round(x,4),"<0.0001"))
+  return(val)
+}
 ```
 
 
 Below are the results from a power analysis using a Monte Carlo simulation of a factorial design wherein the data are sampled from a multivariate normal distribution. If you encounter any problems please visit our GitHub page (https://github.com/arcaldwell49/Superpower) to the raise the issue.
 
-**Study Design**
+# Study Design
 
 `r paste(params$design)`
 
@@ -44,12 +55,16 @@ The sample size was **`r params$n`** *per cell* with a total number of observati
 
 **Correlation Matrix**
 ```{r echo = FALSE}
-knitr::kable(params$cor_mat)
+knitr::kable(params$cor_mat|>
+               as.data.frame() |>
+               mutate_if(is.numeric, valr))
 ```
 
 **Variance-Covariance Matrix**
 ```{r echo = FALSE}
-knitr::kable(params$sigmatrix)
+knitr::kable(params$sigmatrix|>
+               as.data.frame() |>
+               mutate_if(is.numeric, valr))
 ```
 
 ```{r, results='asis', echo=FALSE}
@@ -67,14 +82,20 @@ params$means_plot
 cat("\\newpage")
 ```
 
+# ANOVA 
+
 The results of the Monte Carlo simulation are included below. This simulation assumed an alpha of **`r params$alpha_level`**, a sphericity correction of **`r params$correction`**, a **`r params$p_adjust`** adjustment for multiple comparisons. A total of **`r params$nsims`** iterations were included in this simulation.
 
 **ANOVA Power (%) and Effect Sizes (Partial Eta Squared)**
 
 ```{r echo = FALSE}
-knitr::kable(params$tableMain)
+knitr::kable(params$tableMain|>
+               as.data.frame() |>
+               mutate_if(is.numeric, valr))
 
 ```
+
+# Estimated Marginal Means
 
 **Estimated Marginal Means Power (%) and Effect Sizes (Cohen's *f*)**
 
@@ -85,10 +106,13 @@ knitr::kable(params$tableMain)
 
 ```{r echo = FALSE}
 if(params$emm == "yes"){
-knitr::kable(params$tableEMM)
+knitr::kable(params$tableEMM|>
+               as.data.frame() |>
+               mutate_if(is.numeric, valr))
 }
 ```
 
+# Other Results
 
 **Power for MANOVA Results**
 
@@ -96,17 +120,29 @@ knitr::kable(params$tableEMM)
 
 ```{r echo = FALSE}
 if(!is.null(params$manova)){
-knitr::kable(params$manova)
+knitr::kable(params$manova|>
+               as.data.frame() |>
+               mutate_if(is.numeric, valr))
 }
 ```
 
 **Multiple Comparisons, *t*-tests, Power (%) and Effect Sizes (Cohen's d~z~)**
 
 ```{r echo = FALSE}
-knitr::kable(params$tablePC)
+knitr::kable(params$tablePC|>
+               as.data.frame() |>
+               mutate_if(is.numeric, valr))
 ```
 
 ```{r, results='asis', echo=FALSE}
 cat("\\newpage")
 ```
 
+# Details
+
+Printed session information from R.
+
+```{r, echo = FALSE}
+#params$session$R.version$version.string
+pander::pander(params$session)
+```
