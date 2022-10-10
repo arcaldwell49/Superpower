@@ -130,9 +130,9 @@ shiny_power <- function(design_result,
     stop("alpha_level must be less than 1 and greater than zero")
   }
   
-  ###############
-  # 2. Read in Environment Data ----
-  ###############
+  
+  # Read in Environment Data ----
+  
   
   design <- design_result$design #String used to specify the design
   
@@ -161,15 +161,15 @@ shiny_power <- function(design_result,
   
   #Block this logical in Shiny context (at least for now)
   #to allow different n per condition:
-  #if (grepl("w", design_result$design) == TRUE && length(unique(design_result$n)) > 1)  {
-  #  stop("Unequal group sizes are not possible when the design contains within factors")
-  #}
+  if (grepl("w", design_result$design) == TRUE && length(unique(design_result$n)) > 1)  {
+    stop("Unequal group sizes are not possible when the design contains within factors")
+  }
   n_vec <- n # store vector n as n - this is because the code below uses n as a single number, so quick fix for legacy reasons
   n <- max(n) # now set n to max n for ANOVA_design function
   
-  ###############
-  # 3. Specify factors for formula ----
-  ###############
+  
+  # Specify factors for formula ----
+  
   
   frml1 <- design_result$frml1
   frml2 <- design_result$frml2
@@ -214,11 +214,11 @@ shiny_power <- function(design_result,
   
   #Run MANOVA if within subject factor is included; otherwise ignored
   if (run_manova == TRUE) {
-    manova_result <- Superpower:::Anova_mlm_table(aov_result$Anova) # ::: shiny context
+    manova_result <- Anova_mlm_table(aov_result$Anova)
   }
-  ###############
+  
   # 5. Set up dataframe for simulation results
-  ###############
+  
   
   #How many possible planned comparisons are there (to store p and es)
   possible_pc <- (((prod(
@@ -284,9 +284,9 @@ shiny_power <- function(design_result,
   }
   
   
-  ###############
-  # 7. Start Simulation ----
-  ###############
+  
+  # Start Simulation ----
+  
   withProgress(message = 'Running simulations', value = 0, { #block outside of Shiny
   for (i in 1:nsims) { #for each simulated experiment
     incProgress(1/nsims, detail = paste("Now running simulation", i, "out of",nsims,"simulations")) #Block outside of Shiny
@@ -353,7 +353,7 @@ shiny_power <- function(design_result,
     
     # Store MANOVA result if there are within subject factors
     if (run_manova == TRUE) {
-      manova_result <- Superpower:::Anova_mlm_table(aov_result$Anova) # ::: in Shiny
+      manova_result <- Superpower:::Anova_mlm_table(aov_result$Anova) # Superpower::: in Shiny
       manova_result$p.value <- p.adjust(manova_result$p.value, method = p_adjust)
     }
     
@@ -389,13 +389,13 @@ shiny_power <- function(design_result,
   }
   }) #close withProgress Block outside of Shiny
   
-  ############################################
+  
   #End Simulation              ###############
   
   
-  ###############
-  # 8. Plot Results ----
-  ###############
+  
+  # Plot Results ----
+  
   
   # melt the data into a long format for plots in ggplot2
   
@@ -448,9 +448,9 @@ shiny_power <- function(design_result,
     facet_grid(variable ~ .) +
     labs(x = expression(p)) +
     theme_bw()
-  ###############
-  # 9. Sumary of power and effect sizes of main effects and contrasts ----
-  ###############
+  
+  # Sumary of power and effect sizes of main effects and contrasts ----
+  
   
   #Main effects and interactions from the ANOVA
   power = as.data.frame(apply(as.matrix(sim_data[(1:(2 ^ factors - 1))]), 2,
@@ -494,9 +494,9 @@ shiny_power <- function(design_result,
     names(manova_result) = c("power")
   }
   
-  #######################
+  
   # Return Results ----
-  #######################
+  
   if (verbose == TRUE) {
     # The section below should be blocked out when in Shiny
     cat("Power and Effect sizes for ANOVA tests")
@@ -563,9 +563,9 @@ label_function <- function(design, labelnames = NULL) {
     stop("Variable 'design' does not match the length of the labelnames")
   }
   
-  ###############
+
   # 1. Specify Design and Simulation----
-  ###############
+
   # String used to specify the design
   # Add numbers for each factor with 2 levels, e.g., 2 for a factor with 2 levels
   # Add a 'w' after the number for within factors, and a 'b' for between factors
@@ -581,9 +581,9 @@ label_function <- function(design, labelnames = NULL) {
     stop("Each factor can only have between 2 and 99 levels")
   }
   
-  ###############
+
   # 2. Create Factors and Design ----
-  ###############
+
   
   #Count number of factors in design
   factors <- length(factor_levels)
@@ -863,15 +863,7 @@ ui <- dashboardPage(
 skin = "purple")
 
 
-###############################################################################
-###############################################################################
-###############################################################################
-###############################################################################
-###############################################################################
-###############################################################################
-###############################################################################
-###############################################################################
-###############################################################################
+
 
 # Server ------
 # Define server logic
@@ -1146,12 +1138,8 @@ values$label_list <- reactive({
 
 }
 
-###############################################################################
-###############################################################################
-###############################################################################
-###############################################################################
-###############################################################################
 
-# Run the application
+
+# Run the application ----
 shinyApp(ui = ui, server = server)
 

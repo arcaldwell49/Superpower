@@ -161,9 +161,9 @@ ANOVA_power <- function(design_result,
     stop("alpha_level must be less than 1 and greater than zero")
   }
   
-  ###############
-  # 2. Read in Environment Data ----
-  ###############
+
+  # Read in Environment Data ----
+
   
   design <- design_result$design #String used to specify the design
   
@@ -198,9 +198,9 @@ ANOVA_power <- function(design_result,
   n_vec <- n # store vector n as n - this is because the code below uses n as a single number, so quick fix for legacy reasons
   n <- max(n) # now set n to max n for ANOVA_design function
   
-  ###############
-  # 3. Specify factors for formula ----
-  ###############
+
+  # Specify factors for formula ----
+
   
   frml1 <- design_result$frml1
   frml2 <- design_result$frml2
@@ -247,9 +247,9 @@ ANOVA_power <- function(design_result,
   if (run_manova == TRUE) {
     manova_result <- Anova_mlm_table(aov_result$Anova)
   }
-  ###############
+
   # 5. Set up dataframe for simulation results
-  ###############
+
   
   #How many possible planned comparisons are there (to store p and es)
   possible_pc <- (((prod(
@@ -315,9 +315,9 @@ ANOVA_power <- function(design_result,
   }
   
   
-  ###############
-  # 7. Start Simulation ----
-  ###############
+
+  # Start Simulation ----
+
   #withProgress(message = 'Running simulations', value = 0, { #block outside of Shiny
   for (i in 1:nsims) { #for each simulated experiment
     #incProgress(1/nsims, detail = paste("Now running simulation", i, "out of",nsims,"simulations")) #Block outside of Shiny
@@ -420,13 +420,13 @@ ANOVA_power <- function(design_result,
   }
   #}) #close withProgress Block outside of Shiny
   
-  ############################################
+
   #End Simulation              ###############
   
   
-  ###############
-  # 8. Plot Results ----
-  ###############
+
+  # Plot Results ----
+
   
   # melt the data into a long format for plots in ggplot2
   
@@ -479,9 +479,9 @@ ANOVA_power <- function(design_result,
     facet_grid(variable ~ .) +
     labs(x = expression(p)) +
     theme_bw()
-  ###############
-  # 9. Sumary of power and effect sizes of main effects and contrasts ----
-  ###############
+
+  # Sumary of power and effect sizes of main effects and contrasts ----
+
   
   #Main effects and interactions from the ANOVA
   power = as.data.frame(apply(as.matrix(sim_data[(1:(2 ^ factors - 1))]), 2,
@@ -525,9 +525,9 @@ ANOVA_power <- function(design_result,
     names(manova_result) = c("power")
   }
   
-  #######################
+
   # Return Results ----
-  #######################
+
   if (verbose == TRUE) {
     # The section below should be blocked out when in Shiny
     cat("Power and Effect sizes for ANOVA tests")
