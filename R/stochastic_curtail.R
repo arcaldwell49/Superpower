@@ -20,14 +20,14 @@ con_pow_2s = function(pval,
 
 
 pred_pow_2s = function(pval,
-                       n1k,
+                       n1k, # interim
                        n2k,
-                       n1,
+                       n1, # final
                        n2,
                        alpha = .05) { 
   
   z_k = qnorm(pval,lower.tail = FALSE)
-  i_k = ((1/n1k) + (1/n2k))^(-1)
+  i_k = ((1/n1k) + (1/n2k))^(-1) # can be just reduced to fractions (I think)
   i_f = ((1/n1) + (1/n2))^(-1)
   
   test1 = (abs(z_k) * sqrt(i_f) - qnorm(1-alpha/2) * sqrt(i_k) ) / (sqrt(i_f - i_k))
