@@ -1,0 +1,72 @@
+home:
+  title: The Superpower R package
+  description: An R pacakge for easy power analyses (mainly through simulation)
+
+
+template:
+  opengraph:
+    image:
+      src: Sticker/Superpower2.PNG
+      alt: "Superpower logo"
+    twitter:
+      creator: "@exphysstudent"
+      card: summary_large_image
+
+reference:
+- title: "Settings"
+  contents:
+  - Superpower_options
+  
+- title: "ANOVA"
+
+- subtitle: "Design"
+  contents:
+  - ANOVA_design
+  - print.design_aov
+  - plot.design_aov
+  
+- subtitle: "Power"
+  contents:
+  - ANOVA_power
+  - ANOVA_exact
+  - ANOVA_exact2
+  - emmeans_power
+  - plot_power
+  - print.sim_result
+  - plot.sim_result
+  - confint.sim_result
+  
+- title: "ANCOVA"
+  contents:
+  - ANCOVA_analytic
+  - ANCOVA_contrast
+  - ancova_power-methods
+  
+- title: "Justify your Alpha"
+  desc: >
+    Compromise functions for finding an optimal alpha level
+  contents:
+  - alpha_standardized
+  - ANOVA_compromise
+  - optimal_alpha
+  - p_standardized
+  - power_standardized_alpha
+  - opt_alpha-methods
+  
+- title: "Sensitivity Functions"
+  contents:
+  - morey_plot.ftest
+  - morey_plot.ttest
+  
+- title: "Other Power Functions"
+  contents:
+  - power.ftest
+  - power_oneway_ancova
+  - power_oneway_between
+  - power_oneway_within
+  - power_twoway_between
+  - power_threeway_between
+  - mu_from_ES
+  
+  
+  
