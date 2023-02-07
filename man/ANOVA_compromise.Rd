@@ -13,7 +13,7 @@ ANOVA_compromise(
   emm_comp,
   costT1T2 = 1,
   priorH1H0 = 1,
-  error = "minimal",
+  error = c("minimal", "balance"),
   liberal_lambda = Superpower_options("liberal_lambda")
 )
 }

@@ -1,6 +1,6 @@
 Package: Superpower
 Title: Simulation-Based Power Analysis for Factorial Designs
-Version: 0.2.1
+Version: 0.2.2
 Authors@R: c(person(given = "Aaron",
            family = "Caldwell",
            role = c("aut", "cre"),
@@ -28,12 +28,10 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 RoxygenNote: 7.1.2
 Imports: 
-    mvtnorm,
     MASS,
     afex,
     emmeans,
     ggplot2,
-    gridExtra,
     reshape2,
     stats,
     dplyr,

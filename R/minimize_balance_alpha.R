@@ -25,8 +25,9 @@
 optimal_alpha <- function(power_function, 
                           costT1T2 = 1, 
                           priorH1H0 = 1, 
-                          error = "minimal",  
+                          error = c("minimal","balance"),  
                           plot = Superpower_options("plot")) {
+  error = match.arg(error)
   
   f_oa = function(x, power_function, costT1T2 = 1, priorH1H0 = 1, error = "minimal") {
     y <- 1 - eval(parse(text=paste(power_function)))

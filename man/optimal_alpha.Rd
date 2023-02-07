@@ -8,7 +8,7 @@ optimal_alpha(
   power_function,
   costT1T2 = 1,
   priorH1H0 = 1,
-  error = "minimal",
+  error = c("minimal", "balance"),
   plot = Superpower_options("plot")
 )
 }

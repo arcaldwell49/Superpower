@@ -5,6 +5,9 @@ output: github_document
 
 Updated `r format(Sys.time(), "%a %b %d %Y")`
 
+# Superpower 0.2.2 -- "Jubilee"
+- Updates to the package documentation
+
 # Superpower 0.2.1 -- "Jade"
 - Minor fix to the plot_power function
 - Major updates to the Shiny apps
