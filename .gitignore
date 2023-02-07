@@ -10,7 +10,7 @@ temp
 .RData
 inst/doc
 
-.DS_Store
+*.DS_Store
 NUL
 tests/testthat/Rplots.pdf
 .DS_Store

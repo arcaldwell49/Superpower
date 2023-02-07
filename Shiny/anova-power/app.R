@@ -25,6 +25,7 @@ Superpower_options(emm = TRUE,
                    verbose = FALSE,
                    plot = FALSE)
 
+
 shiny_power <- function(design_result, 
                         alpha_level = Superpower_options("alpha_level"), 
                         correction = Superpower_options("correction"),
@@ -214,7 +215,7 @@ shiny_power <- function(design_result,
   
   #Run MANOVA if within subject factor is included; otherwise ignored
   if (run_manova == TRUE) {
-    manova_result <- Anova_mlm_table(aov_result$Anova)
+    manova_result <- Superpower:::Anova_mlm_table(aov_result$Anova) # ::: in shiny!!!
   }
   
   # 5. Set up dataframe for simulation results
