@@ -5,7 +5,9 @@ account: arcaldwell49
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 7251624
-bundleId: 6389094
+bundleId: 6834234
 url: https://arcaldwell49.shinyapps.io/anova-exact/
-when: 1665436469.32717
-lastSyncTime: 1665436469.32718
+when: 1676073764.84199
+lastSyncTime: 1676073764.842
+asMultiple: FALSE
+asStatic: FALSE

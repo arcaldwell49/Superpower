@@ -99,7 +99,7 @@
                         <h4 data-toc-skip class="author">Aaron R.
 Caldwell</h4>
             
-            <h4 data-toc-skip class="date">2022-11-04</h4>
+            <h4 data-toc-skip class="date">2023-02-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/arcaldwell49/Superpower/blob/HEAD/vignettes/more_anova_designs.Rmd" class="external-link"><code>vignettes/more_anova_designs.Rmd</code></a></small>
       <div class="hidden name"><code>more_anova_designs.Rmd</code></div>
@@ -615,7 +615,7 @@ and the alpha level is 0.05, the power is 96.9%.</p>
 <span>        param <span class="op">=</span> <span class="st">"main_results"</span>,</span>
 <span>        level <span class="op">=</span> <span class="fl">.98</span><span class="op">)</span></span>
 <span><span class="co">#&gt;             power lower.ci upper.ci</span></span>
-<span><span class="co">#&gt; anova_speed  96.4 93.30096 98.09467</span></span></code></pre></div>
+<span><span class="co">#&gt; anova_speed  95.2 91.79877 97.23318</span></span></code></pre></div>
 <p>The results of the simulation are indeed very close to 96.9% (the
 confidence intervals from the simulation include ). We can see this is
 in line with the power estimate from Gpower:</p>
@@ -679,8 +679,8 @@ these groups collect 2 repeated measures).</p>
 <span><span class="co">#&gt;                contrast power partial_eta_squared   cohen_f non_centrality</span></span>
 <span><span class="co">#&gt; 1 a_a1 b_b1 - a_a2 b_b1 63.76           1.127e-01 3.563e-01      5.587e+00</span></span>
 <span><span class="co">#&gt; 2 a_a1 b_b1 - a_a1 b_b2 37.28           5.970e-02 2.520e-01      2.794e+00</span></span>
-<span><span class="co">#&gt; 3 a_a1 b_b1 - a_a2 b_b2  5.00           3.912e-34 1.978e-17      1.721e-32</span></span>
-<span><span class="co">#&gt; 4 a_a2 b_b1 - a_a1 b_b2  5.00           3.918e-34 1.979e-17      1.724e-32</span></span>
+<span><span class="co">#&gt; 3 a_a1 b_b1 - a_a2 b_b2  5.00           6.508e-33 8.067e-17      2.864e-31</span></span>
+<span><span class="co">#&gt; 4 a_a2 b_b1 - a_a1 b_b2  5.00           9.751e-34 3.123e-17      4.290e-32</span></span>
 <span><span class="co">#&gt; 5 a_a2 b_b1 - a_a2 b_b2 37.28           5.970e-02 2.520e-01      2.794e+00</span></span>
 <span><span class="co">#&gt; 6 a_a1 b_b2 - a_a2 b_b2 63.76           1.127e-01 3.563e-01      5.587e+00</span></span></code></pre></div>
 <p>We can simulate the same Two-Way ANOVA increasing the correlation to
@@ -722,8 +722,8 @@ these groups collect 2 repeated measures).</p>
 <span><span class="co">#&gt;                contrast power partial_eta_squared   cohen_f non_centrality</span></span>
 <span><span class="co">#&gt; 1 a_a1 b_b1 - a_a2 b_b1 84.72           1.747e-01 4.600e-01      9.312e+00</span></span>
 <span><span class="co">#&gt; 2 a_a1 b_b1 - a_a1 b_b2 37.28           5.970e-02 2.520e-01      2.794e+00</span></span>
-<span><span class="co">#&gt; 3 a_a1 b_b1 - a_a2 b_b2  5.00           4.213e-33 6.491e-17      1.854e-31</span></span>
-<span><span class="co">#&gt; 4 a_a2 b_b1 - a_a1 b_b2  5.00           4.213e-33 6.490e-17      1.854e-31</span></span>
+<span><span class="co">#&gt; 3 a_a1 b_b1 - a_a2 b_b2  5.00           3.146e-33 5.609e-17      1.384e-31</span></span>
+<span><span class="co">#&gt; 4 a_a2 b_b1 - a_a1 b_b2  5.00           1.255e-32 1.120e-16      5.523e-31</span></span>
 <span><span class="co">#&gt; 5 a_a2 b_b1 - a_a2 b_b2 37.28           5.970e-02 2.520e-01      2.794e+00</span></span>
 <span><span class="co">#&gt; 6 a_a1 b_b2 - a_a2 b_b2 84.72           1.747e-01 4.600e-01      9.312e+00</span></span></code></pre></div>
 </div>
@@ -1078,21 +1078,21 @@ _ { \max } ) - \sigma ^ { 2 } ( \overline { \rho } _ { \min } -
 <tbody>
 <tr class="odd">
 <td align="left">anova_A</td>
-<td align="right">28.8</td>
-<td align="right">23.54098</td>
-<td align="right">34.70067</td>
+<td align="right">28.0</td>
+<td align="right">22.79944</td>
+<td align="right">33.86643</td>
 </tr>
 <tr class="even">
 <td align="left">anova_B</td>
-<td align="right">66.4</td>
-<td align="right">60.33592</td>
-<td align="right">71.96771</td>
+<td align="right">66.8</td>
+<td align="right">60.74691</td>
+<td align="right">72.34461</td>
 </tr>
 <tr class="odd">
 <td align="left">anova_A:B</td>
-<td align="right">29.6</td>
-<td align="right">24.28460</td>
-<td align="right">35.53284</td>
+<td align="right">24.0</td>
+<td align="right">19.12488</td>
+<td align="right">29.66205</td>
 </tr>
 </tbody>
 </table>
