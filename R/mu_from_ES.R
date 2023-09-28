@@ -1,4 +1,4 @@
-#' Convenience function to calculate the means for between designs with one factor (One-Way ANOVA). Can be used to determine the means that should yield a specified effect sizes (expressed in Cohen's f).
+#' Convenience function to calculate the means for between designs with one factor (One-Way ANOVA). Can be used to determine the means that should yield a specified effect sizes (expressed in Eta-squared).
 #' @param K Number of groups (2, 3, or 4)
 #' @param ES Effect size (eta-squared)
 #' @return Returns vector of means
@@ -33,7 +33,7 @@ mu_from_ES <- function(K, ES){ # provides the vector of population means for a g
   }
   if(K == 4){
     a <- sqrt(f2)
-    muvec <- c(-a, -a, a, a)
+    muvec <- c(-2*a, -a, a, 2*a)
   } # note: function gives error when K not 2,3,4. But we don't need other K.
   return(muvec)
 }
