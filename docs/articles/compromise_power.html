@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Superpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3</span>
       </span>
     </div>
 
@@ -99,7 +99,7 @@
                         <h4 data-toc-skip class="author">Daniel Lakens
 &amp; Aaron R. Caldwell</h4>
             
-            <h4 data-toc-skip class="date">2023-02-10</h4>
+            <h4 data-toc-skip class="date">2024-07-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/arcaldwell49/Superpower/blob/HEAD/vignettes/compromise_power.Rmd" class="external-link"><code>vignettes/compromise_power.Rmd</code></a></small>
       <div class="hidden name"><code>compromise_power.Rmd</code></div>
@@ -130,14 +130,14 @@ options within the <code>error</code> argument: <code>minimal</code> or
 <p>First, we have an equation for how a weighted combined error rate is
 calculated when <code>error = minimal</code>.
 <code>(costT1T2 * x + priorH1H0 * y)/(priorH1H0 + costT1T2)</code></p>
-<p><span class="math inline">\(WCER =
-\frac{\frac{cost_\alpha}{cost_\beta} \cdot \alpha +
+<p><span class="math inline">\(WCER
+=  \frac{\frac{cost_\alpha}{cost_\beta} \cdot \alpha  +
 \frac{Pr(H_1)}{Pr(H_0)}\cdot\beta}{\frac{Pr(H_1)}{Pr(H_0)}+\frac{cost_\alpha}{cost_\beta}}\)</span></p>
 <p>Second, we have an equation for how a weighted combined error rate is
 calculated when <code>error = balanced</code>.
 <code>max((costT1T2 * x - priorH1H0 * y)/(priorH1H0 + costT1T2), (priorH1H0 * y - costT1T2 * x)/(priorH1H0 + costT1T2))</code></p>
-<p><span class="math inline">\(WCER =
-max(\frac{\frac{cost_\alpha}{cost_\beta} \cdot \alpha -
+<p><span class="math inline">\(WCER
+=  max(\frac{\frac{cost_\alpha}{cost_\beta} \cdot \alpha  -
 \frac{Pr(H_1)}{Pr(H_0)}\cdot\beta}{\frac{Pr(H_1)}{Pr(H_0)}+\frac{cost_\alpha}{cost_\beta}}
 | \frac{ \frac{Pr(H_1)}{Pr(H_0)}\cdot\beta -
 \frac{cost_\alpha}{cost_\beta} \cdot \alpha
@@ -171,19 +171,22 @@ rate at 20%, and there might be better choices when designing studies.
 For example, when collecting 64 participants per condition, it is also
 not optimally efficient to use these norms.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/optimal_alpha.html">optimal_alpha</a></span><span class="op">(</span>power_function <span class="op">=</span> <span class="st">"power.t.test(delta = .5, sd = 1, n=64, </span></span>
-<span><span class="st">                     sig.level = x, type='two.sample', </span></span>
-<span><span class="st">                     alternative='two.sided')$power"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/optimal_alpha.html">optimal_alpha</a></span><span class="op">(</span>power_function <span class="op">=</span> <span class="st">"power.t.test(delta = .5, sd = 1, n=64, 
+                     sig.level = x, type='two.sample', 
+                     alternative='two.sided')$power"</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## Warning in geom_point(aes(x = res$minimum, y = (costT1T2 * res$minimum + : All aesthetics have length 1, but the data has 9999 rows.</span>
+<span class="co">## <span style="color: #00BBBB;">ℹ</span> Please consider using `annotate()` or provide this layer with data containing</span>
+<span class="co">##   a single row.</span></code></pre>
 <p><img src="compromise_power_files/figure-html/unnamed-chunk-1-1.png" width="576"></p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Optimal Alpha</span></span>
-<span><span class="co">##        Alpha      Beta Weighted.Combined.Error.Rate</span></span>
-<span><span class="co">## 1 0.09967232 0.1216627                    0.1106675</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## From power function:</span></span>
-<span><span class="co">## [1] "power.t.test(delta = .5, sd = 1, n=64, \n                     sig.level = x, type='two.sample', \n                     alternative='two.sided')$power"</span></span></code></pre>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## </span>
+<span class="co">## Optimal Alpha</span>
+<span class="co">##        Alpha      Beta Weighted.Combined.Error.Rate</span>
+<span class="co">## 1 0.09967232 0.1216627                    0.1106675</span>
+<span class="co">## </span>
+<span class="co">## From power function:</span>
+<span class="co">## [1] "power.t.test(delta = .5, sd = 1, n=64, \n                     sig.level = x, type='two.sample', \n                     alternative='two.sided')$power"</span></code></pre>
 <p>If a researcher is interested in effects of d = 0.5, and plans to
 collect 64 participants in each condition, setting the Type 1 error rate
 to 10% will increase the power to 88%. If we would perform 2000 studies
@@ -205,20 +208,23 @@ either minimize errors, or balance them, by specifying an additional
 argument in the function. The default is to minimize error rates, but by
 adding <code>error = "balance"</code> an alpha level is calculated so
 that the Type 1 error rate equals the Type 2 error rate.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/optimal_alpha.html">optimal_alpha</a></span><span class="op">(</span>power_function <span class="op">=</span> <span class="st">"power.t.test(delta = .5, sd = 1, n=64, </span></span>
-<span><span class="st">                      sig.level = x, type='two.sample', </span></span>
-<span><span class="st">                      alternative='two.sided')$power"</span>, error <span class="op">=</span> <span class="st">"balance"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="compromise_power_files/figure-html/unnamed-chunk-2-1.png" width="576"></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res2</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Optimal Alpha</span></span>
-<span><span class="co">##       Alpha     Beta Weighted.Combined.Error.Rate</span></span>
-<span><span class="co">## 1 0.1110855 0.111082                 1.763508e-06</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## From power function:</span></span>
-<span><span class="co">## [1] "power.t.test(delta = .5, sd = 1, n=64, \n                      sig.level = x, type='two.sample', \n                      alternative='two.sided')$power"</span></span></code></pre>
+<code class="sourceCode R"><span class="va">res2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/optimal_alpha.html">optimal_alpha</a></span><span class="op">(</span>power_function <span class="op">=</span> <span class="st">"power.t.test(delta = .5, sd = 1, n=64, 
+                      sig.level = x, type='two.sample', 
+                      alternative='two.sided')$power"</span>, error <span class="op">=</span> <span class="st">"balance"</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## Warning in geom_point(aes(x = res$minimum, y = (costT1T2 * res$minimum + : All aesthetics have length 1, but the data has 9999 rows.</span>
+<span class="co">## <span style="color: #00BBBB;">ℹ</span> Please consider using `annotate()` or provide this layer with data containing</span>
+<span class="co">##   a single row.</span></code></pre>
+<p><img src="compromise_power_files/figure-html/unnamed-chunk-2-1.png" width="576"></p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res2</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## </span>
+<span class="co">## Optimal Alpha</span>
+<span class="co">##       Alpha     Beta Weighted.Combined.Error.Rate</span>
+<span class="co">## 1 0.1110855 0.111082                 1.763508e-06</span>
+<span class="co">## </span>
+<span class="co">## From power function:</span>
+<span class="co">## [1] "power.t.test(delta = .5, sd = 1, n=64, \n                      sig.level = x, type='two.sample', \n                      alternative='two.sided')$power"</span></code></pre>
 <p>Repeating our earlier example, the alpha level is 11%, and the power
 is 89% (or the Type 2 error rate is 11%). Choosing to balance error
 rates is only slightly less efficient (22.22%) compared to minimizing
@@ -245,21 +251,24 @@ default this is set to 1, but you can set it to 4 (or any other value)
 such that Type 1 errors are 4 times as costly as Type 2 errors. This
 will change the weight of Type 1 errors compared to Type 2 errors, and
 thus also the choice of the best alpha level.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">res3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/optimal_alpha.html">optimal_alpha</a></span><span class="op">(</span>power_function <span class="op">=</span> <span class="st">"power.t.test(delta = .5, sd = 1, n=100, </span></span>
-<span><span class="st">                      sig.level = x, type='two.sample', </span></span>
-<span><span class="st">                      alternative='two.sided')$power"</span>,</span>
-<span>                      error <span class="op">=</span> <span class="st">"minimal"</span>, costT1T2 <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">res3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/optimal_alpha.html">optimal_alpha</a></span><span class="op">(</span>power_function <span class="op">=</span> <span class="st">"power.t.test(delta = .5, sd = 1, n=100, 
+                      sig.level = x, type='two.sample', 
+                      alternative='two.sided')$power"</span>,
+                      error <span class="op">=</span> <span class="st">"minimal"</span>, costT1T2 <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## Warning in geom_point(aes(x = res$minimum, y = (costT1T2 * res$minimum + : All aesthetics have length 1, but the data has 9999 rows.</span>
+<span class="co">## <span style="color: #00BBBB;">ℹ</span> Please consider using `annotate()` or provide this layer with data containing</span>
+<span class="co">##   a single row.</span></code></pre>
 <p><img src="compromise_power_files/figure-html/unnamed-chunk-3-1.png" width="576"></p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res3</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Optimal Alpha</span></span>
-<span><span class="co">##        Alpha      Beta Weighted.Combined.Error.Rate</span></span>
-<span><span class="co">## 1 0.01918734 0.1211773                   0.03958533</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## From power function:</span></span>
-<span><span class="co">## [1] "power.t.test(delta = .5, sd = 1, n=100, \n                      sig.level = x, type='two.sample', \n                      alternative='two.sided')$power"</span></span></code></pre>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res3</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## </span>
+<span class="co">## Optimal Alpha</span>
+<span class="co">##        Alpha      Beta Weighted.Combined.Error.Rate</span>
+<span class="co">## 1 0.01918734 0.1211773                   0.03958533</span>
+<span class="co">## </span>
+<span class="co">## From power function:</span>
+<span class="co">## [1] "power.t.test(delta = .5, sd = 1, n=100, \n                      sig.level = x, type='two.sample', \n                      alternative='two.sided')$power"</span></code></pre>
 <p>Now, the alpha level that minimized the <em>weighted</em> Type 1 and
 Type 2 error rates is 2%.</p>
 <p>Similarly, you can take into account prior probabilities that either
@@ -272,21 +281,24 @@ specified using the <code>priorH1H0</code> argument, which by default is
 alternative hypothesis (and hence, Type 2 errors) are 4 times more
 likely than that the null hypothesis is true (and hence, Type 1
 errors).</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">res4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/optimal_alpha.html">optimal_alpha</a></span><span class="op">(</span>power_function <span class="op">=</span> <span class="st">"power.t.test(delta = .5, sd = 1, n=100, </span></span>
-<span><span class="st">                      sig.level = x, type='two.sample', </span></span>
-<span><span class="st">                      alternative='two.sided')$power"</span>, </span>
-<span>                      error <span class="op">=</span> <span class="st">"minimal"</span>, priorH1H0 <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">res4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/optimal_alpha.html">optimal_alpha</a></span><span class="op">(</span>power_function <span class="op">=</span> <span class="st">"power.t.test(delta = .5, sd = 1, n=100, 
+                      sig.level = x, type='two.sample', 
+                      alternative='two.sided')$power"</span>, 
+                      error <span class="op">=</span> <span class="st">"minimal"</span>, priorH1H0 <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## Warning in geom_point(aes(x = res$minimum, y = (costT1T2 * res$minimum + : All aesthetics have length 1, but the data has 9999 rows.</span>
+<span class="co">## <span style="color: #00BBBB;">ℹ</span> Please consider using `annotate()` or provide this layer with data containing</span>
+<span class="co">##   a single row.</span></code></pre>
 <p><img src="compromise_power_files/figure-html/unnamed-chunk-4-1.png" width="576"></p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res4</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Optimal Alpha</span></span>
-<span><span class="co">##        Alpha       Beta Weighted.Combined.Error.Rate</span></span>
-<span><span class="co">## 1 0.07901659 0.03875692                   0.05217681</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## From power function:</span></span>
-<span><span class="co">## [1] "power.t.test(delta = .5, sd = 1, n=100, \n                      sig.level = x, type='two.sample', \n                      alternative='two.sided')$power"</span></span></code></pre>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res4</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## </span>
+<span class="co">## Optimal Alpha</span>
+<span class="co">##        Alpha       Beta Weighted.Combined.Error.Rate</span>
+<span class="co">## 1 0.07901659 0.03875692                   0.05217681</span>
+<span class="co">## </span>
+<span class="co">## From power function:</span>
+<span class="co">## [1] "power.t.test(delta = .5, sd = 1, n=100, \n                      sig.level = x, type='two.sample', \n                      alternative='two.sided')$power"</span></code></pre>
 <p>If you think H1 is four times more likely to be true than H0, you
 need to worry less about Type 1 errors, and now the alpha that minimizes
 the weighted error rates is 8%. It is always difficult to decide upon
@@ -306,38 +318,38 @@ main differences are that <code>power.ftest</code> requires arguments
 for the degrees of freedom rather than sample size. Further, rather than
 allow for input of the power as an argument, <code>power_ftest</code>
 allows the user to input the beta_level.</p>
-<pre><code><span><span class="fu"><a href="../reference/power.ftest.html">power.ftest</a></span><span class="op">(</span></span>
-<span>  num_df <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  den_df <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  cohen_f <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  alpha_level <span class="op">=</span> <span class="fu"><a href="../reference/Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"alpha_level"</span><span class="op">)</span>,</span>
-<span>  beta_level <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  liberal_lambda <span class="op">=</span> <span class="fu"><a href="../reference/Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"liberal_lambda"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre>
+<pre><code><span class="fu"><a href="../reference/power.ftest.html">power.ftest</a></span><span class="op">(</span>
+  num_df <span class="op">=</span> <span class="cn">NULL</span>,
+  den_df <span class="op">=</span> <span class="cn">NULL</span>,
+  cohen_f <span class="op">=</span> <span class="cn">NULL</span>,
+  alpha_level <span class="op">=</span> <span class="fu"><a href="../reference/Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"alpha_level"</span><span class="op">)</span>,
+  beta_level <span class="op">=</span> <span class="cn">NULL</span>,
+  liberal_lambda <span class="op">=</span> <span class="fu"><a href="../reference/Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"liberal_lambda"</span><span class="op">)</span>
+<span class="op">)</span></code></pre>
 <p>The use of the function on its own is simple, but not very intuitive
 for power analysis on its own.</p>
 <p>For example, let us suppose we have known degrees of freedom of 1 and
 128 respectively, and an effect size of interest of
 <code>cohen_f = .22</code>. Now we simple want to find what the power
 would be given an <code>alpha_level</code> of .07.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/power.ftest.html">power.ftest</a></span><span class="op">(</span></span>
-<span>  num_df <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  den_df <span class="op">=</span> <span class="fl">128</span>,</span>
-<span>  cohen_f <span class="op">=</span> <span class="fl">.22</span>,</span>
-<span>  alpha_level <span class="op">=</span> <span class="fl">.045</span>,</span>
-<span>  beta_level <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  liberal_lambda <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">##      Power Calculation for F-test </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##          num_df = 1</span></span>
-<span><span class="co">##          den_df = 128</span></span>
-<span><span class="co">##         cohen_f = 0.22</span></span>
-<span><span class="co">##     alpha_level = 0.045</span></span>
-<span><span class="co">##      beta_level = 0.3210373</span></span>
-<span><span class="co">##           power = 67.89627</span></span></code></pre>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/power.ftest.html">power.ftest</a></span><span class="op">(</span>
+  num_df <span class="op">=</span> <span class="fl">1</span>,
+  den_df <span class="op">=</span> <span class="fl">128</span>,
+  cohen_f <span class="op">=</span> <span class="fl">.22</span>,
+  alpha_level <span class="op">=</span> <span class="fl">.045</span>,
+  beta_level <span class="op">=</span> <span class="cn">NULL</span>,
+  liberal_lambda <span class="op">=</span> <span class="cn">FALSE</span>
+<span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## </span>
+<span class="co">##      Power Calculation for F-test </span>
+<span class="co">## </span>
+<span class="co">##          num_df = 1</span>
+<span class="co">##          den_df = 128</span>
+<span class="co">##         cohen_f = 0.22</span>
+<span class="co">##     alpha_level = 0.045</span>
+<span class="co">##      beta_level = 0.3210373</span>
+<span class="co">##           power = 67.89627</span></code></pre>
 <p>The process is simple for using power.ftest; now we can see where it
 is actually useful.</p>
 <div class="section level3">
@@ -358,23 +370,23 @@ start by using the default <code>alpha_level</code>. The outcome of
 interest in this case is the interaction effect; this means we want this
 particular ANOVA-level effect to be detected if it were to exist (more
 so than other possible outcomes).</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b*2w"</span>,</span>
-<span>                   n <span class="op">=</span> <span class="fl">40</span>, </span>
-<span>                   mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.03</span>, <span class="fl">1.41</span>, <span class="fl">0.98</span>, <span class="fl">1.01</span><span class="op">)</span>, </span>
-<span>                   sd <span class="op">=</span> <span class="fl">1.03</span>, </span>
-<span>                   r <span class="op">=</span> <span class="fl">0.8</span>, </span>
-<span>                   labelnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"voice"</span>, <span class="st">"human"</span>, <span class="st">"robot"</span>, </span>
-<span>                                  <span class="st">"emotion"</span>, <span class="st">"cheerful"</span>, <span class="st">"sad"</span><span class="op">)</span>,</span>
-<span>                   plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b*2w"</span>,
+                   n <span class="op">=</span> <span class="fl">40</span>, 
+                   mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.03</span>, <span class="fl">1.41</span>, <span class="fl">0.98</span>, <span class="fl">1.01</span><span class="op">)</span>, 
+                   sd <span class="op">=</span> <span class="fl">1.03</span>, 
+                   r <span class="op">=</span> <span class="fl">0.8</span>, 
+                   labelnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"voice"</span>, <span class="st">"human"</span>, <span class="st">"robot"</span>, 
+                                  <span class="st">"emotion"</span>, <span class="st">"cheerful"</span>, <span class="st">"sad"</span><span class="op">)</span>,
+                   plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="compromise_power_files/figure-html/unnamed-chunk-6-1.png" width="480"></p>
 <p>We can then pass this design onto to the <code>ANOVA_exact2</code>
 function to estimate the effect sizes for the this particular
 design.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">exact2_res</span> <span class="op">=</span> <span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">exact2_res</span><span class="op">$</span><span class="va">main_results</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">exact2_res</span> <span class="op">=</span> <span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">exact2_res</span><span class="op">$</span><span class="va">main_results</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="20%">
@@ -418,41 +430,44 @@ design.</p>
 detect the effect of interest. Now, let us use <code>power.ftest</code>
 to find the alpha that will get us our desired beta (in this case let us
 assume .2).</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/power.ftest.html">power.ftest</a></span><span class="op">(</span>num_df <span class="op">=</span> <span class="va">exact2_res</span><span class="op">$</span><span class="va">anova_table</span><span class="op">$</span><span class="va">num_df</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>,</span>
-<span>            den_df <span class="op">=</span> <span class="va">exact2_res</span><span class="op">$</span><span class="va">anova_table</span><span class="op">$</span><span class="va">den_df</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>,</span>
-<span>            cohen_f <span class="op">=</span> <span class="va">exact2_res</span><span class="op">$</span><span class="va">main_results</span><span class="op">$</span><span class="va">cohen_f</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>,</span>
-<span>            alpha_level <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>            beta_level <span class="op">=</span> <span class="fl">.2</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">##      Power Calculation for F-test </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">##          num_df = 1</span></span>
-<span><span class="co">##          den_df = 78</span></span>
-<span><span class="co">##         cohen_f = 0.2707638</span></span>
-<span><span class="co">##     alpha_level = 0.125566</span></span>
-<span><span class="co">##      beta_level = 0.2</span></span>
-<span><span class="co">##           power = 80</span></span></code></pre>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/power.ftest.html">power.ftest</a></span><span class="op">(</span>num_df <span class="op">=</span> <span class="va">exact2_res</span><span class="op">$</span><span class="va">anova_table</span><span class="op">$</span><span class="va">num_df</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>,
+            den_df <span class="op">=</span> <span class="va">exact2_res</span><span class="op">$</span><span class="va">anova_table</span><span class="op">$</span><span class="va">den_df</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>,
+            cohen_f <span class="op">=</span> <span class="va">exact2_res</span><span class="op">$</span><span class="va">main_results</span><span class="op">$</span><span class="va">cohen_f</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>,
+            alpha_level <span class="op">=</span> <span class="cn">NULL</span>,
+            beta_level <span class="op">=</span> <span class="fl">.2</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## </span>
+<span class="co">##      Power Calculation for F-test </span>
+<span class="co">## </span>
+<span class="co">##          num_df = 1</span>
+<span class="co">##          den_df = 78</span>
+<span class="co">##         cohen_f = 0.2707638</span>
+<span class="co">##     alpha_level = 0.125566</span>
+<span class="co">##      beta_level = 0.2</span>
+<span class="co">##           power = 80</span></code></pre>
 <p>So, we can see that the required alpha in this case is approximately
 .12. However, what would be the optimal alpha?</p>
 <p>Now, let us use this same approach in the <code>optimal_alpha</code>
 function.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">res5</span> <span class="op">=</span> <span class="fu"><a href="../reference/optimal_alpha.html">optimal_alpha</a></span><span class="op">(</span><span class="st">"power.ftest(num_df = exact2_res$anova_table$num_df[3],</span></span>
-<span><span class="st">            den_df = exact2_res$anova_table$den_df[3],</span></span>
-<span><span class="st">            cohen_f = exact2_res$main_results$cohen_f[3],</span></span>
-<span><span class="st">            alpha_level = x)$power/100"</span>,</span>
-<span>            error <span class="op">=</span> <span class="st">"minimal"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">res5</span> <span class="op">=</span> <span class="fu"><a href="../reference/optimal_alpha.html">optimal_alpha</a></span><span class="op">(</span><span class="st">"power.ftest(num_df = exact2_res$anova_table$num_df[3],
+            den_df = exact2_res$anova_table$den_df[3],
+            cohen_f = exact2_res$main_results$cohen_f[3],
+            alpha_level = x)$power/100"</span>,
+            error <span class="op">=</span> <span class="st">"minimal"</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## Warning in geom_point(aes(x = res$minimum, y = (costT1T2 * res$minimum + : All aesthetics have length 1, but the data has 9999 rows.</span>
+<span class="co">## <span style="color: #00BBBB;">ℹ</span> Please consider using `annotate()` or provide this layer with data containing</span>
+<span class="co">##   a single row.</span></code></pre>
 <p><img src="compromise_power_files/figure-html/unnamed-chunk-9-1.png" width="576"></p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res5</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## Optimal Alpha</span></span>
-<span><span class="co">##       Alpha      Beta Weighted.Combined.Error.Rate</span></span>
-<span><span class="co">## 1 0.1417106 0.1826088                    0.1621597</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## From power function:</span></span>
-<span><span class="co">## [1] "power.ftest(num_df = exact2_res$anova_table$num_df[3],\n            den_df = exact2_res$anova_table$den_df[3],\n            cohen_f = exact2_res$main_results$cohen_f[3],\n            alpha_level = x)$power/100"</span></span></code></pre>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res5</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## </span>
+<span class="co">## Optimal Alpha</span>
+<span class="co">##       Alpha      Beta Weighted.Combined.Error.Rate</span>
+<span class="co">## 1 0.1417106 0.1826088                    0.1621597</span>
+<span class="co">## </span>
+<span class="co">## From power function:</span>
+<span class="co">## [1] "power.ftest(num_df = exact2_res$anova_table$num_df[3],\n            den_df = exact2_res$anova_table$den_df[3],\n            cohen_f = exact2_res$main_results$cohen_f[3],\n            alpha_level = x)$power/100"</span></code></pre>
 <p>Interestingly the values for alpha and beta are fairly close to the
 calculations we made with <code>power.ftest</code> alone.</p>
 </div>
@@ -463,17 +478,17 @@ calculations we made with <code>power.ftest</code> alone.</p>
 function <code>ANOVA_compromise</code>. This way we can simply pass on
 the design from <code>ANOVA_design</code> and the optimal alpha can be
 determined for <em>every</em> comparison we select in a study.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">comp_res</span> <span class="op">=</span> <span class="fu"><a href="../reference/ANOVA_compromise.html">ANOVA_compromise</a></span><span class="op">(</span><span class="va">design_result</span>,</span>
-<span>                            emm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">comp_res</span> <span class="op">=</span> <span class="fu"><a href="../reference/ANOVA_compromise.html">ANOVA_compromise</a></span><span class="op">(</span><span class="va">design_result</span>,
+                            emm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p>You’ll notice it takes a lot longer to run
 <code>ANOVA_compromise</code> than <code>ANOVA_exact</code> or
 <code>ANOVA_exact2</code>, but overall the options (such as
 <code>emm = TRUE</code>) are the same. Now, we can go through the
 results one-by-one.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#ANOVA results</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">comp_res</span><span class="op">$</span><span class="va">aov_comp</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#ANOVA results</span>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">comp_res</span><span class="op">$</span><span class="va">aov_comp</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="20%">
@@ -523,9 +538,9 @@ results one-by-one.</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#MANOVA results</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">comp_res</span><span class="op">$</span><span class="va">manova_comp</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#MANOVA results</span>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">comp_res</span><span class="op">$</span><span class="va">manova_comp</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="20%">
@@ -584,9 +599,9 @@ results one-by-one.</p>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#emmeans results</span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">comp_res</span><span class="op">$</span><span class="va">emmeans_comp</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co">#emmeans results</span>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="va">comp_res</span><span class="op">$</span><span class="va">emmeans_comp</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="52%">
@@ -672,15 +687,24 @@ emotion_sad</td>
 comparisons outlined above. These can be found in
 <code>aov_plotlist</code>, <code>manova_plotlist</code>, and
 <code>emmeans_plotlist</code>.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">comp_res</span><span class="op">$</span><span class="va">aov_plotlist</span></span></code></pre></div>
-<pre><code><span><span class="co">## $voice</span></span></code></pre>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">comp_res</span><span class="op">$</span><span class="va">aov_plotlist</span></code></pre></div>
+<pre><code><span class="co">## $voice</span></code></pre>
+<pre><code><span class="co">## Warning in geom_point(aes(x = res$minimum, y = (costT1T2 * res$minimum + : All aesthetics have length 1, but the data has 9999 rows.</span>
+<span class="co">## <span style="color: #00BBBB;">ℹ</span> Please consider using `annotate()` or provide this layer with data containing</span>
+<span class="co">##   a single row.</span></code></pre>
 <p><img src="compromise_power_files/figure-html/comp_plots-1.png" width="576"></p>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## $emotion</span></span></code></pre>
+<pre><code><span class="co">## </span>
+<span class="co">## $emotion</span></code></pre>
+<pre><code><span class="co">## Warning in geom_point(aes(x = res$minimum, y = (costT1T2 * res$minimum + : All aesthetics have length 1, but the data has 9999 rows.</span>
+<span class="co">## <span style="color: #00BBBB;">ℹ</span> Please consider using `annotate()` or provide this layer with data containing</span>
+<span class="co">##   a single row.</span></code></pre>
 <p><img src="compromise_power_files/figure-html/comp_plots-2.png" width="576"></p>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## $`voice:emotion`</span></span></code></pre>
+<pre><code><span class="co">## </span>
+<span class="co">## $`voice:emotion`</span></code></pre>
+<pre><code><span class="co">## Warning in geom_point(aes(x = res$minimum, y = (costT1T2 * res$minimum + : All aesthetics have length 1, but the data has 9999 rows.</span>
+<span class="co">## <span style="color: #00BBBB;">ℹ</span> Please consider using `annotate()` or provide this layer with data containing</span>
+<span class="co">##   a single row.</span></code></pre>
 <p><img src="compromise_power_files/figure-html/comp_plots-3.png" width="576"></p>
 </div>
 </div>
@@ -703,7 +727,7 @@ comparisons outlined above. These can be found in
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

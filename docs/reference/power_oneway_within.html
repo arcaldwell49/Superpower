@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Superpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3</span>
       </span>
     </div>
 
@@ -75,7 +75,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">power_oneway_within</span><span class="op">(</span><span class="va">design_result</span>, alpha_level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">power_oneway_within</span><span class="op">(</span><span class="va">design_result</span>, alpha_level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -139,16 +139,16 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Set up a within design with 3 factors,</span></span></span>
-<span class="r-in"><span><span class="co">## with correlation between observations of 0.8,</span></span></span>
-<span class="r-in"><span><span class="co">## 40 participants (who do all conditions), and standard deviation of 2</span></span></span>
-<span class="r-in"><span><span class="co">## with a mean pattern of 1, 0, 1, conditions labeled 'condition' and</span></span></span>
-<span class="r-in"><span><span class="co">## 'voice', with names for levels of "cheerful", "neutral", "sad".</span></span></span>
-<span class="r-in"><span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"3w"</span>, n <span class="op">=</span> <span class="fl">40</span>, r <span class="op">=</span> <span class="fl">0.8</span>,</span></span>
-<span class="r-in"><span>      mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, sd <span class="op">=</span> <span class="fl">2</span>,</span></span>
-<span class="r-in"><span>      labelnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"condition"</span>, <span class="st">"cheerful"</span>, <span class="st">"neutral"</span>, <span class="st">"sad"</span><span class="op">)</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## Set up a within design with 3 factors,</span></span>
+<span class="r-in"><span class="co">## with correlation between observations of 0.8,</span></span>
+<span class="r-in"><span class="co">## 40 participants (who do all conditions), and standard deviation of 2</span></span>
+<span class="r-in"><span class="co">## with a mean pattern of 1, 0, 1, conditions labeled 'condition' and</span></span>
+<span class="r-in"><span class="co">## 'voice', with names for levels of "cheerful", "neutral", "sad".</span></span>
+<span class="r-in"><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"3w"</span>, n <span class="op">=</span> <span class="fl">40</span>, r <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span class="r-in">      mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, sd <span class="op">=</span> <span class="fl">2</span>,</span>
+<span class="r-in">      labelnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"condition"</span>, <span class="st">"cheerful"</span>, <span class="st">"neutral"</span>, <span class="st">"sad"</span><span class="op">)</span><span class="op">)</span></span>
 <span class="r-plt img"><img src="power_oneway_within-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="va">power_result</span> <span class="op">&lt;-</span> <span class="fu">power_oneway_within</span><span class="op">(</span><span class="va">design_result</span>, alpha_level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></span>
+<span class="r-in"><span class="va">power_result</span> <span class="op">&lt;-</span> <span class="fu">power_oneway_within</span><span class="op">(</span><span class="va">design_result</span>, alpha_level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
 </code></pre></div>
     </div>
   </div>
@@ -163,7 +163,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

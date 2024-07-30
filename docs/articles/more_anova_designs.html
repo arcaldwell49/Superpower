@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Superpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3</span>
       </span>
     </div>
 
@@ -99,7 +99,7 @@
                         <h4 data-toc-skip class="author">Aaron R.
 Caldwell</h4>
             
-            <h4 data-toc-skip class="date">2023-02-10</h4>
+            <h4 data-toc-skip class="date">2024-07-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/arcaldwell49/Superpower/blob/HEAD/vignettes/more_anova_designs.Rmd" class="external-link"><code>vignettes/more_anova_designs.Rmd</code></a></small>
       <div class="hidden name"><code>more_anova_designs.Rmd</code></div>
@@ -109,10 +109,10 @@ Caldwell</h4>
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aaroncaldwell.us/SuperpowerBook/" class="external-link">Superpower</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/Superpower_options.html">Superpower_options</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>                   plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">nsims</span> <span class="op">=</span> <span class="fl">250</span></span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aaroncaldwell.us/SuperpowerBook/" class="external-link">Superpower</a></span><span class="op">)</span>
+<span class="fu"><a href="../reference/Superpower_options.html">Superpower_options</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">FALSE</span>,
+                   plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="va">nsims</span> <span class="op">=</span> <span class="fl">250</span></code></pre></div>
 <p>In this vignette we will quickly demonstrate a few variations on
 ANOVA designs and how to implement them in <code>Superpower</code>. To
 see even more designs, please check out our <a href="https://aaroncaldwell.us/SuperpowerBook/" class="external-link">book</a></p>
@@ -138,41 +138,41 @@ participants who get a dog. We initially consider collecting data from
 before we proceed with the data collection, we examine the statistical
 power our design would have to detect the differences we predict.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">design</span> <span class="op">&lt;-</span> <span class="st">"3b"</span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">50</span></span>
-<span><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span>, <span class="fl">26.6</span><span class="op">)</span></span>
-<span><span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">6.4</span></span>
-<span><span class="va">label_list</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"cat"</span>, <span class="st">"dog"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,</span>
-<span>                   n <span class="op">=</span> <span class="va">n</span>, </span>
-<span>                   mu <span class="op">=</span> <span class="va">mu</span>, </span>
-<span>                   sd <span class="op">=</span> <span class="va">sd</span>, </span>
-<span>                   label_list <span class="op">=</span> <span class="va">label_list</span>,</span>
-<span>                   plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="va">design</span> <span class="op">&lt;-</span> <span class="st">"3b"</span>
+<span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">50</span>
+<span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span>, <span class="fl">26.6</span><span class="op">)</span>
+<span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">6.4</span>
+<span class="va">label_list</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"cat"</span>, <span class="st">"dog"</span><span class="op">)</span><span class="op">)</span>
+
+<span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,
+                   n <span class="op">=</span> <span class="va">n</span>, 
+                   mu <span class="op">=</span> <span class="va">mu</span>, 
+                   sd <span class="op">=</span> <span class="va">sd</span>, 
+                   label_list <span class="op">=</span> <span class="va">label_list</span>,
+                   plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="more_anova_designs_files/figure-html/unnamed-chunk-2-1.png" width="672"></p>
-<pre><code><span><span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>,</span>
-<span>            emm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Pairwise emmeans will automatically run</span></span>
-<span>            </span>
-<span><span class="co">#&gt; Power and Effect sizes for ANOVA tests</span></span>
-<span><span class="co">#&gt;             power partial_eta_squared cohen_f non_centrality</span></span>
-<span><span class="co">#&gt; condition 47.5236              0.0314    0.18         4.7651</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Power and Effect sizes for pairwise comparisons (t-tests)</span></span>
-<span><span class="co">#&gt;                                   power effect_size</span></span>
-<span><span class="co">#&gt; p_condition_control_condition_cat 39.83        0.34</span></span>
-<span><span class="co">#&gt; p_condition_control_condition_dog 52.05        0.41</span></span>
-<span><span class="co">#&gt; p_condition_cat_condition_dog      6.10        0.06</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Power and Effect sizes for estimated marginal means</span></span>
-<span><span class="co">#&gt;                            contrast  power partial_eta_squared cohen_f</span></span>
-<span><span class="co">#&gt; 1 condition_cat - condition_control 39.909           0.0196190 0.14146</span></span>
-<span><span class="co">#&gt; 2     condition_cat - condition_dog  6.107           0.0006611 0.02572</span></span>
-<span><span class="co">#&gt; 3 condition_control - condition_dog 52.148           0.0271902 0.16718</span></span>
-<span><span class="co">#&gt;   non_centrality</span></span>
-<span><span class="co">#&gt; 1        2.94171</span></span>
-<span><span class="co">#&gt; 2        0.09725</span></span>
-<span><span class="co">#&gt; 3        4.10867</span></span></code></pre>
+<pre><code><span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>,
+            emm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Pairwise emmeans will automatically run</span>
+            
+<span class="co">#&gt; Power and Effect sizes for ANOVA tests</span>
+<span class="co">#&gt;             power partial_eta_squared cohen_f non_centrality</span>
+<span class="co">#&gt; condition 47.5236              0.0314    0.18         4.7651</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Power and Effect sizes for pairwise comparisons (t-tests)</span>
+<span class="co">#&gt;                                   power effect_size</span>
+<span class="co">#&gt; p_condition_control_condition_cat 39.83        0.34</span>
+<span class="co">#&gt; p_condition_control_condition_dog 52.05        0.41</span>
+<span class="co">#&gt; p_condition_cat_condition_dog      6.10        0.06</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Power and Effect sizes for estimated marginal means</span>
+<span class="co">#&gt;                            contrast  power partial_eta_squared cohen_f</span>
+<span class="co">#&gt; 1 condition_cat - condition_control 39.909           0.0196190 0.14146</span>
+<span class="co">#&gt; 2     condition_cat - condition_dog  6.107           0.0006611 0.02572</span>
+<span class="co">#&gt; 3 condition_control - condition_dog 52.148           0.0271902 0.16718</span>
+<span class="co">#&gt;   non_centrality</span>
+<span class="co">#&gt; 1        2.94171</span>
+<span class="co">#&gt; 2        0.09725</span>
+<span class="co">#&gt; 3        4.10867</span></code></pre>
 <p>The result shows that you would have quite low power with 50
 participants, both for the overall ANOVA (just below 50% power), as for
 the follow up comparisons (approximately 40% power for the control vs
@@ -186,130 +186,130 @@ d = 0.34375 for the difference between the control condition and cats,
 and dogs, and 0.4/6.4 or d = 0.0625 for the difference between cats and
 dogs as pets.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/heliosdrm/pwr" class="external-link">pwr</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html" class="external-link">pwr.t.test</a></span><span class="op">(</span>d <span class="op">=</span> <span class="fl">2.2</span><span class="op">/</span><span class="fl">6.4</span>,</span>
-<span>           n <span class="op">=</span> <span class="fl">50</span>,</span>
-<span>           sig.level <span class="op">=</span> <span class="fl">0.05</span>,</span>
-<span>           type<span class="op">=</span><span class="st">"two.sample"</span>,</span>
-<span>           alternative<span class="op">=</span><span class="st">"two.sided"</span><span class="op">)</span><span class="op">$</span><span class="va">power</span></span>
-<span><span class="co">#&gt; [1] 0.3983064</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html" class="external-link">pwr.t.test</a></span><span class="op">(</span>d <span class="op">=</span> <span class="fl">2.6</span><span class="op">/</span><span class="fl">6.4</span>,</span>
-<span>           n <span class="op">=</span> <span class="fl">50</span>,</span>
-<span>           sig.level <span class="op">=</span> <span class="fl">0.05</span>,</span>
-<span>           type<span class="op">=</span><span class="st">"two.sample"</span>,</span>
-<span>           alternative<span class="op">=</span><span class="st">"two.sided"</span><span class="op">)</span><span class="op">$</span><span class="va">power</span></span>
-<span><span class="co">#&gt; [1] 0.5205162</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html" class="external-link">pwr.t.test</a></span><span class="op">(</span>d <span class="op">=</span> <span class="fl">0.4</span><span class="op">/</span><span class="fl">6.4</span>,</span>
-<span>           n <span class="op">=</span> <span class="fl">50</span>,</span>
-<span>           sig.level <span class="op">=</span> <span class="fl">0.05</span>,</span>
-<span>           type<span class="op">=</span><span class="st">"two.sample"</span>,</span>
-<span>           alternative<span class="op">=</span><span class="st">"two.sided"</span><span class="op">)</span><span class="op">$</span><span class="va">power</span></span>
-<span><span class="co">#&gt; [1] 0.06104044</span></span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/heliosdrm/pwr" class="external-link">pwr</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html" class="external-link">pwr.t.test</a></span><span class="op">(</span>d <span class="op">=</span> <span class="fl">2.2</span><span class="op">/</span><span class="fl">6.4</span>,
+           n <span class="op">=</span> <span class="fl">50</span>,
+           sig.level <span class="op">=</span> <span class="fl">0.05</span>,
+           type<span class="op">=</span><span class="st">"two.sample"</span>,
+           alternative<span class="op">=</span><span class="st">"two.sided"</span><span class="op">)</span><span class="op">$</span><span class="va">power</span>
+<span class="co">#&gt; [1] 0.3983064</span>
+
+<span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html" class="external-link">pwr.t.test</a></span><span class="op">(</span>d <span class="op">=</span> <span class="fl">2.6</span><span class="op">/</span><span class="fl">6.4</span>,
+           n <span class="op">=</span> <span class="fl">50</span>,
+           sig.level <span class="op">=</span> <span class="fl">0.05</span>,
+           type<span class="op">=</span><span class="st">"two.sample"</span>,
+           alternative<span class="op">=</span><span class="st">"two.sided"</span><span class="op">)</span><span class="op">$</span><span class="va">power</span>
+<span class="co">#&gt; [1] 0.5205162</span>
+
+<span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html" class="external-link">pwr.t.test</a></span><span class="op">(</span>d <span class="op">=</span> <span class="fl">0.4</span><span class="op">/</span><span class="fl">6.4</span>,
+           n <span class="op">=</span> <span class="fl">50</span>,
+           sig.level <span class="op">=</span> <span class="fl">0.05</span>,
+           type<span class="op">=</span><span class="st">"two.sample"</span>,
+           alternative<span class="op">=</span><span class="st">"two.sided"</span><span class="op">)</span><span class="op">$</span><span class="va">power</span>
+<span class="co">#&gt; [1] 0.06104044</span></code></pre></div>
 <p>It is clear we would need to collect more participants in each group
 to increase our power. We can plot a power curve across a range of
 sample sizes to see how much we need to increase the sample size.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_power.html">plot_power</a></span><span class="op">(</span><span class="va">design_result</span>, min_n <span class="op">=</span> <span class="fl">10</span>, max_n <span class="op">=</span> <span class="fl">250</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/plot_power.html">plot_power</a></span><span class="op">(</span><span class="va">design_result</span>, min_n <span class="op">=</span> <span class="fl">10</span>, max_n <span class="op">=</span> <span class="fl">250</span><span class="op">)</span></code></pre></div>
 <p>We see 134 participants give us around 90% power for the ANOVA. But
 we should also check the power for the comparison of the control
 condition and the cat condition.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">design</span> <span class="op">&lt;-</span> <span class="st">"3b"</span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">134</span></span>
-<span><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span>, <span class="fl">26.6</span><span class="op">)</span></span>
-<span><span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">6.4</span></span>
-<span><span class="va">label_list</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"cat"</span>, <span class="st">"dog"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,</span>
-<span>                   n <span class="op">=</span> <span class="va">n</span>, </span>
-<span>                   mu <span class="op">=</span> <span class="va">mu</span>, </span>
-<span>                   sd <span class="op">=</span> <span class="va">sd</span>, </span>
-<span>                   label_list <span class="op">=</span> <span class="va">label_list</span>,</span>
-<span>                   plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co">#do not print the plot (same as above)</span></span>
-<span></span>
-<span><span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>,</span>
-<span>             emm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Power and Effect sizes for ANOVA tests</span></span>
-<span><span class="co">#&gt;             power partial_eta_squared cohen_f non_centrality</span></span>
-<span><span class="co">#&gt; condition 90.1767              0.0311  0.1793        12.8242</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Power and Effect sizes for pairwise comparisons (t-tests)</span></span>
-<span><span class="co">#&gt;                                   power effect_size</span></span>
-<span><span class="co">#&gt; p_condition_control_condition_cat 80.05        0.34</span></span>
-<span><span class="co">#&gt; p_condition_control_condition_dog 91.20        0.41</span></span>
-<span><span class="co">#&gt; p_condition_cat_condition_dog      8.03        0.06</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Power and Effect sizes for estimated marginal means</span></span>
-<span><span class="co">#&gt;                            contrast  power partial_eta_squared cohen_f</span></span>
-<span><span class="co">#&gt; 1 condition_cat - condition_control 80.150           0.0194560 0.14086</span></span>
-<span><span class="co">#&gt; 2     condition_cat - condition_dog  8.033           0.0006555 0.02561</span></span>
-<span><span class="co">#&gt; 3 condition_control - condition_dog 91.266           0.0269660 0.16647</span></span>
-<span><span class="co">#&gt;   non_centrality</span></span>
-<span><span class="co">#&gt; 1         7.9170</span></span>
-<span><span class="co">#&gt; 2         0.2617</span></span>
-<span><span class="co">#&gt; 3        11.0576</span></span>
-<span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">180</span></span>
-<span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,</span>
-<span>                   n <span class="op">=</span> <span class="va">n</span>, </span>
-<span>                   mu <span class="op">=</span> <span class="va">mu</span>, </span>
-<span>                   sd <span class="op">=</span> <span class="va">sd</span>, </span>
-<span>                   label_list <span class="op">=</span> <span class="va">label_list</span>,</span>
-<span>                   plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co">#do not print the plot (same as above)</span></span>
-<span></span>
-<span><span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>,</span>
-<span>             emm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Power and Effect sizes for ANOVA tests</span></span>
-<span><span class="co">#&gt;             power partial_eta_squared cohen_f non_centrality</span></span>
-<span><span class="co">#&gt; condition 96.7794              0.0311  0.1791        17.2266</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Power and Effect sizes for pairwise comparisons (t-tests)</span></span>
-<span><span class="co">#&gt;                                   power effect_size</span></span>
-<span><span class="co">#&gt; p_condition_control_condition_cat 90.19        0.34</span></span>
-<span><span class="co">#&gt; p_condition_control_condition_dog 97.02        0.41</span></span>
-<span><span class="co">#&gt; p_condition_cat_condition_dog      9.09        0.06</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Power and Effect sizes for estimated marginal means</span></span>
-<span><span class="co">#&gt;                            contrast power partial_eta_squared cohen_f</span></span>
-<span><span class="co">#&gt; 1 condition_cat - condition_control 90.24           0.0194194 0.14073</span></span>
-<span><span class="co">#&gt; 2     condition_cat - condition_dog  9.10           0.0006543 0.02559</span></span>
-<span><span class="co">#&gt; 3 condition_control - condition_dog 97.04           0.0269157 0.16631</span></span>
-<span><span class="co">#&gt;   non_centrality</span></span>
-<span><span class="co">#&gt; 1        10.6348</span></span>
-<span><span class="co">#&gt; 2         0.3516</span></span>
-<span><span class="co">#&gt; 3        14.8535</span></span>
-<span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">5380</span></span>
-<span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,</span>
-<span>                   n <span class="op">=</span> <span class="va">n</span>, </span>
-<span>                   mu <span class="op">=</span> <span class="va">mu</span>, </span>
-<span>                   sd <span class="op">=</span> <span class="va">sd</span>, </span>
-<span>                   label_list <span class="op">=</span> <span class="va">label_list</span>,</span>
-<span>                   plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co">#do not print the plot (same as above)</span></span>
-<span></span>
-<span><span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>,</span>
-<span>             emm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Power and Effect sizes for ANOVA tests</span></span>
-<span><span class="co">#&gt;           power partial_eta_squared cohen_f non_centrality</span></span>
-<span><span class="co">#&gt; condition   100              0.0309  0.1786       514.8828</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Power and Effect sizes for pairwise comparisons (t-tests)</span></span>
-<span><span class="co">#&gt;                                   power effect_size</span></span>
-<span><span class="co">#&gt; p_condition_control_condition_cat   100        0.34</span></span>
-<span><span class="co">#&gt; p_condition_control_condition_dog   100        0.41</span></span>
-<span><span class="co">#&gt; p_condition_cat_condition_dog        90        0.06</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Power and Effect sizes for estimated marginal means</span></span>
-<span><span class="co">#&gt;                            contrast power partial_eta_squared cohen_f</span></span>
-<span><span class="co">#&gt; 1 condition_cat - condition_control   100           0.0193172 0.14035</span></span>
-<span><span class="co">#&gt; 2     condition_cat - condition_dog    90           0.0006507 0.02552</span></span>
-<span><span class="co">#&gt; 3 condition_control - condition_dog   100           0.0267750 0.16587</span></span>
-<span><span class="co">#&gt;   non_centrality</span></span>
-<span><span class="co">#&gt; 1         317.86</span></span>
-<span><span class="co">#&gt; 2          10.51</span></span>
-<span><span class="co">#&gt; 3         443.96</span></span></code></pre></div>
+<code class="sourceCode R"><span class="va">design</span> <span class="op">&lt;-</span> <span class="st">"3b"</span>
+<span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">134</span>
+<span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span>, <span class="fl">26.6</span><span class="op">)</span>
+<span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">6.4</span>
+<span class="va">label_list</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"cat"</span>, <span class="st">"dog"</span><span class="op">)</span><span class="op">)</span>
+
+<span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,
+                   n <span class="op">=</span> <span class="va">n</span>, 
+                   mu <span class="op">=</span> <span class="va">mu</span>, 
+                   sd <span class="op">=</span> <span class="va">sd</span>, 
+                   label_list <span class="op">=</span> <span class="va">label_list</span>,
+                   plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co">#do not print the plot (same as above)</span>
+
+<span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>,
+             emm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">#&gt; Power and Effect sizes for ANOVA tests</span>
+<span class="co">#&gt;             power partial_eta_squared cohen_f non_centrality</span>
+<span class="co">#&gt; condition 90.1767              0.0311  0.1793        12.8242</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Power and Effect sizes for pairwise comparisons (t-tests)</span>
+<span class="co">#&gt;                                   power effect_size</span>
+<span class="co">#&gt; p_condition_control_condition_cat 80.05        0.34</span>
+<span class="co">#&gt; p_condition_control_condition_dog 91.20        0.41</span>
+<span class="co">#&gt; p_condition_cat_condition_dog      8.03        0.06</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Power and Effect sizes for estimated marginal means</span>
+<span class="co">#&gt;                            contrast  power partial_eta_squared cohen_f</span>
+<span class="co">#&gt; 1 condition_cat - condition_control 80.150           0.0194560 0.14086</span>
+<span class="co">#&gt; 2     condition_cat - condition_dog  8.033           0.0006555 0.02561</span>
+<span class="co">#&gt; 3 condition_control - condition_dog 91.266           0.0269660 0.16647</span>
+<span class="co">#&gt;   non_centrality</span>
+<span class="co">#&gt; 1         7.9170</span>
+<span class="co">#&gt; 2         0.2617</span>
+<span class="co">#&gt; 3        11.0576</span>
+
+<span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">180</span>
+<span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,
+                   n <span class="op">=</span> <span class="va">n</span>, 
+                   mu <span class="op">=</span> <span class="va">mu</span>, 
+                   sd <span class="op">=</span> <span class="va">sd</span>, 
+                   label_list <span class="op">=</span> <span class="va">label_list</span>,
+                   plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co">#do not print the plot (same as above)</span>
+
+<span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>,
+             emm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">#&gt; Power and Effect sizes for ANOVA tests</span>
+<span class="co">#&gt;             power partial_eta_squared cohen_f non_centrality</span>
+<span class="co">#&gt; condition 96.7794              0.0311  0.1791        17.2266</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Power and Effect sizes for pairwise comparisons (t-tests)</span>
+<span class="co">#&gt;                                   power effect_size</span>
+<span class="co">#&gt; p_condition_control_condition_cat 90.19        0.34</span>
+<span class="co">#&gt; p_condition_control_condition_dog 97.02        0.41</span>
+<span class="co">#&gt; p_condition_cat_condition_dog      9.09        0.06</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Power and Effect sizes for estimated marginal means</span>
+<span class="co">#&gt;                            contrast power partial_eta_squared cohen_f</span>
+<span class="co">#&gt; 1 condition_cat - condition_control 90.24           0.0194194 0.14073</span>
+<span class="co">#&gt; 2     condition_cat - condition_dog  9.10           0.0006543 0.02559</span>
+<span class="co">#&gt; 3 condition_control - condition_dog 97.04           0.0269157 0.16631</span>
+<span class="co">#&gt;   non_centrality</span>
+<span class="co">#&gt; 1        10.6348</span>
+<span class="co">#&gt; 2         0.3516</span>
+<span class="co">#&gt; 3        14.8535</span>
+
+<span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">5380</span>
+<span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,
+                   n <span class="op">=</span> <span class="va">n</span>, 
+                   mu <span class="op">=</span> <span class="va">mu</span>, 
+                   sd <span class="op">=</span> <span class="va">sd</span>, 
+                   label_list <span class="op">=</span> <span class="va">label_list</span>,
+                   plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co">#do not print the plot (same as above)</span>
+
+<span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>,
+             emm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">#&gt; Power and Effect sizes for ANOVA tests</span>
+<span class="co">#&gt;           power partial_eta_squared cohen_f non_centrality</span>
+<span class="co">#&gt; condition   100              0.0309  0.1786       514.8828</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Power and Effect sizes for pairwise comparisons (t-tests)</span>
+<span class="co">#&gt;                                   power effect_size</span>
+<span class="co">#&gt; p_condition_control_condition_cat   100        0.34</span>
+<span class="co">#&gt; p_condition_control_condition_dog   100        0.41</span>
+<span class="co">#&gt; p_condition_cat_condition_dog        90        0.06</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Power and Effect sizes for estimated marginal means</span>
+<span class="co">#&gt;                            contrast power partial_eta_squared cohen_f</span>
+<span class="co">#&gt; 1 condition_cat - condition_control   100           0.0193172 0.14035</span>
+<span class="co">#&gt; 2     condition_cat - condition_dog    90           0.0006507 0.02552</span>
+<span class="co">#&gt; 3 condition_control - condition_dog   100           0.0267750 0.16587</span>
+<span class="co">#&gt;   non_centrality</span>
+<span class="co">#&gt; 1         317.86</span>
+<span class="co">#&gt; 2          10.51</span>
+<span class="co">#&gt; 3         443.96</span></code></pre></div>
 <p>With 134 participants per condition, power for this simple comparison
 is only 80%. If we want to aim for 90% power for follow up tests, we
 need more participants. 180 participants provides good power for the
@@ -426,43 +426,43 @@ we set the correlation to 0.5, and the result should be 80.777% power,
 and an effect size estimate of 0.5 for the simple effect. We also
 calculate partial eta-squared for the ANOVA, which equals <span class="math inline">\(\frac{f^2}{f^2+1}\)</span>, or 0.05882353.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">K</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">34</span></span>
-<span><span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
-<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fl">0.5</span></span>
-<span><span class="va">alpha</span> <span class="op">=</span> <span class="fl">0.05</span></span>
-<span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fl">0.25</span></span>
-<span><span class="va">f2</span> <span class="op">&lt;-</span> <span class="va">f</span><span class="op">^</span><span class="fl">2</span></span>
-<span><span class="va">ES</span> <span class="op">&lt;-</span> <span class="va">f2</span><span class="op">/</span><span class="op">(</span><span class="va">f2</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">ES</span></span>
-<span><span class="co">#&gt; [1] 0.05882353</span></span>
-<span><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mu_from_ES.html">mu_from_ES</a></span><span class="op">(</span>K <span class="op">=</span> <span class="va">K</span>, ES <span class="op">=</span> <span class="va">ES</span><span class="op">)</span></span>
-<span><span class="va">design</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">K</span>,<span class="st">"w"</span>,sep<span class="op">=</span><span class="st">""</span><span class="op">)</span></span>
-<span><span class="va">label_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"speed"</span> <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fast"</span>, <span class="st">"slow"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,</span>
-<span>                              n <span class="op">=</span> <span class="va">n</span>, </span>
-<span>                              mu <span class="op">=</span> <span class="va">mu</span>, </span>
-<span>                              sd <span class="op">=</span> <span class="va">sd</span>, </span>
-<span>                              r <span class="op">=</span> <span class="va">r</span>, </span>
-<span>                              label_list <span class="op">=</span> <span class="va">label_list</span>,</span>
-<span>                              plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="va">K</span> <span class="op">&lt;-</span> <span class="fl">2</span>
+<span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">34</span>
+<span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+<span class="va">r</span> <span class="op">&lt;-</span> <span class="fl">0.5</span>
+<span class="va">alpha</span> <span class="op">=</span> <span class="fl">0.05</span>
+<span class="va">f</span> <span class="op">&lt;-</span> <span class="fl">0.25</span>
+<span class="va">f2</span> <span class="op">&lt;-</span> <span class="va">f</span><span class="op">^</span><span class="fl">2</span>
+<span class="va">ES</span> <span class="op">&lt;-</span> <span class="va">f2</span><span class="op">/</span><span class="op">(</span><span class="va">f2</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span>
+<span class="va">ES</span>
+<span class="co">#&gt; [1] 0.05882353</span>
+<span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mu_from_ES.html">mu_from_ES</a></span><span class="op">(</span>K <span class="op">=</span> <span class="va">K</span>, ES <span class="op">=</span> <span class="va">ES</span><span class="op">)</span>
+<span class="va">design</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">K</span>,<span class="st">"w"</span>,sep<span class="op">=</span><span class="st">""</span><span class="op">)</span>
+<span class="va">label_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"speed"</span> <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fast"</span>, <span class="st">"slow"</span><span class="op">)</span><span class="op">)</span>
+
+<span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,
+                              n <span class="op">=</span> <span class="va">n</span>, 
+                              mu <span class="op">=</span> <span class="va">mu</span>, 
+                              sd <span class="op">=</span> <span class="va">sd</span>, 
+                              r <span class="op">=</span> <span class="va">r</span>, 
+                              label_list <span class="op">=</span> <span class="va">label_list</span>,
+                              plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="more_anova_designs_files/figure-html/unnamed-chunk-10-1.png" width="672"></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>,</span>
-<span>            emm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Power and Effect sizes for ANOVA tests</span></span>
-<span><span class="co">#&gt;       power partial_eta_squared cohen_f non_centrality</span></span>
-<span><span class="co">#&gt; speed 80.25              0.2026  0.5041         8.3852</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Power and Effect sizes for pairwise comparisons (t-tests)</span></span>
-<span><span class="co">#&gt;                         power effect_size</span></span>
-<span><span class="co">#&gt; p_speed_fast_speed_slow 80.78         0.5</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Power and Effect sizes for estimated marginal means</span></span>
-<span><span class="co">#&gt;                  contrast power partial_eta_squared cohen_f non_centrality</span></span>
-<span><span class="co">#&gt; 1 speed_fast - speed_slow 80.25              0.2026  0.5041          8.385</span></span></code></pre></div>
+<code class="sourceCode R">
+<span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>,
+            emm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">#&gt; Power and Effect sizes for ANOVA tests</span>
+<span class="co">#&gt;       power partial_eta_squared cohen_f non_centrality</span>
+<span class="co">#&gt; speed 80.25              0.2026  0.5041         8.3852</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Power and Effect sizes for pairwise comparisons (t-tests)</span>
+<span class="co">#&gt;                         power effect_size</span>
+<span class="co">#&gt; p_speed_fast_speed_slow 80.78         0.5</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Power and Effect sizes for estimated marginal means</span>
+<span class="co">#&gt;                  contrast power partial_eta_squared cohen_f non_centrality</span>
+<span class="co">#&gt; 1 speed_fast - speed_slow 80.25              0.2026  0.5041          8.385</span></code></pre></div>
 <p>The results of the exact simulation approach are indeed to 80.777%.
 Note that the simulation calculates Cohen’s <span class="math inline">\(d_z\)</span> effect sizes for paired comparisons -
 which here given the correlation of 0.5 is also 0.5 for a medium effect
@@ -474,43 +474,43 @@ difference is a correlation between dependent variables of 0.7. This
 should yield an effect size <span class="math inline">\(d_z\)</span> =
 0.6454972.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">K</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">34</span></span>
-<span><span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
-<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fl">0.7</span></span>
-<span><span class="va">alpha</span> <span class="op">=</span> <span class="fl">0.05</span></span>
-<span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fl">0.25</span></span>
-<span><span class="va">f2</span> <span class="op">&lt;-</span> <span class="va">f</span><span class="op">^</span><span class="fl">2</span></span>
-<span><span class="va">ES</span> <span class="op">&lt;-</span> <span class="va">f2</span><span class="op">/</span><span class="op">(</span><span class="va">f2</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">ES</span></span>
-<span><span class="co">#&gt; [1] 0.05882353</span></span>
-<span><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mu_from_ES.html">mu_from_ES</a></span><span class="op">(</span>K <span class="op">=</span> <span class="va">K</span>, ES <span class="op">=</span> <span class="va">ES</span><span class="op">)</span></span>
-<span><span class="va">design</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">K</span>,<span class="st">"w"</span>,sep<span class="op">=</span><span class="st">""</span><span class="op">)</span></span>
-<span><span class="va">label_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"speed"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fast"</span>, <span class="st">"slow"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,</span>
-<span>                              n <span class="op">=</span> <span class="va">n</span>, </span>
-<span>                              mu <span class="op">=</span> <span class="va">mu</span>, </span>
-<span>                              sd <span class="op">=</span> <span class="va">sd</span>, </span>
-<span>                              r <span class="op">=</span> <span class="va">r</span>, </span>
-<span>                              label_list <span class="op">=</span> <span class="va">label_list</span>,</span>
-<span>                              plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="va">K</span> <span class="op">&lt;-</span> <span class="fl">2</span>
+<span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">34</span>
+<span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+<span class="va">r</span> <span class="op">&lt;-</span> <span class="fl">0.7</span>
+<span class="va">alpha</span> <span class="op">=</span> <span class="fl">0.05</span>
+<span class="va">f</span> <span class="op">&lt;-</span> <span class="fl">0.25</span>
+<span class="va">f2</span> <span class="op">&lt;-</span> <span class="va">f</span><span class="op">^</span><span class="fl">2</span>
+<span class="va">ES</span> <span class="op">&lt;-</span> <span class="va">f2</span><span class="op">/</span><span class="op">(</span><span class="va">f2</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span>
+<span class="va">ES</span>
+<span class="co">#&gt; [1] 0.05882353</span>
+<span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mu_from_ES.html">mu_from_ES</a></span><span class="op">(</span>K <span class="op">=</span> <span class="va">K</span>, ES <span class="op">=</span> <span class="va">ES</span><span class="op">)</span>
+<span class="va">design</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">K</span>,<span class="st">"w"</span>,sep<span class="op">=</span><span class="st">""</span><span class="op">)</span>
+<span class="va">label_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"speed"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fast"</span>, <span class="st">"slow"</span><span class="op">)</span><span class="op">)</span>
+
+<span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,
+                              n <span class="op">=</span> <span class="va">n</span>, 
+                              mu <span class="op">=</span> <span class="va">mu</span>, 
+                              sd <span class="op">=</span> <span class="va">sd</span>, 
+                              r <span class="op">=</span> <span class="va">r</span>, 
+                              label_list <span class="op">=</span> <span class="va">label_list</span>,
+                              plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="more_anova_designs_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>,</span>
-<span>            emm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Power and Effect sizes for ANOVA tests</span></span>
-<span><span class="co">#&gt;         power partial_eta_squared cohen_f non_centrality</span></span>
-<span><span class="co">#&gt; speed 95.2298              0.2975  0.6508        13.9754</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Power and Effect sizes for pairwise comparisons (t-tests)</span></span>
-<span><span class="co">#&gt;                         power effect_size</span></span>
-<span><span class="co">#&gt; p_speed_fast_speed_slow 95.47        0.65</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Power and Effect sizes for estimated marginal means</span></span>
-<span><span class="co">#&gt;                  contrast power partial_eta_squared cohen_f non_centrality</span></span>
-<span><span class="co">#&gt; 1 speed_fast - speed_slow 95.23              0.2975  0.6508          13.98</span></span></code></pre></div>
+<code class="sourceCode R">
+<span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>,
+            emm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">#&gt; Power and Effect sizes for ANOVA tests</span>
+<span class="co">#&gt;         power partial_eta_squared cohen_f non_centrality</span>
+<span class="co">#&gt; speed 95.2298              0.2975  0.6508        13.9754</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Power and Effect sizes for pairwise comparisons (t-tests)</span>
+<span class="co">#&gt;                         power effect_size</span>
+<span class="co">#&gt; p_speed_fast_speed_slow 95.47        0.65</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Power and Effect sizes for estimated marginal means</span>
+<span class="co">#&gt;                  contrast power partial_eta_squared cohen_f non_centrality</span>
+<span class="co">#&gt; 1 speed_fast - speed_slow 95.23              0.2975  0.6508          13.98</span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="power-in-repeated-measures-anova-with-more-than-2-groups">Power in Repeated Measures ANOVA with More than 2 Groups<a class="anchor" aria-label="anchor" href="#power-in-repeated-measures-anova-with-more-than-2-groups"></a>
@@ -549,19 +549,19 @@ validated mood scale) are 3.8, 4.2, and 4.3. The standard deviation is
 can calculate Cohen’s f for the ANOVA, and Cohen’s dz for the
 contrasts:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3.8</span>, <span class="fl">4.2</span>, <span class="fl">4.3</span><span class="op">)</span></span>
-<span><span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">0.9</span></span>
-<span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">mu</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mu</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">mu</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="va">sd</span> <span class="co">#Cohen, 1988, formula 8.2.1 and 8.2.2</span></span>
-<span><span class="va">f</span></span>
-<span><span class="co">#&gt; [1] 0.2400274</span></span>
-<span></span>
-<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fl">0.7</span></span>
-<span><span class="op">(</span><span class="fl">4.2</span><span class="op">-</span><span class="fl">3.8</span><span class="op">)</span><span class="op">/</span><span class="fl">0.9</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">r</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.5737753</span></span>
-<span><span class="op">(</span><span class="fl">4.3</span><span class="op">-</span><span class="fl">3.8</span><span class="op">)</span><span class="op">/</span><span class="fl">0.9</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">r</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.7172191</span></span>
-<span><span class="op">(</span><span class="fl">4.3</span><span class="op">-</span><span class="fl">4.2</span><span class="op">)</span><span class="op">/</span><span class="fl">0.9</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">r</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 0.1434438</span></span></code></pre></div>
+<code class="sourceCode R"><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3.8</span>, <span class="fl">4.2</span>, <span class="fl">4.3</span><span class="op">)</span>
+<span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">0.9</span>
+<span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">mu</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mu</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">mu</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="va">sd</span> <span class="co">#Cohen, 1988, formula 8.2.1 and 8.2.2</span>
+<span class="va">f</span>
+<span class="co">#&gt; [1] 0.2400274</span>
+
+<span class="va">r</span> <span class="op">&lt;-</span> <span class="fl">0.7</span>
+<span class="op">(</span><span class="fl">4.2</span><span class="op">-</span><span class="fl">3.8</span><span class="op">)</span><span class="op">/</span><span class="fl">0.9</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">r</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.5737753</span>
+<span class="op">(</span><span class="fl">4.3</span><span class="op">-</span><span class="fl">3.8</span><span class="op">)</span><span class="op">/</span><span class="fl">0.9</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">r</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.7172191</span>
+<span class="op">(</span><span class="fl">4.3</span><span class="op">-</span><span class="fl">4.2</span><span class="op">)</span><span class="op">/</span><span class="fl">0.9</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="op">(</span><span class="fl">1</span><span class="op">-</span><span class="va">r</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.1434438</span></code></pre></div>
 <p>The relation between Cohen’s d or dz and Cohen’s f becomes more
 difficult when there are multiple groups, because the relationship
 depends on the pattern of the means. Cohen (1988) presents calculations
@@ -583,39 +583,39 @@ and the alpha level is 0.05, the power is 96.9%.</p>
 <p>In this case, we simulate data with means -0.3061862, 0.0000000, and
 0.3061862, and set the sd to 1.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">K</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">20</span></span>
-<span><span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
-<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fl">0.8</span></span>
-<span><span class="va">alpha</span> <span class="op">=</span> <span class="fl">0.05</span></span>
-<span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fl">0.25</span></span>
-<span><span class="va">f2</span> <span class="op">&lt;-</span> <span class="va">f</span><span class="op">^</span><span class="fl">2</span></span>
-<span><span class="va">ES</span> <span class="op">&lt;-</span> <span class="va">f2</span><span class="op">/</span><span class="op">(</span><span class="va">f2</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">ES</span></span>
-<span><span class="co">#&gt; [1] 0.05882353</span></span>
-<span><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mu_from_ES.html">mu_from_ES</a></span><span class="op">(</span>K <span class="op">=</span> <span class="va">K</span>, ES <span class="op">=</span> <span class="va">ES</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">mu</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mu</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">mu</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="va">sd</span> <span class="co">#Cohen, 1988, formula 8.2.1 and 8.2.2</span></span>
-<span><span class="co">#&gt; [1] 0.25</span></span>
-<span><span class="va">design</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">K</span>,<span class="st">"w"</span>,sep<span class="op">=</span><span class="st">""</span><span class="op">)</span></span>
-<span><span class="va">label_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"speed"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fast"</span>, <span class="st">"medium"</span>, <span class="st">"slow"</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,</span>
-<span>                              n <span class="op">=</span> <span class="va">n</span>, </span>
-<span>                              mu <span class="op">=</span> <span class="va">mu</span>, </span>
-<span>                              sd <span class="op">=</span> <span class="va">sd</span>, </span>
-<span>                              r <span class="op">=</span> <span class="va">r</span>, </span>
-<span>                              label_list <span class="op">=</span> <span class="va">label_list</span>,</span>
-<span>                              plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="va">K</span> <span class="op">&lt;-</span> <span class="fl">3</span>
+<span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">20</span>
+<span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+<span class="va">r</span> <span class="op">&lt;-</span> <span class="fl">0.8</span>
+<span class="va">alpha</span> <span class="op">=</span> <span class="fl">0.05</span>
+<span class="va">f</span> <span class="op">&lt;-</span> <span class="fl">0.25</span>
+<span class="va">f2</span> <span class="op">&lt;-</span> <span class="va">f</span><span class="op">^</span><span class="fl">2</span>
+<span class="va">ES</span> <span class="op">&lt;-</span> <span class="va">f2</span><span class="op">/</span><span class="op">(</span><span class="va">f2</span><span class="op">+</span><span class="fl">1</span><span class="op">)</span>
+<span class="va">ES</span>
+<span class="co">#&gt; [1] 0.05882353</span>
+<span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mu_from_ES.html">mu_from_ES</a></span><span class="op">(</span>K <span class="op">=</span> <span class="va">K</span>, ES <span class="op">=</span> <span class="va">ES</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="op">(</span><span class="va">mu</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">mu</span><span class="op">)</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">mu</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="va">sd</span> <span class="co">#Cohen, 1988, formula 8.2.1 and 8.2.2</span>
+<span class="co">#&gt; [1] 0.25</span>
+<span class="va">design</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste</a></span><span class="op">(</span><span class="va">K</span>,<span class="st">"w"</span>,sep<span class="op">=</span><span class="st">""</span><span class="op">)</span>
+<span class="va">label_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"speed"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"fast"</span>, <span class="st">"medium"</span>, <span class="st">"slow"</span><span class="op">)</span><span class="op">)</span>
+
+<span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,
+                              n <span class="op">=</span> <span class="va">n</span>, 
+                              mu <span class="op">=</span> <span class="va">mu</span>, 
+                              sd <span class="op">=</span> <span class="va">sd</span>, 
+                              r <span class="op">=</span> <span class="va">r</span>, 
+                              label_list <span class="op">=</span> <span class="va">label_list</span>,
+                              plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="more_anova_designs_files/figure-html/unnamed-chunk-13-1.png" width="672"></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">power_result</span> <span class="op">=</span> <span class="fu"><a href="../reference/ANOVA_power.html">ANOVA_power</a></span><span class="op">(</span><span class="va">design_result</span>,</span>
-<span>                           nsims <span class="op">=</span> <span class="fl">250</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">power_result</span>,</span>
-<span>        param <span class="op">=</span> <span class="st">"main_results"</span>,</span>
-<span>        level <span class="op">=</span> <span class="fl">.98</span><span class="op">)</span></span>
-<span><span class="co">#&gt;             power lower.ci upper.ci</span></span>
-<span><span class="co">#&gt; anova_speed  95.2 91.79877 97.23318</span></span></code></pre></div>
+<code class="sourceCode R"><span class="va">power_result</span> <span class="op">=</span> <span class="fu"><a href="../reference/ANOVA_power.html">ANOVA_power</a></span><span class="op">(</span><span class="va">design_result</span>,
+                           nsims <span class="op">=</span> <span class="fl">250</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">power_result</span>,
+        param <span class="op">=</span> <span class="st">"main_results"</span>,
+        level <span class="op">=</span> <span class="fl">.98</span><span class="op">)</span>
+<span class="co">#&gt;             power lower.ci upper.ci</span>
+<span class="co">#&gt; anova_speed  96.8 93.81376 98.36976</span></code></pre></div>
 <p>The results of the simulation are indeed very close to 96.9% (the
 confidence intervals from the simulation include ). We can see this is
 in line with the power estimate from Gpower:</p>
@@ -644,88 +644,88 @@ we have a total sample size of 46. Since we have 2 levels for the
 between-participants factor, that means the number of groups 2 (and both
 these groups collect 2 repeated measures).</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.25</span>, <span class="fl">0.25</span>, <span class="fl">0.25</span>, <span class="op">-</span><span class="fl">0.25</span><span class="op">)</span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">23</span></span>
-<span><span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
-<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fl">0.5</span></span>
-<span><span class="va">design</span> <span class="op">=</span> <span class="st">"2w*2b"</span></span>
-<span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,</span>
-<span>                              n <span class="op">=</span> <span class="va">n</span>, </span>
-<span>                              mu <span class="op">=</span> <span class="va">mu</span>, </span>
-<span>                              sd <span class="op">=</span> <span class="va">sd</span>, </span>
-<span>                              r <span class="op">=</span> <span class="va">r</span>,</span>
-<span>                              plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.25</span>, <span class="fl">0.25</span>, <span class="fl">0.25</span>, <span class="op">-</span><span class="fl">0.25</span><span class="op">)</span>
+<span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">23</span>
+<span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+<span class="va">r</span> <span class="op">&lt;-</span> <span class="fl">0.5</span>
+<span class="va">design</span> <span class="op">=</span> <span class="st">"2w*2b"</span>
+<span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,
+                              n <span class="op">=</span> <span class="va">n</span>, 
+                              mu <span class="op">=</span> <span class="va">mu</span>, 
+                              sd <span class="op">=</span> <span class="va">sd</span>, 
+                              r <span class="op">=</span> <span class="va">r</span>,
+                              plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="more_anova_designs_files/figure-html/unnamed-chunk-17-1.png" width="672"></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>,</span>
-<span>             emm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Power and Effect sizes for ANOVA tests</span></span>
-<span><span class="co">#&gt;       power partial_eta_squared cohen_f non_centrality</span></span>
-<span><span class="co">#&gt; b    5.0000              0.0000   0.000         0.0000</span></span>
-<span><span class="co">#&gt; a    5.0000              0.0000   0.000         0.0000</span></span>
-<span><span class="co">#&gt; b:a 90.4745              0.2025   0.504        11.1746</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Power and Effect sizes for pairwise comparisons (t-tests)</span></span>
-<span><span class="co">#&gt;                       power effect_size</span></span>
-<span><span class="co">#&gt; p_a_a1_b_b1_a_a1_b_b2 38.17         0.5</span></span>
-<span><span class="co">#&gt; p_a_a1_b_b1_a_a2_b_b1 63.02         0.5</span></span>
-<span><span class="co">#&gt; p_a_a1_b_b1_a_a2_b_b2  5.00         0.0</span></span>
-<span><span class="co">#&gt; p_a_a1_b_b2_a_a2_b_b1  5.00         0.0</span></span>
-<span><span class="co">#&gt; p_a_a1_b_b2_a_a2_b_b2 63.02        -0.5</span></span>
-<span><span class="co">#&gt; p_a_a2_b_b1_a_a2_b_b2 38.17        -0.5</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Power and Effect sizes for estimated marginal means</span></span>
-<span><span class="co">#&gt;                contrast power partial_eta_squared   cohen_f non_centrality</span></span>
-<span><span class="co">#&gt; 1 a_a1 b_b1 - a_a2 b_b1 63.76           1.127e-01 3.563e-01      5.587e+00</span></span>
-<span><span class="co">#&gt; 2 a_a1 b_b1 - a_a1 b_b2 37.28           5.970e-02 2.520e-01      2.794e+00</span></span>
-<span><span class="co">#&gt; 3 a_a1 b_b1 - a_a2 b_b2  5.00           6.508e-33 8.067e-17      2.864e-31</span></span>
-<span><span class="co">#&gt; 4 a_a2 b_b1 - a_a1 b_b2  5.00           9.751e-34 3.123e-17      4.290e-32</span></span>
-<span><span class="co">#&gt; 5 a_a2 b_b1 - a_a2 b_b2 37.28           5.970e-02 2.520e-01      2.794e+00</span></span>
-<span><span class="co">#&gt; 6 a_a1 b_b2 - a_a2 b_b2 63.76           1.127e-01 3.563e-01      5.587e+00</span></span></code></pre></div>
+<code class="sourceCode R">
+<span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>,
+             emm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">#&gt; Power and Effect sizes for ANOVA tests</span>
+<span class="co">#&gt;       power partial_eta_squared cohen_f non_centrality</span>
+<span class="co">#&gt; b    5.0000              0.0000   0.000         0.0000</span>
+<span class="co">#&gt; a    5.0000              0.0000   0.000         0.0000</span>
+<span class="co">#&gt; b:a 90.4745              0.2025   0.504        11.1746</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Power and Effect sizes for pairwise comparisons (t-tests)</span>
+<span class="co">#&gt;                       power effect_size</span>
+<span class="co">#&gt; p_a_a1_b_b1_a_a1_b_b2 38.17         0.5</span>
+<span class="co">#&gt; p_a_a1_b_b1_a_a2_b_b1 63.02         0.5</span>
+<span class="co">#&gt; p_a_a1_b_b1_a_a2_b_b2  5.00         0.0</span>
+<span class="co">#&gt; p_a_a1_b_b2_a_a2_b_b1  5.00         0.0</span>
+<span class="co">#&gt; p_a_a1_b_b2_a_a2_b_b2 63.02        -0.5</span>
+<span class="co">#&gt; p_a_a2_b_b1_a_a2_b_b2 38.17        -0.5</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Power and Effect sizes for estimated marginal means</span>
+<span class="co">#&gt;                contrast power partial_eta_squared   cohen_f non_centrality</span>
+<span class="co">#&gt; 1 a_a1 b_b1 - a_a2 b_b1 63.76           1.127e-01 3.563e-01      5.587e+00</span>
+<span class="co">#&gt; 2 a_a1 b_b1 - a_a1 b_b2 37.28           5.970e-02 2.520e-01      2.794e+00</span>
+<span class="co">#&gt; 3 a_a1 b_b1 - a_a2 b_b2  5.00           5.299e-33 7.279e-17      2.331e-31</span>
+<span class="co">#&gt; 4 a_a2 b_b1 - a_a1 b_b2  5.00           2.837e-34 1.684e-17      1.248e-32</span>
+<span class="co">#&gt; 5 a_a2 b_b1 - a_a2 b_b2 37.28           5.970e-02 2.520e-01      2.794e+00</span>
+<span class="co">#&gt; 6 a_a1 b_b2 - a_a2 b_b2 63.76           1.127e-01 3.563e-01      5.587e+00</span></code></pre></div>
 <p>We can simulate the same Two-Way ANOVA increasing the correlation to
 0.7. Power should be 98.98% for the two-way interaction.</p>
 <p><img src="screenshots/gpower_6.png" width="600px"></p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.25</span>, <span class="fl">0.25</span>, <span class="fl">0.25</span>, <span class="op">-</span><span class="fl">0.25</span><span class="op">)</span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">23</span></span>
-<span><span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
-<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fl">0.7</span></span>
-<span><span class="va">design</span> <span class="op">=</span> <span class="st">"2w*2b"</span></span>
-<span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,</span>
-<span>                              n <span class="op">=</span> <span class="va">n</span>, </span>
-<span>                              mu <span class="op">=</span> <span class="va">mu</span>, </span>
-<span>                              sd <span class="op">=</span> <span class="va">sd</span>, </span>
-<span>                              r <span class="op">=</span> <span class="va">r</span>,</span>
-<span>                              plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.25</span>, <span class="fl">0.25</span>, <span class="fl">0.25</span>, <span class="op">-</span><span class="fl">0.25</span><span class="op">)</span>
+<span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">23</span>
+<span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">1</span>
+<span class="va">r</span> <span class="op">&lt;-</span> <span class="fl">0.7</span>
+<span class="va">design</span> <span class="op">=</span> <span class="st">"2w*2b"</span>
+<span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,
+                              n <span class="op">=</span> <span class="va">n</span>, 
+                              mu <span class="op">=</span> <span class="va">mu</span>, 
+                              sd <span class="op">=</span> <span class="va">sd</span>, 
+                              r <span class="op">=</span> <span class="va">r</span>,
+                              plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="more_anova_designs_files/figure-html/unnamed-chunk-19-1.png" width="672"></p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>,</span>
-<span>            emm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Power and Effect sizes for ANOVA tests</span></span>
-<span><span class="co">#&gt;       power partial_eta_squared cohen_f non_centrality</span></span>
-<span><span class="co">#&gt; b    5.0000              0.0000  0.0000         0.0000</span></span>
-<span><span class="co">#&gt; a    5.0000              0.0000  0.0000         0.0000</span></span>
-<span><span class="co">#&gt; b:a 98.8079              0.2974  0.6506        18.6243</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Power and Effect sizes for pairwise comparisons (t-tests)</span></span>
-<span><span class="co">#&gt;                       power effect_size</span></span>
-<span><span class="co">#&gt; p_a_a1_b_b1_a_a1_b_b2 38.17        0.50</span></span>
-<span><span class="co">#&gt; p_a_a1_b_b1_a_a2_b_b1 84.09        0.65</span></span>
-<span><span class="co">#&gt; p_a_a1_b_b1_a_a2_b_b2  5.00        0.00</span></span>
-<span><span class="co">#&gt; p_a_a1_b_b2_a_a2_b_b1  5.00        0.00</span></span>
-<span><span class="co">#&gt; p_a_a1_b_b2_a_a2_b_b2 84.09       -0.65</span></span>
-<span><span class="co">#&gt; p_a_a2_b_b1_a_a2_b_b2 38.17       -0.50</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Power and Effect sizes for estimated marginal means</span></span>
-<span><span class="co">#&gt;                contrast power partial_eta_squared   cohen_f non_centrality</span></span>
-<span><span class="co">#&gt; 1 a_a1 b_b1 - a_a2 b_b1 84.72           1.747e-01 4.600e-01      9.312e+00</span></span>
-<span><span class="co">#&gt; 2 a_a1 b_b1 - a_a1 b_b2 37.28           5.970e-02 2.520e-01      2.794e+00</span></span>
-<span><span class="co">#&gt; 3 a_a1 b_b1 - a_a2 b_b2  5.00           3.146e-33 5.609e-17      1.384e-31</span></span>
-<span><span class="co">#&gt; 4 a_a2 b_b1 - a_a1 b_b2  5.00           1.255e-32 1.120e-16      5.523e-31</span></span>
-<span><span class="co">#&gt; 5 a_a2 b_b1 - a_a2 b_b2 37.28           5.970e-02 2.520e-01      2.794e+00</span></span>
-<span><span class="co">#&gt; 6 a_a1 b_b2 - a_a2 b_b2 84.72           1.747e-01 4.600e-01      9.312e+00</span></span></code></pre></div>
+<code class="sourceCode R">
+<span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>,
+            emm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">#&gt; Power and Effect sizes for ANOVA tests</span>
+<span class="co">#&gt;       power partial_eta_squared cohen_f non_centrality</span>
+<span class="co">#&gt; b    5.0000              0.0000  0.0000         0.0000</span>
+<span class="co">#&gt; a    5.0000              0.0000  0.0000         0.0000</span>
+<span class="co">#&gt; b:a 98.8079              0.2974  0.6506        18.6243</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Power and Effect sizes for pairwise comparisons (t-tests)</span>
+<span class="co">#&gt;                       power effect_size</span>
+<span class="co">#&gt; p_a_a1_b_b1_a_a1_b_b2 38.17        0.50</span>
+<span class="co">#&gt; p_a_a1_b_b1_a_a2_b_b1 84.09        0.65</span>
+<span class="co">#&gt; p_a_a1_b_b1_a_a2_b_b2  5.00        0.00</span>
+<span class="co">#&gt; p_a_a1_b_b2_a_a2_b_b1  5.00        0.00</span>
+<span class="co">#&gt; p_a_a1_b_b2_a_a2_b_b2 84.09       -0.65</span>
+<span class="co">#&gt; p_a_a2_b_b1_a_a2_b_b2 38.17       -0.50</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Power and Effect sizes for estimated marginal means</span>
+<span class="co">#&gt;                contrast power partial_eta_squared   cohen_f non_centrality</span>
+<span class="co">#&gt; 1 a_a1 b_b1 - a_a2 b_b1 84.72           1.747e-01 4.600e-01      9.312e+00</span>
+<span class="co">#&gt; 2 a_a1 b_b1 - a_a1 b_b2 37.28           5.970e-02 2.520e-01      2.794e+00</span>
+<span class="co">#&gt; 3 a_a1 b_b1 - a_a2 b_b2  5.00           5.481e-33 7.404e-17      2.412e-31</span>
+<span class="co">#&gt; 4 a_a2 b_b1 - a_a1 b_b2  5.00           8.801e-33 9.381e-17      3.873e-31</span>
+<span class="co">#&gt; 5 a_a2 b_b1 - a_a2 b_b2 37.28           5.970e-02 2.520e-01      2.794e+00</span>
+<span class="co">#&gt; 6 a_a1 b_b2 - a_a2 b_b2 84.72           1.747e-01 4.600e-01      9.312e+00</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="two-way-anova-between-participants-design">Two-way ANOVA, between participants Design<a class="anchor" aria-label="anchor" href="#two-way-anova-between-participants-design"></a>
@@ -775,24 +775,24 @@ additive can be rejected. The key insight here is that not the sample
 size per condition, but the total sample size over all other factor
 determines the power for the main effects and the interaction.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># To save time compiling this vignette, we ran these simulations once, and stored them</span></span>
-<span><span class="va">design_result_ordinal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b*2b"</span>, </span>
-<span>                                      n <span class="op">=</span> <span class="fl">160</span>, </span>
-<span>                                      mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, </span>
-<span>                                      sd <span class="op">=</span> <span class="fl">2</span>, </span>
-<span>                                      label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cheerful"</span>, <span class="st">"sad"</span><span class="op">)</span>,</span>
-<span>                                                     <span class="st">"voice"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"human"</span>, <span class="st">"robot"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co"># </span></span>
-<span><span class="va">power_result_ordinal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_power.html">ANOVA_power</a></span><span class="op">(</span><span class="va">design_result_ordinal</span>, </span>
-<span>                                    alpha_level <span class="op">=</span> <span class="fl">0.05</span>, </span>
-<span>                                    p_adjust <span class="op">=</span> <span class="st">"none"</span>, </span>
-<span>                                    seed <span class="op">=</span> <span class="fl">2019</span>, </span>
-<span>                                    nsims <span class="op">=</span> <span class="va">nsims</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">power_result_ordinal</span>, </span>
-<span>                     parm <span class="op">=</span> <span class="st">"main_results"</span>,</span>
-<span>                     level <span class="op">=</span> <span class="fl">.98</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R">
+<span class="co"># To save time compiling this vignette, we ran these simulations once, and stored them</span>
+<span class="va">design_result_ordinal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b*2b"</span>, 
+                                      n <span class="op">=</span> <span class="fl">160</span>, 
+                                      mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, 
+                                      sd <span class="op">=</span> <span class="fl">2</span>, 
+                                      label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"cheerful"</span>, <span class="st">"sad"</span><span class="op">)</span>,
+                                                     <span class="st">"voice"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"human"</span>, <span class="st">"robot"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
+<span class="co"># </span>
+<span class="va">power_result_ordinal</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_power.html">ANOVA_power</a></span><span class="op">(</span><span class="va">design_result_ordinal</span>, 
+                                    alpha_level <span class="op">=</span> <span class="fl">0.05</span>, 
+                                    p_adjust <span class="op">=</span> <span class="st">"none"</span>, 
+                                    seed <span class="op">=</span> <span class="fl">2019</span>, 
+                                    nsims <span class="op">=</span> <span class="va">nsims</span><span class="op">)</span>
+
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">power_result_ordinal</span>, 
+                     parm <span class="op">=</span> <span class="st">"main_results"</span>,
+                     level <span class="op">=</span> <span class="fl">.98</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left"></th>
@@ -822,10 +822,10 @@ determines the power for the main effects and the interaction.</p>
 </tbody>
 </table>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">power_result_ordinal</span>, </span>
-<span>                     parm <span class="op">=</span> <span class="st">"pc_results"</span>,</span>
-<span>                     level <span class="op">=</span> <span class="fl">.98</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R">
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">power_result_ordinal</span>, 
+                     parm <span class="op">=</span> <span class="st">"pc_results"</span>,
+                     level <span class="op">=</span> <span class="fl">.98</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <colgroup>
 <col width="71%">
@@ -879,18 +879,18 @@ determines the power for the main effects and the interaction.</p>
 </tbody>
 </table>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co">#Analytic solution</span></span>
-<span><span class="fu"><a href="../reference/power_twoway_between.html">power_twoway_between</a></span><span class="op">(</span><span class="va">design_result_ordinal</span><span class="op">)</span><span class="op">$</span><span class="va">power_A</span></span>
-<span><span class="co">#&gt; [1] 88.44511</span></span>
-<span><span class="fu"><a href="../reference/power_twoway_between.html">power_twoway_between</a></span><span class="op">(</span><span class="va">design_result_ordinal</span><span class="op">)</span><span class="op">$</span><span class="va">power_B</span></span>
-<span><span class="co">#&gt; [1] 88.44511</span></span>
-<span><span class="fu"><a href="../reference/power_twoway_between.html">power_twoway_between</a></span><span class="op">(</span><span class="va">design_result_ordinal</span><span class="op">)</span><span class="op">$</span><span class="va">power_AB</span></span>
-<span><span class="co">#&gt; [1] 88.44511</span></span>
-<span><span class="fu"><a href="../reference/power_twoway_between.html">power_twoway_between</a></span><span class="op">(</span><span class="va">design_result_ordinal</span><span class="op">)</span><span class="op">$</span><span class="va">Cohen_f_AB</span></span>
-<span><span class="co">#&gt; [1] 0.125</span></span>
-<span><span class="fu"><a href="../reference/power_twoway_between.html">power_twoway_between</a></span><span class="op">(</span><span class="va">design_result_ordinal</span><span class="op">)</span><span class="op">$</span><span class="va">eta_p_2_AB</span></span>
-<span><span class="co">#&gt; [1] 0.01538462</span></span></code></pre></div>
+<code class="sourceCode R">
+<span class="co">#Analytic solution</span>
+<span class="fu"><a href="../reference/power_twoway_between.html">power_twoway_between</a></span><span class="op">(</span><span class="va">design_result_ordinal</span><span class="op">)</span><span class="op">$</span><span class="va">power_A</span>
+<span class="co">#&gt; [1] 88.44511</span>
+<span class="fu"><a href="../reference/power_twoway_between.html">power_twoway_between</a></span><span class="op">(</span><span class="va">design_result_ordinal</span><span class="op">)</span><span class="op">$</span><span class="va">power_B</span>
+<span class="co">#&gt; [1] 88.44511</span>
+<span class="fu"><a href="../reference/power_twoway_between.html">power_twoway_between</a></span><span class="op">(</span><span class="va">design_result_ordinal</span><span class="op">)</span><span class="op">$</span><span class="va">power_AB</span>
+<span class="co">#&gt; [1] 88.44511</span>
+<span class="fu"><a href="../reference/power_twoway_between.html">power_twoway_between</a></span><span class="op">(</span><span class="va">design_result_ordinal</span><span class="op">)</span><span class="op">$</span><span class="va">Cohen_f_AB</span>
+<span class="co">#&gt; [1] 0.125</span>
+<span class="fu"><a href="../reference/power_twoway_between.html">power_twoway_between</a></span><span class="op">(</span><span class="va">design_result_ordinal</span><span class="op">)</span><span class="op">$</span><span class="va">eta_p_2_AB</span>
+<span class="co">#&gt; [1] 0.01538462</span></code></pre></div>
 <p>We can also examine the statistical power for a pattern of results
 that indicated that there was no difference in interacting with a
 cheerful of sad conversational agent with a robot voice. In this case,
@@ -927,88 +927,88 @@ number of factors.</p>
 <p>If we extend the design with an extra level for each factor, we have
 a 3x3 design (two factors, three levels each).</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">design</span> <span class="op">&lt;-</span> <span class="st">"3b*3b"</span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">20</span></span>
-<span><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">25</span><span class="op">)</span> </span>
-<span><span class="co"># Enter means in the order that matches the labels below.</span></span>
-<span><span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
-<span><span class="va">label_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"Factor_A"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a1"</span>, <span class="st">"a2"</span>, <span class="st">"a3"</span><span class="op">)</span>, </span>
-<span>                <span class="st">"Factor_B"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"b1"</span>, <span class="st">"b2"</span>, <span class="st">"b3"</span><span class="op">)</span><span class="op">)</span> <span class="co">#</span></span>
-<span><span class="co"># the label names should be in the order of the means specified above.</span></span>
-<span></span>
-<span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,</span>
-<span>                   n <span class="op">=</span> <span class="va">n</span>, </span>
-<span>                   mu <span class="op">=</span> <span class="va">mu</span>, </span>
-<span>                   sd <span class="op">=</span> <span class="va">sd</span>, </span>
-<span>                   label_list <span class="op">=</span> <span class="va">label_list</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">design_result</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="va">design</span> <span class="op">&lt;-</span> <span class="st">"3b*3b"</span>
+<span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">20</span>
+<span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">20</span>, <span class="fl">25</span><span class="op">)</span> 
+<span class="co"># Enter means in the order that matches the labels below.</span>
+<span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">5</span>
+<span class="va">label_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"Factor_A"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a1"</span>, <span class="st">"a2"</span>, <span class="st">"a3"</span><span class="op">)</span>, 
+                <span class="st">"Factor_B"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"b1"</span>, <span class="st">"b2"</span>, <span class="st">"b3"</span><span class="op">)</span><span class="op">)</span> <span class="co">#</span>
+<span class="co"># the label names should be in the order of the means specified above.</span>
+
+<span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,
+                   n <span class="op">=</span> <span class="va">n</span>, 
+                   mu <span class="op">=</span> <span class="va">mu</span>, 
+                   sd <span class="op">=</span> <span class="va">sd</span>, 
+                   label_list <span class="op">=</span> <span class="va">label_list</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">design_result</span><span class="op">)</span></code></pre></div>
 <p><img src="more_anova_designs_files/figure-html/unnamed-chunk-20-1.png" width="672"></p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">res</span> <span class="op">=</span> <span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>, </span>
-<span>            alpha_level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Power and Effect sizes for ANOVA tests</span></span>
-<span><span class="co">#&gt;                     power partial_eta_squared cohen_f non_centrality</span></span>
-<span><span class="co">#&gt; Factor_A          43.4507              0.0244  0.1583         4.2843</span></span>
-<span><span class="co">#&gt; Factor_B          43.4507              0.0244  0.1583         4.2843</span></span>
-<span><span class="co">#&gt; Factor_A:Factor_B 62.5088              0.0477  0.2239         8.5686</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; Power and Effect sizes for pairwise comparisons (t-tests)</span></span>
-<span><span class="co">#&gt;                                                   power effect_size</span></span>
-<span><span class="co">#&gt; p_Factor_A_a1_Factor_B_b1_Factor_A_a1_Factor_B_b2   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a1_Factor_B_b1_Factor_A_a1_Factor_B_b3   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a1_Factor_B_b1_Factor_A_a2_Factor_B_b1   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a1_Factor_B_b1_Factor_A_a2_Factor_B_b2   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a1_Factor_B_b1_Factor_A_a2_Factor_B_b3   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a1_Factor_B_b1_Factor_A_a3_Factor_B_b1   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a1_Factor_B_b1_Factor_A_a3_Factor_B_b2   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a1_Factor_B_b1_Factor_A_a3_Factor_B_b3  86.9           1</span></span>
-<span><span class="co">#&gt; p_Factor_A_a1_Factor_B_b2_Factor_A_a1_Factor_B_b3   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a1_Factor_B_b2_Factor_A_a2_Factor_B_b1   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a1_Factor_B_b2_Factor_A_a2_Factor_B_b2   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a1_Factor_B_b2_Factor_A_a2_Factor_B_b3   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a1_Factor_B_b2_Factor_A_a3_Factor_B_b1   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a1_Factor_B_b2_Factor_A_a3_Factor_B_b2   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a1_Factor_B_b2_Factor_A_a3_Factor_B_b3  86.9           1</span></span>
-<span><span class="co">#&gt; p_Factor_A_a1_Factor_B_b3_Factor_A_a2_Factor_B_b1   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a1_Factor_B_b3_Factor_A_a2_Factor_B_b2   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a1_Factor_B_b3_Factor_A_a2_Factor_B_b3   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a1_Factor_B_b3_Factor_A_a3_Factor_B_b1   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a1_Factor_B_b3_Factor_A_a3_Factor_B_b2   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a1_Factor_B_b3_Factor_A_a3_Factor_B_b3  86.9           1</span></span>
-<span><span class="co">#&gt; p_Factor_A_a2_Factor_B_b1_Factor_A_a2_Factor_B_b2   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a2_Factor_B_b1_Factor_A_a2_Factor_B_b3   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a2_Factor_B_b1_Factor_A_a3_Factor_B_b1   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a2_Factor_B_b1_Factor_A_a3_Factor_B_b2   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a2_Factor_B_b1_Factor_A_a3_Factor_B_b3  86.9           1</span></span>
-<span><span class="co">#&gt; p_Factor_A_a2_Factor_B_b2_Factor_A_a2_Factor_B_b3   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a2_Factor_B_b2_Factor_A_a3_Factor_B_b1   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a2_Factor_B_b2_Factor_A_a3_Factor_B_b2   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a2_Factor_B_b2_Factor_A_a3_Factor_B_b3  86.9           1</span></span>
-<span><span class="co">#&gt; p_Factor_A_a2_Factor_B_b3_Factor_A_a3_Factor_B_b1   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a2_Factor_B_b3_Factor_A_a3_Factor_B_b2   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a2_Factor_B_b3_Factor_A_a3_Factor_B_b3  86.9           1</span></span>
-<span><span class="co">#&gt; p_Factor_A_a3_Factor_B_b1_Factor_A_a3_Factor_B_b2   5.0           0</span></span>
-<span><span class="co">#&gt; p_Factor_A_a3_Factor_B_b1_Factor_A_a3_Factor_B_b3  86.9           1</span></span>
-<span><span class="co">#&gt; p_Factor_A_a3_Factor_B_b2_Factor_A_a3_Factor_B_b3  86.9           1</span></span></code></pre></div>
+<code class="sourceCode R">
+<span class="va">res</span> <span class="op">=</span> <span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>, 
+            alpha_level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">res</span><span class="op">)</span>
+<span class="co">#&gt; Power and Effect sizes for ANOVA tests</span>
+<span class="co">#&gt;                     power partial_eta_squared cohen_f non_centrality</span>
+<span class="co">#&gt; Factor_A          43.4507              0.0244  0.1583         4.2843</span>
+<span class="co">#&gt; Factor_B          43.4507              0.0244  0.1583         4.2843</span>
+<span class="co">#&gt; Factor_A:Factor_B 62.5088              0.0477  0.2239         8.5686</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; Power and Effect sizes for pairwise comparisons (t-tests)</span>
+<span class="co">#&gt;                                                   power effect_size</span>
+<span class="co">#&gt; p_Factor_A_a1_Factor_B_b1_Factor_A_a1_Factor_B_b2   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a1_Factor_B_b1_Factor_A_a1_Factor_B_b3   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a1_Factor_B_b1_Factor_A_a2_Factor_B_b1   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a1_Factor_B_b1_Factor_A_a2_Factor_B_b2   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a1_Factor_B_b1_Factor_A_a2_Factor_B_b3   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a1_Factor_B_b1_Factor_A_a3_Factor_B_b1   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a1_Factor_B_b1_Factor_A_a3_Factor_B_b2   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a1_Factor_B_b1_Factor_A_a3_Factor_B_b3  86.9           1</span>
+<span class="co">#&gt; p_Factor_A_a1_Factor_B_b2_Factor_A_a1_Factor_B_b3   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a1_Factor_B_b2_Factor_A_a2_Factor_B_b1   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a1_Factor_B_b2_Factor_A_a2_Factor_B_b2   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a1_Factor_B_b2_Factor_A_a2_Factor_B_b3   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a1_Factor_B_b2_Factor_A_a3_Factor_B_b1   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a1_Factor_B_b2_Factor_A_a3_Factor_B_b2   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a1_Factor_B_b2_Factor_A_a3_Factor_B_b3  86.9           1</span>
+<span class="co">#&gt; p_Factor_A_a1_Factor_B_b3_Factor_A_a2_Factor_B_b1   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a1_Factor_B_b3_Factor_A_a2_Factor_B_b2   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a1_Factor_B_b3_Factor_A_a2_Factor_B_b3   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a1_Factor_B_b3_Factor_A_a3_Factor_B_b1   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a1_Factor_B_b3_Factor_A_a3_Factor_B_b2   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a1_Factor_B_b3_Factor_A_a3_Factor_B_b3  86.9           1</span>
+<span class="co">#&gt; p_Factor_A_a2_Factor_B_b1_Factor_A_a2_Factor_B_b2   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a2_Factor_B_b1_Factor_A_a2_Factor_B_b3   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a2_Factor_B_b1_Factor_A_a3_Factor_B_b1   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a2_Factor_B_b1_Factor_A_a3_Factor_B_b2   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a2_Factor_B_b1_Factor_A_a3_Factor_B_b3  86.9           1</span>
+<span class="co">#&gt; p_Factor_A_a2_Factor_B_b2_Factor_A_a2_Factor_B_b3   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a2_Factor_B_b2_Factor_A_a3_Factor_B_b1   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a2_Factor_B_b2_Factor_A_a3_Factor_B_b2   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a2_Factor_B_b2_Factor_A_a3_Factor_B_b3  86.9           1</span>
+<span class="co">#&gt; p_Factor_A_a2_Factor_B_b3_Factor_A_a3_Factor_B_b1   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a2_Factor_B_b3_Factor_A_a3_Factor_B_b2   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a2_Factor_B_b3_Factor_A_a3_Factor_B_b3  86.9           1</span>
+<span class="co">#&gt; p_Factor_A_a3_Factor_B_b1_Factor_A_a3_Factor_B_b2   5.0           0</span>
+<span class="co">#&gt; p_Factor_A_a3_Factor_B_b1_Factor_A_a3_Factor_B_b3  86.9           1</span>
+<span class="co">#&gt; p_Factor_A_a3_Factor_B_b2_Factor_A_a3_Factor_B_b3  86.9           1</span></code></pre></div>
 <p>We can check these against the analytic solution.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">power_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/power_twoway_between.html">power_twoway_between</a></span><span class="op">(</span><span class="va">design_result</span><span class="op">)</span> <span class="co">#using default alpha level of .05</span></span>
-<span></span>
-<span><span class="va">power_res</span><span class="op">$</span><span class="va">power_A</span></span>
-<span><span class="co">#&gt; [1] 44.86306</span></span>
-<span><span class="va">power_res</span><span class="op">$</span><span class="va">power_B</span></span>
-<span><span class="co">#&gt; [1] 44.86306</span></span>
-<span><span class="va">power_res</span><span class="op">$</span><span class="va">power_AB</span></span>
-<span><span class="co">#&gt; [1] 64.34127</span></span></code></pre></div>
+<code class="sourceCode R">
+<span class="va">power_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/power_twoway_between.html">power_twoway_between</a></span><span class="op">(</span><span class="va">design_result</span><span class="op">)</span> <span class="co">#using default alpha level of .05</span>
+
+<span class="va">power_res</span><span class="op">$</span><span class="va">power_A</span>
+<span class="co">#&gt; [1] 44.86306</span>
+<span class="va">power_res</span><span class="op">$</span><span class="va">power_B</span>
+<span class="co">#&gt; [1] 44.86306</span>
+<span class="va">power_res</span><span class="op">$</span><span class="va">power_AB</span>
+<span class="co">#&gt; [1] 64.34127</span></code></pre></div>
 <p>As we see, power is quite low with n = 20 per cell. Again, we can see
 power across</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Not Run</span></span>
-<span><span class="fu"><a href="../reference/plot_power.html">plot_power</a></span><span class="op">(</span><span class="va">design_result</span>, min_n <span class="op">=</span> <span class="fl">20</span>, max_n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="co"># Not Run</span>
+<span class="fu"><a href="../reference/plot_power.html">plot_power</a></span><span class="op">(</span><span class="va">design_result</span>, min_n <span class="op">=</span> <span class="fl">20</span>, max_n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -1042,32 +1042,32 @@ _ { \max } ) - \sigma ^ { 2 } ( \overline { \rho } _ { \min } -
 \overline { \rho } _ { AB } )\)</span></p>
 <p>We first simulate a within subjects 2x2 ANOVA design.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mu</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">4</span>,<span class="fl">2</span><span class="op">)</span> </span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">20</span></span>
-<span><span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">5</span></span>
-<span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>  <span class="fl">0.8</span>, <span class="fl">0.5</span>, <span class="fl">0.4</span>,</span>
-<span>       <span class="fl">0.4</span>, <span class="fl">0.5</span>,</span>
-<span>            <span class="fl">0.8</span></span>
-<span>  <span class="op">)</span></span>
-<span></span>
-<span><span class="va">design</span> <span class="op">=</span> <span class="st">"2w*2w"</span></span>
-<span><span class="va">label_list</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"A"</span> <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="st">"a1"</span>, <span class="st">"a2"</span><span class="op">)</span>,</span>
-<span>               <span class="st">"B"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"b1"</span>, <span class="st">"b2"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,</span>
-<span>                              n <span class="op">=</span> <span class="va">n</span>, </span>
-<span>                              mu <span class="op">=</span> <span class="va">mu</span>, </span>
-<span>                              sd <span class="op">=</span> <span class="va">sd</span>, </span>
-<span>                              r <span class="op">=</span> <span class="va">r</span>, </span>
-<span>                              label_list <span class="op">=</span> <span class="va">label_list</span>,</span>
-<span>                              plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="va">mu</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>,<span class="fl">1</span>,<span class="fl">4</span>,<span class="fl">2</span><span class="op">)</span> 
+<span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">20</span>
+<span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">5</span>
+<span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>
+  <span class="fl">0.8</span>, <span class="fl">0.5</span>, <span class="fl">0.4</span>,
+       <span class="fl">0.4</span>, <span class="fl">0.5</span>,
+            <span class="fl">0.8</span>
+  <span class="op">)</span>
+
+<span class="va">design</span> <span class="op">=</span> <span class="st">"2w*2w"</span>
+<span class="va">label_list</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"A"</span> <span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="st">"a1"</span>, <span class="st">"a2"</span><span class="op">)</span>,
+               <span class="st">"B"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"b1"</span>, <span class="st">"b2"</span><span class="op">)</span><span class="op">)</span>
+<span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,
+                              n <span class="op">=</span> <span class="va">n</span>, 
+                              mu <span class="op">=</span> <span class="va">mu</span>, 
+                              sd <span class="op">=</span> <span class="va">sd</span>, 
+                              r <span class="op">=</span> <span class="va">r</span>, 
+                              label_list <span class="op">=</span> <span class="va">label_list</span>,
+                              plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="more_anova_designs_files/figure-html/unnamed-chunk-24-1.png" width="672"></p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="va">power_result_vig_4</span> <span class="op">=</span> <span class="fu"><a href="../reference/ANOVA_power.html">ANOVA_power</a></span><span class="op">(</span><span class="va">design_result</span>,</span>
-<span>                                 nsims <span class="op">=</span> <span class="va">nsims</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">power_result_vig_4</span>, level <span class="op">=</span> <span class="fl">.98</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R">
+<span class="va">power_result_vig_4</span> <span class="op">=</span> <span class="fu"><a href="../reference/ANOVA_power.html">ANOVA_power</a></span><span class="op">(</span><span class="va">design_result</span>,
+                                 nsims <span class="op">=</span> <span class="va">nsims</span><span class="op">)</span>
+
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">power_result_vig_4</span>, level <span class="op">=</span> <span class="fl">.98</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left"></th>
@@ -1078,28 +1078,28 @@ _ { \max } ) - \sigma ^ { 2 } ( \overline { \rho } _ { \min } -
 <tbody>
 <tr class="odd">
 <td align="left">anova_A</td>
-<td align="right">28.0</td>
-<td align="right">22.79944</td>
-<td align="right">33.86643</td>
+<td align="right">30.4</td>
+<td align="right">25.03025</td>
+<td align="right">36.36297</td>
 </tr>
 <tr class="even">
 <td align="left">anova_B</td>
-<td align="right">66.8</td>
-<td align="right">60.74691</td>
-<td align="right">72.34461</td>
+<td align="right">62.4</td>
+<td align="right">56.25067</td>
+<td align="right">68.17402</td>
 </tr>
 <tr class="odd">
 <td align="left">anova_A:B</td>
-<td align="right">24.0</td>
-<td align="right">19.12488</td>
-<td align="right">29.66205</td>
+<td align="right">26.0</td>
+<td align="right">20.95502</td>
+<td align="right">31.77138</td>
 </tr>
 </tbody>
 </table>
 <p>We can use the exact simulation as well.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Not Run</span></span>
-<span><span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span>design_result <span class="op">=</span> <span class="va">design_result</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="co"># Not Run</span>
+<span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span>design_result <span class="op">=</span> <span class="va">design_result</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
   </div>
@@ -1121,7 +1121,7 @@ _ { \max } ) - \sigma ^ { 2 } ( \overline { \rho } _ { \min } -
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

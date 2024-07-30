@@ -34,8 +34,7 @@ Returns dataframe with simulation data (power and effect sizes!), anova results 
 
 \describe{
   \item{\code{"dataframe"}}{A dataframe of the simulation result.}
-  \item{\code{"aov_result"}}{\code{aov} object returned from \code{\link{aov_car}}.}
-  \item{\code{"aov_result"}}{\code{emmeans} object returned from \code{\link{emmeans}}.}
+  \item{\code{"aov_result"}}{\code{aov} object returned from \code{aov_car}.}
   \item{\code{"main_result"}}{The power analysis results for ANOVA level effects.}
   \item{\code{"pc_results"}}{The power analysis results for the pairwise (t-test) comparisons.}
   \item{\code{"emm_results"}}{The power analysis results of the pairwise comparison results.}

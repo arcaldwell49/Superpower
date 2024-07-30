@@ -46,11 +46,11 @@ Plot out power sensitivity plots for t or F tests
 }
 \section{Functions}{
 \itemize{
-\item \code{morey_plot.ttest}: Power-sensitivity plot for t-tests
+\item \code{morey_plot.ttest()}: Power-sensitivity plot for t-tests
 
-\item \code{morey_plot.ftest}: Power-sensitivity plot for F-tests
+\item \code{morey_plot.ftest()}: Power-sensitivity plot for F-tests
+
 }}
-
 \section{References}{
 
 Morey, R.D. (2020). Power and precision Why the push for replacing “power” with “precision” is misguided. Retrieved from: \url{https://richarddmorey.medium.com/power-and-precision-47f644ddea5e}

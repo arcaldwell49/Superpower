@@ -19,7 +19,7 @@ Do not use to calculate "observed power" for empirical datasets
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Superpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3</span>
       </span>
     </div>
 
@@ -79,21 +79,21 @@ Do not use to calculate "observed power" for empirical datasets
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">emmeans_power</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for emmGrid</span></span>
-<span><span class="fu">emmeans_power</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for summary_em</span></span>
-<span><span class="fu">emmeans_power</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for data.frame</span></span>
-<span><span class="fu">emmeans_power</span><span class="op">(</span></span>
-<span>  <span class="va">x</span>,</span>
-<span>  alpha_level <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"alpha_level"</span><span class="op">)</span>,</span>
-<span>  liberal_lambda <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"liberal_lambda"</span><span class="op">)</span>,</span>
-<span>  <span class="va">...</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">emmeans_power</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span>
+
+<span class="co"># S3 method for emmGrid</span>
+<span class="fu">emmeans_power</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span>
+
+<span class="co"># S3 method for summary_em</span>
+<span class="fu">emmeans_power</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span>
+
+<span class="co"># S3 method for data.frame</span>
+<span class="fu">emmeans_power</span><span class="op">(</span>
+  <span class="va">x</span>,
+  alpha_level <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"alpha_level"</span><span class="op">)</span>,
+  liberal_lambda <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"liberal_lambda"</span><span class="op">)</span>,
+  <span class="va">...</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -126,9 +126,6 @@ Do not use to calculate "observed power" for empirical datasets
 
   <dt><code>"aov_result"</code></dt>
 <dd><p><code>aov</code> object returned from <code>aov_car</code>.</p></dd>
-
-  <dt><code>"aov_result"</code></dt>
-<dd><p><code>emmeans</code> object returned from <code>emmeans</code>.</p></dd>
 
   <dt><code>"main_result"</code></dt>
 <dd><p>The power analysis results for ANOVA level effects.</p></dd>
@@ -178,49 +175,49 @@ Do not use to calculate "observed power" for empirical datasets
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="co"># Set up a within design with 2 factors, each with 2 levels</span></span></span>
-<span class="r-in"><span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2w*2w"</span>,</span></span>
-<span class="r-in"><span>n <span class="op">=</span> <span class="fl">40</span>, mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>sd <span class="op">=</span> <span class="fl">2</span>, r <span class="op">=</span> <span class="fl">0.8</span>,</span></span>
-<span class="r-in"><span>labelnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"condition"</span>, <span class="st">"cheerful"</span>,</span></span>
-<span class="r-in"><span> <span class="st">"sad"</span>, <span class="st">"voice"</span>, <span class="st">"human"</span>, <span class="st">"robot"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span> </span></span>
-<span class="r-in"><span><span class="va">exact_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="ANOVA_exact.html">ANOVA_exact</a></span><span class="op">(</span><span class="va">design_result</span>, </span></span>
-<span class="r-in"><span>alpha_level <span class="op">=</span> <span class="fl">0.05</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span>, </span></span>
-<span class="r-in"><span>emm <span class="op">=</span> <span class="cn">TRUE</span>, contrast_type <span class="op">=</span> <span class="st">"pairwise"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Power for pairwise contrasts</span></span></span>
-<span class="r-in"><span><span class="va">exact_result</span><span class="op">$</span><span class="va">emm_results</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Corresponding emmeans contrasts</span></span></span>
-<span class="r-in"><span><span class="va">exact_result</span><span class="op">$</span><span class="va">emmeans</span><span class="op">$</span><span class="va">contrasts</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Manually recalculate power</span></span></span>
-<span class="r-in"><span><span class="fu">emmeans_power</span><span class="op">(</span><span class="va">exact_result</span><span class="op">$</span><span class="va">emmeans</span><span class="op">$</span><span class="va">contrasts</span>, </span></span>
-<span class="r-in"><span>alpha_level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Calculate power for Bonferroni-adjusted pairwise comparisons</span></span></span>
-<span class="r-in"><span><span class="va">n_contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">exact_result</span><span class="op">$</span><span class="va">emmeans</span><span class="op">$</span><span class="va">contrasts</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">emmeans_power</span><span class="op">(</span><span class="va">exact_result</span><span class="op">$</span><span class="va">emmeans</span><span class="op">$</span><span class="va">contrasts</span>, </span></span>
-<span class="r-in"><span>alpha_level <span class="op">=</span> <span class="fl">0.05</span> <span class="op">/</span> <span class="va">n_contrasts</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Calculate power for one-sided custom contrasts</span></span></span>
-<span class="r-in"><span><span class="va">exact_result</span><span class="op">$</span><span class="va">emmeans</span><span class="op">$</span><span class="va">emmeans</span></span></span>
-<span class="r-in"><span><span class="va">custom_contrast</span> <span class="op">&lt;-</span> <span class="fu">contrast</span><span class="op">(</span><span class="va">exact_result</span><span class="op">$</span><span class="va">emmeans</span><span class="op">$</span><span class="va">emmeans</span>, </span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>robot_vs_sad_human <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">emmeans_power</span><span class="op">(</span><span class="va">custom_contrast</span>,</span></span>
-<span class="r-in"><span> alpha_level <span class="op">=</span> <span class="fl">0.05</span> <span class="op">*</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Calculate power for follow-up ANOVA</span></span></span>
-<span class="r-in"><span><span class="va">follow_up</span> <span class="op">&lt;-</span> <span class="fu">joint_tests</span><span class="op">(</span><span class="va">exact_result</span><span class="op">$</span><span class="va">emmeans</span><span class="op">$</span><span class="va">emmeans</span>, </span></span>
-<span class="r-in"><span>by <span class="op">=</span> <span class="st">"condition"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">emmeans_power</span><span class="op">(</span><span class="va">follow_up</span>, </span></span>
-<span class="r-in"><span>alpha_level <span class="op">=</span> <span class="fl">0.05</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">emmeans_power</span><span class="op">(</span><span class="fu">emmeans</span><span class="op">(</span><span class="va">exact_result</span><span class="op">$</span><span class="va">emmeans</span><span class="op">$</span><span class="va">emmeans</span>, </span></span>
-<span class="r-in"><span><span class="va">pairwise</span> <span class="op">~</span> <span class="va">voice</span> <span class="op">|</span> <span class="va">condition</span><span class="op">)</span><span class="op">$</span><span class="va">contrasts</span>, </span></span>
-<span class="r-in"><span>alpha_level <span class="op">=</span> <span class="fl">0.05</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span class="r-in"><span class="co"># Set up a within design with 2 factors, each with 2 levels</span></span>
+<span class="r-in"><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2w*2w"</span>,</span>
+<span class="r-in">n <span class="op">=</span> <span class="fl">40</span>, mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,</span>
+<span class="r-in">sd <span class="op">=</span> <span class="fl">2</span>, r <span class="op">=</span> <span class="fl">0.8</span>,</span>
+<span class="r-in">labelnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"condition"</span>, <span class="st">"cheerful"</span>,</span>
+<span class="r-in"> <span class="st">"sad"</span>, <span class="st">"voice"</span>, <span class="st">"human"</span>, <span class="st">"robot"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"> </span>
+<span class="r-in"><span class="va">exact_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="ANOVA_exact.html">ANOVA_exact</a></span><span class="op">(</span><span class="va">design_result</span>, </span>
+<span class="r-in">alpha_level <span class="op">=</span> <span class="fl">0.05</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span>, </span>
+<span class="r-in">emm <span class="op">=</span> <span class="cn">TRUE</span>, contrast_type <span class="op">=</span> <span class="st">"pairwise"</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># Power for pairwise contrasts</span></span>
+<span class="r-in"><span class="va">exact_result</span><span class="op">$</span><span class="va">emm_results</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># Corresponding emmeans contrasts</span></span>
+<span class="r-in"><span class="va">exact_result</span><span class="op">$</span><span class="va">emmeans</span><span class="op">$</span><span class="va">contrasts</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># Manually recalculate power</span></span>
+<span class="r-in"><span class="fu">emmeans_power</span><span class="op">(</span><span class="va">exact_result</span><span class="op">$</span><span class="va">emmeans</span><span class="op">$</span><span class="va">contrasts</span>, </span>
+<span class="r-in">alpha_level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># Calculate power for Bonferroni-adjusted pairwise comparisons</span></span>
+<span class="r-in"><span class="va">n_contrasts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="va">exact_result</span><span class="op">$</span><span class="va">emmeans</span><span class="op">$</span><span class="va">contrasts</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">emmeans_power</span><span class="op">(</span><span class="va">exact_result</span><span class="op">$</span><span class="va">emmeans</span><span class="op">$</span><span class="va">contrasts</span>, </span>
+<span class="r-in">alpha_level <span class="op">=</span> <span class="fl">0.05</span> <span class="op">/</span> <span class="va">n_contrasts</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># Calculate power for one-sided custom contrasts</span></span>
+<span class="r-in"><span class="va">exact_result</span><span class="op">$</span><span class="va">emmeans</span><span class="op">$</span><span class="va">emmeans</span></span>
+<span class="r-in"><span class="va">custom_contrast</span> <span class="op">&lt;-</span> <span class="fu">contrast</span><span class="op">(</span><span class="va">exact_result</span><span class="op">$</span><span class="va">emmeans</span><span class="op">$</span><span class="va">emmeans</span>, </span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>robot_vs_sad_human <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="op">-</span><span class="fl">0.5</span>, <span class="op">-</span><span class="fl">0.5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">emmeans_power</span><span class="op">(</span><span class="va">custom_contrast</span>,</span>
+<span class="r-in"> alpha_level <span class="op">=</span> <span class="fl">0.05</span> <span class="op">*</span> <span class="fl">2</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># Calculate power for follow-up ANOVA</span></span>
+<span class="r-in"><span class="va">follow_up</span> <span class="op">&lt;-</span> <span class="fu">joint_tests</span><span class="op">(</span><span class="va">exact_result</span><span class="op">$</span><span class="va">emmeans</span><span class="op">$</span><span class="va">emmeans</span>, </span>
+<span class="r-in">by <span class="op">=</span> <span class="st">"condition"</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">emmeans_power</span><span class="op">(</span><span class="va">follow_up</span>, </span>
+<span class="r-in">alpha_level <span class="op">=</span> <span class="fl">0.05</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu">emmeans_power</span><span class="op">(</span><span class="fu">emmeans</span><span class="op">(</span><span class="va">exact_result</span><span class="op">$</span><span class="va">emmeans</span><span class="op">$</span><span class="va">emmeans</span>, </span>
+<span class="r-in"><span class="va">pairwise</span> <span class="op">~</span> <span class="va">voice</span> <span class="op">|</span> <span class="va">condition</span><span class="op">)</span><span class="op">$</span><span class="va">contrasts</span>, </span>
+<span class="r-in">alpha_level <span class="op">=</span> <span class="fl">0.05</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span></span>
+<span class="r-in"><span class="op">}</span></span>
 </code></pre></div>
     </div>
   </div>
@@ -235,7 +232,7 @@ Do not use to calculate "observed power" for empirical datasets
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

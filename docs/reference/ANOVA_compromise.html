@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Superpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3</span>
       </span>
     </div>
 
@@ -75,18 +75,18 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ANOVA_compromise</span><span class="op">(</span></span>
-<span>  <span class="va">design_result</span>,</span>
-<span>  correction <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"correction"</span><span class="op">)</span>,</span>
-<span>  emm <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"emm"</span><span class="op">)</span>,</span>
-<span>  emm_model <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"emm_model"</span><span class="op">)</span>,</span>
-<span>  contrast_type <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"contrast_type"</span><span class="op">)</span>,</span>
-<span>  <span class="va">emm_comp</span>,</span>
-<span>  costT1T2 <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  priorH1H0 <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  error <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"minimal"</span>, <span class="st">"balance"</span><span class="op">)</span>,</span>
-<span>  liberal_lambda <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"liberal_lambda"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ANOVA_compromise</span><span class="op">(</span>
+  <span class="va">design_result</span>,
+  correction <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"correction"</span><span class="op">)</span>,
+  emm <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"emm"</span><span class="op">)</span>,
+  emm_model <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"emm_model"</span><span class="op">)</span>,
+  contrast_type <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"contrast_type"</span><span class="op">)</span>,
+  <span class="va">emm_comp</span>,
+  costT1T2 <span class="op">=</span> <span class="fl">1</span>,
+  priorH1H0 <span class="op">=</span> <span class="fl">1</span>,
+  error <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"minimal"</span>, <span class="st">"balance"</span><span class="op">)</span>,
+  liberal_lambda <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"liberal_lambda"</span><span class="op">)</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -171,14 +171,14 @@ objective = value that is the result of the minimization, either 0 (for balance)
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"3b*2w"</span>,</span></span>
-<span class="r-in"><span>n <span class="op">=</span> <span class="fl">6</span>,</span></span>
-<span class="r-in"><span>mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>sd <span class="op">=</span> <span class="fl">3</span>,</span></span>
-<span class="r-in"><span>plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">example</span> <span class="op">=</span> <span class="fu">ANOVA_compromise</span><span class="op">(</span><span class="va">design_result</span>,emm <span class="op">=</span> <span class="cn">TRUE</span>,emm_comp <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span class="r-in"><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"3b*2w"</span>,</span>
+<span class="r-in">n <span class="op">=</span> <span class="fl">6</span>,</span>
+<span class="r-in">mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span>,</span>
+<span class="r-in">sd <span class="op">=</span> <span class="fl">3</span>,</span>
+<span class="r-in">plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">example</span> <span class="op">=</span> <span class="fu">ANOVA_compromise</span><span class="op">(</span><span class="va">design_result</span>,emm <span class="op">=</span> <span class="cn">TRUE</span>,emm_comp <span class="op">=</span> <span class="st">"a"</span><span class="op">)</span></span>
+<span class="r-in"><span class="op">}</span></span>
 </code></pre></div>
     </div>
   </div>
@@ -193,7 +193,7 @@ objective = value that is the result of the minimization, either 0 (for balance)
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

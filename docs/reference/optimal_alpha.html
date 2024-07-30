@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Superpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3</span>
       </span>
     </div>
 
@@ -75,13 +75,13 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">optimal_alpha</span><span class="op">(</span></span>
-<span>  <span class="va">power_function</span>,</span>
-<span>  costT1T2 <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  priorH1H0 <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  error <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"minimal"</span>, <span class="st">"balance"</span><span class="op">)</span>,</span>
-<span>  plot <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"plot"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">optimal_alpha</span><span class="op">(</span>
+  <span class="va">power_function</span>,
+  costT1T2 <span class="op">=</span> <span class="fl">1</span>,
+  priorH1H0 <span class="op">=</span> <span class="fl">1</span>,
+  error <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"minimal"</span>, <span class="st">"balance"</span><span class="op">)</span>,
+  plot <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"plot"</span><span class="op">)</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -124,14 +124,17 @@ plot =</p>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">## Optimize power for a independent t-test, smallest effect of interest</span></span></span>
-<span class="r-in"><span><span class="co">## d = 0.5, 100 participants per condition</span></span></span>
-<span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">optimal_alpha</span><span class="op">(</span>power_function <span class="op">=</span> <span class="st">"pwr::pwr.t.test(d = 0.5, n = 100,</span></span></span>
-<span class="r-in"><span><span class="st">sig.level = x, type = 'two.sample', alternative = 'two.sided')$power"</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co">## Optimize power for a independent t-test, smallest effect of interest</span></span>
+<span class="r-in"><span class="co">## d = 0.5, 100 participants per condition</span></span>
+<span class="r-in"><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">optimal_alpha</span><span class="op">(</span>power_function <span class="op">=</span> <span class="st">"pwr::pwr.t.test(d = 0.5, n = 100,</span>
+<span class="r-in">sig.level = x, type = 'two.sample', alternative = 'two.sided')$power"</span><span class="op">)</span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>All aesthetics have length 1, but the data has 9999 rows.</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Please consider using `annotate()` or provide this layer with data containing</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span>   a single row.</span>
 <span class="r-plt img"><img src="optimal_alpha-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">alpha</span></span></span>
+<span class="r-in"><span class="va">res</span><span class="op">$</span><span class="va">alpha</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.05101728</span>
-<span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">beta</span></span></span>
+<span class="r-in"><span class="va">res</span><span class="op">$</span><span class="va">beta</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.05853977</span>
 </code></pre></div>
     </div>
@@ -147,7 +150,7 @@ plot =</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

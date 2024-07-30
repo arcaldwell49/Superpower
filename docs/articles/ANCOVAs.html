@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Superpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3</span>
       </span>
     </div>
 
@@ -99,7 +99,7 @@
                         <h4 data-toc-skip class="author">Aaron R.
 Caldwell</h4>
             
-            <h4 data-toc-skip class="date">10 February, 2023</h4>
+            <h4 data-toc-skip class="date">30 July, 2024</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/arcaldwell49/Superpower/blob/HEAD/vignettes/ANCOVAs.Rmd" class="external-link"><code>vignettes/ANCOVAs.Rmd</code></a></small>
       <div class="hidden name"><code>ANCOVAs.Rmd</code></div>
@@ -109,45 +109,46 @@ Caldwell</h4>
     
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://aaroncaldwell.us/SuperpowerBook/" class="external-link">"Superpower"</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://aaroncaldwell.us/SuperpowerBook/" class="external-link">"Superpower"</a></span><span class="op">)</span></code></pre></div>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>Recently, <span class="citation">Shieh (<a href="#ref-shieh_ancova" role="doc-biblioref">2020</a>)</span> demonstrated that most software
-uses a slightly flawed approach to estimating power for ANCOVAs, and
-focused on one-way ANOVA designs to compare his method to the method
-first mentioned by <span class="citation">Cohen (<a href="#ref-cohen_book" role="doc-biblioref">1988</a>)</span>.</p>
+<p>Recently, <span class="citation">Shieh (<a href="#ref-shieh_ancova">2020</a>)</span> demonstrated that most
+software uses a slightly flawed approach to estimating power for
+ANCOVAs, and focused on one-way ANOVA designs to compare his method to
+the method first mentioned by <span class="citation">Cohen (<a href="#ref-cohen_book">1988</a>)</span>.</p>
 </div>
 <div class="section level2">
 <h2 id="one-way-ancova">One-way ANCOVA<a class="anchor" aria-label="anchor" href="#one-way-ancova"></a>
 </h2>
-<p>As <span class="citation">Shieh (<a href="#ref-shieh_ancova" role="doc-biblioref">2020</a>)</span> eloquently points out in their
-simulations, the method of <span class="citation">Cohen (<a href="#ref-cohen_book" role="doc-biblioref">1988</a>)</span>
-overestimates power and the problem is exacerbated by having a high
-number of covariates with high proportion of the variance (<span class="math inline">\(R^2\)</span>) explained by the covariates. The
-problem is worst (30% error between estimated and actual power) in the
-simulation when there are 10 covariates included in the model when
-explained variance is approximately 81% (<span class="math inline">\(\rho = 0.9\)</span>) [<span class="citation">Shieh
-(<a href="#ref-shieh_ancova" role="doc-biblioref">2020</a>)</span> see
-Table 3). While this may not seem like much of issue if you don’t expect
-to encounter this scenario, it still demonstrates the <span class="citation">Cohen (<a href="#ref-cohen_book" role="doc-biblioref">1988</a>)</span> method is inconsistent in
+<p>As <span class="citation">Shieh (<a href="#ref-shieh_ancova">2020</a>)</span> eloquently points out in their
+simulations, the method of <span class="citation">Cohen (<a href="#ref-cohen_book">1988</a>)</span> overestimates power and the
+problem is exacerbated by having a high number of covariates with high
+proportion of the variance (<span class="math inline">\(R^2\)</span>)
+explained by the covariates. The problem is worst (30% error between
+estimated and actual power) in the simulation when there are 10
+covariates included in the model when explained variance is
+approximately 81% (<span class="math inline">\(\rho = 0.9\)</span>)
+[<span class="citation">Shieh (<a href="#ref-shieh_ancova">2020</a>)</span> see Table 3). While this may
+not seem like much of issue if you don’t expect to encounter this
+scenario, it still demonstrates the <span class="citation">Cohen (<a href="#ref-cohen_book">1988</a>)</span> method is inconsistent in
 producing appropriate estimates of power. I believe this is reason
 enough (when provided with a sustainable and implementable alternative)
-to abandon the old method of <span class="citation">Cohen (<a href="#ref-cohen_book" role="doc-biblioref">1988</a>)</span> for a newer
-method that provides exact, rather than approximate, estimates of power
-for ANCOVA.</p>
-<p>Thankfully, <span class="citation">Shieh (<a href="#ref-shieh_ancova" role="doc-biblioref">2020</a>)</span> was diligent in his work and
+to abandon the old method of <span class="citation">Cohen (<a href="#ref-cohen_book">1988</a>)</span> for a newer method that provides
+exact, rather than approximate, estimates of power for ANCOVA.</p>
+<p>Thankfully, <span class="citation">Shieh (<a href="#ref-shieh_ancova">2020</a>)</span> was diligent in his work and
 demonstrated, showing both the math and simulations, how a new exact
 method could be utilized. The direct method described in the paper is
 implemented in the <code>power_oneway_ancova</code> function.</p>
 <p>We can copy the example from <span class="citation">Maxwell and
-Delaney (<a href="#ref-maxwell_delaney" role="doc-biblioref">2004</a>)</span> that Shieh also used. In this
-example there are 3 groups with means (<code>mu</code>) of 400, 450, 500
-respectively. The error variance is 10000 (<code>sd = 100</code>).
-Rather than simulating dozens of examples, I will demonstrate one
-scenario below where there are 3 covariates, and the <span class="math inline">\(R^2\)</span> is equal to 0.5 (treatment effect
-excluded). This is demonstrated in <span class="citation">Shieh (<a href="#ref-shieh_ancova" role="doc-biblioref">2020</a>)</span>, Table
-2.</p>
+Delaney (<a href="#ref-maxwell_delaney">2004</a>)</span> that Shieh also
+used. In this example there are 3 groups with means (<code>mu</code>) of
+400, 450, 500 respectively. The error variance is 10000
+(<code>sd = 100</code>). Rather than simulating dozens of examples, I
+will demonstrate one scenario below where there are 3 covariates, and
+the <span class="math inline">\(R^2\)</span> is equal to 0.5 (treatment
+effect excluded). This is demonstrated in <span class="citation">Shieh
+(<a href="#ref-shieh_ancova">2020</a>)</span>, Table 2.</p>
 <p>For <code>power_oneway_ancova</code> we can demonstrate both the
 approximate and exact methods using the <code>type</code> argument. We
 can leave the <code>n</code> argument out in order to solve for the
@@ -156,73 +157,73 @@ sample size required to reach 80% power. Please notice that
 for sample sizes (rather than a fractional sample size).</p>
 <div class="section level3">
 <h3 id="cohen_book-method">
-<span class="citation">Cohen (<a href="#ref-cohen_book" role="doc-biblioref">1988</a>)</span> Method<a class="anchor" aria-label="anchor" href="#cohen_book-method"></a>
+<span class="citation">Cohen (<a href="#ref-cohen_book">1988</a>)</span> Method<a class="anchor" aria-label="anchor" href="#cohen_book-method"></a>
 </h3>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/power_oneway_ancova.html">power_oneway_ancova</a></span><span class="op">(</span></span>
-<span>  mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">400</span>,<span class="fl">450</span>,<span class="fl">500</span><span class="op">)</span>,</span>
-<span>  n_cov <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>  sd <span class="op">=</span> <span class="fl">100</span>,</span>
-<span>  r2 <span class="op">=</span> <span class="fl">.25</span>,</span>
-<span>  alpha_level <span class="op">=</span> <span class="fl">.05</span>,</span>
-<span>  <span class="co">#n = c(17,17,17),</span></span>
-<span>  beta_level <span class="op">=</span> <span class="fl">.2</span>,</span>
-<span>  round_up <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"approx"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;      Power Calculation for 1-way ANCOVA </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;             dfs = 2, 42</span></span>
-<span><span class="co">#&gt;               N = 48</span></span>
-<span><span class="co">#&gt;               n = 16, 16, 16</span></span>
-<span><span class="co">#&gt;           n_cov = 3</span></span>
-<span><span class="co">#&gt;              mu = 400, 450, 500</span></span>
-<span><span class="co">#&gt;              sd = 100</span></span>
-<span><span class="co">#&gt;              r2 = 0.25</span></span>
-<span><span class="co">#&gt;     alpha_level = 0.05</span></span>
-<span><span class="co">#&gt;      beta_level = 0.1877374</span></span>
-<span><span class="co">#&gt;           power = 81.22626</span></span>
-<span><span class="co">#&gt;            type = approx</span></span></code></pre>
+<code class="sourceCode R"><span class="fu"><a href="../reference/power_oneway_ancova.html">power_oneway_ancova</a></span><span class="op">(</span>
+  mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">400</span>,<span class="fl">450</span>,<span class="fl">500</span><span class="op">)</span>,
+  n_cov <span class="op">=</span> <span class="fl">3</span>,
+  sd <span class="op">=</span> <span class="fl">100</span>,
+  r2 <span class="op">=</span> <span class="fl">.25</span>,
+  alpha_level <span class="op">=</span> <span class="fl">.05</span>,
+  <span class="co">#n = c(17,17,17),</span>
+  beta_level <span class="op">=</span> <span class="fl">.2</span>,
+  round_up <span class="op">=</span> <span class="cn">TRUE</span>,
+  type <span class="op">=</span> <span class="st">"approx"</span>
+<span class="op">)</span></code></pre></div>
+<pre><code><span class="co">#&gt; </span>
+<span class="co">#&gt;      Power Calculation for 1-way ANCOVA </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;             dfs = 2, 42</span>
+<span class="co">#&gt;               N = 48</span>
+<span class="co">#&gt;               n = 16, 16, 16</span>
+<span class="co">#&gt;           n_cov = 3</span>
+<span class="co">#&gt;              mu = 400, 450, 500</span>
+<span class="co">#&gt;              sd = 100</span>
+<span class="co">#&gt;              r2 = 0.25</span>
+<span class="co">#&gt;     alpha_level = 0.05</span>
+<span class="co">#&gt;      beta_level = 0.1877374</span>
+<span class="co">#&gt;           power = 81.22626</span>
+<span class="co">#&gt;            type = approx</span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="shieh_ancova-method">
-<span class="citation">Shieh (<a href="#ref-shieh_ancova" role="doc-biblioref">2020</a>)</span> Method<a class="anchor" aria-label="anchor" href="#shieh_ancova-method"></a>
+<span class="citation">Shieh (<a href="#ref-shieh_ancova">2020</a>)</span> Method<a class="anchor" aria-label="anchor" href="#shieh_ancova-method"></a>
 </h3>
 <p>Notice that this method requires 3 more subjects in order to achieve
 a minimum of 80% power.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/power_oneway_ancova.html">power_oneway_ancova</a></span><span class="op">(</span></span>
-<span>  mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">400</span>,<span class="fl">450</span>,<span class="fl">500</span><span class="op">)</span>,</span>
-<span>  n_cov <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>  sd <span class="op">=</span> <span class="fl">100</span>,</span>
-<span>  r2 <span class="op">=</span> <span class="fl">.25</span>,</span>
-<span>  alpha_level <span class="op">=</span> <span class="fl">.05</span>,</span>
-<span>  <span class="co">#n = c(17,17,17),</span></span>
-<span>  beta_level <span class="op">=</span> <span class="fl">.2</span>,</span>
-<span>  round_up <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"exact"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;      Power Calculation for 1-way ANCOVA </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;             dfs = 2, 45</span></span>
-<span><span class="co">#&gt;               N = 51</span></span>
-<span><span class="co">#&gt;               n = 17, 17, 17</span></span>
-<span><span class="co">#&gt;           n_cov = 3</span></span>
-<span><span class="co">#&gt;              mu = 400, 450, 500</span></span>
-<span><span class="co">#&gt;              sd = 100</span></span>
-<span><span class="co">#&gt;              r2 = 0.25</span></span>
-<span><span class="co">#&gt;     alpha_level = 0.05</span></span>
-<span><span class="co">#&gt;      beta_level = 0.1878274</span></span>
-<span><span class="co">#&gt;           power = 81.21726</span></span>
-<span><span class="co">#&gt;            type = exact</span></span></code></pre>
+<code class="sourceCode R"><span class="fu"><a href="../reference/power_oneway_ancova.html">power_oneway_ancova</a></span><span class="op">(</span>
+  mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">400</span>,<span class="fl">450</span>,<span class="fl">500</span><span class="op">)</span>,
+  n_cov <span class="op">=</span> <span class="fl">3</span>,
+  sd <span class="op">=</span> <span class="fl">100</span>,
+  r2 <span class="op">=</span> <span class="fl">.25</span>,
+  alpha_level <span class="op">=</span> <span class="fl">.05</span>,
+  <span class="co">#n = c(17,17,17),</span>
+  beta_level <span class="op">=</span> <span class="fl">.2</span>,
+  round_up <span class="op">=</span> <span class="cn">TRUE</span>,
+  type <span class="op">=</span> <span class="st">"exact"</span>
+<span class="op">)</span></code></pre></div>
+<pre><code><span class="co">#&gt; </span>
+<span class="co">#&gt;      Power Calculation for 1-way ANCOVA </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;             dfs = 2, 45</span>
+<span class="co">#&gt;               N = 51</span>
+<span class="co">#&gt;               n = 17, 17, 17</span>
+<span class="co">#&gt;           n_cov = 3</span>
+<span class="co">#&gt;              mu = 400, 450, 500</span>
+<span class="co">#&gt;              sd = 100</span>
+<span class="co">#&gt;              r2 = 0.25</span>
+<span class="co">#&gt;     alpha_level = 0.05</span>
+<span class="co">#&gt;      beta_level = 0.1878274</span>
+<span class="co">#&gt;           power = 81.21726</span>
+<span class="co">#&gt;            type = exact</span></code></pre>
 </div>
 </div>
 <div class="section level2">
 <h2 id="extending-to-factorial-anovas">Extending to factorial ANOVAs<a class="anchor" aria-label="anchor" href="#extending-to-factorial-anovas"></a>
 </h2>
-<p>Now, <span class="citation">Shieh (<a href="#ref-shieh_ancova" role="doc-biblioref">2020</a>)</span> mentioned something very
+<p>Now, <span class="citation">Shieh (<a href="#ref-shieh_ancova">2020</a>)</span> mentioned something very
 interesting at the end of section 3.</p>
 <blockquote>
 <p>“Although the prescribed application of general linear hypothesis is
@@ -234,7 +235,7 @@ concept and process of assessing treatment effects can be readily
 extended to two-way and higher-order ANCOVA designs.”</p>
 </blockquote>
 <p>Therefore, all that is needed to extend the one-way ANOVA code
-provided by <span class="citation">Shieh (<a href="#ref-shieh_ancova" role="doc-biblioref">2020</a>)</span> is to provide the appropriate
+provided by <span class="citation">Shieh (<a href="#ref-shieh_ancova">2020</a>)</span> is to provide the appropriate
 contrast matrix for the main effect or interaction ANOVA-level effect
 that is desired. <code>Superpower</code> accomplishes this with the
 <code>ANCOVA_analytic</code> function which internally uses the
@@ -247,118 +248,117 @@ matrix.</p>
 <code>ANOVA_exact</code> functions. However, the
 <code>ANCOVA_analytic</code> function doesn’t require the use of
 <code>ANOVA_design</code> first and relies upon the closed formulas from
-<span class="citation">Shieh (<a href="#ref-shieh_ancova" role="doc-biblioref">2020</a>)</span> rather than a simulation to
+<span class="citation">Shieh (<a href="#ref-shieh_ancova">2020</a>)</span> rather than a simulation to
 calculate statistical power. Please note that unlike the
 <code>power_oneway_ancova</code> function there is no option to apply
-the approximation from <span class="citation">Cohen (<a href="#ref-cohen_book" role="doc-biblioref">1988</a>)</span> for
-factorial designs.</p>
+the approximation from <span class="citation">Cohen (<a href="#ref-cohen_book">1988</a>)</span> for factorial designs.</p>
 <div class="section level4">
 <h4 id="example-2x3-design">Example: 2x3 Design<a class="anchor" aria-label="anchor" href="#example-2x3-design"></a>
 </h4>
 <p>We can extend the previous scenario with 3 groups to a factorial
 design with 2 groups across 3 conditions.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Run function</span></span>
-<span><span class="va">res1</span> <span class="op">=</span> <span class="fu"><a href="../reference/ANCOVA_analytic.html">ANCOVA_analytic</a></span><span class="op">(</span></span>
-<span>  design <span class="op">=</span> <span class="st">"2b*3b"</span>,</span>
-<span>  mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">400</span>, <span class="fl">450</span>, <span class="fl">500</span>,</span>
-<span>         <span class="fl">400</span>, <span class="fl">500</span>, <span class="fl">600</span><span class="op">)</span>,</span>
-<span>  n_cov <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>  sd <span class="op">=</span> <span class="fl">100</span>,</span>
-<span>  r2 <span class="op">=</span> <span class="fl">.25</span>,</span>
-<span>  alpha_level <span class="op">=</span> <span class="fl">.05</span>,</span>
-<span>  <span class="co">#n = 17,</span></span>
-<span>  beta_level <span class="op">=</span> <span class="fl">.2</span>,</span>
-<span>  round_up <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Print main results</span></span>
-<span><span class="va">res1</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; Power Analysis Results for ANCOVA</span></span>
-<span><span class="co">#&gt;     Total N Covariates   r2 Alpha Level Beta Level Power</span></span>
-<span><span class="co">#&gt; a       102          3 0.25        0.05     0.1897 81.03</span></span>
-<span><span class="co">#&gt; b        30          3 0.25        0.05     0.1389 86.11</span></span>
-<span><span class="co">#&gt; a:b     180          3 0.25        0.05     0.1995 80.05</span></span></code></pre>
+<code class="sourceCode R"><span class="co"># Run function</span>
+<span class="va">res1</span> <span class="op">=</span> <span class="fu"><a href="../reference/ANCOVA_analytic.html">ANCOVA_analytic</a></span><span class="op">(</span>
+  design <span class="op">=</span> <span class="st">"2b*3b"</span>,
+  mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">400</span>, <span class="fl">450</span>, <span class="fl">500</span>,
+         <span class="fl">400</span>, <span class="fl">500</span>, <span class="fl">600</span><span class="op">)</span>,
+  n_cov <span class="op">=</span> <span class="fl">3</span>,
+  sd <span class="op">=</span> <span class="fl">100</span>,
+  r2 <span class="op">=</span> <span class="fl">.25</span>,
+  alpha_level <span class="op">=</span> <span class="fl">.05</span>,
+  <span class="co">#n = 17,</span>
+  beta_level <span class="op">=</span> <span class="fl">.2</span>,
+  round_up <span class="op">=</span> <span class="cn">TRUE</span>
+<span class="op">)</span>
+
+<span class="co"># Print main results</span>
+<span class="va">res1</span></code></pre></div>
+<pre><code><span class="co">#&gt; Power Analysis Results for ANCOVA</span>
+<span class="co">#&gt;     Total N Covariates   r2 Alpha Level Beta Level Power</span>
+<span class="co">#&gt; a       102          3 0.25        0.05     0.1897 81.03</span>
+<span class="co">#&gt; b        30          3 0.25        0.05     0.1389 86.11</span>
+<span class="co">#&gt; a:b     180          3 0.25        0.05     0.1995 80.05</span></code></pre>
 <p>The results can also be printed as <code>power.htest</code> objects
 by accessing the individual effects in the <code>res1</code> object.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">res1</span><span class="op">$</span><span class="va">aov_list</span><span class="op">$</span><span class="va">a</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;      Power Calculation for ANCOVA </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;             dfs = 1, 93</span></span>
-<span><span class="co">#&gt;               N = 102</span></span>
-<span><span class="co">#&gt;               n = 17, 17, 17, 17, 17, 17</span></span>
-<span><span class="co">#&gt;           n_cov = 3</span></span>
-<span><span class="co">#&gt;              mu = 400, 450, 500, 400, 500, 600</span></span>
-<span><span class="co">#&gt;              sd = 100</span></span>
-<span><span class="co">#&gt;              r2 = 0.25</span></span>
-<span><span class="co">#&gt;     alpha_level = 0.05</span></span>
-<span><span class="co">#&gt;      beta_level = 0.1897221</span></span>
-<span><span class="co">#&gt;           power = 81.02779</span></span>
-<span><span class="co">#&gt;            type = Exact</span></span></code></pre>
+<code class="sourceCode R"><span class="va">res1</span><span class="op">$</span><span class="va">aov_list</span><span class="op">$</span><span class="va">a</span></code></pre></div>
+<pre><code><span class="co">#&gt; </span>
+<span class="co">#&gt;      Power Calculation for ANCOVA </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;             dfs = 1, 93</span>
+<span class="co">#&gt;               N = 102</span>
+<span class="co">#&gt;               n = 17, 17, 17, 17, 17, 17</span>
+<span class="co">#&gt;           n_cov = 3</span>
+<span class="co">#&gt;              mu = 400, 450, 500, 400, 500, 600</span>
+<span class="co">#&gt;              sd = 100</span>
+<span class="co">#&gt;              r2 = 0.25</span>
+<span class="co">#&gt;     alpha_level = 0.05</span>
+<span class="co">#&gt;      beta_level = 0.1897221</span>
+<span class="co">#&gt;           power = 81.02779</span>
+<span class="co">#&gt;            type = Exact</span></code></pre>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">res1</span><span class="op">$</span><span class="va">aov_list</span><span class="op">$</span><span class="va">b</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;      Power Calculation for ANCOVA </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;             dfs = 2, 21</span></span>
-<span><span class="co">#&gt;               N = 30</span></span>
-<span><span class="co">#&gt;               n = 5, 5, 5, 5, 5, 5</span></span>
-<span><span class="co">#&gt;           n_cov = 3</span></span>
-<span><span class="co">#&gt;              mu = 400, 450, 500, 400, 500, 600</span></span>
-<span><span class="co">#&gt;              sd = 100</span></span>
-<span><span class="co">#&gt;              r2 = 0.25</span></span>
-<span><span class="co">#&gt;     alpha_level = 0.05</span></span>
-<span><span class="co">#&gt;      beta_level = 0.1389288</span></span>
-<span><span class="co">#&gt;           power = 86.10712</span></span>
-<span><span class="co">#&gt;            type = Exact</span></span></code></pre>
+<code class="sourceCode R"><span class="va">res1</span><span class="op">$</span><span class="va">aov_list</span><span class="op">$</span><span class="va">b</span></code></pre></div>
+<pre><code><span class="co">#&gt; </span>
+<span class="co">#&gt;      Power Calculation for ANCOVA </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;             dfs = 2, 21</span>
+<span class="co">#&gt;               N = 30</span>
+<span class="co">#&gt;               n = 5, 5, 5, 5, 5, 5</span>
+<span class="co">#&gt;           n_cov = 3</span>
+<span class="co">#&gt;              mu = 400, 450, 500, 400, 500, 600</span>
+<span class="co">#&gt;              sd = 100</span>
+<span class="co">#&gt;              r2 = 0.25</span>
+<span class="co">#&gt;     alpha_level = 0.05</span>
+<span class="co">#&gt;      beta_level = 0.1389288</span>
+<span class="co">#&gt;           power = 86.10712</span>
+<span class="co">#&gt;            type = Exact</span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">res1</span><span class="op">$</span><span class="va">aov_list</span><span class="op">$</span><span class="va">ab</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;      Power Calculation for ANCOVA </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;             dfs = 2, 171</span></span>
-<span><span class="co">#&gt;               N = 180</span></span>
-<span><span class="co">#&gt;               n = 30, 30, 30, 30, 30, 30</span></span>
-<span><span class="co">#&gt;           n_cov = 3</span></span>
-<span><span class="co">#&gt;              mu = 400, 450, 500, 400, 500, 600</span></span>
-<span><span class="co">#&gt;              sd = 100</span></span>
-<span><span class="co">#&gt;              r2 = 0.25</span></span>
-<span><span class="co">#&gt;     alpha_level = 0.05</span></span>
-<span><span class="co">#&gt;      beta_level = 0.1994719</span></span>
-<span><span class="co">#&gt;           power = 80.05281</span></span>
-<span><span class="co">#&gt;            type = Exact</span></span></code></pre>
+<code class="sourceCode R"><span class="va">res1</span><span class="op">$</span><span class="va">aov_list</span><span class="op">$</span><span class="va">ab</span></code></pre></div>
+<pre><code><span class="co">#&gt; </span>
+<span class="co">#&gt;      Power Calculation for ANCOVA </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;             dfs = 2, 171</span>
+<span class="co">#&gt;               N = 180</span>
+<span class="co">#&gt;               n = 30, 30, 30, 30, 30, 30</span>
+<span class="co">#&gt;           n_cov = 3</span>
+<span class="co">#&gt;              mu = 400, 450, 500, 400, 500, 600</span>
+<span class="co">#&gt;              sd = 100</span>
+<span class="co">#&gt;              r2 = 0.25</span>
+<span class="co">#&gt;     alpha_level = 0.05</span>
+<span class="co">#&gt;      beta_level = 0.1994719</span>
+<span class="co">#&gt;           power = 80.05281</span>
+<span class="co">#&gt;            type = Exact</span></code></pre>
 <p>We can also check the design by using the plot method.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">res1</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">res1</span><span class="op">)</span></code></pre></div>
 <p><img src="ANCOVAs_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 <p>However, you may want to compare the power of ANOVA to an ANCOVA. In
 that case you can use the <code>ANOVA_design</code> function and pass it
 onto the <code>ANCOVA_analytic</code> function. But, this forces you to
 set the sample size.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">des1</span> <span class="op">=</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>  design <span class="op">=</span> <span class="st">"2b*3b"</span>,</span>
-<span>  mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">400</span>, <span class="fl">450</span>, <span class="fl">500</span>,</span>
-<span>         <span class="fl">400</span>, <span class="fl">500</span>, <span class="fl">600</span><span class="op">)</span>,</span>
-<span>  n <span class="op">=</span> <span class="fl">17</span>,</span>
-<span>  sd <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="va">des1</span> <span class="op">=</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>  design <span class="op">=</span> <span class="st">"2b*3b"</span>,
+  mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">400</span>, <span class="fl">450</span>, <span class="fl">500</span>,
+         <span class="fl">400</span>, <span class="fl">500</span>, <span class="fl">600</span><span class="op">)</span>,
+  n <span class="op">=</span> <span class="fl">17</span>,
+  sd <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></code></pre></div>
 <p><img src="ANCOVAs_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">res2</span> <span class="op">=</span> <span class="fu"><a href="../reference/ANCOVA_analytic.html">ANCOVA_analytic</a></span><span class="op">(</span></span>
-<span>  design_result <span class="op">=</span> <span class="va">des1</span>,</span>
-<span>  n_cov <span class="op">=</span> <span class="fl">3</span>,</span>
-<span>  r2 <span class="op">=</span> <span class="fl">.25</span>,</span>
-<span>  alpha_level <span class="op">=</span> <span class="fl">.05</span>,</span>
-<span>  round_up <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">res2</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; Power Analysis Results for ANCOVA</span></span>
-<span><span class="co">#&gt;     Total N Covariates   r2 Alpha Level Beta Level Power</span></span>
-<span><span class="co">#&gt; a       102          3 0.25        0.05  0.1897221 81.03</span></span>
-<span><span class="co">#&gt; b       102          3 0.25        0.05  0.0001954 99.98</span></span>
-<span><span class="co">#&gt; a:b     102          3 0.25        0.05  0.4701157 52.99</span></span></code></pre>
+<code class="sourceCode R"><span class="va">res2</span> <span class="op">=</span> <span class="fu"><a href="../reference/ANCOVA_analytic.html">ANCOVA_analytic</a></span><span class="op">(</span>
+  design_result <span class="op">=</span> <span class="va">des1</span>,
+  n_cov <span class="op">=</span> <span class="fl">3</span>,
+  r2 <span class="op">=</span> <span class="fl">.25</span>,
+  alpha_level <span class="op">=</span> <span class="fl">.05</span>,
+  round_up <span class="op">=</span> <span class="cn">TRUE</span>
+<span class="op">)</span>
+
+<span class="va">res2</span></code></pre></div>
+<pre><code><span class="co">#&gt; Power Analysis Results for ANCOVA</span>
+<span class="co">#&gt;     Total N Covariates   r2 Alpha Level Beta Level Power</span>
+<span class="co">#&gt; a       102          3 0.25        0.05  0.1897221 81.03</span>
+<span class="co">#&gt; b       102          3 0.25        0.05  0.0001954 99.98</span>
+<span class="co">#&gt; a:b     102          3 0.25        0.05  0.4701157 52.99</span></code></pre>
 </div>
 </div>
 </div>
@@ -374,57 +374,57 @@ matrices are provided as matrices (i.e., <code>as.matrix</code>). The
 contrasts can be accessed in the <code>con_list</code> part of the
 results and can be named (in this case “test”).</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/ANCOVA_analytic.html">ANCOVA_analytic</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b"</span>,</span>
-<span>                mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>,</span>
-<span>                n <span class="op">=</span> <span class="fl">15</span>,</span>
-<span>                cmats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>test <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>,</span>
-<span>                                              nrow <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                sd <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>                r2 <span class="op">=</span> <span class="fl">.2</span>,</span>
-<span>                n_cov <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">$</span><span class="va">con_list</span><span class="op">$</span><span class="va">test</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;      Power Calculation for ANCOVA contrast </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;             dfs = 1, 27</span></span>
-<span><span class="co">#&gt;               N = 30</span></span>
-<span><span class="co">#&gt;               n = 15, 15</span></span>
-<span><span class="co">#&gt;           n_cov = 1</span></span>
-<span><span class="co">#&gt;        contrast = -1, 1</span></span>
-<span><span class="co">#&gt;              mu = 0, 1</span></span>
-<span><span class="co">#&gt;              sd = 1</span></span>
-<span><span class="co">#&gt;              r2 = 0.2</span></span>
-<span><span class="co">#&gt;     alpha_level = 0.05</span></span>
-<span><span class="co">#&gt;      beta_level = 0.1744293</span></span>
-<span><span class="co">#&gt;           power = 82.55707</span></span>
-<span><span class="co">#&gt;            type = Exact</span></span></code></pre>
+<code class="sourceCode R"><span class="fu"><a href="../reference/ANCOVA_analytic.html">ANCOVA_analytic</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b"</span>,
+                mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>,
+                n <span class="op">=</span> <span class="fl">15</span>,
+                cmats <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>test <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>,
+                                              nrow <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span>,
+                sd <span class="op">=</span> <span class="fl">1</span>,
+                r2 <span class="op">=</span> <span class="fl">.2</span>,
+                n_cov <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">$</span><span class="va">con_list</span><span class="op">$</span><span class="va">test</span></code></pre></div>
+<pre><code><span class="co">#&gt; </span>
+<span class="co">#&gt;      Power Calculation for ANCOVA contrast </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;             dfs = 1, 27</span>
+<span class="co">#&gt;               N = 30</span>
+<span class="co">#&gt;               n = 15, 15</span>
+<span class="co">#&gt;           n_cov = 1</span>
+<span class="co">#&gt;        contrast = -1, 1</span>
+<span class="co">#&gt;              mu = 0, 1</span>
+<span class="co">#&gt;              sd = 1</span>
+<span class="co">#&gt;              r2 = 0.2</span>
+<span class="co">#&gt;     alpha_level = 0.05</span>
+<span class="co">#&gt;      beta_level = 0.1744293</span>
+<span class="co">#&gt;           power = 82.55707</span>
+<span class="co">#&gt;            type = Exact</span></code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Same result</span></span>
-<span><span class="fu"><a href="../reference/ANCOVA_contrast.html">ANCOVA_contrast</a></span><span class="op">(</span>cmat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>,</span>
-<span>                n <span class="op">=</span> <span class="fl">15</span>,</span>
-<span>                mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>,</span>
-<span>                sd <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>                r2 <span class="op">=</span> <span class="fl">.2</span>,</span>
-<span>                n_cov <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;      Power Calculation for ANCOVA contrast </span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;             dfs = 1, 27</span></span>
-<span><span class="co">#&gt;               N = 30</span></span>
-<span><span class="co">#&gt;               n = 15, 15</span></span>
-<span><span class="co">#&gt;           n_cov = 1</span></span>
-<span><span class="co">#&gt;        contrast = -1, 1</span></span>
-<span><span class="co">#&gt;              mu = 0, 1</span></span>
-<span><span class="co">#&gt;              sd = 1</span></span>
-<span><span class="co">#&gt;              r2 = 0.2</span></span>
-<span><span class="co">#&gt;     alpha_level = 0.05</span></span>
-<span><span class="co">#&gt;      beta_level = 0.1744293</span></span>
-<span><span class="co">#&gt;           power = 82.55707</span></span>
-<span><span class="co">#&gt;            type = Exact</span></span></code></pre>
+<code class="sourceCode R"><span class="co"># Same result</span>
+<span class="fu"><a href="../reference/ANCOVA_contrast.html">ANCOVA_contrast</a></span><span class="op">(</span>cmat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>,
+                n <span class="op">=</span> <span class="fl">15</span>,
+                mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span>,
+                sd <span class="op">=</span> <span class="fl">1</span>,
+                r2 <span class="op">=</span> <span class="fl">.2</span>,
+                n_cov <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">#&gt; </span>
+<span class="co">#&gt;      Power Calculation for ANCOVA contrast </span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;             dfs = 1, 27</span>
+<span class="co">#&gt;               N = 30</span>
+<span class="co">#&gt;               n = 15, 15</span>
+<span class="co">#&gt;           n_cov = 1</span>
+<span class="co">#&gt;        contrast = -1, 1</span>
+<span class="co">#&gt;              mu = 0, 1</span>
+<span class="co">#&gt;              sd = 1</span>
+<span class="co">#&gt;              r2 = 0.2</span>
+<span class="co">#&gt;     alpha_level = 0.05</span>
+<span class="co">#&gt;      beta_level = 0.1744293</span>
+<span class="co">#&gt;           power = 82.55707</span>
+<span class="co">#&gt;            type = Exact</span></code></pre>
 </div>
 <div class="section level2">
 <h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0">
 <div id="ref-cohen_book" class="csl-entry">
 Cohen, J. 1988. <em>Statistical Power Analysis for the Behavioral
 Sciences</em>. 2nd ed. <a href="https://doi.org/10.4324/9780203771587" class="external-link">https://doi.org/10.4324/9780203771587</a>.
@@ -459,7 +459,7 @@ designs.”</span> <em>Psychometrika</em> 85 (1): 101–20. <a href="https://doi
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

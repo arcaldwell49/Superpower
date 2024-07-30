@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Superpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3</span>
       </span>
     </div>
 
@@ -75,20 +75,20 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ANOVA_power</span><span class="op">(</span></span>
-<span>  <span class="va">design_result</span>,</span>
-<span>  alpha_level <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"alpha_level"</span><span class="op">)</span>,</span>
-<span>  correction <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"correction"</span><span class="op">)</span>,</span>
-<span>  p_adjust <span class="op">=</span> <span class="st">"none"</span>,</span>
-<span>  nsims <span class="op">=</span> <span class="fl">1000</span>,</span>
-<span>  seed <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"verbose"</span><span class="op">)</span>,</span>
-<span>  emm <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"emm"</span><span class="op">)</span>,</span>
-<span>  emm_model <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"emm_model"</span><span class="op">)</span>,</span>
-<span>  contrast_type <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"contrast_type"</span><span class="op">)</span>,</span>
-<span>  emm_p_adjust <span class="op">=</span> <span class="st">"none"</span>,</span>
-<span>  emm_comp <span class="op">=</span> <span class="cn">NULL</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">ANOVA_power</span><span class="op">(</span>
+  <span class="va">design_result</span>,
+  alpha_level <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"alpha_level"</span><span class="op">)</span>,
+  correction <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"correction"</span><span class="op">)</span>,
+  p_adjust <span class="op">=</span> <span class="st">"none"</span>,
+  nsims <span class="op">=</span> <span class="fl">1000</span>,
+  seed <span class="op">=</span> <span class="cn">NULL</span>,
+  verbose <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"verbose"</span><span class="op">)</span>,
+  emm <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"emm"</span><span class="op">)</span>,
+  emm_model <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"emm_model"</span><span class="op">)</span>,
+  contrast_type <span class="op">=</span> <span class="fu"><a href="Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"contrast_type"</span><span class="op">)</span>,
+  emm_p_adjust <span class="op">=</span> <span class="st">"none"</span>,
+  emm_comp <span class="op">=</span> <span class="cn">NULL</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -199,18 +199,18 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span><span class="co">## Set up a within design with 2 factors, each with 2 levels,</span></span></span>
-<span class="r-in"><span><span class="co">## with correlation between observations of 0.8,</span></span></span>
-<span class="r-in"><span><span class="co">## 40 participants (who do all conditions), and standard deviation of 2</span></span></span>
-<span class="r-in"><span><span class="co">## with a mean pattern of 1, 0, 1, 0, conditions labeled 'condition' and</span></span></span>
-<span class="r-in"><span><span class="co">## 'voice', with names for levels of "cheerful", "sad", amd "human", "robot"</span></span></span>
-<span class="r-in"><span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2w*2w"</span>, n <span class="op">=</span> <span class="fl">40</span>, mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>      sd <span class="op">=</span> <span class="fl">2</span>, r <span class="op">=</span> <span class="fl">0.8</span>, labelnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"condition"</span>, <span class="st">"cheerful"</span>,</span></span>
-<span class="r-in"><span>      <span class="st">"sad"</span>, <span class="st">"voice"</span>, <span class="st">"human"</span>, <span class="st">"robot"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">power_result</span> <span class="op">&lt;-</span> <span class="fu">ANOVA_power</span><span class="op">(</span><span class="va">design_result</span>, alpha_level <span class="op">=</span> <span class="fl">0.05</span>,</span></span>
-<span class="r-in"><span>      p_adjust <span class="op">=</span> <span class="st">"none"</span>, seed <span class="op">=</span> <span class="fl">2019</span>, nsims <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-in"><span>      <span class="op">}</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
+<span class="r-in"><span class="co">## Set up a within design with 2 factors, each with 2 levels,</span></span>
+<span class="r-in"><span class="co">## with correlation between observations of 0.8,</span></span>
+<span class="r-in"><span class="co">## 40 participants (who do all conditions), and standard deviation of 2</span></span>
+<span class="r-in"><span class="co">## with a mean pattern of 1, 0, 1, 0, conditions labeled 'condition' and</span></span>
+<span class="r-in"><span class="co">## 'voice', with names for levels of "cheerful", "sad", amd "human", "robot"</span></span>
+<span class="r-in"><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2w*2w"</span>, n <span class="op">=</span> <span class="fl">40</span>, mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>,</span>
+<span class="r-in">      sd <span class="op">=</span> <span class="fl">2</span>, r <span class="op">=</span> <span class="fl">0.8</span>, labelnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"condition"</span>, <span class="st">"cheerful"</span>,</span>
+<span class="r-in">      <span class="st">"sad"</span>, <span class="st">"voice"</span>, <span class="st">"human"</span>, <span class="st">"robot"</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">power_result</span> <span class="op">&lt;-</span> <span class="fu">ANOVA_power</span><span class="op">(</span><span class="va">design_result</span>, alpha_level <span class="op">=</span> <span class="fl">0.05</span>,</span>
+<span class="r-in">      p_adjust <span class="op">=</span> <span class="st">"none"</span>, seed <span class="op">=</span> <span class="fl">2019</span>, nsims <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span class="r-in">      <span class="op">}</span></span>
 </code></pre></div>
     </div>
   </div>
@@ -225,7 +225,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>

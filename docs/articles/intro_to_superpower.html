@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Superpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.3</span>
       </span>
     </div>
 
@@ -99,7 +99,7 @@
                         <h4 data-toc-skip class="author">Daniel Lakens
 &amp; Aaron R. Caldwell</h4>
             
-            <h4 data-toc-skip class="date">2023-02-10</h4>
+            <h4 data-toc-skip class="date">2024-07-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/arcaldwell49/Superpower/blob/HEAD/vignettes/intro_to_superpower.Rmd" class="external-link"><code>vignettes/intro_to_superpower.Rmd</code></a></small>
       <div class="hidden name"><code>intro_to_superpower.Rmd</code></div>
@@ -120,7 +120,7 @@ please see our online <a href="https://aaroncaldwell.us/SuperpowerBook/" class="
 </h3>
 <p>You can install the developmental version of Superpower from <a href="https://github.com/arcaldwell49/Superpower" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"arcaldwell49/Superpower"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"arcaldwell49/Superpower"</span><span class="op">)</span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="superpower_options">Superpower_options<a class="anchor" aria-label="anchor" href="#superpower_options"></a>
@@ -130,39 +130,39 @@ and many users may want consistency in these arguments as they use these
 functions in their workflow. In order to see the options, all one has to
 do is call on the Superpower_options() function.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## $alpha_level</span></span>
-<span><span class="co">## [1] 0.05</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $contrast_type</span></span>
-<span><span class="co">## [1] "pairwise"</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $correction</span></span>
-<span><span class="co">## [1] "none"</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $emm</span></span>
-<span><span class="co">## [1] FALSE</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $emm_model</span></span>
-<span><span class="co">## [1] "multivariate"</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $liberal_lambda</span></span>
-<span><span class="co">## [1] FALSE</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $plot</span></span>
-<span><span class="co">## [1] TRUE</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $verbose</span></span>
-<span><span class="co">## [1] TRUE</span></span></code></pre>
+<code class="sourceCode R"><span class="fu"><a href="../reference/Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## $alpha_level</span>
+<span class="co">## [1] 0.05</span>
+<span class="co">## </span>
+<span class="co">## $contrast_type</span>
+<span class="co">## [1] "pairwise"</span>
+<span class="co">## </span>
+<span class="co">## $correction</span>
+<span class="co">## [1] "none"</span>
+<span class="co">## </span>
+<span class="co">## $emm</span>
+<span class="co">## [1] FALSE</span>
+<span class="co">## </span>
+<span class="co">## $emm_model</span>
+<span class="co">## [1] "multivariate"</span>
+<span class="co">## </span>
+<span class="co">## $liberal_lambda</span>
+<span class="co">## [1] FALSE</span>
+<span class="co">## </span>
+<span class="co">## $plot</span>
+<span class="co">## [1] TRUE</span>
+<span class="co">## </span>
+<span class="co">## $verbose</span>
+<span class="co">## [1] TRUE</span></code></pre>
 <p>The global option can be set by the user by calling on the individual
 arguments. Let’s use the verbose argument as an example.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"verbose"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
+<code class="sourceCode R"><span class="fu"><a href="../reference/Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"verbose"</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## [1] TRUE</span></code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"verbose"</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> </span>
-<span><span class="fu"><a href="../reference/Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"verbose"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] FALSE</span></span></code></pre>
+<code class="sourceCode R"><span class="fu"><a href="../reference/Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"verbose"</span> <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> 
+<span class="fu"><a href="../reference/Superpower_options.html">Superpower_options</a></span><span class="op">(</span><span class="st">"verbose"</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## [1] FALSE</span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="anova_design-function">ANOVA_design function<a class="anchor" aria-label="anchor" href="#anova_design-function"></a>
@@ -248,37 +248,37 @@ level 1 of factor 3.</p>
 <p>The plot below visualizes means from 1 to 8 being entered in a
 vector: <code>mu = c(1, 2, 3, 4, 5, 6, 7, 8)</code> so you can see how
 the basic ordering works.</p>
-<pre><code><span><span class="co">## The design is specified as: 2b*2w*2b</span></span>
-<span><span class="co">## Summary of means (mu) and standard deviations (SD)</span></span>
-<span><span class="co">##   mu SD  a  b  c</span></span>
-<span><span class="co">## 1  1  1 a1 b1 c1</span></span>
-<span><span class="co">## 2  2  1 a1 b1 c2</span></span>
-<span><span class="co">## 3  3  1 a1 b2 c1</span></span>
-<span><span class="co">## 4  4  1 a1 b2 c2</span></span>
-<span><span class="co">## 5  5  1 a2 b1 c1</span></span>
-<span><span class="co">## 6  6  1 a2 b1 c2</span></span>
-<span><span class="co">## 7  7  1 a2 b2 c1</span></span>
-<span><span class="co">## 8  8  1 a2 b2 c2</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Correlation Matrix</span></span>
-<span><span class="co">##          a1_b1_c1 a1_b1_c2 a1_b2_c1 a1_b2_c2 a2_b1_c1 a2_b1_c2 a2_b2_c1</span></span>
-<span><span class="co">## a1_b1_c1      1.0      0.0      0.9      0.0      0.0      0.0      0.0</span></span>
-<span><span class="co">## a1_b1_c2      0.0      1.0      0.0      0.9      0.0      0.0      0.0</span></span>
-<span><span class="co">## a1_b2_c1      0.9      0.0      1.0      0.0      0.0      0.0      0.0</span></span>
-<span><span class="co">## a1_b2_c2      0.0      0.9      0.0      1.0      0.0      0.0      0.0</span></span>
-<span><span class="co">## a2_b1_c1      0.0      0.0      0.0      0.0      1.0      0.0      0.9</span></span>
-<span><span class="co">## a2_b1_c2      0.0      0.0      0.0      0.0      0.0      1.0      0.0</span></span>
-<span><span class="co">## a2_b2_c1      0.0      0.0      0.0      0.0      0.9      0.0      1.0</span></span>
-<span><span class="co">## a2_b2_c2      0.0      0.0      0.0      0.0      0.0      0.9      0.0</span></span>
-<span><span class="co">##          a2_b2_c2</span></span>
-<span><span class="co">## a1_b1_c1      0.0</span></span>
-<span><span class="co">## a1_b1_c2      0.0</span></span>
-<span><span class="co">## a1_b2_c1      0.0</span></span>
-<span><span class="co">## a1_b2_c2      0.0</span></span>
-<span><span class="co">## a2_b1_c1      0.0</span></span>
-<span><span class="co">## a2_b1_c2      0.9</span></span>
-<span><span class="co">## a2_b2_c1      0.0</span></span>
-<span><span class="co">## a2_b2_c2      1.0</span></span></code></pre>
+<pre><code><span class="co">## The design is specified as: 2b*2w*2b</span>
+<span class="co">## Summary of means (mu) and standard deviations (SD)</span>
+<span class="co">##   mu SD  a  b  c</span>
+<span class="co">## 1  1  1 a1 b1 c1</span>
+<span class="co">## 2  2  1 a1 b1 c2</span>
+<span class="co">## 3  3  1 a1 b2 c1</span>
+<span class="co">## 4  4  1 a1 b2 c2</span>
+<span class="co">## 5  5  1 a2 b1 c1</span>
+<span class="co">## 6  6  1 a2 b1 c2</span>
+<span class="co">## 7  7  1 a2 b2 c1</span>
+<span class="co">## 8  8  1 a2 b2 c2</span>
+<span class="co">## </span>
+<span class="co">## Correlation Matrix</span>
+<span class="co">##          a1_b1_c1 a1_b1_c2 a1_b2_c1 a1_b2_c2 a2_b1_c1 a2_b1_c2 a2_b2_c1</span>
+<span class="co">## a1_b1_c1      1.0      0.0      0.9      0.0      0.0      0.0      0.0</span>
+<span class="co">## a1_b1_c2      0.0      1.0      0.0      0.9      0.0      0.0      0.0</span>
+<span class="co">## a1_b2_c1      0.9      0.0      1.0      0.0      0.0      0.0      0.0</span>
+<span class="co">## a1_b2_c2      0.0      0.9      0.0      1.0      0.0      0.0      0.0</span>
+<span class="co">## a2_b1_c1      0.0      0.0      0.0      0.0      1.0      0.0      0.9</span>
+<span class="co">## a2_b1_c2      0.0      0.0      0.0      0.0      0.0      1.0      0.0</span>
+<span class="co">## a2_b2_c1      0.0      0.0      0.0      0.0      0.9      0.0      1.0</span>
+<span class="co">## a2_b2_c2      0.0      0.0      0.0      0.0      0.0      0.9      0.0</span>
+<span class="co">##          a2_b2_c2</span>
+<span class="co">## a1_b1_c1      0.0</span>
+<span class="co">## a1_b1_c2      0.0</span>
+<span class="co">## a1_b2_c1      0.0</span>
+<span class="co">## a1_b2_c2      0.0</span>
+<span class="co">## a2_b1_c1      0.0</span>
+<span class="co">## a2_b1_c2      0.9</span>
+<span class="co">## a2_b2_c1      0.0</span>
+<span class="co">## a2_b2_c2      1.0</span></code></pre>
 <p><img src="intro_to_superpower_files/figure-html/unnamed-chunk-3-1.png" width="672"></p>
 </div>
 <div class="section level4">
@@ -349,14 +349,14 @@ levels, there are 6 possible comparisons that can be made.</p>
 all factors squared minus the product of all factors, divided by two.
 For a 2x2 design where each factor has two levels, this is:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="fl">2</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">-</span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 6</span></span></code></pre>
+<code class="sourceCode R"><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="fl">2</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">-</span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span></code></pre></div>
+<pre><code><span class="co">## [1] 6</span></code></pre>
 <p>The number of possible comparisons increases rapidly when adding
 factors and levels for each factor. For example, for a 2x2x4 design it
 is:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="fl">2</span><span class="op">*</span><span class="fl">4</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">-</span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="fl">2</span><span class="op">*</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 120</span></span></code></pre>
+<code class="sourceCode R"><span class="op">(</span><span class="op">(</span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="fl">2</span><span class="op">*</span><span class="fl">4</span><span class="op">)</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span><span class="op">-</span><span class="op">(</span><span class="fl">2</span><span class="op">*</span><span class="fl">2</span><span class="op">*</span><span class="fl">4</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fl">2</span></code></pre></div>
+<pre><code><span class="co">## [1] 120</span></code></pre>
 <p>Each of these comparisons can have their own correlation if the
 factor is manipulated within subjects (if the factor is manipulated
 between subjects the correlation is 0). These correlations determine the
@@ -418,40 +418,40 @@ correlations in the table below.</p>
 perfectly correlated with themselves).</p>
 <p>We would enter this correlation matrix as:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2w*2w"</span>,</span>
-<span>                              n <span class="op">=</span> <span class="fl">80</span>,</span>
-<span>                              mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.1</span>, <span class="fl">1.2</span>, <span class="fl">1.3</span>, <span class="fl">1.4</span><span class="op">)</span>,</span>
-<span>                              sd <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>                              <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.91</span>, <span class="fl">0.92</span>, <span class="fl">0.93</span>, <span class="fl">0.94</span>, <span class="fl">0.95</span>, <span class="fl">0.96</span><span class="op">)</span>,</span>
-<span>                              plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">design_result</span></span></code></pre></div>
-<pre><code><span><span class="co">## The design is specified as: 2w*2w</span></span>
-<span><span class="co">## Summary of means (mu) and standard deviations (SD)</span></span>
-<span><span class="co">##    mu SD  a  b</span></span>
-<span><span class="co">## 1 1.1  2 a1 b1</span></span>
-<span><span class="co">## 2 1.2  2 a1 b2</span></span>
-<span><span class="co">## 3 1.3  2 a2 b1</span></span>
-<span><span class="co">## 4 1.4  2 a2 b2</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Correlation Matrix</span></span>
-<span><span class="co">##       a1_b1 a1_b2 a2_b1 a2_b2</span></span>
-<span><span class="co">## a1_b1  1.00  0.91  0.92  0.93</span></span>
-<span><span class="co">## a1_b2  0.91  1.00  0.94  0.95</span></span>
-<span><span class="co">## a2_b1  0.92  0.94  1.00  0.96</span></span>
-<span><span class="co">## a2_b2  0.93  0.95  0.96  1.00</span></span></code></pre>
+<code class="sourceCode R"><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2w*2w"</span>,
+                              n <span class="op">=</span> <span class="fl">80</span>,
+                              mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.1</span>, <span class="fl">1.2</span>, <span class="fl">1.3</span>, <span class="fl">1.4</span><span class="op">)</span>,
+                              sd <span class="op">=</span> <span class="fl">2</span>,
+                              <span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.91</span>, <span class="fl">0.92</span>, <span class="fl">0.93</span>, <span class="fl">0.94</span>, <span class="fl">0.95</span>, <span class="fl">0.96</span><span class="op">)</span>,
+                              plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+
+<span class="va">design_result</span></code></pre></div>
+<pre><code><span class="co">## The design is specified as: 2w*2w</span>
+<span class="co">## Summary of means (mu) and standard deviations (SD)</span>
+<span class="co">##    mu SD  a  b</span>
+<span class="co">## 1 1.1  2 a1 b1</span>
+<span class="co">## 2 1.2  2 a1 b2</span>
+<span class="co">## 3 1.3  2 a2 b1</span>
+<span class="co">## 4 1.4  2 a2 b2</span>
+<span class="co">## </span>
+<span class="co">## Correlation Matrix</span>
+<span class="co">##       a1_b1 a1_b2 a2_b1 a2_b2</span>
+<span class="co">## a1_b1  1.00  0.91  0.92  0.93</span>
+<span class="co">## a1_b2  0.91  1.00  0.94  0.95</span>
+<span class="co">## a2_b1  0.92  0.94  1.00  0.96</span>
+<span class="co">## a2_b2  0.93  0.95  0.96  1.00</span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">design_result</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">design_result</span><span class="op">)</span></code></pre></div>
 <p><img src="intro_to_superpower_files/figure-html/unnamed-chunk-6-1.png" width="480"></p>
 <p>We can check the correlation matrix by asking for it from the
 design_result object to check if it was entered the way we wanted:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">design_result</span><span class="op">$</span><span class="va">cor_mat</span></span></code></pre></div>
-<pre><code><span><span class="co">##       a1_b1 a1_b2 a2_b1 a2_b2</span></span>
-<span><span class="co">## a1_b1  1.00  0.91  0.92  0.93</span></span>
-<span><span class="co">## a1_b2  0.91  1.00  0.94  0.95</span></span>
-<span><span class="co">## a2_b1  0.92  0.94  1.00  0.96</span></span>
-<span><span class="co">## a2_b2  0.93  0.95  0.96  1.00</span></span></code></pre>
+<code class="sourceCode R"><span class="va">design_result</span><span class="op">$</span><span class="va">cor_mat</span></code></pre></div>
+<pre><code><span class="co">##       a1_b1 a1_b2 a2_b1 a2_b2</span>
+<span class="co">## a1_b1  1.00  0.91  0.92  0.93</span>
+<span class="co">## a1_b2  0.91  1.00  0.94  0.95</span>
+<span class="co">## a2_b1  0.92  0.94  1.00  0.96</span>
+<span class="co">## a2_b2  0.93  0.95  0.96  1.00</span></code></pre>
 <p>Note that we did not specify the label_list, and thus they are
 automatically created.</p>
 </div>
@@ -626,20 +626,20 @@ within factors is 0.8, and the means are 1.03, 1.21, 0.98, 1.01. No
 correction for multiple comparisons is applied. The alpha level used as
 a significance threshold is set to 0.01 for this simulation.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b*2w"</span>,</span>
-<span>                   n <span class="op">=</span> <span class="fl">40</span>, </span>
-<span>                   mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.03</span>, <span class="fl">1.41</span>, <span class="fl">0.98</span>, <span class="fl">1.01</span><span class="op">)</span>, </span>
-<span>                   sd <span class="op">=</span> <span class="fl">1.03</span>, </span>
-<span>                   r <span class="op">=</span> <span class="fl">0.8</span>, </span>
-<span>                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"voice"</span>  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"human"</span>, <span class="st">"robot"</span><span class="op">)</span>,</span>
-<span>                                     <span class="st">"emotion"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="st">"cheerful"</span>, <span class="st">"sad"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                   plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b*2w"</span>,
+                   n <span class="op">=</span> <span class="fl">40</span>, 
+                   mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.03</span>, <span class="fl">1.41</span>, <span class="fl">0.98</span>, <span class="fl">1.01</span><span class="op">)</span>, 
+                   sd <span class="op">=</span> <span class="fl">1.03</span>, 
+                   r <span class="op">=</span> <span class="fl">0.8</span>, 
+                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"voice"</span>  <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"human"</span>, <span class="st">"robot"</span><span class="op">)</span>,
+                                     <span class="st">"emotion"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="st">"cheerful"</span>, <span class="st">"sad"</span><span class="op">)</span><span class="op">)</span>,
+                   plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="intro_to_superpower_files/figure-html/unnamed-chunk-8-1.png" width="672"></p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">power_result_vig_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_power.html">ANOVA_power</a></span><span class="op">(</span><span class="va">design_result</span>, </span>
-<span>                                  alpha <span class="op">=</span> <span class="fl">0.05</span>, </span>
-<span>                                  nsims <span class="op">=</span> <span class="va">nsims</span>, </span>
-<span>                                  seed <span class="op">=</span> <span class="fl">1234</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="va">power_result_vig_1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_power.html">ANOVA_power</a></span><span class="op">(</span><span class="va">design_result</span>, 
+                                  alpha <span class="op">=</span> <span class="fl">0.05</span>, 
+                                  nsims <span class="op">=</span> <span class="va">nsims</span>, 
+                                  seed <span class="op">=</span> <span class="fl">1234</span><span class="op">)</span></code></pre></div>
 <p>The result for the power simulation is printed, and has two sections
 (which can be suppressed by setting verbose = FALSE). The first table
 provides power (from 0 to 100%) and effect sizes (partial eta-squared)
@@ -649,7 +649,7 @@ are taking a random sample of 250 simulations we can calculate a
 confidence interval of the results with the <code>confint</code>
 method.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">power_result_vig_1</span>, level <span class="op">=</span> <span class="fl">.98</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">power_result_vig_1</span>, level <span class="op">=</span> <span class="fl">.98</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left"></th>
@@ -720,25 +720,25 @@ participants in total, with 100 participants in each condition. We
 examine the statistical power our design would have to detect the
 differences we predict.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">design</span> <span class="op">&lt;-</span> <span class="st">"2b"</span></span>
-<span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">100</span></span>
-<span><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span></span>
-<span><span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">6.4</span></span>
-<span><span class="va">label_list</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span> <span class="co">#</span></span>
-<span></span>
-<span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,</span>
-<span>                              n <span class="op">=</span> <span class="va">n</span>,</span>
-<span>                              mu <span class="op">=</span> <span class="va">mu</span>, </span>
-<span>                              sd <span class="op">=</span> <span class="va">sd</span>, </span>
-<span>                              label_list <span class="op">=</span> <span class="va">label_list</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="va">design</span> <span class="op">&lt;-</span> <span class="st">"2b"</span>
+<span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">100</span>
+<span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span>
+<span class="va">sd</span> <span class="op">&lt;-</span> <span class="fl">6.4</span>
+<span class="va">label_list</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span> <span class="co">#</span>
+
+<span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="va">design</span>,
+                              n <span class="op">=</span> <span class="va">n</span>,
+                              mu <span class="op">=</span> <span class="va">mu</span>, 
+                              sd <span class="op">=</span> <span class="va">sd</span>, 
+                              label_list <span class="op">=</span> <span class="va">label_list</span><span class="op">)</span></code></pre></div>
 <p><img src="intro_to_superpower_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">power_result_vig_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_power.html">ANOVA_power</a></span><span class="op">(</span><span class="va">design_result</span>, </span>
-<span>                                  nsims <span class="op">=</span> <span class="va">nsims</span>, </span>
-<span>                                  seed <span class="op">=</span> <span class="fl">1234</span><span class="op">)</span></span>
-<span><span class="co">#Note we do not specify any correlation in the ANOVA_design function (default r = 0), nor do we specify an alpha in the ANOVA_power function (default is 0.05)</span></span>
-<span></span>
-<span><span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">power_result_vig_2</span>, level <span class="op">=</span> <span class="fl">.98</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="va">power_result_vig_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_power.html">ANOVA_power</a></span><span class="op">(</span><span class="va">design_result</span>, 
+                                  nsims <span class="op">=</span> <span class="va">nsims</span>, 
+                                  seed <span class="op">=</span> <span class="fl">1234</span><span class="op">)</span>
+<span class="co">#Note we do not specify any correlation in the ANOVA_design function (default r = 0), nor do we specify an alpha in the ANOVA_power function (default is 0.05)</span>
+
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html" class="external-link">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">power_result_vig_2</span>, level <span class="op">=</span> <span class="fl">.98</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <table class="table">
 <thead><tr class="header">
 <th align="left"></th>
@@ -763,23 +763,23 @@ d = 0.34375 for the difference between the control condition and having
 pets, which we can use to easily compute the expected power for these
 simple comparisons using the pwr package.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/heliosdrm/pwr" class="external-link">pwr</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html" class="external-link">pwr.t.test</a></span><span class="op">(</span>d <span class="op">=</span> <span class="fl">2.2</span><span class="op">/</span><span class="fl">6.4</span>,</span>
-<span>           n <span class="op">=</span> <span class="fl">100</span>,</span>
-<span>           sig.level <span class="op">=</span> <span class="fl">0.05</span>,</span>
-<span>           type <span class="op">=</span> <span class="st">"two.sample"</span>,</span>
-<span>           alternative <span class="op">=</span> <span class="st">"two.sided"</span><span class="op">)</span><span class="op">$</span><span class="va">power</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 0.6768572</span></span></code></pre>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/heliosdrm/pwr" class="external-link">pwr</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html" class="external-link">pwr.t.test</a></span><span class="op">(</span>d <span class="op">=</span> <span class="fl">2.2</span><span class="op">/</span><span class="fl">6.4</span>,
+           n <span class="op">=</span> <span class="fl">100</span>,
+           sig.level <span class="op">=</span> <span class="fl">0.05</span>,
+           type <span class="op">=</span> <span class="st">"two.sample"</span>,
+           alternative <span class="op">=</span> <span class="st">"two.sided"</span><span class="op">)</span><span class="op">$</span><span class="va">power</span></code></pre></div>
+<pre><code><span class="co">## [1] 0.6768572</span></code></pre>
 <p>We can also directly compute Cohen’s f from Cohen’s d for two groups,
 as Cohen (1988) describes, because f = <span class="math inline">\(\frac{1}{2}d\)</span>. So f = 0.5*0.34375 =
 0.171875. And indeed, power analysis using the pwr package yields the
 same result using the pwr.anova.test as the power.t.test.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.anova.test.html" class="external-link">pwr.anova.test</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span>,</span>
-<span>               k <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>               f <span class="op">=</span> <span class="fl">0.171875</span>,</span>
-<span>               sig.level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span><span class="op">$</span><span class="va">power</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 0.6768572</span></span></code></pre>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.anova.test.html" class="external-link">pwr.anova.test</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span>,
+               k <span class="op">=</span> <span class="fl">2</span>,
+               f <span class="op">=</span> <span class="fl">0.171875</span>,
+               sig.level <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span><span class="op">$</span><span class="va">power</span></code></pre></div>
+<pre><code><span class="co">## [1] 0.6768572</span></code></pre>
 <p>This analysis tells us that running the study with 100 participants
 in each condition is quite likely to <em>not</em> yield a significant
 test result, even if our expected pattern of differences is true. This
@@ -804,56 +804,56 @@ efficient to use the <code>ANOVA_exact</code> function. You can see in
 the code below that we slowly increase the sample size and find that 180
 participants give a bit more than 90% power.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b"</span>,</span>
-<span>                   n <span class="op">=</span> <span class="fl">100</span>, </span>
-<span>                   mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span>, </span>
-<span>                   sd <span class="op">=</span> <span class="fl">6.4</span>, </span>
-<span>                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                   plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b"</span>,
+                   n <span class="op">=</span> <span class="fl">100</span>, 
+                   mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span>, 
+                   sd <span class="op">=</span> <span class="fl">6.4</span>, 
+                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span>,
+                   plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <p><img src="intro_to_superpower_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact</a></span><span class="op">(</span><span class="va">design_result</span>,</span>
-<span>            verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span><span class="va">main_results</span><span class="op">$</span><span class="va">power</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 67.68572</span></span></code></pre>
+<code class="sourceCode R"><span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact</a></span><span class="op">(</span><span class="va">design_result</span>,
+            verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span><span class="va">main_results</span><span class="op">$</span><span class="va">power</span></code></pre></div>
+<pre><code><span class="co">## [1] 67.68572</span></code></pre>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># power of 67.7 is a bit low. Let's increase it a bit to n = 150 to see if we are closer to our goal of 90% power.</span></span>
-<span></span>
-<span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b"</span>,</span>
-<span>                   n <span class="op">=</span> <span class="fl">150</span>, </span>
-<span>                   mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span>, </span>
-<span>                   sd <span class="op">=</span> <span class="fl">6.4</span>, </span>
-<span>                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                   plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact</a></span><span class="op">(</span><span class="va">design_result</span>,</span>
-<span>            verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span><span class="va">main_results</span><span class="op">$</span><span class="va">power</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 84.3127</span></span></code></pre>
+<code class="sourceCode R"><span class="co"># power of 67.7 is a bit low. Let's increase it a bit to n = 150 to see if we are closer to our goal of 90% power.</span>
+
+<span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b"</span>,
+                   n <span class="op">=</span> <span class="fl">150</span>, 
+                   mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span>, 
+                   sd <span class="op">=</span> <span class="fl">6.4</span>, 
+                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span>,
+                   plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+
+<span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact</a></span><span class="op">(</span><span class="va">design_result</span>,
+            verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span><span class="va">main_results</span><span class="op">$</span><span class="va">power</span></code></pre></div>
+<pre><code><span class="co">## [1] 84.3127</span></code></pre>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Close, but not there yet. Let's try n = 175 </span></span>
-<span></span>
-<span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b"</span>,</span>
-<span>                   n <span class="op">=</span> <span class="fl">175</span>, </span>
-<span>                   mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span>, </span>
-<span>                   sd <span class="op">=</span> <span class="fl">6.4</span>, </span>
-<span>                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                   plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact</a></span><span class="op">(</span><span class="va">design_result</span>,</span>
-<span>            verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span><span class="va">main_results</span><span class="op">$</span><span class="va">power</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 89.37347</span></span></code></pre>
+<code class="sourceCode R"><span class="co"># Close, but not there yet. Let's try n = 175 </span>
+
+<span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b"</span>,
+                   n <span class="op">=</span> <span class="fl">175</span>, 
+                   mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span>, 
+                   sd <span class="op">=</span> <span class="fl">6.4</span>, 
+                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span>,
+                   plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+
+<span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact</a></span><span class="op">(</span><span class="va">design_result</span>,
+            verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span><span class="va">main_results</span><span class="op">$</span><span class="va">power</span></code></pre></div>
+<pre><code><span class="co">## [1] 89.37347</span></code></pre>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#Very close. Let's add a few more and try n = 180</span></span>
-<span></span>
-<span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b"</span>,</span>
-<span>                   n <span class="op">=</span> <span class="fl">180</span>, </span>
-<span>                   mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span>, </span>
-<span>                   sd <span class="op">=</span> <span class="fl">6.4</span>, </span>
-<span>                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>                   plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact</a></span><span class="op">(</span><span class="va">design_result</span>,</span>
-<span>            verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span><span class="va">main_results</span><span class="op">$</span><span class="va">power</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 90.18863</span></span></code></pre>
+<code class="sourceCode R"><span class="co">#Very close. Let's add a few more and try n = 180</span>
+
+<span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b"</span>,
+                   n <span class="op">=</span> <span class="fl">180</span>, 
+                   mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span>, 
+                   sd <span class="op">=</span> <span class="fl">6.4</span>, 
+                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span>,
+                   plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+
+<span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact</a></span><span class="op">(</span><span class="va">design_result</span>,
+            verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span><span class="va">main_results</span><span class="op">$</span><span class="va">power</span></code></pre></div>
+<pre><code><span class="co">## [1] 90.18863</span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -923,7 +923,7 @@ expected pattern of means and standard deviations, we have 80% power
 around 135 participants per condition, 90% power around 180 participants
 per condition, and 95% power around 225 participants per condition.</p>
 <div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_power.html">plot_power</a></span><span class="op">(</span><span class="va">design_result</span>, min_n <span class="op">=</span> <span class="fl">10</span>, max_n <span class="op">=</span> <span class="fl">250</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/plot_power.html">plot_power</a></span><span class="op">(</span><span class="va">design_result</span>, min_n <span class="op">=</span> <span class="fl">10</span>, max_n <span class="op">=</span> <span class="fl">250</span><span class="op">)</span></code></pre></div>
 <p><img src="intro_to_superpower_files/figure-html/unnamed-chunk-16-1.png" width="672"></p>
 <p>Because the true pattern of means is always unknown, it is sensible
 to examine the power across a range of scenarios.</p>
@@ -951,13 +951,13 @@ sizes (facets) and alpha levels (color). For a <em>t</em>-test, the type
 of test (paired, one-sample, or two-sample) and alternative hypothesis
 (one.sided or two.sided) can be provided.</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/morey_plot.html">morey_plot.ttest</a></span><span class="op">(</span></span>
-<span>  es <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">.1</span>, <span class="fl">.5</span>, <span class="fl">.01</span><span class="op">)</span>,</span>
-<span>  n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span>,</span>
-<span>  alpha_level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.05</span>, <span class="fl">.075</span><span class="op">)</span>,</span>
-<span>  type <span class="op">=</span> <span class="st">"paired"</span>,</span>
-<span>  alternative <span class="op">=</span> <span class="st">"one.sided"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/morey_plot.html">morey_plot.ttest</a></span><span class="op">(</span>
+  es <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">.1</span>, <span class="fl">.5</span>, <span class="fl">.01</span><span class="op">)</span>,
+  n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span>,
+  alpha_level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.05</span>, <span class="fl">.075</span><span class="op">)</span>,
+  type <span class="op">=</span> <span class="st">"paired"</span>,
+  alternative <span class="op">=</span> <span class="st">"one.sided"</span>
+<span class="op">)</span></code></pre></div>
 <p><img src="intro_to_superpower_files/figure-html/morey1-1.png" width="672"></p>
 <p>For the <em>F</em>-test, the options are a little different. First,
 instead of sample size, the numerator and denominator degrees of freedom
@@ -968,13 +968,13 @@ set the non-centrality argument to a “liberal” lambda; this has a
 minuscule effect on power but I suggest that the liberal_lambda argument
 be set to FALSE.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/morey_plot.html">morey_plot.ftest</a></span><span class="op">(</span></span>
-<span>  es <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">.1</span>, <span class="fl">.5</span>, <span class="fl">.01</span><span class="op">)</span>,</span>
-<span>  num_df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
-<span>  den_df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>,<span class="fl">30</span><span class="op">)</span>,</span>
-<span>  alpha_level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.05</span>, <span class="fl">.075</span><span class="op">)</span>,</span>
-<span>  liberal_lambda <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/morey_plot.html">morey_plot.ftest</a></span><span class="op">(</span>
+  es <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">.1</span>, <span class="fl">.5</span>, <span class="fl">.01</span><span class="op">)</span>,
+  num_df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,
+  den_df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">20</span>,<span class="fl">30</span><span class="op">)</span>,
+  alpha_level <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.05</span>, <span class="fl">.075</span><span class="op">)</span>,
+  liberal_lambda <span class="op">=</span> <span class="cn">FALSE</span>
+<span class="op">)</span></code></pre></div>
 <p><img src="intro_to_superpower_files/figure-html/morey2-1.png" width="672"></p>
 </div>
 </div>
@@ -997,7 +997,7 @@ be set to FALSE.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

@@ -53,8 +53,7 @@ Returns dataframe with simulation data (power and effect sizes!), anova results 
 
 \describe{
   \item{\code{"dataframe"}}{A dataframe of the simulation result.}
-  \item{\code{"aov_result"}}{\code{aov} object returned from \code{\link{aov_car}}.}
-  \item{\code{"aov_result"}}{\code{emmeans} object returned from \code{\link{emmeans}}.}
+  \item{\code{"aov_result"}}{\code{aov} object returned from \code{aov_car}.}
   \item{\code{"main_result"}}{The power analysis results for ANOVA level effects.}
   \item{\code{"pc_results"}}{The power analysis results for the pairwise (t-test) comparisons.}
   \item{\code{"emm_results"}}{The power analysis results of the pairwise comparison results.}
@@ -70,9 +69,9 @@ Simulates an exact dataset (mu, sd, and r represent empirical, not population, m
 }
 \section{Functions}{
 \itemize{
-\item \code{ANOVA_exact2}: An extension of ANOVA_exact that uses the effect sizes calculated from very large sample size empirical simulation. This allows for small sample sizes, where ANOVA_exact cannot, while still accurately estimating power. However, model objects (emmeans and aov) are not included as output, and pairwise (t-test) results are not currently supported.
-}}
+\item \code{ANOVA_exact2()}: An extension of ANOVA_exact that uses the effect sizes calculated from very large sample size empirical simulation. This allows for small sample sizes, where ANOVA_exact cannot, while still accurately estimating power. However, model objects (emmeans and aov) are not included as output, and pairwise (t-test) results are not currently supported.
 
+}}
 \section{Warnings}{
 
 Varying the sd or r (e.g., entering multiple values) violates assumptions of homoscedascity and sphericity respectively

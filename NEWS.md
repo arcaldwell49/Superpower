@@ -1,7 +1,11 @@
 NEWS
 ================
 
-Updated Fri Feb 10 2023
+Updated Tue Jul 30 2024
+
+# Superpower 0.2.3 – “Repli-Kate”
+
+- Small updates to documentation to meet CRAN requirements
 
 # Superpower 0.2.2 – “Jubilee”
 
@@ -77,7 +81,7 @@ Updated Fri Feb 10 2023
   now limited; smallest min_n allowed is equal to the product of the
   design (e.g., ’2b\*2b’ has a smallest min_n of 4)
 - Small update to plot_power to fix minor error in original code -Error
-  resulted in power estimates being \~0.1-0.5% off actual power estimate
+  resulted in power estimates being ~0.1-0.5% off actual power estimate
 
 # Superpower 0.0.4
 

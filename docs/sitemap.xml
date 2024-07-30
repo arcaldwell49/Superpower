@@ -4,6 +4,12 @@
     <loc>/404.html</loc>
   </url>
   <url>
+    <loc>/LICENSE-text.html</loc>
+  </url>
+  <url>
+    <loc>/LICENSE.html</loc>
+  </url>
+  <url>
     <loc>/articles/ANCOVAs.html</loc>
   </url>
   <url>
@@ -28,25 +34,13 @@
     <loc>/index.html</loc>
   </url>
   <url>
-    <loc>/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>/LICENSE.html</loc>
-  </url>
-  <url>
     <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/alpha_standardized.html</loc>
   </url>
   <url>
     <loc>/reference/ANCOVA_analytic.html</loc>
   </url>
   <url>
     <loc>/reference/ANCOVA_contrast.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ancova_power-methods.html</loc>
   </url>
   <url>
     <loc>/reference/ANOVA_compromise.html</loc>
@@ -59,6 +53,15 @@
   </url>
   <url>
     <loc>/reference/ANOVA_power.html</loc>
+  </url>
+  <url>
+    <loc>/reference/Superpower_options.html</loc>
+  </url>
+  <url>
+    <loc>/reference/alpha_standardized.html</loc>
+  </url>
+  <url>
+    <loc>/reference/ancova_power-methods.html</loc>
   </url>
   <url>
     <loc>/reference/design_aov-methods.html</loc>
@@ -76,10 +79,13 @@
     <loc>/reference/mu_from_ES.html</loc>
   </url>
   <url>
+    <loc>/reference/opt_alpha-methods.html</loc>
+  </url>
+  <url>
     <loc>/reference/optimal_alpha.html</loc>
   </url>
   <url>
-    <loc>/reference/opt_alpha-methods.html</loc>
+    <loc>/reference/p_standardized.html</loc>
   </url>
   <url>
     <loc>/reference/plot_power.html</loc>
@@ -106,12 +112,6 @@
     <loc>/reference/power_twoway_between.html</loc>
   </url>
   <url>
-    <loc>/reference/p_standardized.html</loc>
-  </url>
-  <url>
     <loc>/reference/sim_result-methods.html</loc>
-  </url>
-  <url>
-    <loc>/reference/Superpower_options.html</loc>
   </url>
 </urlset>
