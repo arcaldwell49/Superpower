@@ -37,7 +37,7 @@ As @shieh_ancova eloquently points out in their simulations, the method of @cohe
 
 Thankfully, @shieh_ancova was diligent in his work and demonstrated, showing both the math and simulations, how a new exact method could be utilized. The direct method described in the paper is implemented in the `power_oneway_ancova` function.
 
-We can copy the example from @maxwell_delaney that Shieh also used. In this example there are 3 groups with means (`mu`) of 400, 450, 500 respectively. The error variance is 10000 (`sd = 100`). Rather than simulating dozens of examples, I will demonstrate one scenario below where there are 3 covariates, and the $R^2$ is equal to 0.5 (treatment effect excluded). This is demonstrated in @shieh_ancova,  Table 2.
+We can copy the example from @maxwell_delaney that Shieh also used. In this example there are 3 groups with means (`mu`) of 400, 450, 500 respectively. The error variance is 10000 (`sd = 100`). Rather than simulating dozens of examples, I will demonstrate one scenario below where there are 3 covariates, and the $R^2$ (treatment effect excluded) is equal to 0.25 ($\rho = 0.5$). This is demonstrated in @shieh_ancova,  Table 2.
 
 For `power_oneway_ancova` we can demonstrate both the approximate and exact methods using the `type` argument. We can leave the `n` argument out in order to solve for the sample size required to reach 80% power. Please notice that `round_up` is set to TRUE since we want have a whole number for sample sizes (rather than a fractional sample size).
 

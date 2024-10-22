@@ -99,7 +99,7 @@
                         <h4 data-toc-skip class="author">Daniel Lakens
 &amp; Aaron R. Caldwell</h4>
             
-            <h4 data-toc-skip class="date">2023-02-10</h4>
+            <h4 data-toc-skip class="date">2024-10-22</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/arcaldwell49/Superpower/blob/HEAD/vignettes/intro_to_superpower.Rmd" class="external-link"><code>vignettes/intro_to_superpower.Rmd</code></a></small>
       <div class="hidden name"><code>intro_to_superpower.Rmd</code></div>
@@ -763,8 +763,10 @@ d = 0.34375 for the difference between the control condition and having
 pets, which we can use to easily compute the expected power for these
 simple comparisons using the pwr package.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/heliosdrm/pwr" class="external-link">pwr</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html" class="external-link">pwr.t.test</a></span><span class="op">(</span>d <span class="op">=</span> <span class="fl">2.2</span><span class="op">/</span><span class="fl">6.4</span>,</span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/heliosdrm/pwr" class="external-link">pwr</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: package 'pwr' was built under R version 4.3.3</span></span></code></pre>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.t.test.html" class="external-link">pwr.t.test</a></span><span class="op">(</span>d <span class="op">=</span> <span class="fl">2.2</span><span class="op">/</span><span class="fl">6.4</span>,</span>
 <span>           n <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>           sig.level <span class="op">=</span> <span class="fl">0.05</span>,</span>
 <span>           type <span class="op">=</span> <span class="st">"two.sample"</span>,</span>
@@ -774,7 +776,7 @@ simple comparisons using the pwr package.</p>
 as Cohen (1988) describes, because f = <span class="math inline">\(\frac{1}{2}d\)</span>. So f = 0.5*0.34375 =
 0.171875. And indeed, power analysis using the pwr package yields the
 same result using the pwr.anova.test as the power.t.test.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/pwr/man/pwr.anova.test.html" class="external-link">pwr.anova.test</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>               k <span class="op">=</span> <span class="fl">2</span>,</span>
 <span>               f <span class="op">=</span> <span class="fl">0.171875</span>,</span>
@@ -803,7 +805,7 @@ figure out how many participants you would need, it is much more
 efficient to use the <code>ANOVA_exact</code> function. You can see in
 the code below that we slowly increase the sample size and find that 180
 participants give a bit more than 90% power.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b"</span>,</span>
 <span>                   n <span class="op">=</span> <span class="fl">100</span>, </span>
 <span>                   mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">24</span>, <span class="fl">26.2</span><span class="op">)</span>, </span>
@@ -811,11 +813,11 @@ participants give a bit more than 90% power.</p>
 <span>                   label_list <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="st">"condition"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"control"</span>, <span class="st">"pet"</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>                   plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="intro_to_superpower_files/figure-html/unnamed-chunk-15-1.png" width="672"></p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact</a></span><span class="op">(</span><span class="va">design_result</span>,</span>
 <span>            verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span><span class="va">main_results</span><span class="op">$</span><span class="va">power</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 67.68572</span></span></code></pre>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># power of 67.7 is a bit low. Let's increase it a bit to n = 150 to see if we are closer to our goal of 90% power.</span></span>
 <span></span>
 <span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b"</span>,</span>
@@ -828,7 +830,7 @@ participants give a bit more than 90% power.</p>
 <span><span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact</a></span><span class="op">(</span><span class="va">design_result</span>,</span>
 <span>            verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span><span class="va">main_results</span><span class="op">$</span><span class="va">power</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 84.3127</span></span></code></pre>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Close, but not there yet. Let's try n = 175 </span></span>
 <span></span>
 <span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b"</span>,</span>
@@ -841,7 +843,7 @@ participants give a bit more than 90% power.</p>
 <span><span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact</a></span><span class="op">(</span><span class="va">design_result</span>,</span>
 <span>            verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">$</span><span class="va">main_results</span><span class="op">$</span><span class="va">power</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 89.37347</span></span></code></pre>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Very close. Let's add a few more and try n = 180</span></span>
 <span></span>
 <span><span class="va">design_result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ANOVA_design.html">ANOVA_design</a></span><span class="op">(</span>design <span class="op">=</span> <span class="st">"2b"</span>,</span>
@@ -922,7 +924,7 @@ the true pattern of means and standard deviations represents our
 expected pattern of means and standard deviations, we have 80% power
 around 135 participants per condition, 90% power around 180 participants
 per condition, and 95% power around 225 participants per condition.</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_power.html">plot_power</a></span><span class="op">(</span><span class="va">design_result</span>, min_n <span class="op">=</span> <span class="fl">10</span>, max_n <span class="op">=</span> <span class="fl">250</span><span class="op">)</span></span></code></pre></div>
 <p><img src="intro_to_superpower_files/figure-html/unnamed-chunk-16-1.png" width="672"></p>
 <p>Because the true pattern of means is always unknown, it is sensible
@@ -950,7 +952,7 @@ Cohen’s <em>f</em> or Cohen’s <em>d</em>). In addition, multiple sample
 sizes (facets) and alpha levels (color). For a <em>t</em>-test, the type
 of test (paired, one-sample, or two-sample) and alternative hypothesis
 (one.sided or two.sided) can be provided.</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/morey_plot.html">morey_plot.ttest</a></span><span class="op">(</span></span>
 <span>  es <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">.1</span>, <span class="fl">.5</span>, <span class="fl">.01</span><span class="op">)</span>,</span>
 <span>  n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span><span class="op">)</span>,</span>
@@ -967,7 +969,7 @@ there is no type or alternative argument. Lastly, there is the option to
 set the non-centrality argument to a “liberal” lambda; this has a
 minuscule effect on power but I suggest that the liberal_lambda argument
 be set to FALSE.</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/morey_plot.html">morey_plot.ftest</a></span><span class="op">(</span></span>
 <span>  es <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">.1</span>, <span class="fl">.5</span>, <span class="fl">.01</span><span class="op">)</span>,</span>
 <span>  num_df <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
@@ -997,7 +999,7 @@ be set to FALSE.</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

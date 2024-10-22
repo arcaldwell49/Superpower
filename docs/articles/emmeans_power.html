@@ -100,7 +100,7 @@ analyses</h1>
                         <h4 data-toc-skip class="author">Frederik
 Aust</h4>
             
-            <h4 data-toc-skip class="date">10 February, 2023</h4>
+            <h4 data-toc-skip class="date">22 October, 2024</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/arcaldwell49/Superpower/blob/HEAD/vignettes/emmeans_power.Rmd" class="external-link"><code>vignettes/emmeans_power.Rmd</code></a></small>
       <div class="hidden name"><code>emmeans_power.Rmd</code></div>
@@ -467,24 +467,24 @@ for each voice.</p>
 <pre><code><span><span class="co">#&gt;                             contrast         voice   power partial_eta_squared</span></span>
 <span><span class="co">#&gt; 1 condition_cheerful - condition_sad voice_cartoon 68.3716        1.381215e-01</span></span>
 <span><span class="co">#&gt; 2 condition_cheerful - condition_sad   voice_human  5.0000        4.938282e-32</span></span>
-<span><span class="co">#&gt; 3 condition_cheerful - condition_sad   voice_robot  5.0000        1.335311e-31</span></span>
+<span><span class="co">#&gt; 3 condition_cheerful - condition_sad   voice_robot  5.0000        2.844450e-32</span></span>
 <span><span class="co">#&gt;        cohen_f non_centrality</span></span>
 <span><span class="co">#&gt; 1 4.003204e-01   6.250000e+00</span></span>
 <span><span class="co">#&gt; 2 2.222225e-16   1.925930e-30</span></span>
-<span><span class="co">#&gt; 3 3.654191e-16   5.207715e-30</span></span></code></pre>
+<span><span class="co">#&gt; 3 1.686550e-16   1.109336e-30</span></span></code></pre>
 <p>We may also calculate the power for testing all condition means
 against an arbitrary constant.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/emmeans_power.html">emmeans_power</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/emmeans/man/summary.emmGrid.html" class="external-link">test</a></span><span class="op">(</span><span class="va">simple_condition_effects</span>, null <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">#&gt;            condition         voice     power partial_eta_squared      cohen_f</span></span>
-<span><span class="co">#&gt; 1 condition_cheerful voice_cartoon  5.000000        1.264200e-32 1.124367e-16</span></span>
+<span><span class="co">#&gt; 1 condition_cheerful voice_cartoon  5.000000        3.160500e-33 5.621833e-17</span></span>
 <span><span class="co">#&gt; 2      condition_sad voice_cartoon 33.831141        6.024096e-02 2.531848e-01</span></span>
 <span><span class="co">#&gt; 3 condition_cheerful   voice_human  9.462673        1.015228e-02 1.012739e-01</span></span>
 <span><span class="co">#&gt; 4      condition_sad   voice_human  9.462673        1.015228e-02 1.012739e-01</span></span>
 <span><span class="co">#&gt; 5 condition_cheerful   voice_robot 33.831141        6.024096e-02 2.531848e-01</span></span>
 <span><span class="co">#&gt; 6      condition_sad   voice_robot 33.831141        6.024096e-02 2.531848e-01</span></span>
 <span><span class="co">#&gt;   non_centrality</span></span>
-<span><span class="co">#&gt; 1   4.930381e-31</span></span>
+<span><span class="co">#&gt; 1   1.232595e-31</span></span>
 <span><span class="co">#&gt; 2   2.500000e+00</span></span>
 <span><span class="co">#&gt; 3   4.000000e-01</span></span>
 <span><span class="co">#&gt; 4   4.000000e-01</span></span>
@@ -518,7 +518,7 @@ Bonferroni-corrected tests by adjusting <code>alpha_level</code>.</p>
 <span><span class="co">#&gt;   partial_eta_squared      cohen_f non_centrality</span></span>
 <span><span class="co">#&gt; 1        1.381215e-01 4.003204e-01   6.250000e+00</span></span>
 <span><span class="co">#&gt; 2        4.938282e-32 2.222225e-16   1.925930e-30</span></span>
-<span><span class="co">#&gt; 3        1.335311e-31 3.654191e-16   5.207715e-30</span></span></code></pre>
+<span><span class="co">#&gt; 3        2.844450e-32 1.686550e-16   1.109336e-30</span></span></code></pre>
 <p>Similarly, if we want to calculate power for a one-sided test, we can
 doubling <code>alpha_level</code>.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
@@ -595,7 +595,7 @@ We can then calculate the power for each Bonferroni-corrected <span class="math 
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

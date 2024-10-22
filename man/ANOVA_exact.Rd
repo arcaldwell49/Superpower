@@ -70,9 +70,9 @@ Simulates an exact dataset (mu, sd, and r represent empirical, not population, m
 }
 \section{Functions}{
 \itemize{
-\item \code{ANOVA_exact2}: An extension of ANOVA_exact that uses the effect sizes calculated from very large sample size empirical simulation. This allows for small sample sizes, where ANOVA_exact cannot, while still accurately estimating power. However, model objects (emmeans and aov) are not included as output, and pairwise (t-test) results are not currently supported.
-}}
+\item \code{ANOVA_exact2()}: An extension of ANOVA_exact that uses the effect sizes calculated from very large sample size empirical simulation. This allows for small sample sizes, where ANOVA_exact cannot, while still accurately estimating power. However, model objects (emmeans and aov) are not included as output, and pairwise (t-test) results are not currently supported.
 
+}}
 \section{Warnings}{
 
 Varying the sd or r (e.g., entering multiple values) violates assumptions of homoscedascity and sphericity respectively
