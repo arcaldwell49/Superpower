@@ -511,8 +511,8 @@ n <- 20
 mu <- c(20, 20, 20, 20, 20, 20, 20, 20, 25) 
 # Enter means in the order that matches the labels below.
 sd <- 5
-label_list <- list("Factor_A" = c("a1", "a2", "a3"), 
-                "Factor_B" = c("b1", "b2", "b3")) #
+label_list <- list("FactorA" = c("a1", "a2", "a3"), 
+                "FactorB" = c("b1", "b2", "b3")) #
 # the label names should be in the order of the means specified above.
 
 design_result <- ANOVA_design(design = design,
