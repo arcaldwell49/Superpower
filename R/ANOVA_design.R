@@ -100,8 +100,15 @@ ANOVA_design <- function(design, n, mu, sd, r = 0,
     }
   }
   
+  
+  
   if (length(labelnames) != length(factor_levels) + sum(factor_levels)) {
     stop("Variable 'design' does not match the length of the labelnames")
+  }
+  
+  if(any(grepl("_", labelnames))){
+    print(labelnames[grepl("_", labelnames)])
+    stop("labelnames or label_list cannot contain an underscore.")
   }
   
   ###############

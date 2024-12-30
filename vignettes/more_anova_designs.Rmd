@@ -488,7 +488,7 @@ design_result <- ANOVA_design(design = "2b*2b*2b",
                               label_list = list(
                                 "condition" = c("cheerful", "sad"),
                                 "voice" = c("human", "robot"),
-                                "factor_c" = c("c1", "c2")
+                                "factorC" = c("c1", "c2")
                               ))
 power_threeway_between(design_result)$power_ABC
 power_threeway_between(design_result)$Cohen_f_ABC
@@ -511,8 +511,8 @@ n <- 20
 mu <- c(20, 20, 20, 20, 20, 20, 20, 20, 25) 
 # Enter means in the order that matches the labels below.
 sd <- 5
-label_list <- list("Factor_A" = c("a1", "a2", "a3"), 
-                "Factor_B" = c("b1", "b2", "b3")) #
+label_list <- list("FactorA" = c("a1", "a2", "a3"), 
+                "FactorB" = c("b1", "b2", "b3")) #
 # the label names should be in the order of the means specified above.
 
 design_result <- ANOVA_design(design = design,
