@@ -15,6 +15,10 @@ test_that("errors", {
   expect_error(ANOVA_design("100b", mu = c(1:100),
                             sd =1,
                             n = 150))
+  
+  expect_error(ANOVA_design(design = "2w*2w", n = 40, mu = c(1, 0, 1, 0), sd = 2, r = 0.8,
+                            label_list= list(condition_one = c("cheerful", "sad_1"), 
+                                             voice = c("human", "robot"))))
 
   # passing bad arguments: *SHOULD BE AN ERROR*
   expect_error(ANOVA_design("2w*2b", n = 100, mu = c(0, 0, 0, 0), sd = -1),
