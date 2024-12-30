@@ -488,7 +488,7 @@ design_result <- ANOVA_design(design = "2b*2b*2b",
                               label_list = list(
                                 "condition" = c("cheerful", "sad"),
                                 "voice" = c("human", "robot"),
-                                "factor_c" = c("c1", "c2")
+                                "factorC" = c("c1", "c2")
                               ))
 power_threeway_between(design_result)$power_ABC
 power_threeway_between(design_result)$Cohen_f_ABC
