@@ -5,6 +5,9 @@ output: github_document
 
 Updated `r format(Sys.time(), "%a %b %d %Y")`
 
+# Superpower 0.2.3 -- "Ravage"
+- Minor changes to stay on CRAN
+
 # Superpower 0.2.2 -- "Jubilee"
 - Updates to the package documentation
 
