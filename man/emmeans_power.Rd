@@ -21,9 +21,9 @@ emmeans_power(x, ...)
 )
 }
 \arguments{
-\item{x}{\code{emmGrid}. Grid of contrasts to estimate power from.}
+\item{x}{\link[emmeans]{emmGrid-class}. Grid of contrasts to estimate power from.}
 
-\item{...}{Other arguments passed to the function if object is not already a \code{emmGrid} object.}
+\item{...}{Other arguments passed to the function if object is not already a emmGrid object.}
 
 \item{alpha_level}{Alpha level used to determine statistical significance}
 
@@ -34,8 +34,7 @@ Returns dataframe with simulation data (power and effect sizes!), anova results 
 
 \describe{
   \item{\code{"dataframe"}}{A dataframe of the simulation result.}
-  \item{\code{"aov_result"}}{\code{aov} object returned from \code{\link{aov_car}}.}
-  \item{\code{"aov_result"}}{\code{emmeans} object returned from \code{\link{emmeans}}.}
+  \item{\code{"aov_result"}}{\code{aov} object returned from \link[afex]{aov_car}.}
   \item{\code{"main_result"}}{The power analysis results for ANOVA level effects.}
   \item{\code{"pc_results"}}{The power analysis results for the pairwise (t-test) comparisons.}
   \item{\code{"emm_results"}}{The power analysis results of the pairwise comparison results.}
@@ -56,7 +55,7 @@ Note that calculation of power is based on the F- and t-ratio assuming
   two-sided testing. Thus, the function does not honor adjustments of the
   testing procedure due to either one-sided testing (or two-one sided tests)
   or corrections for multiple comparisons via the \code{p.adjust} option in 
-  \code{emmeans}.
+  \link[emmeans]{emmeans}.
   
   Power for one-sided tests can be calculated, if the means of the simulated
   dataset are consistent with the directional hypothesis, by doubling

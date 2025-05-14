@@ -4,14 +4,14 @@
 #' \emph{Do not use to calculate "observed power" for empirical datasets
 #' (Hoenig & Heisey, 2001).}
 #'
-#' @param x \code{emmGrid}. Grid of contrasts to estimate power from.
-#' @param ... Other arguments passed to the function if object is not already a \code{emmGrid} object.
+#' @param x \link[emmeans]{emmGrid-class}. Grid of contrasts to estimate power from.
+#' @param ... Other arguments passed to the function if object is not already a emmGrid object.
 #' @inheritParams ANOVA_exact 
 #' @details Note that calculation of power is based on the F- and t-ratio assuming
 #'   two-sided testing. Thus, the function does not honor adjustments of the
 #'   testing procedure due to either one-sided testing (or two-one sided tests)
 #'   or corrections for multiple comparisons via the \code{p.adjust} option in 
-#'   \code{emmeans}.
+#'   \link[emmeans]{emmeans}.
 #'   
 #'   Power for one-sided tests can be calculated, if the means of the simulated
 #'   dataset are consistent with the directional hypothesis, by doubling

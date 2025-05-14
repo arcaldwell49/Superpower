@@ -1,19 +1,17 @@
 citHeader("To cite Superpower in publications, please use:")
 
-citEntry(entry = "Article",
+bibentry(bibtype = "Article",
   doi = "10.1177/2515245920951503",
   url = "https://doi.org/10.1177/2515245920951503",
   year = "2021",
   volume = "4",
   number = "1",
   pages = "251524592095150",
-  author = c(person(given = "Daniel",family = "Lakens",
-           email = "D.Lakens@tue.nl"),
-           person(
-           given = "Aaron",
-           family = "Caldwell",
-           email = "arcaldwell49@gmail.com")),
+  author = c(person(given = "Daniel", family = "Lakens",
+             email = "D.Lakens@tue.nl"),
+             person(given = "Aaron", family = "Caldwell",
+             email = "arcaldwell49@gmail.com")),
   title = "Simulation-Based Power Analysis for Factorial Analysis of Variance Designs",
   journal = "Advances in Methods and Practices in Psychological Science",
-  textVersion = "Lakens, D., & Caldwell, A. R. (2021). Simulation-Based Power Analysis for Factorial Analysis of Variance Designs. Advances in Methods and Practices in Psychological Science, 4(1), 251524592095150. https://doi.org/10.1177/2515245920951503 "
+  textVersion = "Lakens, D., & Caldwell, A. R. (2021). Simulation-Based Power Analysis for Factorial Analysis of Variance Designs. Advances in Methods and Practices in Psychological Science, 4(1), 251524592095150. https://doi.org/10.1177/2515245920951503"
 )

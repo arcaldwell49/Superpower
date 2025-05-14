@@ -1,5 +1,4 @@
 ## Test environments
-* local OS X install, R version 4.2.0 
 * ubuntu, Windows, and MacOS on GitHub Actions
 
 ## R CMD check results
@@ -11,4 +10,6 @@
 ## Other Comments
 
 * Author names in the DESCRIPTION are correctly spelled (i.e., Lakens and Caldwell)
+* Minor change to the citation to stay on CRAN
+* Will address the "additional notes" ASAP
 

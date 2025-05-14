@@ -42,7 +42,7 @@ ANOVA_exact2(
 
 \item{emm_model}{Set model type ("multivariate", or "univariate") for estimated marginal means}
 
-\item{contrast_type}{Select the type of comparison for the estimated marginal means. Default is pairwise. See ?emmeans::`contrast-methods` for more details on acceptable methods.}
+\item{contrast_type}{Select the type of comparison for the estimated marginal means. Default is pairwise. See the emmeans package on "contrast-methods" for more details on acceptable methods.}
 
 \item{liberal_lambda}{Logical indicator of whether to use the liberal (cohen_f^2\*(num_df+den_df)) or conservative (cohen_f^2\*den_df) calculation of the noncentrality (lambda) parameter estimate. Default is FALSE.}
 
@@ -53,8 +53,7 @@ Returns dataframe with simulation data (power and effect sizes!), anova results 
 
 \describe{
   \item{\code{"dataframe"}}{A dataframe of the simulation result.}
-  \item{\code{"aov_result"}}{\code{aov} object returned from \code{\link{aov_car}}.}
-  \item{\code{"aov_result"}}{\code{emmeans} object returned from \code{\link{emmeans}}.}
+  \item{\code{"aov_result"}}{\code{aov} object returned from \link[afex]{aov_car}.}
   \item{\code{"main_result"}}{The power analysis results for ANOVA level effects.}
   \item{\code{"pc_results"}}{The power analysis results for the pairwise (t-test) comparisons.}
   \item{\code{"emm_results"}}{The power analysis results of the pairwise comparison results.}
