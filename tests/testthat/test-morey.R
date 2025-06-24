@@ -60,7 +60,7 @@ test_that("no error messages ttest", {
                           type = "two.sample",
                           alternative = "one.sided",
                           alpha_level = c(.01,.05,.1))
-  expect_equal(class(test)[1], "gg")
+  expect_true(inherits(test, c("ggplot", "ggplot2::ggplot")))
 })
 
 # Error messages ftest
