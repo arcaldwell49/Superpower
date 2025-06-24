@@ -9,7 +9,5 @@
 
 ## Other Comments
 
-* Author names in the DESCRIPTION are correctly spelled (i.e., Lakens and Caldwell)
-* Minor change to the citation to stay on CRAN
-* Will address the "additional notes" ASAP
+* Small change to avoid problems with ggplot2 dependency
 
