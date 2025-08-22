@@ -5,7 +5,7 @@ output: github_document
 
 Updated `r format(Sys.time(), "%a %b %d %Y")`
 
-# Superpower 0.2.3 -- "Hindsight Lad"
+# Superpower 0.2.4 -- "Hindsight Lad"
 - Minor changes to avoid issues with ggplot2 update
 
 # Superpower 0.2.3 -- "Ravage"
