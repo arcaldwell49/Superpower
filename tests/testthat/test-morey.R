@@ -106,6 +106,6 @@ test_that("No error messages ftest",{
                           alpha_level = .055,
                           liberal_lambda = TRUE)
   
-  expect_equal(class(test)[1], "gg")
+  expect_equal(class(test)[1], "ggplot2::ggplot")
   
 })
