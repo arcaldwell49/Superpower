@@ -283,12 +283,12 @@ plot_power <- function(design_result,
   }
   
   p1 <- ggplot(data = plot_data, aes(x = n, y = value)) +
-    geom_line(size = 1.5) +
+    geom_line(linewidth = 1.5) +
     scale_x_continuous(limits = c(min_n, max_n)) +
     scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, 10)) +
     theme_bw() +
     labs(x = "Sample size per condition", y = "Power") +
-    geom_line(y = desired_power, colour="red", alpha = 0.3, size = 1) + 
+    geom_line(y = desired_power, colour="red", alpha = 0.3, linewidth = 1) + 
     geom_label(data = annotate_df, aes(x = n, y = power, label = label)) +
     facet_grid(variable ~ .)
   
@@ -323,10 +323,10 @@ plot_power <- function(design_result,
     
     p2 <- ggplot(data = plot_data_manova,
                  aes(x = n, y = value)) +
-      geom_line(size = 1.5) +
+      geom_line(linewidth = 1.5) +
       scale_x_continuous(limits = c(min_n, max_n)) +
       scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, 10)) +
-      geom_line(y = desired_power, colour="red", alpha = 0.3, size = 1) + 
+      geom_line(y = desired_power, colour="red", alpha = 0.3, linewidth = 1) + 
       geom_label(data = annotate_df_manova, aes(x = n, y = power, label = label)) +
       theme_bw() +
       labs(x = "Sample size per condition", y = "Power") +
@@ -364,10 +364,10 @@ plot_power <- function(design_result,
     
     p3 <- ggplot(data = plot_data_emm,
                  aes(x = n, y = value)) +
-      geom_line(size = 1.5) +
+      geom_line(linewidth = 1.5) +
       scale_x_continuous(limits = c(min_n, max_n)) +
       scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, 10)) +
-      geom_line(y = desired_power, colour="red", alpha = 0.3, size = 1) + 
+      geom_line(y = desired_power, colour="red", alpha = 0.3, linewidth = 1) + 
       geom_label(data = annotate_df_emm, aes(x = n, y = power, label = label)) +
       theme_bw() +
       labs(x = "Sample size per condition", y = "Power") +

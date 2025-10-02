@@ -79,7 +79,7 @@ optimal_alpha <- function(power_function,
   plot_data <- data.frame(alpha_list, beta_list, w_list, w_c_list)
 
   w_c_alpha_plot <- ggplot(data=plot_data, aes(x=alpha_list, y=w_c_list)) +
-    geom_line(size = 1.3) +
+    geom_line(linewidth = 1.3) +
     geom_point(aes(x = res$minimum, y = (costT1T2 * res$minimum + priorH1H0 * (1 - eval(parse(text=paste(power_function))))) / (priorH1H0 + costT1T2)), color="red", size = 3) +
     theme_minimal(base_size = 18) +
     scale_x_continuous("alpha", seq(0,1,0.1)) +
