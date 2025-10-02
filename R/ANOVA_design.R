@@ -345,9 +345,9 @@ ANOVA_design <- function(design, n, mu, sd, r = 0,
     dataframe_means[,factornames[3]] <- ordered(dataframe_means[,factornames[3]], levels = labelnameslist[[3]])
   }
   
-  if(factors == 1){meansplot = ggplot(dataframe_means, aes_string(y = "mu", x = factornames[1]))}
-  if(factors == 2){meansplot = ggplot(dataframe_means, aes_string(y = "mu", x = factornames[1], colour = factornames[2]))}
-  if(factors == 3){meansplot = ggplot(dataframe_means, aes_string(y = "mu", x = factornames[1], colour = factornames[2])) + facet_wrap(  paste("~",factornames[3],sep=""))}
+  if(factors == 1){meansplot = ggplot(dataframe_means, aes(y = .data[["mu"]], x = .data[[factornames[1]]]))}
+  if(factors == 2){meansplot = ggplot(dataframe_means, aes(y = .data[["mu"]], x = .data[[factornames[1]]], colour = .data[[factornames[2]]]))}
+  if(factors == 3){meansplot = ggplot(dataframe_means, aes(y = .data[["mu"]], x = .data[[factornames[1]]], colour = .data[[factornames[2]]])) + facet_wrap(  paste("~",factornames[3],sep=""))}
   
   #Set custom color palette if factor 2 has a length greater than 8
   if (factors >= 2 && length(labelnameslist[[2]]) >= 9) {
@@ -355,7 +355,7 @@ ANOVA_design <- function(design, n, mu, sd, r = 0,
     meansplot2 = meansplot +
       geom_point(position = position_dodge(width = 0.9), shape = 10, size = 5, stat = "identity") + #Personal preference for sd -- ARC
       geom_errorbar(aes(ymin = mu - sd, ymax = mu + sd),
-                    position = position_dodge(width = 0.9), size = .6, width = .3) +
+                    position = position_dodge(width = 0.9), linewidth = .6, width = .3) +
       #coord_cartesian(ylim = c(min(mu) - max(sd), max(mu) + max(sd))) +
       theme_bw(base_size = 16) + ggtitle("Means for each condition in the design") 
     
@@ -364,7 +364,7 @@ ANOVA_design <- function(design, n, mu, sd, r = 0,
     meansplot2 = meansplot +
       geom_point(position = position_dodge(width = 0.9), shape = 10, size = 5, stat = "identity") + #Personal preference for sd -- ARC
       geom_errorbar(aes(ymin = mu - sd, ymax = mu + sd),
-                    position = position_dodge(width = 0.9), size = .6, width = .3) +
+                    position = position_dodge(width = 0.9), linewidth = .6, width = .3) +
       #coord_cartesian(ylim = c(min(mu) - sd, max(mu) + sd)) +
       theme_bw() + ggtitle("Means for each condition in the design") 
   }

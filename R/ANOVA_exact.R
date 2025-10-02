@@ -351,11 +351,11 @@ ANOVA_exact <- function(design_result,
 
   #Create plot
 
-  if (factors == 1) {meansplot = ggplot(dataframe, aes_string(y = "y", x = factornames[1]))}
-  if (factors == 2) {meansplot = ggplot(dataframe, aes_string(y = "y",
-                                                              x = factornames[1])) + facet_wrap(  paste("~",factornames[2],sep = ""))}
-  if (factors == 3) {meansplot = ggplot(dataframe, aes_string(y = "y",
-                                                              x = factornames[1])) + facet_grid(  paste(factornames[3],"~",factornames[2], sep = ""))}
+  if (factors == 1) {meansplot = ggplot(dataframe, aes(y = .data[["y"]], x = .data[[factornames[1]]]))}
+  if (factors == 2) {meansplot = ggplot(dataframe, aes(y = .data[["y"]],
+                                                              x = .data[[factornames[1]]])) + facet_wrap(  paste("~",factornames[2],sep = ""))}
+  if (factors == 3) {meansplot = ggplot(dataframe, aes(y = .data[["y"]],
+                                                              x = .data[[factornames[1]]])) + facet_grid(  paste(factornames[3],"~",factornames[2], sep = ""))}
 
   meansplot2 = meansplot +
     geom_jitter(position = position_jitter(0.2)) +
@@ -756,11 +756,11 @@ ANOVA_exact2 <- function(design_result,
   
   #Create plot
   
-  if (factors == 1) {meansplot = ggplot(dataframe, aes_string(y = "y", x = factornames[1]))}
-  if (factors == 2) {meansplot = ggplot(dataframe, aes_string(y = "y",
-                                                              x = factornames[1])) + facet_wrap(  paste("~",factornames[2],sep = ""))}
-  if (factors == 3) {meansplot = ggplot(dataframe, aes_string(y = "y",
-                                                              x = factornames[1])) + facet_grid(  paste(factornames[3],"~",factornames[2], sep = ""))}
+  if (factors == 1) {meansplot = ggplot(dataframe, aes(y = .data[["y"]], x = .data[[factornames[1]]]))}
+  if (factors == 2) {meansplot = ggplot(dataframe, aes(y = .data[["y"]],
+                                                              x = .data[[factornames[1]]])) + facet_wrap(  paste("~",factornames[2],sep = ""))}
+  if (factors == 3) {meansplot = ggplot(dataframe, aes(y = .data[["y"]],
+                                                              x = .data[[factornames[1]]])) + facet_grid(  paste(factornames[3],"~",factornames[2], sep = ""))}
   
   meansplot2 = meansplot +
     stat_summary(
