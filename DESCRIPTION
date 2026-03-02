@@ -26,13 +26,14 @@ URL: https://aaroncaldwell.us/SuperpowerBook/
 BugReports: https://github.com/arcaldwell49/Superpower/issues
 License: MIT + file LICENSE
 Encoding: UTF-8
-RoxygenNote: 7.3.2
-Imports: 
+RoxygenNote: 7.3.3
+Imports:
     MASS,
     afex,
     emmeans,
     ggplot2,
     reshape2,
+    rlang,
     stats,
     dplyr,
     magrittr,
