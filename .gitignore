@@ -14,3 +14,5 @@ inst/doc
 NUL
 tests/testthat/Rplots.pdf
 .DS_Store
+references/
+.claude/settings.local.json
