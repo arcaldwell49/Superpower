@@ -1,7 +1,7 @@
 NEWS
 ================
 
-# Superpower 0.2.4.2
+# Superpower 0.2.4.2 - "Arm-Fall-Off-Boy"
 
 - Fix missing `rlang` import declaration (`@importFrom rlang .data`) needed
   for the `aes(.data[[]])` usage introduced in 0.2.4
