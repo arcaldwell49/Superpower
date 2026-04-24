@@ -46,6 +46,7 @@
 #' @importFrom MASS mvrnorm
 #' @importFrom afex aov_car
 #' @importFrom grDevices colorRampPalette
+#' @importFrom rlang .data
 #' @import ggplot2
 #' @export
 #'
