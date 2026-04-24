@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Superpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.4.2</span>
       </span>
     </div>
 
@@ -93,7 +93,7 @@
                         <h4 data-toc-skip class="author">Aaron R.
 Caldwell</h4>
             
-            <h4 data-toc-skip class="date">2025-10-03</h4>
+            <h4 data-toc-skip class="date">2026-04-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/arcaldwell49/Superpower/blob/master/vignettes/more_anova_designs.Rmd" class="external-link"><code>vignettes/more_anova_designs.Rmd</code></a></small>
       <div class="hidden name"><code>more_anova_designs.Rmd</code></div>
@@ -104,6 +104,9 @@ Caldwell</h4>
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://aaroncaldwell.us/SuperpowerBook/" class="external-link">Superpower</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; Registered S3 method overwritten by 'lme4':</span></span>
+<span><span class="co">#&gt;   method           from</span></span>
+<span><span class="co">#&gt;   na.action.merMod car</span></span>
 <span><span class="fu"><a href="../reference/Superpower_options.html">Superpower_options</a></span><span class="op">(</span>verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>                   plot <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="va">nsims</span> <span class="op">=</span> <span class="fl">250</span></span></code></pre></div>
@@ -144,7 +147,7 @@ power our design would have to detect the differences we predict.</p>
 <span>                   sd <span class="op">=</span> <span class="va">sd</span>, </span>
 <span>                   label_list <span class="op">=</span> <span class="va">label_list</span>,</span>
 <span>                   plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="more_anova_designs_files/figure-html/unnamed-chunk-2-1.png" width="672"></p>
+<p><img src="more_anova_designs_files/figure-html/unnamed-chunk-2-1.png" class="r-plt" alt="" width="672"></p>
 <pre><code><span><span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>,</span>
 <span>            emm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Pairwise emmeans will automatically run</span></span>
 <span>            </span>
@@ -335,7 +338,7 @@ effect size
 As Cohen (1988) writes, “The Z subscript is used to emphasize the fact
 that our raw score unit is no longer X or Y, but Z”, where Z are the
 difference scores of X-Y.</p>
-<p><img src="screenshots/gpower_9.png" width="600px"></p>
+<p><img src="screenshots/gpower_9.png" class="r-plt" alt="" width="600px"></p>
 <p>Within designs can have greater power to detect differences than
 between designs because the values are correlated, and a within design
 requires less participants because each participant provides multiple
@@ -410,11 +413,11 @@ correlation is set to 0.5, when d =
 and thus the transformation of
 f=<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>d</mi></mrow><annotation encoding="application/x-tex">\frac{1}{2}d</annotation></semantics></math>
 works.</p>
-<p><img src="screenshots/gpower_1.png" width="600px"></p>
+<p><img src="screenshots/gpower_1.png" class="r-plt" alt="" width="600px"></p>
 <p>If we change the correlation to 0.7 and keep all other settings the
 same, the repeated measure a-priori power analysis yields a sample of
 21. The correlation increases the power for the test.</p>
-<p><img src="screenshots/gpower_11.png" width="600px"></p>
+<p><img src="screenshots/gpower_11.png" class="r-plt" alt="" width="600px"></p>
 <p>To reproduce this analysis in G*power with a dependent
 <em>t</em>-test we need to change
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>d</mi><mi>z</mi></msub><annotation encoding="application/x-tex">d_z</annotation></semantics></math>
@@ -435,7 +438,7 @@ and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>d</mi><mi>z</mi></msub><annotation encoding="application/x-tex">d_z</annotation></semantics></math>,
 the correlation is always taken into account and can greatly improve
 power for within designs compared to between designs.</p>
-<p><img src="screenshots/gpower_10.png" width="600px"></p>
+<p><img src="screenshots/gpower_10.png" class="r-plt" alt="" width="600px"></p>
 <p>We can perform both these power analyses using simulations as well.
 We set groups to 2 for the simulation, n = 34 (which should give 80.777
 power, according to g*power), a correlation among repeated measures of
@@ -469,7 +472,7 @@ or 0.05882353.</p>
 <span>                              r <span class="op">=</span> <span class="va">r</span>, </span>
 <span>                              label_list <span class="op">=</span> <span class="va">label_list</span>,</span>
 <span>                              plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="more_anova_designs_files/figure-html/unnamed-chunk-10-1.png" width="672"></p>
+<p><img src="more_anova_designs_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" alt="" width="672"></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>,</span>
@@ -520,7 +523,7 @@ This should yield an effect size
 <span>                              r <span class="op">=</span> <span class="va">r</span>, </span>
 <span>                              label_list <span class="op">=</span> <span class="va">label_list</span>,</span>
 <span>                              plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="more_anova_designs_files/figure-html/unnamed-chunk-11-1.png" width="672"></p>
+<p><img src="more_anova_designs_files/figure-html/unnamed-chunk-11-1.png" class="r-plt" alt="" width="672"></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>,</span>
@@ -630,7 +633,7 @@ and the alpha level is 0.05, the power is 96.9%.</p>
 <span>                              r <span class="op">=</span> <span class="va">r</span>, </span>
 <span>                              label_list <span class="op">=</span> <span class="va">label_list</span>,</span>
 <span>                              plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="more_anova_designs_files/figure-html/unnamed-chunk-13-1.png" width="672"></p>
+<p><img src="more_anova_designs_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" alt="" width="672"></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">power_result</span> <span class="op">=</span> <span class="fu"><a href="../reference/ANOVA_power.html">ANOVA_power</a></span><span class="op">(</span><span class="va">design_result</span>,</span>
 <span>                           nsims <span class="op">=</span> <span class="fl">250</span><span class="op">)</span></span>
@@ -643,7 +646,7 @@ and the alpha level is 0.05, the power is 96.9%.</p>
 <p>The results of the simulation are indeed very close to 96.9% (the
 confidence intervals from the simulation include ). We can see this is
 in line with the power estimate from Gpower:</p>
-<p><img src="screenshots/gpower_12.png" width="600px"></p>
+<p><img src="screenshots/gpower_12.png" class="r-plt" alt="" width="600px"></p>
 <p>We can even check the calculation of Cohen’s f SPSS style in GPower.
 We take the GPower settings as illustrated above. We click the ‘Options’
 button, and check the radio button next to ‘As in SPSS’. Click ok, and
@@ -653,7 +656,7 @@ is incorporated in Cohen’s f. The value of Cohen’s f, which was 0.25,
 has changed into 0.7024394. This is the SPSS equivalent. The value is
 much larger. This value, and it’s corresponding partial eta-squared,
 incorporate the correlation between observations.</p>
-<p><img src="screenshots/gpower_14.png" width="600px"></p>
+<p><img src="screenshots/gpower_14.png" class="r-plt" alt="" width="600px"></p>
 </div>
 <div class="section level3">
 <h3 id="x2-anova-within-between-design">2x2 ANOVA, within-between design<a class="anchor" aria-label="anchor" href="#x2-anova-within-between-design"></a>
@@ -662,7 +665,7 @@ incorporate the correlation between observations.</p>
 and effect size, to achieve a specified statistical power. We will try
 to reproduce the power analysis in G*power for an <em>F</em>-test,
 ANOVA: Repeated measures, within-between interaction.</p>
-<p><img src="screenshots/gpower_5.png" width="600px"></p>
+<p><img src="screenshots/gpower_5.png" class="r-plt" alt="" width="600px"></p>
 <p>For the 2-way interaction, the result should be a power of 91.25% if
 we have a total sample size of 46. Since we have 2 levels for the
 between-participants factor, that means the number of groups 2 (and both
@@ -679,7 +682,7 @@ these groups collect 2 repeated measures).</p>
 <span>                              sd <span class="op">=</span> <span class="va">sd</span>, </span>
 <span>                              r <span class="op">=</span> <span class="va">r</span>,</span>
 <span>                              plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="more_anova_designs_files/figure-html/unnamed-chunk-17-1.png" width="672"></p>
+<p><img src="more_anova_designs_files/figure-html/unnamed-chunk-17-1.png" class="r-plt" alt="" width="672"></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>,</span>
@@ -709,7 +712,7 @@ these groups collect 2 repeated measures).</p>
 <span><span class="co">#&gt; 6 a_a1 b_b2 - a_a2 b_b2 63.76           1.127e-01 3.563e-01      5.587e+00</span></span></code></pre></div>
 <p>We can simulate the same Two-Way ANOVA increasing the correlation to
 0.7. Power should be 98.98% for the two-way interaction.</p>
-<p><img src="screenshots/gpower_6.png" width="600px"></p>
+<p><img src="screenshots/gpower_6.png" class="r-plt" alt="" width="600px"></p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.25</span>, <span class="fl">0.25</span>, <span class="fl">0.25</span>, <span class="op">-</span><span class="fl">0.25</span><span class="op">)</span></span>
 <span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fl">23</span></span>
@@ -722,7 +725,7 @@ these groups collect 2 repeated measures).</p>
 <span>                              sd <span class="op">=</span> <span class="va">sd</span>, </span>
 <span>                              r <span class="op">=</span> <span class="va">r</span>,</span>
 <span>                              plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="more_anova_designs_files/figure-html/unnamed-chunk-19-1.png" width="672"></p>
+<p><img src="more_anova_designs_files/figure-html/unnamed-chunk-19-1.png" class="r-plt" alt="" width="672"></p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>,</span>
@@ -771,7 +774,7 @@ cross-over interaction for a 2x2 between-participant design with 80
 participants in each group (see the figure below for the expected
 pattern of means).</p>
 <div class="figure">
-<img src="more_anova_designs_files/figure-html/mean-plot-1.png" alt="Vizualization for the expected means and confidence intervals for a crossover interaction." width="672"><p class="caption">
+<img src="more_anova_designs_files/figure-html/mean-plot-1.png" class="r-plt" alt="Vizualization for the expected means and confidence intervals for a crossover interaction." width="672"><p class="caption">
 Vizualization for the expected means and confidence intervals for a
 crossover interaction.
 </p>
@@ -967,7 +970,7 @@ a 3x3 design (two factors, three levels each).</p>
 <span>                   sd <span class="op">=</span> <span class="va">sd</span>, </span>
 <span>                   label_list <span class="op">=</span> <span class="va">label_list</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">design_result</span><span class="op">)</span></span></code></pre></div>
-<p><img src="more_anova_designs_files/figure-html/unnamed-chunk-20-1.png" width="672"></p>
+<p><img src="more_anova_designs_files/figure-html/unnamed-chunk-20-1.png" class="r-plt" alt="" width="672"></p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">res</span> <span class="op">=</span> <span class="fu"><a href="../reference/ANOVA_exact.html">ANOVA_exact2</a></span><span class="op">(</span><span class="va">design_result</span>, </span>
@@ -1042,7 +1045,7 @@ power across</p>
 <p>Potvin &amp; Schutz (2000) simulate a wide range of repeated measure
 designs. The give an example of a 3x3 design, with the following
 correlation matrix:</p>
-<p><img src="screenshots/PS2000.gif" width="600px"></p>
+<p><img src="screenshots/PS2000.gif" class="r-plt" alt="" width="600px"></p>
 <p>Variances were set to 1 (so all covariance matrices in their
 simulations were identical). In this specific example, the white fields
 are related to the correlation for the A main effect (these cells have
@@ -1081,7 +1084,7 @@ with 2 within factors (A and B) these are:</p>
 <span>                              r <span class="op">=</span> <span class="va">r</span>, </span>
 <span>                              label_list <span class="op">=</span> <span class="va">label_list</span>,</span>
 <span>                              plot <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="more_anova_designs_files/figure-html/unnamed-chunk-24-1.png" width="672"></p>
+<p><img src="more_anova_designs_files/figure-html/unnamed-chunk-24-1.png" class="r-plt" alt="" width="672"></p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">power_result_vig_4</span> <span class="op">=</span> <span class="fu"><a href="../reference/ANOVA_power.html">ANOVA_power</a></span><span class="op">(</span><span class="va">design_result</span>,</span>
@@ -1139,7 +1142,7 @@ with 2 within factors (A and B) these are:</p>
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>

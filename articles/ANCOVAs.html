@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">Superpower</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.2.4.2</span>
       </span>
     </div>
 
@@ -93,7 +93,7 @@
                         <h4 data-toc-skip class="author">Aaron R.
 Caldwell</h4>
             
-            <h4 data-toc-skip class="date">03 October, 2025</h4>
+            <h4 data-toc-skip class="date">24 April, 2026</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/arcaldwell49/Superpower/blob/master/vignettes/ANCOVAs.Rmd" class="external-link"><code>vignettes/ANCOVAs.Rmd</code></a></small>
       <div class="hidden name"><code>ANCOVAs.Rmd</code></div>
@@ -330,7 +330,7 @@ by accessing the individual effects in the <code>res1</code> object.</p>
 <p>We can also check the design by using the plot method.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">res1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="ANCOVAs_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+<p><img src="ANCOVAs_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" alt="" width="700"></p>
 <p>However, you may want to compare the power of ANOVA to an ANCOVA. In
 that case you can use the <code>ANOVA_design</code> function and pass it
 onto the <code>ANCOVA_analytic</code> function. But, this forces you to
@@ -341,7 +341,7 @@ set the sample size.</p>
 <span>         <span class="fl">400</span>, <span class="fl">500</span>, <span class="fl">600</span><span class="op">)</span>,</span>
 <span>  n <span class="op">=</span> <span class="fl">17</span>,</span>
 <span>  sd <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
-<p><img src="ANCOVAs_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
+<p><img src="ANCOVAs_files/figure-html/unnamed-chunk-7-1.png" class="r-plt" alt="" width="700"></p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">res2</span> <span class="op">=</span> <span class="fu"><a href="../reference/ANCOVA_analytic.html">ANCOVA_analytic</a></span><span class="op">(</span></span>
 <span>  design_result <span class="op">=</span> <span class="va">des1</span>,</span>
@@ -455,7 +455,7 @@ designs.”</span> <em>Psychometrika</em> 85 (1): 101–20. <a href="https://doi
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
       </footer>
