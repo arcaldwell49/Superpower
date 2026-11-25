@@ -15,6 +15,7 @@ params:
   sigmatrix: NA
   alpha_level: NA
   nsims: NA
+  seed: !r NULL
   p_adjust: NA
   correction: NA
   manova: NA
@@ -85,6 +86,8 @@ cat("\\newpage")
 # ANOVA 
 
 The results of the Monte Carlo simulation are included below. This simulation assumed an alpha of **`r params$alpha_level`**, a sphericity correction of **`r params$correction`**, a **`r params$p_adjust`** adjustment for multiple comparisons. A total of **`r params$nsims`** iterations were included in this simulation.
+
+`r if (is.null(params$seed)) "No random seed was specified for this simulation." else paste0("The random seed was **", params$seed, "**.")`
 
 **ANOVA Power (%) and Effect Sizes (Partial Eta Squared)**
 
