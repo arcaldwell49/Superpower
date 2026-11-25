@@ -118,6 +118,7 @@ shiny_power <- function(design_result,
       }
     })
     set.seed(seed, kind = "Mersenne-Twister", normal.kind = "Inversion")
+    seed <- as.integer(seed)
   }
   
   #Check to ensure there is a within subject factor -- if none --> no MANOVA
@@ -540,6 +541,7 @@ shiny_power <- function(design_result,
                  p_adjust = p_adjust,
                  emm_p_adjust = emm_p_adjust,
                  nsims = nsims,
+                 seed = seed,
                  alpha_level = alpha_level,
                  method = "ANOVA_power"),
             class = "sim_result")
@@ -1314,6 +1316,7 @@ values$label_list <- reactive({
                      sigmatrix = values$design_result$sigmatrix,
                      alpha_level = values$power_result$alpha_level,
                      nsims = values$power_result$nsims,
+                     seed = values$power_result$seed,
                      p_adjust = values$power_result$p_adjust,
                      correction = values$power_result$correction,
                      manova = values$power_result$manova_result,
